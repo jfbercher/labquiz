@@ -1504,7 +1504,10 @@ def make_anomalies_df_report(df, reference, ignore_keys=[], includeRAS=True):
 
 def group_anomalies_per_student(Result):
     df2 = Result.copy()
-    indent = ' '*len(df2.loc[df2.index[0], "timestamp"] + ":")
+    if not df2.empty:
+        indent = ' '*len(df2.loc[df2.index[0], "timestamp"] + ":")
+    else: 
+        indent = ""
     df2["entry"] = df2["timestamp"] + ":" + \
 df2["anomalies"].str.replace('\n', f"\n {indent}- ")
     #.str.strip('\n').str.replace('\n', f"\n {indent}")
