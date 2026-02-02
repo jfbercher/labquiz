@@ -1,0 +1,7 @@
+cryptography
+ipython
+ipywidgets
+numpy
+pandas
+PyYAML
+Requests
