@@ -1,0 +1,1037 @@
+quiz1:
+  question: "According to the data preparation steps for the $\\text{Hitters}$ dataset,
+    how should missing values be handled before modeling?"
+  propositions:
+    - proposition: "Use the `.dropna()` method to remove all rows containing missing
+        observations, specifically for the $\\text{Salary}$ variable."
+      label: "use_dropna"
+      expected: true
+      reponse: "The sources state that `.dropna()` is used to drop rows with missing
+        salary data because those values are necessary for the regression."
+      tip: "Check the 'Data preparation' section where the CSV is first processed."
+    - proposition: "Perform a `.reset_index()` on the resulting DataFrame after removing
+        rows to maintain index continuity."
+      label: "index_reset"
+      expected: true
+      reponse: "The documentation explicitly mentions performing a 'reset of the index'
+        on the resulting array after dropping NAs."
+      tip: "Look at the code line where hitters is redefined after dropna."
+    - proposition: "Impute missing $\\text{Salary}$ values using the mean of the available
+        observations to preserve the dataset size."
+      label: "mean_imputation"
+      expected: false
+      reponse: "The lab chooses to drop the rows entirely rather than imputing values."
+      tip: "Does the code show a fillna() or a dropna() operation?"
+    - proposition: "Missing values can be left as is because Python's linear regression
+        models handle $\\text{NaN}$ values automatically."
+      label: "ignore_nan"
+      expected: false
+      reponse: "The document notes that missing observations must be removed to avoid
+        errors in the calculation algorithms."
+      tip: "Consider if the mathematical functions for regression can compute values
+        with NaNs."
+
+  type: qcm
+  label: q:quiz1
+  category: LabModelSelection
+  tags:
+    - pratiqueLogiciel
+quiz2:
+  question: "Regarding the preparation of the feature matrix $X$ in the lab, which
+    statements about categorical variables are true?"
+  propositions:
+    - proposition: "Variables like $\\text{League}$, $\\text{Division}$, and $\\text{NewLeague}$
+        are categorical and require encoding."
+      label: "identify_cat"
+      expected: true
+      reponse: "The source identifies these specific variables as categorical and
+        states they must be encoded."
+      tip: "Check the variable list in the dataset description."
+    - proposition: "The `pd.get_dummies()` function is recommended for 'one-hot' encoding
+        these categorical variables."
+      label: "dummies_encoding"
+      expected: true
+      reponse: "The lab suggests using `pd.get_dummies()` to create binary indicators
+        for qualitative variables."
+      tip: "Look for the specific pandas function used in section 1."
+    - proposition: "In Python, explicit encoding is often required, whereas libraries
+        like `statsmodels` or the R language might handle them automatically."
+      label: "r_vs_python_cat"
+      expected: true
+      reponse: "A 'NB' note in the text mentions that R or statsmodels might not require
+        manual dummy encoding."
+      tip: "Read the note regarding the difference between R/statsmodels and pure
+        Python/scikit-learn."
+    - proposition: "The original text-based categorical columns should be kept in
+        $X$ alongside the new binary columns."
+      label: "keep_text_cols"
+      expected: false
+      reponse: "The lab specifies that you must 'remove the starting categorical columns'
+        after encoding them."
+      tip: "The matrix X must contain only numerical data for the math to work."
+
+  type: qcm
+  label: q:quiz2
+  category: LabModelSelection
+  tags:
+    - pratiqueLogiciel
+    - valeursNumériques
+quiz3:
+  question: "What are the core characteristics of 'Best Subset Selection' (BSS) as
+    described in the lecture and lab texts?"
+  propositions:
+    - proposition: "BSS involves selecting the best model among all possible models
+        for each subset size $k$, from $1$ to $p$."
+      label: "bss_definition"
+      expected: true
+      reponse: "The procedure identifies the best model for every possible number
+        of predictors."
+      tip: "Look at the definition of BSS in the course notes."
+    - proposition: "The total number of models to be evaluated grows exponentially,
+        reaching $2^p$ combinations."
+      label: "bss_complexity"
+      expected: true
+      reponse: "The lecture text states that testing all models leads to $2^p$ possibilities,
+        which is computationally expensive."
+      tip: "Think about the total number of subsets for p variables."
+    - proposition: "BSS is computationally efficient and suitable for high-dimensional
+        data where $p > 40$."
+      label: "bss_efficiency"
+      expected: false
+      reponse: "The lecture text states BSS is only possible for low-dimensional models
+        because evaluation becomes 'crazy' as $p$ grows."
+      tip: "Is testing a billion models (p=30) considered efficient?"
+    - proposition: "The method uses the Residual Sum of Squares ($\\text{RSS}$) to
+        select the best model $M_k$ for a specific size $k$."
+      label: "bss_metric_k"
+      expected: true
+      reponse: "For a fixed size k, the best model is chosen based on training performance
+        like RSS or $R^2$."
+      tip: "See step 2 of the BSS algorithm."
+
+  type: qcm
+  label: q:quiz3
+  category: LabModelSelection
+  tags:
+    - fondements
+quiz4:
+  question: "In the BSS procedure, how is the final 'best' model chosen from the set
+    of models $M_0, M_1, \\dots, M_p$?"
+  propositions:
+    - proposition: "By using criteria that penalize model complexity, such as $\\
+        text{AIC}$, $\\text{BIC}$, or Adjusted $R^2$."
+      label: "final_criteria"
+      expected: true
+      reponse: "Step 3 of the algorithm involves selecting the best model across different
+        sizes using these specific metrics."
+      tip: "Review the three steps of the BSS algorithm."
+    - proposition: "By using cross-validation to estimate the test error of each model
+        $M_k$."
+      label: "cv_selection"
+      expected: true
+      reponse: "The document notes that the optimal model can be selected by cross-validation
+        as an alternative to theoretical criteria."
+      tip: "What are the two approaches to estimate test error mentioned in section
+        2.3 (entitled \"Selection of the optimal model by criterion on the learning
+        error\")?"
+    - proposition: "By always choosing the model with the lowest training $\\text{RSS}$
+        regardless of its size."
+      label: "rss_only_final"
+      expected: false
+      reponse: "Training RSS always decreases with model size, so this would lead
+        to picking the largest model every time."
+      tip: "Recall why training error is a poor estimate of test error."
+    - proposition: "By selecting the model that includes all available predictors
+        to ensure no information is lost."
+      label: "select_all_vars"
+      expected: false
+      reponse: "The goal is selection and interpretability; we seek the best trade-off,
+        not necessarily the largest model."
+      tip: "Think about the 'interpretability' aspect mentioned in the intro."
+
+  type: qcm
+  label: q:quiz4
+  category: LabModelSelection
+  tags:
+    - fondements
+quiz5:
+  question: "What information can be extracted from the OLS Regression results summary
+    for the 4-variable model in the lab?"
+  propositions:
+    - proposition: "The 'Condition Number' (e.g., $1.72\\, 10^{+03}$) suggests potential
+        multicollinearity between predictors."
+      label: "condition_number"
+      expected: true
+      reponse: "The notes below the OLS table explicitly warn that a large condition
+        number might indicate multicollinearity."
+      tip: "Check the 'Notes' section at the bottom of the OLS summary table."
+    - proposition: "Variables like $\\text{Hits}$ and $\\text{CRBI}$ are statistically
+        significant because their $P > |t|$ values are very small."
+      label: "p_values_signif"
+      expected: true
+      reponse: "A p-value near zero indicates that the predictor is statistically
+        significant at standard levels."
+      tip: "Look at the 'P>|t|' column in the results."
+    - proposition: "The coefficient for $\\text{DivisionW}$ is positive, indicating
+        it increases the predicted $\\text{Salary}$."
+      label: "div_w_coef"
+      expected: false
+      reponse: "The table shows a coefficient of $-139.95$, which is negative."
+      tip: "Check the 'coef' column for Division_W."
+    - proposition: "The Adjusted $R^2$ (0.467) is higher than the standard $R^2$ (0.475)
+        because it accounts for model quality."
+      label: "adj_r2_vs_r2"
+      expected: false
+      reponse: "Adjusted $R^2$ is typically lower than standard $R^2$ because it applies
+        a penalty for the number of predictors."
+      tip: "Compare the two R-squared values at the top of the summary."
+
+  type: qcm
+  label: q:quiz5
+  category: LabModelSelection
+  tags:
+    - pratiqueLogiciel
+    - valeursNumériques
+quiz6:
+  question: "Based on the graphs of $\\text{RSS}$, $\\text{AIC}$, $\\text{BIC}$, and
+    Adjusted $R^2$, what can be concluded?"
+  propositions:
+    - proposition: "$\\text{RSS}$ decreases monotonically as the number of predictors
+        increases."
+      label: "rss_trend"
+      expected: true
+      reponse: "Training RSS always goes down as more variables are added."
+      tip: "Observe the top-left curve in Figure 23."
+    - proposition: "Criteria like $\\text{AIC}$ and $\\text{BIC}$ show a minimum point,
+        helping to identify an 'optimal' model size."
+      label: "aic_bic_min"
+      expected: true
+      reponse: "These curves drop and then rise, with the lowest point indicating
+        the best balance of fit and complexity."
+      tip: "Look for the red dots on the AIC and BIC plots."
+    - proposition: "The Adjusted $R^2$ should be minimized to find the best model."
+      label: "adj_r2_min_false"
+      expected: false
+      reponse: "Unlike AIC/BIC/RSS, the Adjusted $R^2$ is a metric where 'higher is
+        better,' so it must be maximized."
+      tip: "Check the note in section 2.3: 'Adjusted R2 must be maximized'."
+    - proposition: "All criteria agree that the model with the maximum number of predictors
+        ($p=9$) is the best."
+      label: "p9_best_false"
+      expected: false
+      reponse: "BIC, for instance, selects a 6-predictor model as optimal (indicated
+        by the red dot)."
+      tip: "Do the red dots for BIC and AIC both sit at the far right of the x-axis?"
+
+  type: qcm
+  label: q:quiz6
+  category: LabModelSelection
+  tags:
+    - valeursNumériques
+    - pratiqueLogiciel
+quiz7:
+  question: "Why are 'Stepwise' methods introduced as alternatives to Best Subset
+    Selection?"
+  propositions:
+    - proposition: "Because the computational cost of BSS grows exponentially ($2^p$),
+        making it prohibitive for large $p$."
+      label: "stepwise_speed"
+      expected: true
+      reponse: "The texts (Lecture and Lab) explain that stepwise methods explore
+        a much smaller space, providing a 'more usable' solution."
+      tip: "Read the intro to section 2.4 'Stepwise models'"
+    - proposition: "They are 'greedy' algorithms that make local optimal choices at
+        each step, significantly reducing the number of models tested."
+      label: "greedy_approach"
+      expected: true
+      reponse: "Stepwise methods add or subtract variables one by one rather than
+        checking every combination."
+      tip: "Think about how 'Forward' selection builds a model."
+    - proposition: "They are guaranteed to find the same globally optimal model as
+        BSS."
+      label: "stepwise_optimal"
+      expected: false
+      reponse: "The text states that stepwise methods are 'sub-optimal' and 'not guaranteed
+        to find the optimal model'."
+      tip: "Check the 'highlights' of the stepwise approach."
+    - proposition: "BSS cannot calculate the $\\text{AIC}$ metric, whereas stepwise
+        methods can."
+      label: "bss_aic_calc"
+      expected: false
+      reponse: "Both methods can calculate AIC; the difference lies in which models
+        they choose to evaluate."
+      tip: "Is AIC a property of the method or the resulting model?"
+
+  type: qcm
+  label: q:quiz7
+  category: LabModelSelection
+  tags:
+    - fondements
+quiz8:
+  question: "How is the 'Forward Stepwise Selection' (FSS) algorithm implemented in
+    the lab?"
+  propositions:
+    - proposition: "It starts with a null model $M_0$ and adds predictors one by one."
+      label: "fss_logic"
+      expected: true
+      reponse: "FSS begins with no variables and adds the best available one at each
+        step."
+      tip: "Review the 'Forward' algorithm steps."
+    - proposition: "At each step, it identifies the predictor that results in the
+        largest increase in $R^2$ or decrease in $\\text{RSS}$."
+      label: "fss_step_best"
+      expected: true
+      reponse: "The `forward` function loops through remaining predictors to find
+        the one that best improves the model."
+      tip: "Look at the code for the `forward` function."
+    - proposition: "The total number of models evaluated is $1 + p(p+1)/2$, which
+        is polynomial in $p$."
+      label: "fss_total_models"
+      expected: true
+      reponse: "FSS reduces the $2^p$ complexity of BSS to roughly $p^2/2$."
+      tip: "Compare the complexity notes for BSS vs FSS."
+    - proposition: "Once a variable is added to the model in FSS, it can be removed
+        in a later step if its significance drops."
+      label: "fss_removals"
+      expected: false
+      reponse: "In standard FSS as described, variables are added and stay added.
+        Removing them would be part of a hybrid stepwise approach."
+      tip: "Does the `forward` function have a 'delete' step?"
+
+  type: qcm
+  label: q:quiz8
+  category: LabModelSelection
+  tags:
+    - pratiqueLogiciel
+quiz9:
+  question: "What do the results of the Forward Selection plots  reveal about model
+    choice?"
+  propositions:
+    - proposition: "The $\\text{BIC}$ criterion tends to favor smaller (more parsimonious)
+        models than the $\\text{AIC}$."
+      label: "bic_vs_aic_size"
+      expected: true
+      reponse: "The BIC plot shows an optimum at 6 predictors, while AIC shows it
+        at 10."
+      tip: "Compare the positions of the red dots in Figure 35."
+    - proposition: "The training $\\text{RSS}$ continues to decrease even as complexity
+        increases beyond the optimal point suggested by $\\text{BIC}$."
+      label: "rss_overfit"
+      expected: true
+      reponse: "RSS on training data always drops with more variables, even if the
+        model is overfitting."
+      tip: "Compare the top-left and bottom-right graphs."
+    - proposition: "The $\\text{AIC}$ and $\\text{BIC}$ curves always have their minimum
+        at the same number of predictors."
+      label: "aic_bic_sync"
+      expected: false
+      reponse: "AIC and BIC have different penalties, so their optima often differ
+        (BIC usually selects fewer variables)."
+      tip: "Check the red dot locations on both curves."
+    - proposition: "A higher Adjusted $R^2$ always corresponds to a lower $\\text{BIC}$."
+      label: "r2adj_bic_corr"
+      expected: false
+      reponse: "While they often move in opposite directions, their mathematical definitions
+        differ, and they may select different optimal orders."
+      tip: "Do the red dots for Adj R2 and BIC align at the same predictor count?"
+
+  type: qcm
+  label: q:quiz9
+  category: LabModelSelection
+  tags:
+    - valeursNumériques
+quiz10:
+  question: "What are the specific constraints of 'Backward Stepwise Selection' compared
+    to the 'Forward' method?"
+  propositions:
+    - proposition: "It starts with the full model $M_p$ and removes predictors one
+        at a time."
+      label: "backward_start"
+      expected: true
+      reponse: "Backward selection begins with all predictors and eliminates the least
+        useful one."
+      tip: "Look at the definition of the `backward` function."
+    - proposition: "It cannot be used in cases where the number of predictors $p$
+        is greater than the number of observations $n$ ($p > n$)."
+      label: "backward_p_n"
+      expected: true
+      reponse: "To start Backward selection, the full model must be fitted, which
+        requires $n > p$."
+      tip: "Look for the mathematical constraint mentioned for Backward selection."
+    - proposition: "It is guaranteed to find the absolute global minimum $\\text{RSS}$
+        for any size $k$."
+      label: "backward_optimality"
+      expected: false
+      reponse: "Like Forward selection, Backward is a greedy algorithm and is 'sub-optimal'."
+      tip: "Is Backward selection exhaustive?"
+    - proposition: "It is significantly slower than the Forward method because it
+        calculates larger models at the start."
+      label: "backward_speed"
+      expected: false
+      reponse: "The sources state it has the same complexity as FSS ($p(p+1)/2$ models)."
+      tip: "Compare the total number of models evaluated in both methods."
+
+  type: qcm
+  label: q:quiz10
+  category: LabModelSelection
+  tags:
+    - pratiqueLogiciel
+quiz11:
+  question: "According to the lab summary, how do BSS, FSS, and Backward selection
+    results compare?"
+  propositions:
+    - proposition: "At order 6, the models selected by FSS and Best Subset Selection
+        ($\\text{BestSS}$) were identical."
+      label: "order6_ident"
+      expected: true
+      reponse: "The text notes that for this specific dataset, the methods agreed
+        at order 6."
+      tip: "Read the summary paragraph."
+    - proposition: "At order 7, the three models selected by each method were different."
+      label: "order7_diff"
+      expected: true
+      reponse: "The lab observes that at order 7, the FSS, Backward, and BestSS models
+        diverged."
+      tip: "Look for the comparison of results for order 7."
+    - proposition: "Stepwise methods (FSS/Backward) are 'much faster' than exhaustive
+        BSS."
+      label: "stepwise_vs_bss_speed"
+      expected: true
+      reponse: "The lab highlights speed as the main advantage of the greedy stepwise
+        approaches."
+      tip: "What is the concluding remark about speed vs optimality?"
+    - proposition: "The Forward selection method is always superior to Backward selection
+        in terms of predictive accuracy."
+      label: "fss_superior"
+      expected: false
+      reponse: "Neither is universally superior; both are sub-optimal and results
+        vary by dataset."
+      tip: "Does the text claim one greedy method is always better?"
+
+  type: qcm
+  label: q:quiz11
+  category: LabModelSelection
+  tags:
+    - valeursNumériques
+quiz12:
+  question: "What is the advantage of using cross-validation (CV) for model selection
+    instead of criteria like $\\text{AIC}$ or $\\text{BIC}$?"
+  propositions:
+    - proposition: "It provides a direct estimate of the test error (generalization)
+        rather than adjusting the training error."
+      label: "cv_direct_est"
+      expected: true
+      reponse: "CV uses held-out data to empirically measure performance, while AIC/BIC
+        are theoretical adjustments."
+      tip: "Review the 'Selection by cross validation' section intro."
+    - proposition: "It does not require an estimate of the noise variance $\\sigma^2$,
+        unlike $\\text{AIC}$ or $C_p$."
+      label: "cv_no_sigma"
+      expected: true
+      reponse: "Criteria like AIC need $\\sigma^2$ (irreducible error), but CV is
+        an empirical approach that avoids this requirement."
+      tip: "Look at the variables needed for formulas (1), (2) and (3) in the lecture
+        text. "
+    - proposition: "Historically, it was computationally expensive, but it is now
+        considered an 'approach of choice'."
+      label: "cv_choice"
+      expected: true
+      reponse: "The lecture document notes that computational overhead is no longer
+        a problem for modern hardware."
+      tip: "Is CV presented as difficult or recommended?"
+    - proposition: "Cross-validation is only useful if the dataset is too small to
+        perform a single train/test split."
+      label: "cv_small_data"
+      expected: false
+      reponse: "CV is a general strategy for model selection regardless of dataset
+        size (though very helpful for small data)."
+      tip: "Is CV described as a 'last resort' for small data or a 'choice' method?"
+
+  type: qcm
+  label: q:quiz12
+  category: LabModelSelection
+  tags:
+    - fondements
+quiz13:
+  question: "How does the `processSubsetCV` function in the lab calculate the model
+    score?"
+  propositions:
+    - proposition: "It uses a `KFold` cross-validator to split the data into multiple
+        segments."
+      label: "kfold_split"
+      expected: true
+      reponse: "The function iterates through train-test segmentations defined by
+        KFold."
+      tip: "Look at the loop `for train, test in kf.split(X,y)`."
+    - proposition: "The final score is the average of the performance metrics calculated
+        on each test fold."
+      label: "score_averaging"
+      expected: true
+      reponse: "The code returns `score/cv`, which is the mean performance across
+        all folds."
+      tip: "Check the return statement of the function."
+    - proposition: "It trains the model on the full dataset and tests it on the training
+        data to save time."
+      label: "cv_logic_err"
+      expected: false
+      reponse: "CV specifically trains on a 'train' subset and evaluates on a disjoint
+        'test' subset in each fold."
+      tip: "Does CV evaluate on data it has already seen during training?"
+    - proposition: "The scoring metric is fixed to $R^2$ and cannot be changed by
+        the user."
+      label: "scoring_metric"
+      expected: false
+      reponse: "The function has a `scoring` argument that allows different metrics
+        like MSE or $R^2$."
+      tip: "Check the function parameters for `scoring`."
+
+  type: qcm
+  label: q:quiz13
+  category: LabModelSelection
+  tags:
+    - valeursNumériques
+    - pratiqueLogiciel
+quiz14:
+  question: "Which of the following are features of the `SequentialFeatureSelector`
+    class in scikit-learn?"
+  propositions:
+    - proposition: "It allows for both 'forward' and 'backward' selection directions."
+      label: "sfs_directions"
+      expected: true
+      reponse: "The `direction` parameter can be set to either 'forward' or 'backward'."
+      tip: "Review the implementation in section 2.6."
+    - proposition: "It uses cross-validation internally to evaluate subsets of features."
+      label: "sfs_internal_cv"
+      expected: true
+      reponse: "The `cv` parameter in the class constructor defines the cross-validation
+        strategy."
+      tip: "What does the 'cv' argument do in the SFS fit?"
+    - proposition: "It automatically returns the performance score of the best model
+        found."
+      label: "sfs_no_score"
+      expected: false
+      reponse: "The lab notes that 'The function does not return the score obtained...
+        Calculate the score by cross validation...'"
+      tip: "Look at the section 'The function does not return the score...'."
+    - proposition: "It requires a base estimator, such as `LinearRegression()`, to
+        function."
+      label: "sfs_base_est"
+      expected: true
+      reponse: "SFS is a wrapper that needs an underlying model to evaluate the feature
+        sets."
+      tip: "Check the first argument passed to the SFS constructor in the code."
+
+  type: qcm
+  label: q:quiz14
+  category: LabModelSelection
+  tags:
+    - valeursNumériques
+quiz15:
+  question: "Why is `scoring='neg_mean_squared_error'` used with scikit-learn's `SequentialFeatureSelector`?"
+  propositions:
+    - proposition: "Because scikit-learn follows a convention where higher scores
+        are always better (maximization)."
+      label: "sklearn_maximize"
+      expected: true
+      reponse: "To minimize MSE, scikit-learn maximizes the negative MSE."
+      tip: "Look at the comment 'negMSE (to maximize)' in the lab instructions."
+    - proposition: "It allows the selector to treat error minimization as a score
+        maximization problem."
+      label: "neg_mse_logic"
+      expected: true
+      reponse: "Multiplying error by -1 allows 'higher' values to represent better
+        models (smaller error)."
+      tip: "What is the relationship between MSE and negative MSE?"
+    - proposition: "It is the only metric compatible with categorical variables."
+      label: "cat_compat"
+      expected: false
+      reponse: "Scoring is independent of variable types; many metrics are available."
+      tip: "Does the prefix 'neg' have anything to do with variable types?"
+    - proposition: "It automatically calculates the absolute value of the residuals."
+      label: "resid_abs"
+      expected: false
+      reponse: "negMSE is simply $-1 \\times \\text{MSE}$. It does not change the
+        calculation of residuals."
+      tip: "Is 'neg' an operation on the residuals or the final score?"
+
+  type: qcm
+  label: q:quiz15
+  category: LabModelSelection
+  tags:
+    - pratiqueLogiciel
+quiz16:
+  question: "In the MSE plot for `SequentialFeatureSelector`, what does the shaded
+    region represent?"
+  propositions:
+    - proposition: "The standard error (or standard deviation) of the CV scores across
+        the folds."
+      label: "shaded_std"
+      expected: true
+      reponse: "The shaded area is defined by `scores + sigma` and `scores - sigma`
+        to show variability."
+      tip: "Look at the code using `plt.fill_between` and the `sigma` variable."
+    - proposition: "The uncertainty of the error estimate for each model size."
+      label: "shaded_uncertainty"
+      expected: true
+      reponse: "Calculating $\\sigma$ helps visualize how much the error varies depending
+        on the data split."
+      tip: "Read the section about calculating `sigma = s / sqrt(K)`."
+    - proposition: "The difference between the training error and the validation error."
+      label: "train_val_diff"
+      expected: false
+      reponse: "The shaded region specifically describes the variance within the cross-validation
+        folds, not the training error."
+      tip: "Is training error plotted on this specific graph?"
+    - proposition: "The range of possible values for the regression coefficients."
+      label: "coef_range"
+      expected: false
+      reponse: "The graph measures MSE (performance), not the coefficient values."
+      tip: "Check the Y-axis label of Figure 53."
+
+  type: qcm
+  label: q:quiz16
+  category: LabModelSelection
+  tags:
+    - valeursNumériques
+    - pratiqueLogiciel
+quiz17:
+  question: "What is the fundamental idea of regularization methods (Ridge and Lasso)?"
+  propositions:
+    - proposition: "They keep all predictors in the model but constrain their coefficients
+        to reduce variance."
+      label: "reg_core_idea"
+      expected: true
+      reponse: "Regularization controls model flexibility by penalizing the size of
+        the coefficients."
+      tip: "Read the intro to section 3 and section 'Regularization'."
+    - proposition: "They minimize a criterion that balances 'data attachment' (fitting)
+        and a 'regularization term' (penalty)."
+      label: "reg_balance"
+      expected: true
+      reponse: "Formula (10) shows the cost function as $RSS + \\lambda \\|\\beta\\\
+        |$."
+      tip: "Analyze the components of formula (10)."
+    - proposition: "They are primarily used to increase the bias of a model in order
+        to reduce its variance."
+      label: "bias_var_reg"
+      expected: true
+      reponse: "By shrinking coefficients, regularization introduces bias but significantly
+        lowers variance, often leading to lower total MSE."
+      tip: "Check the 'Bias-variance trade-off' section."
+    - proposition: "Regularization is a manual feature selection technique where the
+        user chooses which pixels to ignore."
+      label: "manual_pixel"
+      expected: false
+      reponse: "Regularization is an automated mathematical technique, unlike manual
+        selection."
+      tip: "Think about the pixel classification example in section 'Intuitions for
+        regularization' (in the lecture)"
+
+  type: qcm
+  label: q:quiz17
+  category: LabRegularization
+  tags:
+    - fondements
+quiz18:
+  question: "Regarding Ridge Regression in the lab, why is an alpha grid created using
+    `10**np.linspace(5,-4,100)`?"
+  propositions:
+    - proposition: "To test a wide range of penalty strengths from very high ($10^5$)
+        to very low ($10^{-4}$)."
+      label: "alpha_grid_range"
+      expected: true
+      reponse: "The grid covers many orders of magnitude to find the optimal shrinkage
+        level."
+      tip: "Check the exponents in the linspace function."
+    - proposition: "The effect of the penalty $\\lambda$ (alpha) is best analyzed
+        on a log scale."
+      label: "alpha_log_scale"
+      expected: true
+      reponse: "The lab uses `ax.set_xscale('log')` to visualize how coefficients
+        shrink as alpha grows exponentially."
+      tip: "Look at the plotting code for the Ridge coefficients."
+    - proposition: "Ridge regression requires alpha to be a power of 10 to ensure
+        matrix inversion."
+      label: "power_10_req"
+      expected: false
+      reponse: "Alpha can be any positive real number; the powers of 10 are just for
+        convenience in searching."
+      tip: "Is there a mathematical rule requiring powers of 10 for alpha?"
+    - proposition: "A very small alpha (e.g., $10^{-4}$) creates a 'huge penalty'
+        that reduces the model to just the intercept."
+      label: "small_alpha_penalty"
+      expected: false
+      reponse: "A very *large* alpha creates a huge penalty. Small alpha approaches
+        standard OLS."
+      tip: "What happens to the $\\lambda \\|\\beta\\|^2$ term when $\\lambda$ is
+        nearly zero?"
+
+  type: qcm
+  label: q:quiz18
+  tags:
+    - valeursNumériques
+  category: LabRegularization
+quiz19:
+  question: "What does the 'Coefficient Evolution' plot for Ridge demonstrate?"
+  propositions:
+    - proposition: "As alpha increases, the magnitude of all coefficients tends toward
+        zero."
+      label: "ridge_shrinkage"
+      expected: true
+      reponse: "A higher penalty forces the Euclidean norm of the coefficients to
+        decrease."
+      tip: "Look at the right side of Figure."
+    - proposition: "The shrinkage of coefficients is continuous and smooth."
+      label: "ridge_smooth"
+      expected: true
+      reponse: "Unlike Lasso, Ridge coefficients shrink progressively without hitting
+        exactly zero abruptly."
+      tip: "Compare the line behavior in Ridge vs Lasso plots."
+    - proposition: "At high alpha values, some coefficients become exactly zero, effectively
+        removing the variables."
+      label: "ridge_zero_false"
+      expected: false
+      reponse: "The text explicitly states: 'none of the coefficients is exactly zero'
+        for Ridge."
+      tip: "Does Ridge perform variable selection?"
+    - proposition: "Coefficients increase in value to compensate for the regularization
+        penalty."
+      label: "ridge_coef_inc"
+      expected: false
+      reponse: "The penalty forces coefficients to decrease, not increase."
+      tip: "What is the goal of a penalty term on coefficient size?"
+
+  type: qcm
+  label: q:quiz19
+  category: LabRegularization
+  tags:
+    - valeursNumériques
+quiz20:
+  question: "Based on the Ridge study with different $\\alpha$ values,  ($\\alpha=4$
+    \a$\\alpha=10^{10}$, \a\n$\\alpha=0$), what are the findings?"
+  propositions:
+    - proposition: "A model with a moderate alpha (e.g., 4) can result in a lower
+        $\\text{MSE}$ than a non-regularized model ($\\alpha=0$)."
+      label: "ridge_perf_gain"
+      expected: true
+      reponse: "The lab demonstrates that proper regularization improves generalization
+        on the test set."
+      tip: "Compare the MSE of ridge2 (alpha=4) and ridge2 (alpha=0)."
+    - proposition: "A 'huge' alpha ($10^{10}$) reduces the model to a constant (the
+        intercept)."
+      label: "ridge_intercept_only"
+      expected: true
+      reponse: "An enormous penalty forces all slopes to nearly zero, leaving only
+        the constant term."
+      tip: "Read the 'Observations and comments' for alpha = 10^10."
+    - proposition: "The non-regularized model ($\\alpha=0$) always provides the best
+        predictive power on the test set."
+      label: "ols_best_test_false"
+      expected: false
+      reponse: "Regularization often yields better test performance than OLS because
+        it reduces overfitting."
+      tip: "Why bother with Ridge if OLS were always better?"
+    - proposition: "A massive alpha reduces the $\\text{MSE}$ because it simplifies
+        the model to its most basic form."
+      label: "huge_alpha_mse"
+      expected: false
+      reponse: "A massive alpha leads to *higher* MSE because it over-simplifies (underfits)
+        the model."
+      tip: "Does the constant model perform well compared to alpha=4?"
+
+  type: qcm
+  label: q:quiz20
+  category: LabRegularization
+  tags:
+    - valeursNumériques
+quiz21:
+  question: "How is the bias-variance trade-off represented in Ridge Regression ?"
+  propositions:
+    - proposition: "Increasing $\\lambda$ increases the model's bias but decreases
+        its variance."
+      label: "tradeoff_bias_var"
+      expected: true
+      reponse: "Shrinking coefficients restricts the model (more bias) but makes it
+        more stable (less variance)."
+      tip: "Look at the black (bias) and green (variance) curves in Figure 7 of the
+        lecture notes."
+    - proposition: "There is an optimal value of $\\lambda$ where the total $\\text{MSE}$
+        is minimized."
+      label: "optimal_lambda"
+      expected: true
+      reponse: "The purple MSE curve shows a clear minimum point at an intermediate
+        lambda."
+      tip: "Find the purple 'X' on the graph Figure 7 of the lecture notes."
+    - proposition: "The irreducible error $\\sigma^2$ increases as $\\lambda$ increases."
+      label: "irreducible_err_lambda"
+      expected: false
+      reponse: "Irreducible error is a constant noise level independent of the model
+        parameters."
+      tip: "Look at the dashed line in Figure 7 of the lecture notes."
+    - proposition: "Variance is minimized when $\\lambda=0$."
+      label: "variance_at_zero"
+      expected: false
+      reponse: "Variance is *maximized* at $\\lambda=0$ (OLS) because the model is
+        most flexible."
+      tip: "Check the green curve at the far left of the plot."
+
+  type: qcm
+  label: q:quiz21
+  category: LabRegularization
+  tags:
+    - fondements
+quiz22:
+  question: "What warning is given regarding choosing the best alpha based on test
+    set performance?"
+  propositions:
+    - proposition: "If the 'test' set is used to tune alpha, the evaluation of the
+        generalization error will be too optimistic."
+      label: "optimistic_error"
+      expected: true
+      reponse: "Tuning parameters on a test set makes that set part of the training/selection
+        process, meaning it's no longer 'unseen' data."
+      tip: "Read the 'Note' in section 3.1 about alpha selection."
+    - proposition: "One should ideally use three sets: train (learning), validation
+        (tuning), and test (final evaluation)."
+      label: "three_set_req"
+      expected: true
+      reponse: "The text recommends a separate validation set for hyperparameter adjustment
+        to keep the test set truly 'new'."
+      tip: "Look for the recommendation at the end of the alpha-tuning section."
+    - proposition: "Cross-validation should be performed on the combined train and
+        test sets to maximize data usage."
+      label: "cv_combine_err"
+      expected: false
+      reponse: "CV should be done on the 'train assembly' to keep the 'test unused'."
+      tip: "What is the goal of keeping a test set?"
+    - proposition: "The error estimated via validation is always higher than the error
+        on real new data."
+      label: "val_error_higher"
+      expected: false
+      reponse: "Validation estimates are usually lower (more optimistic) than the
+        error on real new data."
+      tip: "Does 'optimistic' mean the error looks larger or smaller than it really
+        is?"
+
+  type: qcm
+  label: q:quiz22
+  category: LabRegularization
+  tags:
+    - fondements
+quiz23:
+  question: "What are the advantages of the `RidgeCV()` class used in the lab?"
+  propositions:
+    - proposition: "It automatically identifies the best alpha using internal cross-validation."
+      label: "ridgecv_auto"
+      expected: true
+      reponse: "RidgeCV is designed to select the optimal hyperparameter by testing
+        a grid of values."
+      tip: "See section 3.1, near the RidgeCV() documentation link."
+    - proposition: "The alpha it selects is guaranteed to be close to the optimum
+        for new data."
+      label: "ridgecv_guarantee"
+      expected: true
+      reponse: "The document concludes that CV ensures the selected alpha will be
+        close to the true optimum regardless of new data."
+      tip: "Read the final conclusion of the Ridge study."
+    - proposition: "It performs variable selection by setting the least important
+        coefficients to zero."
+      label: "ridgecv_selection_false"
+      expected: false
+      reponse: "Even with CV, Ridge does not set coefficients to zero. It still keeps
+        all variables."
+      tip: "Does the optimization method (CV) change the fundamental behavior of the
+        Ridge penalty?"
+    - proposition: "It is the only way to calculate the MSE for a Ridge model."
+      label: "ridgecv_only_mse"
+      expected: false
+      reponse: "MSE can be calculated manually or via `cross_val_score`; `RidgeCV`
+        is just a convenient integrated tool."
+      tip: "Did we calculate MSE before introducing RidgeCV?"
+
+  type: qcm
+  label: q:quiz23
+  category: LabRegularization
+  tags:
+    - pratiqueLogiciel
+quiz24:
+  question: "What is the primary difference between Lasso and Ridge regression?"
+  propositions:
+    - proposition: "Lasso uses an $L_1$ penalty, while Ridge uses an $L_2$ penalty."
+      label: "penalty_type"
+      expected: true
+      reponse: "Lasso penalizes the sum of absolute values; Ridge penalizes the sum
+        of squares."
+      tip: "Check formulas (12) and (19)."
+    - proposition: "Lasso can force some coefficients to be exactly zero, effectively
+        performing variable selection."
+      label: "lasso_selection"
+      expected: true
+      reponse: "The L1 penalty produces sparse (parsimonious) models by canceling
+        out irrelevant predictors."
+      tip: "Look for the term 'sparse' or 'parsimonious' in the Lasso section."
+    - proposition: "Ridge is better suited for models where only a few variables are
+        actually important."
+      label: "ridge_sparse_false"
+      expected: false
+      reponse: "Lasso is better for sparse models; Ridge is often better when many
+        variables have small effects."
+      tip: "Which method is also a 'Selection Operator'?"
+    - proposition: "Lasso is always faster to calculate because it uses fewer variables."
+      label: "lasso_speed_err"
+      expected: false
+      reponse: "Lasso can be slower as it may require more iterations to converge
+        (max_iter=50000)."
+      tip: "Read the convergence warning at the start of the Lasso study."
+
+  type: qcm
+  label: q:quiz24
+  tags:
+    - fondements
+  category: LabRegularization
+quiz25:
+  question: "How does the geometry of the $L_1$ constraint (Lasso) lead to variable
+    selection?"
+  propositions:
+    - proposition: "The $L_1$ constraint domain is a diamond shape with sharp corners
+        on the axes."
+      label: "l1_diamond"
+      expected: true
+      reponse: "The 'diamond' shape has vertices on the axes, making them likely points
+        of tangency."
+      tip: "Examine Figure 9 in the course notes."
+    - proposition: "The point of tangency between the least squares contours and the
+        $L_1$ diamond often occurs on an axis."
+      label: "tangency_on_axis"
+      expected: true
+      reponse: "When the tangency occurs on an axis, the coordinate for the other
+        variable is zero."
+      tip: "Check the 'Big Picture' section in the course notes."
+    - proposition: "The $L_2$ constraint (Ridge) is a circle, which makes tangency
+        on an axis highly unlikely."
+      label: "l2_circle"
+      expected: true
+      reponse: "The circular domain of Ridge doesn't favor the axes like the pointed
+        L1 diamond."
+      tip: "Compare the two shapes in Figure 9  in the course notes."
+    - proposition: "The $L_1$ diamond is much larger than the $L_2$ circle, allowing
+        for more variables."
+      label: "domain_size"
+      expected: false
+      reponse: "Selection depends on the *shape* of the constraint, not its relative
+        size."
+      tip: "Does size or shape cause the 'zeroing' of coefficients?"
+
+  type: qcm
+  label: q:quiz25
+  category: LabRegularization
+  tags:
+    - fondements
+quiz26:
+  question: "Based on the Lasso CV study in the lab, which observations are correct?"
+  propositions:
+    - proposition: "Lasso achieves a lower mean squared error than the unregularized
+        (OLS) solution."
+      label: "lasso_mse_gain"
+      expected: true
+      reponse: "The text concludes that Lasso improves performance by stabilizing
+        the solution."
+      tip: "Look at the summary after the Lasso coefficients."
+    - proposition: "The optimal alpha value found for Lasso (e.g., 28.48) differs
+        from the one found for Ridge."
+      label: "optimum_alpha_diff"
+      expected: true
+      reponse: "Ridge and Lasso use different norms and thus have different optimal
+        regularization parameters."
+      tip: "Compare the 'Optimum alpha' values in sections 3.1 and 3.2."
+    - proposition: "The Lasso model is always identical to the Best Subset Selection
+        model of the same size."
+      label: "lasso_vs_bss_ident"
+      expected: false
+      reponse: "The lab notes they are 'very close' but highlights specific differences
+        (e.g., AtBat is not selected by Lasso)."
+      tip: "Read the comparison between Lasso and Best Subset Selection variables."
+    - proposition: "The Lasso model selected for the Hitters dataset includes 19 predictors."
+      label: "lasso_p19_false"
+      expected: false
+      reponse: "The Lasso cancels several coefficients (setting them to zero), so
+        it uses fewer than the full 19 predictors."
+      tip: "Look at the final coefficient series; are any values exactly 0.000?"
+
+  type: qcm
+  label: q:quiz26
+  tags:
+    - pratiqueLogiciel
+  category: LabRegularization
+quiz27:
+  question: "What is meant by 'Parsimonious' or 'Sparse' models in the context of
+    the Lasso?"
+  propositions:
+    - proposition: "Models where many coefficients are exactly zero, leaving only
+        a few active predictors."
+      label: "sparsity_def"
+      expected: true
+      reponse: "Sparsity refers to the 'lacunary' nature of the model where most variables
+        are rejected."
+      tip: "Look for the definition in the Lasso principle section."
+    - proposition: "Models that are more interpretable because they rely on a smaller
+        set of variables."
+      label: "interpretability"
+      expected: true
+      reponse: "Fewer variables make the model easier to explain and understand."
+      tip: "Recall the benefits of low-dimensional models from the introduction."
+    - proposition: "Models that have very high variance but low bias."
+      label: "sparse_bias_var"
+      expected: false
+      reponse: "Parsimonious models generally have *lower* variance because they use
+        fewer variables and are less flexible."
+      tip: "Does reducing the number of predictors increase or decrease model flexibility?"
+    - proposition: "Models that are only possible when using the Euclidean ($L_2$)
+        norm."
+      label: "sparse_l2"
+      expected: false
+      reponse: "Sparsity is a characteristic of $L_1$ (Lasso) regularization, not
+        $L_2$ (Ridge)."
+      tip: "Which norm 'forces coefficients toward a zero value' exactly?"
+
+  type: qcm
+  label: q:quiz27
+  tags:
+    - fondements
+  category: LabRegularization
+quiz28:
+  question: "What is the final interpretation of the Lasso coefficients for the $\\
+    text{Hitters}$ dataset in the lab?"
+  propositions:
+    - proposition: "Predictors like $\\text{Hits}$, $\\text{Walks}$, and $\\text{CRBI}$
+        are among the most important kept by the model."
+      label: "top_predictors"
+      expected: true
+      reponse: "These variables have high non-zero coefficients in the final Lasso
+        series."
+      tip: "Check the values in the last coefficient output of the lab."
+    - proposition: "Variables like $\\text{AtBat}$, $\\text{HmRun}$, and $\\text{Years}$
+        were canceled (set to zero)."
+      label: "canceled_vars"
+      expected: true
+      reponse: "The output shows `0.000000` for these specific predictors."
+      tip: "Look for variables with exactly zero coefficients in the Lasso summary."
+    - proposition: "The Lasso found that $\\text{NewLeagueN}$ is the single most important
+        predictor of Salary."
+      label: "newleague_importance"
+      expected: false
+      reponse: "The coefficient for `NewLeague_N` was set to zero by the Lasso."
+      tip: "Check the value for NewLeague_N in the coefficient series."
+    - proposition: "The Lasso coefficients are exactly double the size of the OLS
+        coefficients."
+      label: "lasso_vs_ols_size"
+      expected: false
+      reponse: "Regularization *shrinks* coefficients toward zero; they are smaller
+        than OLS coefficients."
+      tip: "Does 'shrinkage' imply making something larger or smaller?"
+  type: qcm
+  label: q:quiz28
+  category: LabRegularization
+  tags:
+    - valeursNumériques
+title: Questions on Model Selection And Regularization
