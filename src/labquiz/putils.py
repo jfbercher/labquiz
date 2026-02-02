@@ -716,8 +716,8 @@ def correctQuizzes(URL, SECRET, QUIZFILE, title=None, seuil=0, weights=None, bar
             lignes : étudiants (`students`), colonnes : chacun des quizzes + une colonne Note 
             
     """
-    from labquizdev import QuizLab
-    from labquizdev.putils import readData, getAllStudentsAnsvers, getExamQuestions, correctAll
+    from labquiz import QuizLab
+    from labquiz.putils import readData, getAllStudentsAnsvers, getExamQuestions, correctAll
 
     ## 1 - Lecture des données
     data, data_filt = readData(URL, SECRET)
@@ -782,8 +782,8 @@ def correctQuizzesDf(data, data_filt, quiz, title=None, seuil=0, weights=None, b
             lignes : étudiants (`students`), colonnes : chacun des quizzes + une colonne Note 
             
     """
-    from labquizdev import QuizLab
-    from labquizdev.putils import readData, getAllStudentsAnsvers, getExamQuestions, correctAll
+    from labquiz import QuizLab
+    from labquiz.putils import readData, getAllStudentsAnsvers, getExamQuestions, correctAll
 
     ## 2 - identification des participants et extraction des réponses    
     if title is None:
