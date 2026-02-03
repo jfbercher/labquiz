@@ -63,8 +63,7 @@ def encode_file(input_file, output_file):
 def crypt_file(input_file, output_file, pwd='', verbose=False):
     
     ctx = qz + [output_file, pwd]
-    #['prep', 'prep', 'prep', '_get_protected_data', 'show', 'QuizLab', output_file, pwd]
-    
+     
     with open(input_file, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
         
@@ -190,8 +189,6 @@ def crypt_data(data, output_file, pwd=''):
     
     data = copy.deepcopy(data)
     ctx = qz + [output_file, pwd]
-    print("output_file", output_file)
-    print("ctx", ctx)
     if "title" in data.keys(): 
         key = b'zzFJ0WBRXuFC1qJOFGxeqt3NUNcFR9vdZqFkCry-DYw='
         frt = Fernet(key)
@@ -201,7 +198,6 @@ def crypt_data(data, output_file, pwd=''):
         if quiz_id == "title": continue
         nctx = ctx + [quiz_id]
         fingerprint = "-".join(nctx).encode()
-        print("fingerprint-->", fingerprint)
         hash_digest = hashlib.sha256(fingerprint).digest()
         key = base64.urlsafe_b64encode(hash_digest)
         frt = Fernet(key)

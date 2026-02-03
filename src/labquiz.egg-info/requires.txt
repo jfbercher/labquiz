@@ -1,0 +1,7 @@
+ipywidgets>=7.6.5
+pyyaml
+cryptography
+ipython
+numpy
+pandas
+requests
