@@ -52,27 +52,31 @@ def get_macaddress():
     return mac_str
 
 def getUser():
-
+    import os, uuid
     WE_ARE_IN_JUPYTERLITE = "pyodide" in sys.modules or "piplite" in sys.modules
     if WE_ARE_IN_JUPYTERLITE:
         try:
-            from js import localStorage, crypto
-        except ImportError:
-            # Actually, it seems we are not in JupyterLite ; or ImportError. 
-            return None
-        key = "labquiz_user_id"
-        user_id = localStorage.getItem(key)
-        if user_id is None:
-            user_id = crypto.randomUUID()      # Generate a random user_id
-            localStorage.setItem(key, user_id) # Store user_id in localStorage
-        return str(user_id)
+            id_file = ".labquiz_user_id"
+            if os.path.exists(id_file):
+                # On lit l'ID existant
+                with open(id_file, "r") as f:
+                    user_id = f.read().strip()
+            else:
+                # On génère un nouvel ID unique
+                user_id = str(uuid.uuid4())
+                with open(id_file, "w") as f:
+                    f.write(user_id)
+                # Note : Dans JupyterLite, le système de fichiers est 
+                # automatiquement synchronisé avec le stockage du navigateur.
+        except Exception as e:
+            user_id = "erreurUser"            
+        return user_id
     else:   # We are not in JupyterLite
         import os
         try:
             user = os.getlogin()
         except:
             user = "erreurUser"
-
     return user
     
 def compute_machine_id():
