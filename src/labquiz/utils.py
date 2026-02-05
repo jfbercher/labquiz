@@ -52,11 +52,27 @@ def get_macaddress():
     return mac_str
 
 def getUser():
-    import os
-    try:
-        user = os.getlogin()
-    except:
-        user = "erreurUser"
+
+    WE_ARE_IN_JUPYTERLITE = "pyodide" in sys.modules or "piplite" in sys.modules
+    if WE_ARE_IN_JUPYTERLITE:
+        try:
+            from js import localStorage, crypto
+        except ImportError:
+            # Actually, it seems we are not in JupyterLite ; or ImportError. 
+            return None
+        key = "labquiz_user_id"
+        user_id = localStorage.getItem(key)
+        if user_id is None:
+            user_id = crypto.randomUUID()      # Generate a random user_id
+            localStorage.setItem(key, user_id) # Store user_id in localStorage
+        return str(user_id)
+    else:   # We are not in JupyterLite
+        import os
+        try:
+            user = os.getlogin()
+        except:
+            user = "erreurUser"
+
     return user
     
 def compute_machine_id():
