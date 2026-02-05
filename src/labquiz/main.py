@@ -935,7 +935,10 @@ class QuizLab:
             print("⚠️ Attention aux paramètres passés qui ne sont pas json-sérialisable")
             print("Simplifier ou convertir", e)
         except Exception as e:
-            print("⚠️ Erreur d’envoi :", e)
+            if ('NetworkError' in str(e)) and not self.exam_mode: 
+                pass # Silent NetworkError 
+            else:
+                print("⚠️ Submission error:", e)
             
   
 
