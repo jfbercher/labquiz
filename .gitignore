@@ -5,4 +5,5 @@ Thumbs.db
 *.log
 *.tmp
 *.lock   
+dist
 labquiz.egg-info
