@@ -8,7 +8,7 @@ where = ["src"]
 
 [project]
 name = "labquiz"
-version = "0.7.9"
+version = "0.7.9.1"
 description = "Quizzes intégrés pour Jupyter"
 license = "GPL-3.0-or-later"
 authors = [{ name="J.-F. Bercher", email="jf.bercher@esiee.fr" }]
@@ -21,4 +21,4 @@ dependencies = [
     "pandas",
     "requests",
 ] 
-keywords = ["quizzes", "jupyter", "hash:f456d32e185cd87d5b6d1e0c1ba4c737bbfe06f42f091b4e0aac4ea04f940794"]
+keywords = ["quizzes", "jupyter", "hash:825b19ef2c49a9d2483e7bc5a725947f92186534d85efe0180b6dcf4a73d2cdc"]
