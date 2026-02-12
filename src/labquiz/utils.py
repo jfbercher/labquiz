@@ -48,7 +48,7 @@ def get_macaddress():
     import uuid
     mac = uuid.getnode()
     mac_str = ':'.join(f'{(mac >> ele) & 0xff:02x}' for ele in range(40, -1, -8))
-    if (mac >> 40) % 2: mac_str = "00:00:00:00:00:00" #"Adresse MAC probablement générée (randomisée)"
+    if (mac >> 40) % 2: mac_str = "00:00:00:00:00:00" #“Probably generated (randomized) MAC address”
     return mac_str
 
 def getUser():
@@ -58,15 +58,17 @@ def getUser():
         try:
             id_file = ".labquiz_user_id"
             if os.path.exists(id_file):
-                # On lit l'ID existant
+                # The existing ID is read
                 with open(id_file, "r") as f:
                     user_id = f.read().strip()
             else:
-                # On génère un nouvel ID unique
+                # A new unique ID is generated
                 user_id = str(uuid.uuid4())
                 with open(id_file, "w") as f:
                     f.write(user_id)
-                # Note : Dans JupyterLite, le système de fichiers est 
+                # Note: In JupyterLite, the file system is 
+                # # automatically synced with browser storage.                
+                # # Note : Dans JupyterLite, le système de fichiers est 
                 # automatiquement synchronisé avec le stockage du navigateur.
         except Exception as e:
             user_id = "erreurUser"            
@@ -108,21 +110,21 @@ class StudentForm:
         self.output = widgets.Output()
 
         self.student_lastname = widgets.Text(
-        placeholder="NOM",
-        description="NOM:",
+        placeholder="FAMILY NAME",
+        description="FAMILY NAME:",
         style={'description_width': '70px'},
         layout=widgets.Layout(width="250px"),
         continuous_update=True
     )   
         self.student_firstname = widgets.Text(
-        placeholder="Prénom",
-        description="Prénom:",
+        placeholder="First name",
+        description="First name:",
         style={'description_width': '70px'},
         layout=widgets.Layout(width="250px"),
         continuous_update=True
     )
         self.save_name_button = widgets.Button(
-        description="Enregistrer",
+        description="Save",
         button_style="info",
         icon="check"
     )
@@ -160,12 +162,12 @@ class StudentForm:
         
         with self.output:
             self.output.clear_output()
-            display(Markdown(f"✔️ **Nom enregistré :** `{self.name}`"))
+            display(Markdown(f"✔️ **Name recorded** `{self.name}`"))
 
     
     def display(self):
         form = widgets.VBox([
-            widgets.HTML("<h2 style='margin-top: 0; margin-bottom: 0; line-height: 1.2;'>Entrez ici vos Prénom NOM </h2>"),
+            widgets.HTML("<h2 style='margin-top: 0; margin-bottom: 0; line-height: 1.2;'>Enter your first name and LAST NAME here </h2>"),
             #widgets.HTML("<b> &nbsp;&nbsp;&nbsp; ⚠️ (appuyez sur Entrée pour valider) </b>"),
             widgets.HBox([self.student_firstname, self.student_lastname]),
             self.save_name_button,
@@ -199,11 +201,11 @@ def sanitize_dict(d):
         elif isinstance(v, (pd.DataFrame, pd.Series)):
             out[k] = v.to_dict() if hasattr(v, "to_dict") else v.tolist()
 
-        # Autres objets non sérialisables → string
+        # Other non serializable objects → string. // Autres objets non sérialisables → string
         elif hasattr(v, "__dict__"):
             out[k] = str(v)
 
-        # Types JSON natifs
+        #  JSON native types
         else:
             out[k] = v
 
@@ -214,18 +216,18 @@ def sanitize_dict(d):
 ###
 def get_source_integrity_hash(cls):
     """
-    Calcule un hash basé sur le texte source des méthodes de la classe.
+    Computes a hash based on the source text of the class's methods.
     """
     try:
-        # 1. Code source de la classe entière
+        # 1. Entire class source code
         source = inspect.getsource(cls)
         
-        # 2. Nettoyage pour plus de stabilité : suppression des commentaires, lignes vides
+        # 2. Cleanup for more stability: removing comments, empty lines
 
         source = re.sub(r'#.*', '', source) 
         source = "\n".join([line.strip() for line in source.splitlines() if line.strip()])
         
-        # 3. Hashage
+        # 3. Hashing
         return hashlib.sha256(source.encode('utf-8')).hexdigest()
     
     except (OSError, TypeError):
@@ -235,8 +237,8 @@ def get_source_integrity_hash(cls):
 
 def get_ultra_integrity_hash(cls):
     """
-    Calcule un hash basé sur le bytecode ET les constantes (valeurs fixes)
-    des méthodes définies localement dans la classe.
+    Calculates a hash based on bytecode AND constants (fixed values) 
+    methods defined locally in the class.
     """
     method_hashes = []
 
@@ -250,14 +252,14 @@ def get_ultra_integrity_hash(cls):
         if func and hasattr(func, "__code__"):
             code_obj = func.__code__
             
-            # 1. Le bytecode (la logique)
+            # 1. bytecode
             bytecode = code_obj.co_code
             
-            # 2. Les constantes (les valeurs hardcodées : strings, int, etc.)
-            # On convertit en string pour pouvoir le hasher facilement
+            # 2. Constants (hardcoded values: strings, int, etc.) 
+            # # We convert to string to be able to hash it easily
             consts = str(code_obj.co_consts).encode('utf-8')
             
-            # On combine le nom, le bytecode et les constantes
+            # We combine the name, bytecode and constants
             signature = f"{name}:".encode('utf-8') + bytecode + consts
             method_hashes.append(hashlib.sha256(signature).hexdigest())
 
@@ -270,19 +272,18 @@ def get_ultra_integrity_hash(cls):
 
 
 
-####### Encore une nouvelle version des Hash ############
-# indépendant de la version de python
-# décomposé en petits modules
-# - code source initial
-# - objet vivant
-# - watchlist
-# dépendances utilisées
+####### Yet another new version of Hash ############
 
-## Avec parcours des sources du module
-## bytecodes supprimés
+# Hash independent of python version
+# broken down into small modules
+# - initial source code
+# - living object
+# - watchl#ist
+# dependencies used
+# With module source browsing
+# bytecodes deleted
 
-
-# ---------- Fonctions de base ----------
+# ---------- Basic functions ----------
 
 def hash_fonction(func: callable) -> bytes:
     """
@@ -290,7 +291,7 @@ def hash_fonction(func: callable) -> bytes:
     """
     h = hashlib.sha256()
 
-    # Source si disponible
+    # Source if available
     try:
         src = inspect.getsource(func)
         h.update(src.encode("utf-8"))
@@ -307,10 +308,10 @@ def hash_fonction(func: callable) -> bytes:
 def hash_fonction_new(func: callable) -> bytes: #WAS #hash_callable_live(func) -> bytes:
     h = hashlib.sha256()
 
-    # Cas méthode liée → récupérer la fonction réelle
+    # Linked method case → retrieve the real function
     func = getattr(func, "__func__", func)
 
-    # Fonction Python pure
+    # Pure Python function
     if hasattr(func, "__code__"):
         code = func.__code__
 
@@ -324,7 +325,7 @@ def hash_fonction_new(func: callable) -> bytes: #WAS #hash_callable_live(func) -
         h.update(str(code.co_kwonlyargcount).encode())
         h.update(str(code.co_flags).encode())
 
-        # localisation runtime (IPython s’en sert)
+        # localization runtime (IPython use it)
         h.update(code.co_filename.encode())
         h.update(str(code.co_firstlineno).encode())
 
@@ -335,7 +336,7 @@ def hash_fonction_new(func: callable) -> bytes: #WAS #hash_callable_live(func) -
     return h.digest()
 
 
-# ---------- Fonctions de premier niveau ----------
+# ---------- First level functions / Fonctions de premier niveau ----------
 
 def fonctions_premier_niveau(module: ModuleType) -> Iterable[Tuple[str, callable]]:
     for name, obj in vars(module).items():
@@ -347,7 +348,7 @@ def fonctions_premier_niveau(module: ModuleType) -> Iterable[Tuple[str, callable
 
 def methodes_de_classe_old(cls) -> Iterable[Tuple[str, callable]]:
     """
-    Retourne les méthodes définies directement dans la classe (pas héritées).
+    Returns methods defined directly within the class (not inherited).
     """
     for name, obj in cls.__dict__.items():
         # staticmethod / classmethod
@@ -359,7 +360,7 @@ def methodes_de_classe_old(cls) -> Iterable[Tuple[str, callable]]:
 
 def methodes_de_classe(cls):
     """
-    Retourne les méthodes définies directement dans la classe (pas héritées, pas importées).
+    Returns methods defined directly within the class (not inherited, not imported).
     """
     for name, obj in cls.__dict__.items():
 
@@ -371,7 +372,6 @@ def methodes_de_classe(cls):
         else:
             continue
 
-        # FILTRE CRUCIAL : définie lexicalement dans la classe
         if not func.__qualname__.startswith(cls.__name__ + "."):
             continue
 
@@ -380,8 +380,7 @@ def methodes_de_classe(cls):
 
 def methodes_de_classe_plus(cls):
     """
-    Retourne les méthodes définies directement dans la classe
-    (pas héritées, pas importées).
+    Return methods defined directly in the class (not inherited, not imported).
     """
     for name, obj in cls.__dict__.items():
 
@@ -393,11 +392,11 @@ def methodes_de_classe_plus(cls):
         else:
             continue
 
-        # 2. Éliminer les fonctions venant d'un autre module
+        #2. Eliminate functions coming from another module
         if func.__module__ != cls.__module__:
             continue
 
-        # 3. Éliminer les fonctions non définies lexicalement dans la classe
+        #3. Eliminate non-lexically defined functions in the class
         if not func.__qualname__.startswith(cls.__name__ + "."):
             continue
         
@@ -406,16 +405,16 @@ def methodes_de_classe_plus(cls):
 
 def hash_classe(cls) -> bytes:
     """
-    Hash d'une classe basée sur ses méthodes et son nom.
+    Hash of a class based on its methods and its name.
     """
     h = hashlib.sha256()
 
-    # Nom + bases
+    # Name + bases
     h.update(cls.__name__.encode("utf-8"))
     for base in cls.__bases__:
         h.update(base.__name__.encode("utf-8"))
 
-    # Méthodes
+    # Methods
     for name, method in sorted(methodes_de_classe(cls), key=lambda x: x[0]):
         h.update(name.encode("utf-8"))
         h.update(hash_fonction(method))
@@ -460,7 +459,7 @@ def hash_methodes_vivantes(obj) -> str:
         
     return h.hexdigest()
 
-## C'est celui qui marche !
+## This works!
 
 def methodes_vivantes_objet(obj):
     cls = obj.__class__
@@ -478,14 +477,14 @@ def methodes_vivantes_objet(obj):
         if not callable(attr):
             continue
 
-        # méthode liée → fonction réelle
+        # bound method → actual function
         func = getattr(attr, "__func__", attr)
 
-        # 1. Exclure imports externes
+        # 1. Exclude external imports
         if func.__module__ != module_name:
             continue
 
-        # 2. Exclure méthodes héritées externes
+        #2. Exclude external inherited methods
         if not func.__qualname__.startswith(cls.__name__ + "."):
             continue
 
@@ -521,10 +520,10 @@ def hash_classe_vivante(cls) -> bytes:
 
 def hash_dependances_modules(obj, modules_cibles) -> bytes:
     """
-    Hash des fonctions globales dans les modules_cibles utilisées par les méthodes de la classe.
-    
-    obj : classe dont on veut sécuriser le graphe
-    modules_cibles : liste de noms de modules à inclure (ex: ["main", "utils"])
+    Hash of global functions in target_modules used by class methods.
+
+    obj: class whose graph we want to secure
+    target_modules: list of module names to include (ex: ["main", "utils"])
     """
     
     cls = obj.__class__
@@ -532,12 +531,12 @@ def hash_dependances_modules(obj, modules_cibles) -> bytes:
     package = obj.__module__.split('.', 1)[0]
     
     h = hashlib.sha256()
-    # extraire les dépendances utilisées par les méthodes de la classe
+    # extract dependencies used by class methods
     dependances = set()
     for name, func in methodes_vivantes_objet(obj):
         dependances |= set(func.__code__.co_names)
     #print(dependances)
-    # parcourir les modules ciblés seulement
+    # browse targeted modules only
     for module in modules_cibles:
 
         for name in sorted(dependances):
@@ -556,7 +555,7 @@ def hash_dependances_modules(obj, modules_cibles) -> bytes:
                 #print("  -->  ", h.hexdigest())
             else:
                 pass
-                # si besoin, on peut aussi hasher d'autres objets, par exemple classes ou constantes
+                # if necessary, we can also hash other objects, for example classes or constants
                 #h.update(name.encode())
                 #h.update(repr(obj).encode())
      
@@ -590,11 +589,11 @@ def hash_watchlist(obj, WATCHLIST=[]):
 
 def get_big_integrity_hash(obj, modules=[], WATCHLIST=[]):
     """
-    Retourne un dict avec :
-    - "source_hash": modules_hash,      # Les sources
-    - "watchlist_hash": watchlist_hash, # les paramètres surveillés
-    - "live_object":living_object,      # les méthodes de l'objet vivant -- identifie monkey patching sur l'objet
-    - "dependances":dependances,       # les méthodes vivantes des modules utilisées par l'objet courant
+    Returns a dict with: 
+    - "source_hash": modules_hash, # Sources 
+    - "watchlist_hash": watchlist_hash, # monitored parameters 
+    - "live_object":living_object, # living object methods -- identifies monkey patching on the object 
+    - "dependencies": dependencies, # the living methods of the modules used by the current object 
     - "full_hash": full_hash
     """
     
@@ -628,11 +627,7 @@ def get_big_integrity_hash(obj, modules=[], WATCHLIST=[]):
 
 def get_full_object_hash(obj, modules=[], WATCHLIST=[]):
     """
-    Retourne un dict avec :
-    - "source_hash": modules_hash,      # Les sources
-    - "watchlist_hash": watchlist_hash, # les paramètres surveillés
-    - "live_object":living_object,      # les méthodes de l'objet vivant -- identifie monkey patching sur l'objet
-    - "dependances":dependances,       # les méthodes vivantes des modules utilisées par l'objet courant
+    Returns a full_hash, combining all hashes
     - "full_hash": full_hash
     """
     
@@ -659,7 +654,7 @@ def get_full_object_hash(obj, modules=[], WATCHLIST=[]):
 
     return full_hash
 
-# exemples:
+# examples:
 # get_big_integrity_hash(quiz, modules=["main", "utils"])
 # get_full_object_hash(quiz_dev, modules=["main", "utils"], WATCHLIST=['retries'])
 
@@ -699,16 +694,16 @@ def is_encrypted(s):
         return False
 
 def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, constraints=None):
-    """
-    constraints: Liste de dicts ex: [{"indices": (0, 1), "type": "XOR", "malus": 2}]
-    - XOR (Exclusion) A et B doivent être différentes
-    - IMPLY (Implication) Si A est VRAI alors B est VRAI
-    - SAME (Cohérence) A et B sont équivalentes (même valeur)
-    - IMPLYFALSE: Si A est VRAI, alors B DOIT être FAUSSE
-    """
-    # Matrice de référence (Si rien n'est défini dans la proposition) et si
-    # une autre matrice de référence n'est pas passée en argument
-    # Format : (Réponse_Utilisateur, Attendu)
+    """ 
+    constraints: List of dicts ex: [{"indices": (0, 1), "type": "XOR", "malus": 2}] 
+    - XOR (Exclusion) A and B must be different 
+    - IMPLY (Implication) If A is TRUE then B is TRUE 
+    - SAME (Coherence) A and B are equivalent (same value) 
+    - IMPLYFALSE: If A is TRUE, then B MUST be FALSE 
+    """ 
+    # Reference matrix (If nothing is defined in the proposal) and if 
+    # another reference matrix is not passed as an argument 
+    # Format: (User_Response, Expected)
     
     if weights is None:
         default_weights = {
@@ -731,15 +726,15 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
     if not isinstance(user_answers, dict): 
         print(f"❌ Erreur : user_answers doit être un dictionnaire")
 
-    # Correction dans le cas d'une template    
-    if quiz_type in ['numeric-template', 'qcm-template']:
+    # Correction in the case of a template
+    if quiz_type in ['numeric-template', 'mcq-template']:
         context = user_answers.get('context', {})
         #print(context)
         for p in propositions:
             pexpect =  p["expected"]
-            ptype = p.get("type", bool if quiz_type == "qcm" else float)
+            ptype = p.get("type", bool if quiz_type == "mcq" else float)
             ptype = TYPE_MAP.get(ptype, ptype)
-            if "modules" in context:  #on importe les modules nécessaires au calcul de la réponse - CHAUD
+            if "modules" in context:  #we import the modules necessary to calculate the answer - HOT
                 toexec = ""
                 for k,v in context["modules"].items():
                     toexec += f"import {v} as {k}\n"
@@ -759,20 +754,20 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
         user_val = bool(answer)
         case = (user_val, expected)
         
-        if quiz_type == "qcm":
-            # 1. Calcul du total théorique
+        if quiz_type == "mcq":
+            #1. Calculation of the theoretical total
             total_possible += prop.get("bonus", default_weights[(True, True)]) if expected \
                    else prop.get("bonus", default_weights[(False, False)])
 
-            # 2. Calcul du score pour cette proposition
+            #2. Calculation of the score for this proposition
             if user_val == expected:
-                # Cas corrects (VP ou VN)
+                # Correct Case (VP ou VN)
                 val = prop.get("bonus", default_weights[case])
                 score += val
             else:
-                # Cas incorrects (FP ou FN)
+                # Incorrect Case (FP or FN)
                 val = prop.get("malus", default_weights[case])              
-                # On s'assure que le malus vient bien en déduction
+                # We make sure that the penalty is indeed deducted
                 score -= abs(val)
 
         elif quiz_type == "numeric":
@@ -785,7 +780,7 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
 
            
     # contraints
-    if quiz_type == "qcm" and constraints:
+    if quiz_type == "mcq" and constraints:
         for rule in constraints:
             idx1, idx2 = rule["indices"]
             ans1, ans2 = bool(user_answers[idx1]), bool(user_answers[idx2])
@@ -793,26 +788,26 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
             violation = False
             r_type = rule.get("type", "XOR").upper()
 
-            if r_type == "XOR": # Les deux ne peuvent pas être identiques
+            if r_type == "XOR": #The two cannot be identical
                 if not (ans1 != ans2) :
                     violation = True
                     #print(f"violation XOR entre {idx1} et {idx2}")
-            elif r_type == "IMPLY": # Si 1 est VRAI, alors 2 DOIT être VRAI (sinon contradiction)
+            elif r_type == "IMPLY": # If 1 is TRUE, then 2 MUST be TRUE (otherwise contradiction)
                 if ans1 and not ans2:
                     violation = True
                     #print(f"violation IMPLY entre {idx1} et {idx2}")
-            elif r_type == "IMPLYFALSE": # Si 1 est VRAI, alors 2 DOIT être FAUSSE (sinon contradiction)
+            elif r_type == "IMPLYFALSE": # If 1 is TRUE, then 2 MUST be FALSE (otherwise contradiction)
                 if ans1: 
                     if ans2:
                         violation = True
                     #print(f"violation IMPLY entre {idx1} et {idx2}")
-            elif r_type == "SAME": # Doivent avoir la même valeur
+            elif r_type == "SAME": # Must have the same value
                 if ans1 != ans2:
                     violation = True
-                    #print(f"violation SAME entre {idx1} et {idx2}")
+                    #print(f"violation SAME between {idx1} and {idx2}")
 
             if violation:
-                # On retire le malus de contradiction
+                # We subtract the contradiction malus
                 score -= abs(rule.get("malus", 1))
 
     return score, total_possible
@@ -820,59 +815,56 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
 
 
 def get_package_directory(package_name):
-    """
-    Retourne le répertoire contenant le package dont le nom est donné.
+    """ Returns the directory containing the package whose name is given.
 
-    Parameters
+    Settings
     ----------
-    package_name : str
-        Nom du package
+    package_name: str
+        Package name
 
     Returns
     -------
     Path
-        Dossier du package
+        Package folder
 
     Raises
     -------
     ImportError
-        Si le package n'est pas disponible.
+        If the package is not available.
 
-    # Exemple d'utilisation
+    # Example of use
     package_dir = get_package_directory("labquiz")
     print(package_dir)  
     """
     import importlib.util
     spec = importlib.util.find_spec(package_name)
     if spec is None:
-        raise ImportError(f"Le package {package_name} n'est pas disponible.")
+        raise ImportError(f"Package {package_name} is unavailable.")
     return Path(spec.origin).parent
 
 def get_package_hash(package_name):
-    """
-    Retourne le hash du package dont le nom est passé.
-
-    Parameters
+    """ Returns the hash of the package whose name is passed.
+    Settings
     ----------
-    package_name : str
-        Nom du package
+    package_name: str
+        Package name
 
     Returns
     -------
     str
-        Hash du package (ou None si le package n'a pas de hash)
+        Package hash (or None if the package has no hash)
 
     Raises
     -------
     ImportError
-        Si le package n'est pas disponible.
+        If the package is not available.
 
     Notes
     -----
-    Le hash est stocké dans le champ Keywords du fichier METADATA
-    du package. Il commence par "hash:".
+    The hash is stored in the Keywords field of the METADATA file
+    of the package. It starts with "hash:".
 
-    Exemple d'utilisation
+    Example of use
     ---------------------
     package_hash = get_package_hash("labquiz")
     print(package_hash)
@@ -881,7 +873,7 @@ def get_package_hash(package_name):
     meta = metadata(package_name)
     #print(meta)
     keywords = meta.get_all('Keywords', [])
-    # On cherche l'élément qui commence par "hash:"
+    # We are looking for the element that begins with "hash:"
     kz = keywords[0]
     for k in kz.split(','):
         if k.startswith("hash:"):
@@ -927,7 +919,7 @@ def check_installed_package_integrity():
     
     spec = importlib.util.find_spec("labquiz")
     if spec is None:
-        print("⚠️ LabQuiz n'est pas installé !")
+        print("⚠️ LabQuiz is not installed!")
         return 
 
     PACKAGE_NAME = __package__.split(".", 1)[0]
@@ -944,17 +936,13 @@ def check_installed_package_integrity():
     installed_hash, f = package_hash(labdir, exclude=EXCLUDE)
     recorded_hash = get_package_hash("labquiz")
     if installed_hash != recorded_hash:
-        print(f"""⚠️ Hash du package différent de celui attendu -- ceci est enregistré
-        Installé: {installed_hash}
-        Attendu:  {recorded_hash}""")
+        print(f"""⚠️ Package hash different than expected -- this is recorded 
+              Installed: {installed_hash} 
+              Expected: {recorded_hash}""")
         return False
     print(f"LabQuiz, {PACKAGE_NAME} version {__version__}")
     return True
 #_ = check_installed_package_integrity()
-
-
-# Vérification "externe" d'intégrité
-# ===================================
 
 def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()

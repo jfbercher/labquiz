@@ -19,16 +19,16 @@ qz = ('prep '*3).strip().split(' ')
 qz.extend(['_get_protected_data', 'show', 'QuizLab'])
 
 def shuffle_quiz_propositions(input_file, output_file):
-    # Lecture du fichier YAML
+    # Reading the YAML file
     with open(input_file, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
-    # Mélange des propositions pour chaque quiz
+    # Shuffle the order of propositions for each quiz
     for quiz_name, quiz_content in data.items():
         if "propositions" in quiz_content:
             random.shuffle(quiz_content["propositions"])
 
-    # Écriture dans un nouveau fichier
+    # Saving in a new file
     with open(output_file, "w", encoding="utf-8") as f:
         yaml.safe_dump(
             data,
@@ -128,13 +128,13 @@ def decrypt_file(input_file, output_file=None, pwd='', verbose=False):
         
         
 def quiz_propositions_for_exam(input_file, output_file):
-    # Entrée: fichier de questions initial ou mélangé
-    # Sortie : Fichier sans les solutions, les réponses ni les tips
-    # Lecture du fichier YAML
+    # Input: initial or mixed question file 
+    # # Output: File without solutions, answers or tips 
+    # # Reading the YAML file
     with open(input_file, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
-    # suppression indices pour chaque quiz
+    # removing hints for each quiz
     for quiz_name, quiz_content in data.items():
         if quiz_name == "title": continue 
         quiz_content.pop("constraints", None)
@@ -148,7 +148,7 @@ def quiz_propositions_for_exam(input_file, output_file):
             for k in keys_to_remove:
                 prop.pop(k, None)
             
-    # Écriture dans un nouveau fichier
+    # Saving in a new file
     with open(output_file, "w", encoding="utf-8") as f:
         yaml.safe_dump(
             data,
@@ -159,19 +159,20 @@ def quiz_propositions_for_exam(input_file, output_file):
 
 
 def quiz_to_dict_of_solutions(input_file):
-    """extrait les solutions du fichier initial
-    
-    Parameters
+    """
+    extracts the solutions from the initial file
+
+    Settings
     ----------
-        input_file:   str
-            fichier de questions initial ou mélangé    
+        input_file:str
+            original or mixed question file    
     Returns
     -------
-        out :         dict
-            dictionnaire {quiz1: {label1:expected, label2:expected, ...}, 
+        out: dict
+            dictionary {quiz1: {label1:expected, label2:expected, ...}, 
             quiz2:{label1:expected, label2:expected, ...} }
     """
-    # Lecture du fichier YAML
+    # Reading the YAML file
     with open(input_file, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
@@ -180,7 +181,7 @@ def quiz_to_dict_of_solutions(input_file):
             for quiz_name, quiz_content in data.items()}
     out = {l: dict(sorted(d.items(), key=lambda item: item[0]))
                        for l,d in zip(dico.keys(), dico.values())}
-    # On trie sur les clés, on ne sait jamais !
+    # We sort on the keys in case of!
     
     return out
         
@@ -248,14 +249,14 @@ def prepare_files(input_file, output_file, mode="crypt", pwd=""):
     with open(input_file, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
-    # Mélange des propositions pour chaque quiz
+    # Shuffle the order of propositions in each quiz
     for quiz_name, quiz_content in data.items():
         if "propositions" in quiz_content:
             random.shuffle(quiz_content["propositions"])
             
     # Questions only
     data_only = copy.deepcopy(data)
-    # suppression indices pour chaque quiz
+    # removing hints for every quiz
     for quiz_name, quiz_content in data_only.items():
         if quiz_name == "title": continue 
         quiz_content.pop("constraints", None)
@@ -296,24 +297,24 @@ def prepare_files(input_file, output_file, mode="crypt", pwd=""):
 #=====================================================
 
 def readData(URL, SECRET):
-    """Lecture des données
-    
+    """Reading data
+
     readData(URL, SECRET)
     return df, df_last
-    Se connecte pour récupérer le tableau de données désigné par l'adresse URL et protégé par SECRET
-    
-    Parameters
+    Connects to retrieve the data table designated by the URL address and protected by SECRET
+
+    Settings
     ----------
-        URL:    str
-                Chemin d'accès
+        URL: str
+                Path
         SECRET: str
-                Chaîne utilisée pour accéder aux données
+                String used to access data
     Returns
     -------
-        df:     pandas dataframe
-                tableau complet
+        df: pandas dataframe
+                complete table
         df_filt:pandas dataframe
-                tableau filtré juste sur les validations et corrections
+                table filtered just on validations and corrections
     """
     
     #global df, df_last
@@ -322,16 +323,16 @@ def readData(URL, SECRET):
         r = requests.get(URL, params={"secret": SECRET})
         r.raise_for_status()
         df = pd.read_csv(StringIO(r.text)) 
-        df.student = df.student.apply(lambda s: s.strip().title() if isinstance(s, str) else s)  #Normalisation colonne student
-        df["answers"] = df.answers.apply(lambda x: parse_custom_dict(x)) #Décodage de la colonne answers
-        df["parameters"] = df.parameters.apply(lambda x: parse_custom_dict(x)) #Décodage de la colonne answers
+        df.student = df.student.apply(lambda s: s.strip().title() if isinstance(s, str) else s)  #Normalization of student column
+        df["answers"] = df.answers.apply(lambda x: parse_custom_dict(x)) #Decoding answers column
+        df["parameters"] = df.parameters.apply(lambda x: parse_custom_dict(x)) #Decoding answers column
         now = datetime.now().strftime("%H:%M:%S")
 
-        footer_msg = f"<span style='color:green; font-weight:bold'>✔ Sheet chargé ... ({len(df)} lignes) - {now} </span>"
+        footer_msg = f"<span style='color:green; font-weight:bold'>✔ Sheet loaded ... ({len(df)} rows) - {now} </span>"
         display(HTML(footer_msg))
 
     except Exception as e:
-        footer_msg =  f"<span style='color:red; font-weight:bold'>✘ Erreur de chargement {e}</span>"
+        footer_msg =  f"<span style='color:red; font-weight:bold'>✘ Loading error {e}</span>"
         display(HTML(footer_msg))
         
     df = df.sort_values("timestamp")
@@ -345,97 +346,96 @@ def readData(URL, SECRET):
     return df, df_last
 
 def convert_ans(answers):
-    """Conversion des réponses (str) en dictionnaire
-    
+    """Conversion of answers (str) to dictionary
+
     convert_ans(answers)
-    return dico
-    Convertit les réponses (string) en dictionnaire des réponses
-    
-    Parameters
+    return dictionary
+    Converts responses (string) to response dictionary
+
+    Settings
     ----------
-        answers:    str
+        answers: str
     Returns
     -------
-        dico:       dict
-                    dictionnaire correspondant
+        dico: dict
+                    matching dictionary
     """
+
     try:
         dico = {k: v.lower() == "true" for k, v in (item.rsplit("=",1) for item in answers.strip("{}").split(", "))}
-        dico = dict(sorted(dico.items(), key=lambda item: item[0])) # On trie les clés, on ne sait jamais
+        dico = dict(sorted(dico.items(), key=lambda item: item[0])) # We sort keys, never mind
     except:
         print(answers)
     return dico
 
 
 def correct_ans(quiz, quiz_id, given, weights=None, constraints=None):
-    """Correction d'une réponse
-    
+    """
+    Correction of an answer
     # correct_ans(quiz, quiz_id, given, weights=None)
     # return score, score_max
-    Corrige les réponses données dans `given` en comparant avec celles contenues
-    dans le sujet (avec corrigé) pour le label `quiz_id`. 
-    
-    Parameters
+    Correct the answers given in `given` by comparing with those contained
+    in the subject (with correction) for the label `quiz_id`. 
+
+    Settings
     ----------
-        quiz:      objet 
-            Objet QuizLab dans lequel a été chargé le sujet
+        quiz: object 
+            QuizLab object into which the topic was loaded
             >> quiz = QuizLab(URL, QUIZFILE, needAuthentification=False, retries=100)
-        quiz_id:   str
-            Clé du quiz voulu
-        given:     dict 
-            Réponses données
-        weights:   pandas dataframe
-            Matrice de poids 
-            ex:         default_weights = {
-                (True, True):   1,  # Vrai Positif
-                (True, False): -1,  # Faux Positif 
-                (False, True):  0,  # Faux Négatif (oubli)
-                (False, False): 0   # Vrai Négatif
+        quiz_id: str
+            Key to the desired quiz
+        given: dict 
+            Answers given
+        weights: pandas dataframe
+            Weight matrix 
+            ex: default_weights = {
+                (True, True): 1, # True Positive
+                (True, False): -1, # False Positive 
+                (False, True): 0, # False Negative (forget)
+                (False, False): 0 # True Negative
                 }
     Returns
     -------
-        score:     float
-                   score obtenu
+        score:float
+                score obtained
         score_max: float
-                   score max pouvant être atteint
+                maximum score that can be achieved
     """
+
     from .utils import calculate_quiz_score
     question, quiz_type, propositions, constraints = quiz._QuizLab__load_quiz(quiz_id)
-    #NB: Le nom `_QuizLab__load_quiz` correspond à la méthode dunder __loadquiz dans main
+    #NB: The name _QuizLab__load_quiz corresponds to the dunder __loadquiz method in main
     propositions.sort(key=lambda d: d["label"]) # tri sur les clés
     given = {k:given[k] for k in sorted(given)}
     #print(given, propositions)
     return calculate_quiz_score(quiz_type, given, propositions, weights=weights, constraints=constraints)
 
-    
-
 
 def check_ans(student, quiz_id, df, maxtries=3):
-    """Sélectionne la réponse à utiliser
-    
+    """Selects the response to use
+
     check_ans(student, quiz_id, df, maxtries=maxtries)
     return given
-    Sélectionne la "bonne" réponse : 
-       - celle de rang <= maxtries 
-       - si correction demandée : la dernière avant correction si <= maxtries sinon maxtries 
-    
+    Select the “correct” answer: 
+    - that of rank <= maxtries 
+    - if correction requested: the last before correction if <= maxtries otherwise maxtries 
+
     Arguments
     ---------
-        student:   str
-            nom de l'étudiant à rechercher dans le tableau
-        quiz_id:   str
-            id du string à utiliser (à rechercher dans le tableau)
-        df:        pandas dataframe
-            tableau de données
-        maxtries:  int
-            Nombre d'essais max
+        student:str
+            student name to search in the table
+        quiz_id: str
+            id of the string to use (to search in the table)
+        df: pandas dataframe
+            data table
+        maxtries: int
+            Max number of attempts
     Returns
     -------
-        given:     dict
-            dictionnaire de la réponse
-            
-    
+        given: dict
+            answer dictionary
     """
+
     extract = df.query(f"student == '{student}' & quiz_title=='{quiz_id}'").reset_index()
     if len(extract):
         correction = extract[extract['event_type'] == 'correction'].index
@@ -457,22 +457,23 @@ def check_ans(student, quiz_id, df, maxtries=3):
 
 
 
-def new_parse_custom_dict(text):  # Changement de format !! Bien plus simple
-    """Convertit la chaîne de caractères `answers`en dictionnaire
-    
+def new_parse_custom_dict(text):  # Format change!! Much simpler
+    """Converts the character string answers into a dictionary
+
     parse_custom_dict(text)
     return result
-    Avec le changement de format, juste un décodage json
-    
-    Parameters
+    With format change, just json decoding
+
+    Settings
     ----------
-        text:    str
-            chaîne de caractère au format '{"val1":true, "val2":false, "val3":float, "val4":"{...}"}'
+        text:str
+            character string in the format '{"val1":true, "val2":false, "val3":float, "val4":"{...}"}'
     Returns
     -------
-        result:  dict
-            dictionnaire trié des clés:valeurs identifiées       
+        result: dict
+            sorted dictionary of identified keys:values       
     """
+
     import json
     d = json.loads(text)
     if isinstance(d, dict):
@@ -481,23 +482,23 @@ def new_parse_custom_dict(text):  # Changement de format !! Bien plus simple
     return d
 
 def old_parse_custom_dict(text):
-    """Convertit une chaîne de caractères en dictionnaire
-    
+    """Converts a string into a dictionary
+
     parse_custom_dict(text)
     return result
-    Convertit une chaîne de caractère au format "{val1=true, val2=false, val3=float, val4={...}}"
-    en un dictionnaire contenant des valeurs booléennes, des nombres ou d'autres dictionnaires
-    
-    Parameters
+    Converts a character string to the format "{val1=true, val2=false, val3=float, val4={...}}"
+    to a dictionary containing boolean values, numbers, or other dictionaries
+
+    Settings
     ----------
-        text:    str
-            chaîne de caractère au format "{val1:true, val2=false, val3=float, val4={...}}"
+        text:str
+            character string in the format "{val1:true, val2=false, val3=float, val4={...}}"
     Returns
     -------
-        result:  dict
-            dictionnaire des clés:valeurs identifiées
-    
-    # Merci Gemini !!         
+        result: dict
+            dictionary of keys:identified values
+
+    #Thanks to Gemini!!         
     """
     # Nettoyage des accolades extérieures
     text = text.strip().strip("{}")
@@ -557,7 +558,7 @@ def old_parse_custom_dict(text):
     return result
 
 def parse_custom_dict(text):
-    """Convertit la chaîne de réponses dans df['answers'] en dictionnaire, clés triées
+    """Converts string of answers in df['answers'] to dictionary, keys sorted
     """
     if pd.isnull(text): return text
     try: 
@@ -576,45 +577,45 @@ def parse_custom_dict(text):
 
 
 def correctAll(students_answers, quiz, df, seuil=0, exam_questions=None, weights=None, bareme=None, maxtries=3):
-    """Corrige toutes les réponses
-    
-    correctAll(students, sols, df, seuil=0, Poids=None, bareme=None)
+    """Correct all answers
+
+    correctAll(students, floors, df, threshold=0, Weight=None, scale=None)
     return Res 
-    Corrige l'ensemble des résultats des étudiants de `students` à partir des solutions `sols`
-    
+    Corrects all student results from `students` using `sols` solutions
+
     Arguments
     ---------
-        students:   dict
-            Réponses données
-        quiz:      objet 
-            Objet QuizLab dans lequel a été chargé le sujet
+        students: dict
+            Answers given
+        quiz: object 
+            QuizLab object into which the topic was loaded
             >> quiz = QuizLab(URL, QUIZFILE, needAuthentification=False, retries=100)
-        df:         pandas dataframe
-            Tableau d'entrée
-        seuil:      float
-            seuil=0 seuille à zéros les notes de chaque question (sinon note négative possible)
+        df: pandas dataframe
+            Input table
+        threshold: float
+            threshold=0 thresholds the marks for each question to zero (otherwise negative mark possible)
         exam_questions: list (default None)
-            liste des questions à corriger (par défaut toutes)
-        weights:    dict
-            Matrice de poids 
+            list of questions to correct (by default all)
+        weights: dict
+            Weight matrix 
             ex: default_weights = {
-                (True, True):   1,  # Vrai Positif
-                (True, False): -1,  # Faux Positif 
-                (False, True):  0,  # Faux Négatif (oubli)
-                (False, False): 0   # Vrai Négatif
+                (True, True): 1, # True Positive
+                (True, False): -1, # False Positive 
+                (False, True): 0, # False Negative (forget)
+                (False, False): 0 # True Negative
             }
-        bareme:     dict
-            Barême = poids des différentes questions dans le quiz. Si pas de barême, toutes les 
-            questions sont au même poids pour le calcul de la note. Si poids d'une question 
-            non spécifié, il est à 1 par défaut. ex: bareme = {'quiz3':4, 'quiz55':0} (tous les autres 
-            avec un poids de 1).
-        maxtries:   int
-            Nombre d'essais permis
+        scale: dict
+            Scale = weight of the different questions in the quiz. If no scale, all 
+            questions have the same weight for calculating the grade. If weight of a question 
+            not specified, it is 1 by default. ex: scale = {'quiz3':4, 'quiz55':0} (all others 
+            with a weight of 1).
+        maxtries: int
+            Number of attempts allowed
         
     Returns
     -------
-        Res:       pandas dataframe
-            lignes : étudiants (`students`), colonnes : chacun des quizzes + une colonne Note 
+        Res: pandas dataframe
+            rows: students, columns: each quiz + a Note column 
 
     """
     import pandas as pd
@@ -679,37 +680,37 @@ def correctQuizzes(URL, SECRET, QUIZFILE, title=None, seuil=0, weights=None, bar
     Correct all quizzes in URL
     Arguments
     ---------    
-        URL:         str
-             Adresse du google sheet sur laquelle aller chercher les données
-        SECRET:      str
-             Code SECRET utilisé pour accéder aux données
-        QUIZFILE:    str
-             Nom du fichier de quiz non encodé CONTENANT les valeurs attendues 
-        title:       str None par défaut
-            Si title n'est pas None, c'est qu'on doit corriger un test avec tirage au sort des questions
-            de type exam_show,  de titre title
-        seuil:      float
-            seuil=0 seuille à zéros les notes de chaque question (sinon note négative possible)
-        weights:    dict
-            Matrice de poids 
+        URL:str
+             Address of the Google sheet on which to fetch the data
+        SECRET: str
+             SECRET code used to access data
+        QUIZFILE:str
+             Unencoded quiz file name CONTAINING expected values 
+        title: str None by default
+            If title is not None, it is because we must correct a test with random selection of questions
+            of type exam_show, of title title
+        threshold: float
+            threshold=0 thresholds the marks for each question to zero (otherwise negative mark possible)
+        weights: dict
+            Weight matrix 
             ex: default_weights = {
-                (True, True):   1,  # Vrai Positif
-                (True, False): -1,  # Faux Positif 
-                (False, True):  0,  # Faux Négatif (oubli)
-                (False, False): 0   # Vrai Négatif
+                (True, True): 1, # True Positive
+                (True, False): -1, # False Positive 
+                (False, True): 0, # False Negative (forget)
+                (False, False): 0 # True Negative
             }
-        bareme:     dict
-            Barême = poids des différentes questions dans le quiz. Si pas de barême, toutes les 
-            questions sont au même poids pour le calcul de la note. Si poids d'une question 
-            non spécifié, il est à 1 par défaut. ex: bareme = {'quiz3':4, 'quiz55':0} (tous les autres 
-            avec un poids de 1).
-        maxtries:   int
-            Nombre d'essais permis
+        scale: dict
+            Scale = weight of the different questions in the quiz. If no scale, all 
+            questions have the same weight for calculating the grade. If weight of a question 
+            not specified, it is 1 by default. ex: scale = {'quiz3':4, 'quiz55':0} (all others 
+            with a weight of 1).
+        maxtries: int
+            Number of attempts allowed
         
     Returns
     -------
-        Res:       pandas dataframe
-            lignes : étudiants (`students`), colonnes : chacun des quizzes + une colonne Note 
+        Res: pandas dataframe
+            rows: students, columns: each quiz + a Note column 
             
     """
     from labquiz import QuizLab
@@ -748,40 +749,40 @@ def correctQuizzesDf(data, data_filt, quiz, title=None, seuil=0, weights=None, b
     Arguments
     ---------    
         data, data_filt: pandas dataframes
-             Les deux tableaux issus de readData
-        quiz:    str
-             instance du quiz avec fichier de quiz non encodé CONTENANT les valeurs attendues 
-        title:       str None par défaut
-            Si title n'est pas None, c'est qu'on doit corriger un test avec tirage au sort des questions
-            de type exam_show,  de titre title
-        seuil:      float
-            seuil=0 seuille à zéros les notes de chaque question (sinon note négative possible)
-        weights:    dict
-            Matrice de poids 
+             The two tables from readData
+        quiz: str
+             quiz instance with non-encoded quiz file CONTAINING expected values 
+        title: str None by default
+            If title is not None, it is because we must correct a test with random selection of questions
+            of type exam_show, of title title
+        threshold: float
+            threshold=0 thresholds the marks for each question to zero (otherwise negative mark possible)
+        weights: dict
+            Weight matrix 
             ex: default_weights = {
-                (True, True):   1,  # Vrai Positif
-                (True, False): -1,  # Faux Positif 
-                (False, True):  0,  # Faux Négatif (oubli)
-                (False, False): 0   # Vrai Négatif
+                (True, True): 1, # True Positive
+                (True, False): -1, # False Positive 
+                (False, True): 0, # False Negative (forget)
+                (False, False): 0 # True Negative
             }
-        bareme:     dict
-            Barême = poids des différentes questions dans le quiz. Si pas de barême, toutes les 
-            questions sont au même poids pour le calcul de la note. Si poids d'une question 
-            non spécifié, il est à 1 par défaut. ex: bareme = {'quiz3':4, 'quiz55':0} (tous les autres 
-            avec un poids de 1).
-        maxtries:   int
-            Nombre d'essais permis
+        scale: dict
+            Scale = weight of the different questions in the quiz. If no scale, all 
+            questions have the same weight for calculating the grade. If weight of a question 
+            not specified, it is 1 by default. ex: scale = {'quiz3':4, 'quiz55':0} (all others 
+            with a weight of 1).
+        maxtries: int
+            Number of attempts allowed
         
     Returns
     -------
-        Res:       pandas dataframe
-            lignes : étudiants (`students`), colonnes : chacun des quizzes + une colonne Note 
+        Res: pandas dataframe
+            rows: students, columns: each quiz + a Note column 
             
     """
     from labquiz import QuizLab
     from labquiz.putils import readData, getAllStudentsAnsvers, getExamQuestions, correctAll
 
-    ## 2 - identification des participants et extraction des réponses    
+    ## 2 - identification of participants and extraction of responses   
     if title is None:
         students = sorted(list(data_filt["student"].dropna().unique()))
         exam_questions = None
@@ -792,7 +793,7 @@ def correctQuizzesDf(data, data_filt, quiz, title=None, seuil=0, weights=None, b
     students_answers = getAllStudentsAnsvers(students, data, maxtries=maxtries) 
 
 
-    ## 4 - Corriger !
+    ## 4 - Correct all!
     ResDataFilt = correctAll(students_answers, quiz, data_filt, seuil=seuil, 
                     exam_questions=exam_questions, weights=weights, bareme=bareme, maxtries=maxtries)
     
@@ -813,7 +814,7 @@ def getAllStudentsAnsvers(students, data, maxtries=3):
             given = check_ans(student, quiz_id, data_filt, maxtries=maxtries)
             students_answers[student][quiz_id] = given
     return students_answers   
-# exemple: students_answers = getAllStudentsAnsvers(students, data, maxtries=3)
+# example: students_answers = getAllStudentsAnsvers(students, data, maxtries=3)
 
 
 def getExamQuestions(exam_title, data):
@@ -834,45 +835,45 @@ def getExamQuestions(exam_title, data):
 
 
 def correctAllPrev(students_answers, quiz, df, seuil=0, weights=None, bareme=None, maxtries=3):
-    """Corrige toutes les réponses
-    
-    correctAll(students, sols, df, seuil=0, Poids=None, bareme=None)
+    """Correct all answers
+    correctAll(students, floors, df, threshold=0, Weight=None, scale=None)
     return Res 
-    Corrige l'ensemble des résultats des étudiants de `students` à partir des solutions `sols`
-    
+    Corrects all student results from `students` using `sols` solutions
+
     Arguments
     ---------
-        students:   dict
-            Réponses données
-        quiz:      objet 
-            Objet QuizLab dans lequel a été chargé le sujet
+        students: dict
+            Answers given
+        quiz: object 
+            QuizLab object into which the topic was loaded
             >> quiz = QuizLab(URL, QUIZFILE, needAuthentification=False, retries=100)
-        df:         pandas dataframe
-            Tableau d'entrée
-        seuil:      float
-            seuil=0 seuille à zéros les notes de chaque question (sinon note négative possible)
-        weights:    dict
-            Matrice de poids 
+        df: pandas dataframe
+            Input table
+        threshold: float
+            threshold=0 thresholds the marks for each question to zero (otherwise negative mark possible)
+        weights: dict
+            Weight matrix 
             ex: default_weights = {
-                (True, True):   1,  # Vrai Positif
-                (True, False): -1,  # Faux Positif 
-                (False, True):  0,  # Faux Négatif (oubli)
-                (False, False): 0   # Vrai Négatif
+                (True, True): 1, # True Positive
+                (True, False): -1, # False Positive 
+                (False, True): 0, # False Negative (forget)
+                (False, False): 0 # True Negative
             }
-        bareme:     dict
-            Barême = poids des différentes questions dans le quiz. Si pas de barême, toutes les 
-            questions sont au même poids pour le calcul de la note. Si poids d'une question 
-            non spécifié, il est à 1 par défaut. ex: bareme = {'quiz3':4} (tous les autres 
-            avec un poids de 1).
-        maxtries:   int
-            Nombre d'essais permis
+        scale: dict
+            Scale = weight of the different questions in the quiz. If no scale, all 
+            questions have the same weight for calculating the grade. If weight of a question 
+            not specified, it is 1 by default. ex: scale = {'quiz3':4} (all others 
+            with a weight of 1).
+        maxtries: int
+            Number of attempts allowed
         
     Returns
     -------
-        Res:       pandas dataframe
-            lignes : étudiants (`students`), colonnes : chacun des quizzes + une colonne Note 
+        Res: pandas dataframe
+            rows: students, columns: each quiz + a Note column 
 
     """
+
     import pandas as pd
     
     allquizzes = [q for q in quiz.quiz_bank.keys() if q != "title"]
@@ -894,7 +895,7 @@ def correctAllPrev(students_answers, quiz, df, seuil=0, weights=None, bareme=Non
     Res = Res.infer_objects(copy=False).fillna(0)
     if seuil==0: Res[Res < 0] = 0
     poids = pd.Series(bareme)
-    Res['Note'] = Res[poids.index].dot(poids) / poids.sum()*20
+    Res['FinalMark'] = Res[poids.index].dot(poids) / poids.sum()*20
       
     return Res
 """
@@ -913,36 +914,37 @@ print(f"Temps d'exécution : {toc-tic:.3f} seconde(s)")
 
 
 #=====================================================
-# Sécurité 
+# Security
+#
 # --------
-# Détecte si les paramètres de démarrage
-# ou au cours de l'exécution ont été modifiés. Détecte
-# si le source a été modifié ou monkey patched.
+# Detects if startup parameters
+# or during execution have been modified. Detects
+# if the source has been modified or monkey patched.
+#
 #=====================================================
 
 
 
 def start_integrity(starting_values, df):
-    """Vérifie que les paramètres de démarrage n'ont pas été modifiés 
-       (le nom de l'étudiant n'est pas forcément connu à ce niveau)
-    
+    """Checks that startup settings have not been changed (the name of the student is not necessarily known at this level)
+
     start_integrity(tarting_values, df)
     return bool
-    
-    
-    Parameters
+
+
+    Settings
     ----------
 
-        starting_values:    dict
-            Dictionnaire des clés et valeurs à tester pour modification éventuelle
-        df:     pandas dataframe
-            Tableau de données
+        starting_values: dict
+            Dictionary of keys and values to test for possible modification
+        df: pandas dataframe
+            Data table
     Returns
     -------
         bool
-    
+
     """
-    # Vérifie que les paramètres de démarrage n'ont pas été modifiés
+    # Checks that startup parameters have not been changed
     #dfs = df.query(f"student == '{s}' ")
     allans = df.query(f"event_type == 'starting'")[['notebook_id','parameters','answers']]
     for idx in allans.index:
@@ -960,16 +962,16 @@ def start_integrity(starting_values, df):
 
         
 def check_start_integrity_all_std(starting_values, df):
-    """vérification d'intégrité pour l'ensemble des étudiants   
-    
+    """integrity check for all students
+
     check_start_integrity_all_std(starting_values, df)
-    
-    Parameters
+
+    Settings
     ----------
-        starting_values:    dict
-            Dictionnaire des clés et valeurs à tester pour modification éventuelle
-        df:       pandas dataframe
-            Tableau de données
+        starting_values: dict
+            Dictionary of keys and values to test for possible modification
+        df: pandas dataframe
+            Data table
     Returns
     -------
         nothing
@@ -981,94 +983,93 @@ def check_start_integrity_all_std(starting_values, df):
         
 
 def check_integrity_msg(s, parameters, df):
-    """Vérifie que les paramètres n'ont pas été modifiés au cours de l'exécution pour l'étudiant `s`
-    
+    """Checks that settings were not changed during execution for student s
+
     check_integrity(s, parameters, df)
     return bool
-    Pour l'étudiant `s`, vérifier que
-      - machine_id ne change pas
-      - les paramètres de fonctionnement (contenus dans check_integrity) n'ont pas été modifiés
-    Affiche si modification de machine, paramètres modifiés (et lesquels)   
-    
-    Parameters
+    For student `s`, check that
+    - machine_id does not change
+    - the operating parameters (contained in check_integrity) have not been modified
+    Shows if machine modification, parameters modified (and which ones)   
+
+    Settings
     ----------
-        s:     str
+        s:str
             Student name
-        parameters:    dict
-            Dictionnaire des clés et valeurs à tester pour modification éventuelle
-        df:     pandas dataframe
-            Tableau de données
+        parameters: dict
+            Dictionary of keys and values to test for possible modification
+        df: pandas dataframe
+            Data table
     Returns
     -------
         bool
-    
+
     """
     out = True
     msg = []
     dfs = df.query(f"student == '{s}' ")
     # - machine_id ne change pas
     if not (len(dfs["notebook_id"].unique()) == 1):
-        msg.append(f"{s}: Modification machine pour le même nom d'étudiant")
+        msg.append(f"{s}: Machine modification for the same student name")
         msg.append(str(dfs["notebook_id"].unique()))
         out = False
 
-    # vérifier que les paramètres check_integrity n'ont pas été modifiés
+    # verify that the check_integrity parameters have not been modified
     recorded_param = dfs['parameters']
     if any( pd.isnull(recorded_param.loc[idx]) for idx in recorded_param.index):
-        # c'est qu'ils n'ont pas été enregistrés dans parameters mais dans answers
+        # t is that they were not saved in parameters but in answers
         recorded_param = dfs.query(f"quiz_title == 'integrity' & event_type == 'check_integrity'")['answers']
     if len(recorded_param)==0: 
-        return out,  "\n".join(msg) #Pas de check pour cet étudiant
+        return out,  "\n".join(msg) #No check for this student
     for idx in recorded_param.index: 
         #ans = parse_custom_dict(ans.values[0])
         subrecord = {key:recorded_param.loc[idx].get(key, '') for key in parameters}
         if not subrecord == parameters:
-            msg.append(f"{s} - enregistrement {idx} :")
+            msg.append(f"{s} - record {idx} :")
             for key in parameters:
                 if subrecord[key] != parameters[key]:  
-                    msg.append(f"      - Clé originale '{key}' modifiée de {parameters[key]} vers {subrecord[key]}")
+                    msg.append(f"      - Original key '{key}' modified from {parameters[key]} to {subrecord[key]}")
             out = False  
     return out, "\n".join(msg)
 
 
 def check_integrity(s, parameters, df):
-    """Vérifie que les paramètres n'ont pas été modifiés au cours de l'exécution pour l'étudiant `s`
-    
+    """Checks that settings were not changed during execution for student s
+
     check_integrity(s, parameters, df)
     return bool
-    Pour l'étudiant `s`, vérifier que
-      - machine_id ne change pas
-      - les paramètres de fonctionnement (contenus dans check_integrity) n'ont pas été modifiés
-    Affiche si modification de machine, paramètres modifiés (et lesquels)   
-    
-    Parameters
+    For student `s`, check that
+    - machine_id does not change
+    - the operating parameters (contained in check_integrity) have not been modified
+    Shows if machine modification, parameters modified (and which ones)   
+
+    Settings
     ----------
-        s:     str
+        s:str
             Student name
-        parameters:    dict
-            Dictionnaire des clés et valeurs à tester pour modification éventuelle
-        df:     pandas dataframe
-            Tableau de données
+        parameters: dict
+            Dictionary of keys and values to test for possible modification
+        df: pandas dataframe
+            Data table
     Returns
     -------
-        bool
-    
+        bool 
     """
     out = True
     dfs = df.query(f"student == '{s}' ")
-    # - machine_id ne change pas
+    # - machine_id does not change
     if not (len(dfs["notebook_id"].unique()) == 1):
-        print(f"{s}: Modification machine pour le même nom d'étudiant")
+        print(f"{s}: Machine modification for the same student name")
         print(dfs["notebook_id"].unique())
         out = False
 
-    # vérifier que les paramètres check_integrity n'ont pas été modifiés
+    # verify that the check_integrity parameters have not been modified
     recorded_param = dfs['parameters']
     if any( pd.isnull(recorded_param.loc[idx]) for idx in recorded_param.index):
-        # c'est qu'ils n'ont pas été enregistrés dans parameters mais dans answers
+        # It is that they were not saved in parameters but in answers
         recorded_param = dfs.query(f"quiz_title == 'integrity' & event_type == 'check_integrity'")['answers']
     if len(recorded_param)==0: 
-        return True #Pas de check pour cet étudiant
+        return True #No check for this student
     for idx in recorded_param.index: 
         #ans = parse_custom_dict(ans.values[0])
         subrecord = {key:recorded_param.loc[idx].get(key, '') for key in parameters}
@@ -1076,23 +1077,24 @@ def check_integrity(s, parameters, df):
             print(f"{s} - enregistrement {idx} :")
             for key in parameters:
                 if subrecord[key] != parameters[key]:  
-                    print(f"      - Clé originale '{key}' modifiée de {parameters[key]} vers {subrecord[key]}")
+                    print(f"      - Original key '{key}' modified from {parameters[key]} to {subrecord[key]}")
             out = False  
     return out
 
 def check_integrity_all_std(parameters, students, df):  
-    """vérification d'intégrité pour l'ensemble des étudiants dans students   
-    
+    """
+    Integrity check for all students in students
+
     check_start_integrity_all_std(starting_values, students, df)
-    
-    Parameters
+
+    Settings
     ----------
-        starting_values:    dict
-            Dictionnaire des clés et valeurs à tester pour modification éventuelle
+        starting_values: dict
+            Dictionary of keys and values to test for possible modification
         students: list
-            Liste de str (noms des étudiants)
-        df:       pandas dataframe
-            Tableau de données
+            List of str (student names)
+        df: pandas dataframe
+            Data table
     Returns
     -------
         nothing
@@ -1101,14 +1103,13 @@ def check_integrity_all_std(parameters, students, df):
         check_integrity(s, parameters, df)
 
 def check_machine(df):
-    """Détecte si une même machine a été utilisée pour plusieurs noms d'étudiants
+    """Detects if the same machine has been used for multiple student names
     
     check_machine(df)
     
     Parameters
     ----------
         df:       pandas dataframe
-            Tableau de données
     Returns:
     -------
         nothing (Alert for cases)
@@ -1118,20 +1119,20 @@ def check_machine(df):
     for nb in notebookids:
         dfs = df.query(f"notebook_id == '{nb}' ")             
         if not (len(dfs["student"].unique()) == 1):
-            print(f"Même machine {nb} utilisée par plusieurs étudiants")
+            print(f"Same machine {nb} used by several students")
             print(dfs['student'].unique())
 
 def machines_for_std(s, df):
-    """retourne numéro(s) de machines pour un étudiant `s`
-    
+    """Returns machine number(s) for a student s
+
     machines_for_std(s, df)
-    
+
     Parameters
     ----------
-        s:        str
-            Nom de l'étudiant
-        df:       pandas dataframe
-            Tableau de données
+        s:str
+            Student Name
+        df: pandas dataframe
+            Data table
     Returns:
     -------
         list of machines_id for `s`
@@ -1141,41 +1142,40 @@ def machines_for_std(s, df):
     return dfs['notebook_id'].unique()       
     
 def stds_for_machine(id, df):
-    """retourne les noms d'étudiant(e)(s) pour un numéro de machine
-    
+    """Returns student names for a machine number
+
     stds_for_machine(id, df)
-    
+
     Parameters
     ----------
-        id:        str
-            Identifiant de machine
-        df:       pandas dataframe
-            Tableau de données
+        id: str
+            Machine ID
+        df: pandas dataframe
+            Data table
     Returns:
     -------
         list of students having used machines_id
 
     """
-    # noms d'étudiant(e)(s) pour un numéro de machine
     dfs = df.query(f"notebook_id == '{id}' ")
     return dfs['student'].unique()
 
 def check_hash_integrity(df, kind_hash='full', wanted_hash=""):
     
-    """test d'intégrité (modification du source, monkey patching, paramètres surveillés)
-    
+    """Integrity test (source modification, monkey patching, monitored parameters)
+
     check_hash_integrity(data, kind_hash='full', wanted_hash="")
     return: nothing
-    
-    Parameters
+
+    Parameters 
     ----------
-        kind_hash:        str
-            Type de hash (`src`ou `full`) 
-            src pour les sources, indépendant machine et `full` dépend des src et paramètres
-        df:       pandas dataframe
-            Tableau de données
+        kind_hash: str
+            Hash type (`src` or `full`) 
+            src for sources, machine independent and `full` depends on src and parameters
+        df: pandas dataframe
+            Data table
         wanted_hash: str
-            Si test du hash source, la référence est `wanted_hash`
+            If testing the source hash, the reference is `wanted_hash`
     Returns:
     -------
         nothing (Alert for cases)
@@ -1190,7 +1190,7 @@ def check_hash_integrity(df, kind_hash='full', wanted_hash=""):
         params = row.get("parameters")
         if isinstance(params, dict) and kind_hash in params:
             return params[kind_hash]
-        answers = row.get("answers") #fallback car avant on rangeait le hash dans answers
+        answers = row.get("answers") #fallback because before the hash was stored in answers 
         if isinstance(answers, dict):
             return answers.get(kind_hash, "")
         return ""
@@ -1209,11 +1209,11 @@ def check_hash_integrity(df, kind_hash='full', wanted_hash=""):
             for h in g.unique():
                 s.append(dfnew.query(f"{colhash} == '{h}'")['student'].iloc[-1])
               
-            if kind_hash=='src': print(f"Le source a été modifié pour {s}, machine id {id}")
+            if kind_hash=='src': print(f"Source was changed for {s}, machine id {id}")
             if kind_hash=='full': 
-                print(f"⚠️ {student}, machine id {machine_id} :")
-                print(f"    👉🏼 Le source ou les paramètres ont été modifiés ou monkey patched")
-            print("hash constatés :")
+                print(f"⚠️ {student}, machine id {machine_id}:")
+                print(f"    👉🏼 Source or settings have been changed or monkey patched")
+            print("Observed hashes:")
             
             idx = g[g != g.shift()]
             for n,h in enumerate(g.unique()):
@@ -1223,29 +1223,28 @@ def check_hash_integrity(df, kind_hash='full', wanted_hash=""):
         else:
             if (g.unique() != wanted_hash):
                 print(f"⚠️ {student}, machine id {machine_id} :")
-                print(f"    👉🏼 Le source ou les paramètres ont été modifiés ou monkey patched")
+                print(f"    👉🏼 Source or settings have been changed or monkey patched")
                 print(f"⚠️ index {g.index[0]} hash: {g.loc[g.index[0]]}")
 
 def check_hash_integrity_msg(df, kind_hash='full', wanted_hash=""):
     
-    """test d'intégrité (modification du source, monkey patching, paramètres surveillés)
-    
+    """Integrity test (source modification, monkey patching, monitored parameters)
+
     check_hash_integrity_msg(data, kind_hash='full', wanted_hash="")
     return: nothing
-    
-    Parameters
+
+    Settings
     ----------
-        kind_hash:        str
-            Type de hash (`src`ou `full`) 
-            src pour les sources, indépendant machine et `full` dépend des src et paramètres
-        df:       pandas dataframe
-            Tableau de données
+        kind_hash: str
+            Hash type (`src` or `full`) 
+            src for sources, machine independent and `full` depends on src and parameters
+        df: pandas dataframe
+            Data table
         wanted_hash: str
-            Si test du hash source, la référence est `wanted_hash`
+            If testing the source hash, the reference is `wanted_hash`
     Returns:
     -------
         nothing (Alert for cases)
-
     """
     
     # test kind_hash: src ou full
@@ -1277,10 +1276,10 @@ def check_hash_integrity_msg(df, kind_hash='full', wanted_hash=""):
             for h in g.unique():
                 s.append(dfnew.query(f"{colhash} == '{h}'")['student'].iloc[-1])
               
-            if kind_hash=='src': print(f"Le source a été modifié pour {s}, machine id {id}")
+            if kind_hash=='src': print(f"Source code changed for {s}, machine id {id}")
             if kind_hash=='full': 
                 msg.append(f"⚠️ {student}, machine id {machine_id} :")
-                msg.append(f"    👉🏼 Le source ou les paramètres ont été modifiés ou monkey patched")
+                msg.append(f"    👉🏼 Source or settings have been changed or monkey patched")
             print("hash constatés :")
             
             idx = g[g != g.shift()]
@@ -1289,7 +1288,7 @@ def check_hash_integrity_msg(df, kind_hash='full', wanted_hash=""):
         else:
             if (g.unique() != wanted_hash):
                 msg.append(f"⚠️ {student}, machine id {machine_id} :")
-                msg.append(f"    👉🏼 Le source ou les paramètres ont été modifiés ou monkey patched")
+                msg.append(f"    👉🏼 Source or settings have been changed or monkey patched")
                 msg.append(f"⚠️ index {g.index[0]} hash: {g.loc[g.index[0]]}")
                 
     return '\n'.join(msg)
@@ -1346,7 +1345,7 @@ def create_secure_tar(
     output_file = Path(output_file)
     
 
-    # --- Insertion d'une sentinelle dans les fichiers sources ---
+    # --- Inserting a sentinel into source files ---
     
     SENTINEL = session_sentinel(password_seal)
 
@@ -1370,17 +1369,17 @@ def create_secure_tar(
     # 
     src_hash = hash_distribution(list(source_dir.rglob("*.py")))
 
-    print("✔ Archive créée :", output_file)
-    print("🔐 Hash global intégrité de l'archive (à conserver) :")
+    print("✔ Archive created:", output_file)
+    print("🔐 Global archive integrity hash (to keep):")
     print(global_hash)
-    print("🔐 Hash global des fichiers sources et données (à conserver) : ")
+    print("🔐 Global hash of source and data files (to be kept) ")
     print(src_hash)
 
     return global_hash, src_hash
 
-### Check integrity en cours d'exam 
-# Préparation de l'archive 
-# Exemple : 
+### Check integrity during exam 
+# Archive preparation
+# Example : 
 """global_hash, src_hash = create_secure_tar(
     source_dir="quiz_data",
     output_file="quiz.tar.enc",
@@ -1421,7 +1420,7 @@ def diff_dicts(
         v_cur = current.get(key, "<absente>")
         v_ref = reference.get(key, "<absente>")
 
-        # Cas dictionnaires imbriqués
+        # Nested dictionaries cases
         if isinstance(v_cur, dict) and isinstance(v_ref, dict):
             anomalies.extend(
                 diff_dicts(
@@ -1436,8 +1435,8 @@ def diff_dicts(
         else:
             if v_cur != v_ref:
                 anomalies.append(
-                    f"Ligne {row_idx} - Anomalie, pour la clé '{cur_path}', "
-                    f"valeur de départ {v_ref} modifiée en {v_cur}"
+                    f"Ligne {row_idx} - Anomaly, for key '{cur_path}', "
+                    f"Initial value {v_ref} modified into {v_cur}"
                 )
                 anomaly = True
                 out[cur_path] = (v_ref, v_cur)

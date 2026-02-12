@@ -13,19 +13,19 @@ from cryptography.fernet import Fernet as Qwsp
 Qwsp.weight = Qwsp.decrypt
 
 
-# Patch pour request de manière à ne pas bloquer lors des logs
-# Requête synchrone --> passe sur un thread
+# Patch for request so as not to block during logs
+# Synchronous request --> passes on a thread
 
 IS_JUPYTERLITE = "pyodide" in sys.modules or "piplite" in sys.modules
 #TRUC = "test"
 
 def patch_requests_post(callback=None):
     """
-    Remplace requests.post par une version threadée (Jupyter classique uniquement).
-    Le callback (optionnel) reçoit la réponse en argument.
+ Replaces requests.post with a threaded version (classic Jupyter only). 
+ The callback (optional) receives the response as an argument.
     """
     if IS_JUPYTERLITE:
-        print("JupyterLite détecté : Patch thread ignoré (non supporté).")
+        print("JupyterLite detected: Patch thread ignored (not supported).")
         return
 
     _original_post = requests.post
@@ -42,10 +42,10 @@ def patch_requests_post(callback=None):
 
         thread = threading.Thread(target=worker, daemon=True)
         thread.start()
-        return None # La fonction rend la main immédiatement au Kernel
+        return None # The function immediately returns control to the Kernel
 
     requests.post = threaded_post
-    #print("Patch requests.post appliqué (Mode Threaded).")
+    #print("Patch requests.post applied (Mode Threaded).")
 
 def remove_style(style_id="custom-checkbox"):
     from IPython.display import Javascript, display
@@ -90,16 +90,6 @@ def internetOk(URL):
     
     
 class QuizLab:
-    """
-    LabQuiz2
-    - Charger une banque de quizzes depuis YAML (from_yaml)
-    - show(quiz_id) affiche toutes les questions du quiz (avec LaTeX)
-    - Valider => score global
-    - Tips => Affiche des indications pour orienter vers les bonnes réponses
-    - Corriger => affiche tips correct/wrong par question
-    - Reset => décoche toutes les cases et vide la sortie
-    V2: changement du format d'import des questions
-    """
     
     import ipywidgets as widgets
     from IPython.display import display, Javascript, Markdown
@@ -181,6 +171,11 @@ class QuizLab:
         # (un seul thread de surveillance en réalité) pour un QUIZFILE donné
         # il peut y avoir plusieurs instances pour le même QUIZFILE, mais un seul thread
         # si autre QUIZFILE, autre thread de surveillance. 
+
+        # This allows us to create only one logical instance 
+        # (only one monitoring thread in reality) for a given QUIZFILE
+        # there can be multiple instances for the same QUIZFILE, but only one thread
+        # if other QUIZFILE, other monitoring thread.
         if QUIZFILE in QuizLab._registry:
             old = QuizLab._registry[QUIZFILE]
             old.stop() # Arrêt du thread
@@ -194,7 +189,7 @@ class QuizLab:
         QuizLab._registry[QUIZFILE] = self  
         
         if not self.in_streamlit:
-            self.stop_event = asyncio.Event() # Remplace threading.Event
+            self.stop_event = asyncio.Event() # Replace threading.Event
         self._task = None
         self._check_task = None
         self.start()
@@ -212,9 +207,11 @@ class QuizLab:
             raise Exception("No internet connexion or bad URL")
     
     def start(self):
-        """Lance la surveillance sans bloquer"""
+        """Launches monitoring without blocking the main thread"""
         # Dans JupyterLite/IPython, la boucle tourne déjà.
         # On crée une tâche non-bloquante.
+        # In JupyterLite/IPython, the loop is already running. 
+        # We create a non-blocking task.
         if not self.in_streamlit:
             self._task = asyncio.create_task(self.check_alive())
 
@@ -224,8 +221,9 @@ class QuizLab:
             self.stop_event.set()
             if self._task:
                 # Optionnel : pour forcer l'arrêt immédiat si nécessaire
+                # Optional: to force an immediate stop if necessary
                 # self._task.cancel() 
-                print("--> Redémarrage du quiz sous un nouveau nom")
+                print("--> Restarting the quiz under a new name...")
                 #print()
 
 ####################### NEW SHOW ############################
@@ -343,7 +341,7 @@ class QuizLab:
 
 
     def inject_css(self):
-        # css adapté pour les checkboxes
+        # css adapté pour les checkboxes // css suitable for checkboxes
         from IPython.display import display, HTML
 
         display(HTML(f"""
@@ -367,7 +365,7 @@ class QuizLab:
         
 
     # -------------------------
-    # Widgets de question
+    # Widgets for question
     # -------------------------
     def _make_question_widget(self, question_html):
         try:
@@ -391,7 +389,7 @@ class QuizLab:
     def build_answer_widgets(self, question, quiz_type, propositions):
         rows, widgets_list = [], []
 
-        if quiz_type == "qcm":
+        if quiz_type == "mcq":
             for prop in propositions:
                 cb = widgets.Checkbox(value=False)
                 cb.add_class("custom") 
@@ -416,7 +414,7 @@ class QuizLab:
                 if tol_abs:
                     parts.append(f" ±{tol_abs}")
 
-                tol_texte = "Tolérance : max de"+f"{' ou '.join(parts)}" if parts else ""
+                tol_texte = "Tolerance: maximum of"+f"{' or '.join(parts)}" if parts else ""
                 return tol_texte
 
             for prop in propositions:
@@ -441,7 +439,7 @@ class QuizLab:
 
     def show(self, quiz_id, noscore=False, **context):
         from .utils import sanitize_dict
-        """Affiche un quiz (QCM ou numérique) avec widgets indépendants"""
+        """Displays a quiz (MCQ or numerical) with independent widgets"""
         from .utils import decode_dict_base64
         TYPE_MAP = {
         "int": int,
@@ -473,7 +471,7 @@ class QuizLab:
         # Chargement du quiz 
         # -------------------------
         def _get_protected_data():
-            """Récupère et déchiffre les données avec gestion d'erreurs."""
+            """Retrieves and decrypts data with error handling."""
             import copy, os
             try:
                 entry = self.quiz_bank[quiz_id]
@@ -483,14 +481,11 @@ class QuizLab:
                     from cryptography.fernet import Fernet, InvalidToken
                     try:
                         h = prep(4, quiz_id, os.path.splitext(self.QUIZFILE)[0], self.internetOK)
-                        #frt = Fernet(h)
-                        # Tentative de déchiffrement et chargement JSON
-                        #decrypted_data = frt.decrypt(entry).decode('utf-8')
                         decrypted_data = Qwsp(h).weight(entry).decode('utf-8')
                         entry = json.loads(decrypted_data)
                     except (InvalidToken, ValueError) as e:
-                        print(f"❌ Erreur de déchiffrement pour le quiz '{quiz_id}'.")
-                        print("Vérifiez la clé d'accès ou l'intégrité des données.")
+                        print(f"❌ Decryption error for quiz '{quiz_id}'.")
+                        print("Check the access key or data integrity.")
                         return None, None, None, None
                 
 
@@ -501,14 +496,14 @@ class QuizLab:
                 return copy.deepcopy(
                     (
                     entry.get("question", quiz_id), 
-                    entry.get("type", "qcm"), 
+                    entry.get("type", "mcq"), 
                     props, 
                     entry.get("constraints", {})
                     )
                 )
             
             except Exception as e:
-                print(f"⚠️ Une erreur inattendue est survenue lors du chargement : {e}")
+                print(f"⚠️An unexpected error occurred during loading: {e}")
                 return None, None, None, None
             
         
@@ -518,7 +513,7 @@ class QuizLab:
 
             if not encrypted: #non encoded or encoded
                 question = entry.get("question", quiz_id)
-                quiz_type = entry.get("type", "qcm")
+                quiz_type = entry.get("type", "mcq")
                 propositions = entry.get("propositions", {}) or {}
                 constraints = entry.get("constraints", {}) or {}
 
@@ -533,11 +528,19 @@ class QuizLab:
                 frt = Fernet(h)
                 entry = json.loads(frt.decrypt(entry).decode('utf-8')) 
                 question = entry.get("question", quiz_id)
-                quiz_type = entry.get("type", "qcm")
+                quiz_type = entry.get("type", "mcq")
                 propositions = entry.get("propositions", {}) or {}
                 constraints = entry.get("constraints", {}) or {}
-                #dec = frt.decrypt(raw_bytes).decode('utf-8')
                 # ---------------
+
+            # Precaution - Change of key name in new YAML structure. Check and rename if old version
+            for prop in propositions: 
+                if "reponse" in prop:
+                    prop["answer"] = prop.pop("reponse")
+            if quiz_type == "qcm":
+                quiz_type = "mcq"
+            if quiz_type == "qcm-template":
+                quiz_type = "mcq-template"
 
             return question, quiz_type, propositions, constraints 
 
@@ -549,26 +552,26 @@ class QuizLab:
 
         allContainExpected = all( 'expected' in p for p in propositions )
         
-        if quiz_type in ['numeric-template', 'qcm-template']:
+        if quiz_type in ['numeric-template', 'mcq-template']:
             import numpy as np
             question = question.format(**context)
             for p in propositions:
-                pexpect =  p.get("expected", '' if quiz_type=='qcm-template' else 0)
-                ptype = p.get("type", bool if quiz_type == "qcm" else float)
+                pexpect =  p.get("expected", '' if quiz_type=='mcq-template' else 0)
+                ptype = p.get("type", bool if quiz_type == "mcq" else float)
                 ptype = TYPE_MAP.get(ptype, ptype)
-                preponse =  p.get("reponse",'')
+                panswer =  p.get("answer",'')
                 p["expected"] = ptype(eval(pexpect,{}, context)) if isinstance(pexpect, str) else pexpect
-                if isinstance(preponse, str) and (preponse.startswith('f"') or preponse.startswith("f'")): 
-                    p["reponse"] = str(eval(preponse,{},context))
+                if isinstance(panswer, str) and (panswer.startswith('f"') or panswer.startswith("f'")): 
+                    p["answer"] = str(eval(panswer,{},context))
                 p['proposition'] = p['proposition'].format(**context)
             quiz_type = quiz_type.split('-')[0]
-            #print(quiz_type, pexpect, propositions, "preponse", preponse, p["reponse"])
+            #print(quiz_type, pexpect, propositions, "panswer", panswer, p["answer"])
             
         #get_quiz(entry, encoded=self.encoded, encrypted=self.encrypted)
 
         random.shuffle(propositions)
         # Réponses par défaut
-        self.user_answers[quiz_id] = {p["label"]:False if quiz_type=="qcm" else 0 for p in propositions} 
+        self.user_answers[quiz_id] = {p["label"]:False if quiz_type=="mcq" else 0 for p in propositions} 
 
 
         rows, answer_widgets, question = self.build_answer_widgets(question, quiz_type, propositions)
@@ -576,10 +579,10 @@ class QuizLab:
         # -------------------------
         # Boutons
         # -------------------------
-        btn_validate = widgets.Button(description="Valider", button_style="primary", icon="check")
+        btn_validate = widgets.Button(description="Submit", button_style="primary", icon="check")
         btn_reset    = widgets.Button(description="Reset", button_style="warning", icon="refresh")
         btn_tips     = widgets.Button(description="Tips", button_style="info", icon="check-circle")
-        btn_correct  = widgets.Button(description="Corriger", button_style="success", icon="check-circle")
+        btn_correct  = widgets.Button(description="Correction", button_style="success", icon="check-circle")
 
         btn_correct.layout.display = "none" if (self.exam_mode or self.test_mode) else "inline-flex"
         btn_tips.layout.display = "none" if self.exam_mode else "inline-flex"
@@ -591,12 +594,13 @@ class QuizLab:
         # -------------------------
         # Callbacks
         # -------------------------
-        def on_validate(_):
+        def on_validate(_event):
             self.quiz_counts[quiz_id] += 1
             msg = ""
             user_answers = {p["label"]:w.value for p,w in zip(propositions,answer_widgets)} 
                                                             #on construit le dictionnaire 
                                                             #des labels:réponse utilisateur
+                                                            #we build the dictionary #labels:user response
             if context: user_answers['context'] = context
             self.user_answers[quiz_id] = user_answers
             
@@ -606,26 +610,26 @@ class QuizLab:
                 #msg += f"propositions {propositions}" 
                 self.score_global = 20 * sum(self.quiz_results.values()) / len(self.quiz_results)
 
-            msg += f"Essai n°{self.quiz_counts[quiz_id]} sur {self.retries+1}"
+            msg += f"Trial No.{self.quiz_counts[quiz_id]} on {self.retries+1}"
 
             if self.quiz_counts[quiz_id] >= self.retries + 1:
-                msg += "<br><b>😔 Nombre maximum d'essais atteint</b>"
+                msg += "<br><b>😔 Maximum number of attempts reached</b>"
                 for btn in [btn_validate, btn_tips, btn_reset]:
                     btn.disabled = True
                     btn.icon = "ban"
             
             if (not self.exam_mode) and (not noscore) and allContainExpected:
                 msg += f"<h3>Score : <b>{score}/{total}</b></h3>"
-                msg += "🎉 Bravo !" if score == total else "⚠️ Tout n'est pas correct."
+                msg += "🎉 Bravo!" if score == total else "⚠️ Everything is not correct."
             if (not self.exam_mode) and (not allContainExpected):
-                msg += "<br>⚠️ pas de réponses dans le fichier de quiz: pas de calcul du score."
+                msg += "<br>⚠️ No answers in quiz file: no score calculation."
 
             output.clear_output()
             with output:
                 display(widgets.HTML(msg))
 
             if self.sheetTransfer:
-                """if quiz_type == "qcm":
+                """if quiz_type == "mcq":
                     answers = {p.get("label"): w.value for w, p in zip(answer_widgets, propositions)}
                 else:
                     answers = {propositions[0].get("label"): answer_widgets[0].value}"""
@@ -645,16 +649,16 @@ class QuizLab:
                     score=score
                 )
 
-        def on_reset(_):
+        def on_reset(_event):
             for w in answer_widgets:
                 if hasattr(w, "value"):
-                    w.value = False if quiz_type == "qcm" else 0
+                    w.value = False if quiz_type == "mcq" else 0
             output.clear_output()
 
-        def on_tips(_):
+        def on_tips(_event):
             output.clear_output()
             with output:
-                if quiz_type == "qcm":
+                if quiz_type == "mcq":
                     for w, p in zip(answer_widgets, propositions):
                         if w.value != p.get("expected", False) and p.get("tip"):
                             display(Markdown(f"ℹ️ **{p.get('label','')}** — {p['tip']}"))
@@ -670,7 +674,7 @@ class QuizLab:
                         if tip:
                              #display(Markdown(f"ℹ️ {tip}"))"""
                         
-        def corriger(_=None):
+        def corriger(_event):
             for cb in checkboxes:
                 cb.disabled = True
                 cb.remove_class("match")
@@ -682,10 +686,10 @@ class QuizLab:
                     cb.add_class("mismatch")
 
 
-        def on_correct(_):
+        def on_correct(_event):
             
             if not allContainExpected:
-                msg = "<br>⚠️ pas de réponses dans le fichier de quiz: pas de correction possible."
+                msg = "<br>⚠️ no answers in the quiz file: no possible correction."
                 output.clear_output()
                 with output:
                     display(widgets.HTML(msg))
@@ -696,7 +700,7 @@ class QuizLab:
             output.clear_output()
             with output:
                 display(widgets.HTML(msg))
-                if quiz_type == "qcm":
+                if quiz_type == "mcq":
                     for r, w, p in zip(rows, answer_widgets, propositions):
                         #w.value = p.get("expected", False)
                         #w = r.children[0]
@@ -711,24 +715,24 @@ class QuizLab:
                         newlbl = self._make_question_widget(f"<b>{p.get('label','')}</b> - " + p["proposition"])
                         newlbl.layout = widgets.Layout(width="70%", margin="5px 0 0 -15%")
                         r.children = [r.children[0], newlbl]
-                        if p.get("reponse"):
-                            display(Markdown(f"{'✅' if p.get('expected') else '❌'} **{p.get('label','')}** — {p['reponse']}"))
+                        if p.get("answer"):
+                            display(Markdown(f"{'✅' if p.get('expected') else '❌'} **{p.get('label','')}** — {p['answer']}"))
                     if constraints:
                         for c in constraints:
                             if c["type"] == "XOR": 
-                                display(Markdown(f"⚠️ Les réponses à **{c['indices']}** sont forcément différentes"))
+                                display(Markdown(f"⚠️ The answers to {c['indices']} are necessarily different"))
                             elif c["type"] == "SAME": 
-                                display(Markdown(f"⚠️ Les réponses à **{c['indices']}** sont forcément identiques"))
+                                display(Markdown(f"⚠️ The answers to {c['indices']} are necessarily identical"))
                             elif c["type"] == "IMPLY": 
-                                display(Markdown(f"⚠️ La réponse **{c['indices'][0]}** vraie implique que **{c['indices'][1]}** est vraie"))
+                                display(Markdown(f"⚠️ The answer {c['indices'][0]} true implies that {c['indices'][1]} is true"))
                             elif c["type"] == "IMPLYFALSE": 
-                                display(Markdown(f"⚠️ La réponse **{c['indices'][0]}** vraie implique que **{c['indices'][1]}** est nécessairement fausse"))
+                                display(Markdown(f"⚠️ The answer {c['indices'][0]} true implies that {c['indices'][1]} is necessarily false"))
                 else:
                     for w, p in zip(answer_widgets, propositions):
                         """pexpect =  p["expected"]
                         w.value = eval(pexpect,{},context) if isinstance(pexpect, str) else pexpect"""
                         w.value = p["expected"] # ce qui précède pour extension future
-                        rep = p.get("reponse")
+                        rep = p.get("answer")
                         #if rep:
                         #    display(Markdown(rep))
 
@@ -780,27 +784,27 @@ class QuizLab:
 
     def exam_show(self, exam_title="", questions=None, shuffle=False, nb=None):
         """
-        Affiche un examen à partir d’un ensemble de questions et retourne
-        la liste des questions sélectionnées.
+        Displays an exam from a set of questions and returns the list of selected questions.
 
-        Parameters
+        Settings
         ----------
         exam_title: str, default ""
-            Utilisé pour identifier l'examen
-        questions : list[str] or None
-            Liste de labels de questions (ex. "quiz1", "quiz2").
-            Si None, utilise toutes les questions de la banque.
-        shuffle : bool, default False
-            Si True, mélange l’ordre des questions avant l’affichage.
-        nb : int or None
-            Si différent de None, tire aléatoirement nb questions distinctes
-            parmi l’ensemble des questions disponibles.
+            Used to identify the exam
+        questions: list[str] or None
+            List of question labels (e.g. "quiz1", "quiz2").
+            If None, use all questions from the bank.
+        shuffle: bool, default False
+            If True, shuffles the order of questions before displaying.
+        nb: int or None
+            If different from None, randomly draws number of distinct questions
+            among all the questions available.
 
         Returns
         -------
         list[str]
-            Liste des labels des questions effectivement affichées,
-            dans l’ordre de présentation.
+            List of labels of the questions actually displayed,
+            in the order of presentation.
+
         """
         from IPython.display import display, Markdown, HTML
         from ipywidgets import Output
@@ -815,20 +819,20 @@ class QuizLab:
         qlist_out = qlist
         if nb is not None:
             if nb > len(qlist):
-                raise ValueError("nb est supérieur au nombre de questions disponibles")
-            qlist_out = []  # si tirage de nb questions dans qlist, on stockera ces questions dans qlist_out
-                            # car certaines questions (avec contexte) ne sont pas affichables
-                            # on ne peut pas trier de base sur les types, car on n'y a pas accès 
-                            # à ce niveau dans le cas crypté
+                raise ValueError("number is greater than the number of available questions")
+            qlist_out = []  # if drawing number of questions in qlist, we will store these questions in qlist_out 
+                            # # because some questions (with context) cannot be displayed 
+                            # # we cannot sort based on types, because we do not have access to them 
+                            # # at this level in the encrypted case
         else:
             nb = len(qlist)
             #qlist = random.sample(qlist, nb)"""
 
-        # 3. Mélange si demandé
+        # 3. shuffle if requested
         if shuffle:
             random.shuffle(qlist)
 
-        # 4. Affichage de l'examen
+        # 4. Display exam
         if exam_title != "": 
             display(HTML(f"<h2> {exam_title} </h2>"))
         m = 0
@@ -840,10 +844,10 @@ class QuizLab:
                 m = m + 1
                 if len(qlist_out) == nb: break
             except: 
-                # Efface le libellé de question précédent
+                # Clears previous question label
                 update_display(HTML(''), display_id="q_"+str(n))
         
-        # 5. Retourner la liste des questions affichées
+        # 5. Return the list of displayed questions
         if self.sheetTransfer:  
             exam = exam_title if exam_title != "" else "exam"
             self.record_event(event_type="starting", quiz_id=exam, parameters=self._getParameters(),
@@ -862,21 +866,20 @@ class QuizLab:
         ponder = [ bareme[q]*self.quiz_results[q]  for q in qlist] 
         bareme_exam = [ bareme[q]  for q in qlist] 
               
-        print("Note sur 20 : ", sum(ponder)/sum(bareme_exam)*20)
+        print("Score out of 20: ", sum(ponder)/sum(bareme_exam)*20)
                   
 
     # ---------------------------
     # YAML loader / helpers
     # ---------------------------
-
     
     @classmethod
     def from_yaml(cls, path, default_quiz_id=None):
         """
-        Crée une instance et charge la banque depuis un fichier YAML.
-        Si encoded=True, décode le fichier Base64 avant parsing.
-        :param path: chemin vers quiz_bank.yaml
-        :param default_quiz_id: (optionnel) id du quiz à sélectionner par défaut
+        Creates an instance and loads the bank from a YAML file. 
+        If encoded=True, Base64 decodes the file before parsing. 
+        :param path: path to quiz_bank.yaml 
+        :param default_quiz_id: (optional) id of the quiz to select by default
         """
         
         from .utils import is_base64_encoded_text
@@ -909,7 +912,7 @@ class QuizLab:
 
 
     def record_event(self, event_type, quiz_id, parameters, answers, score):
-        """Envoie une ligne dans Google Sheets."""
+        """Sends a row to Google Sheets."""
         
         payload = {
             "notebook_id": self.machine_id,
@@ -932,8 +935,8 @@ class QuizLab:
             )
             #print(payload)
         except TypeError as e:
-            print("⚠️ Attention aux paramètres passés qui ne sont pas json-sérialisable")
-            print("Simplifier ou convertir", e)
+            print("⚠️ Be careful of passed parameters that are not json-serializablee")
+            print("Simplify or convert", e)
         except Exception as e:
             if ('NetworkError' in str(e)) and not self.exam_mode: 
                 pass # Silent NetworkError 
@@ -943,7 +946,7 @@ class QuizLab:
   
 
     async def check_alive(self):
-        """Version asynchrone (pour éviter les threads --> pyodide"""
+        """Async version (to avoid threads --> pyodide"""
         from .utils import get_big_integrity_hash
         
         while not self.stop_event.is_set():
@@ -954,12 +957,12 @@ class QuizLab:
                 parameters['get_big_integrity_hash'] = big_hash
                 self.record_event("check_integrity", "integrity", parameters,"", 0)
             
-            # Sleep asynchrone qui ne bloque pas le navigateur
+            # Asynchronous sleep which does not block the browser
             try:
-                # Attend 600s OU que stop_event soit activé
+                # Wait 600s OR until stop_event is activated
                 await asyncio.wait_for(self.stop_event.wait(), timeout=self._CHECKALIVE)
             except asyncio.TimeoutError:
-                # Si le timeout expire, on continue simplement la boucle while
+                # If the timeout expires, we simply continue the while loop
                 pass
 
                 
@@ -989,7 +992,7 @@ class QuizLab:
             headers={"Content-Type": "text/plain"}
             )
         except Exception as e:
-            print("⚠️ Erreur d’envoi :", e)
+            print("⚠️ Sending error:", e)
 
 
         
@@ -1001,12 +1004,12 @@ class QuizLab:
         key = _fernet_key_from_password(pw.value)
         fernet = Fernet(key)
 
-        # --- lecture + déchiffrement ---
+        # --- reading + decryption ---
         encrypted = Path(ARCHIVE_NAME).read_bytes()
         try:
             tar_bytes = fernet.decrypt(encrypted)
         except:
-            raise KeyError("Mot de passe incorrect")
+            raise KeyError("Incorrect password")
 
         # --- extraction ---
         if WORKDIR.exists():
@@ -1025,16 +1028,16 @@ class QuizLab:
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         
-        # On lance un daemon de surveillance, après avoir arrêté le premier
+        # We launch a monitoring daemon, after stopping the first
         #module.do_the_check(self, WORKDIR)
         self._check_task = asyncio.create_task(module.do_the_check(self, WORKDIR))
         #self.stop_check_event = asyncio.Event()    
 
-        # --- nettoyage ---
+        # --- Cleaning ---
         del module
         #shutil.rmtree(WORKDIR)
-        print("✅ Vérification effectuée, données envoyées, daemon lancé")
-        print(f"✅ Suppression de {WORKDIR}")
+        print("✅ Verification performed, data sent, daemon launched")
+        print(f"✅ Deleting {WORKDIR}")
 
             
     def check_quiz(self, archive="quiz.tar.enc"):
@@ -1045,8 +1048,8 @@ class QuizLab:
         tmpdir = tempfile.mkdtemp()
         WORKDIR = Path(tmpdir) 
         
-        pw = widgets.Password(description="Mot de passe")
-        btn = widgets.Button(description="Déverrouiller", button_style="primary")
+        pw = widgets.Password(description="Password")
+        btn = widgets.Button(description="Unlock", button_style="primary")
         out = widgets.Output()
 
         display(widgets.VBox([pw, btn,out]))
@@ -1056,20 +1059,20 @@ class QuizLab:
                 out.clear_output()
                 try:
                     if not pw.value:
-                        raise ValueError("Mot de passe vide")
+                        raise ValueError("Empty password")
                     self._make_the_check(pw, ARCHIVE_NAME, WORKDIR)
 
                 except Exception as e:
-                    display(Markdown(f"❌ Erreur : `{e}`"))
+                    display(Markdown(f"❌ Error: `{e}`"))
 
         btn.on_click(on_submit)
     
     def load_from_yaml(self, path, default_quiz_id=None):
         """
-        Charge la banque depuis un fichier YAML.
-        Si encoded=True, décode le fichier Base64 avant parsing.
-        :param path: chemin vers quiz_bank.yaml
-        :param default_quiz_id: (optionnel) id du quiz à sélectionner par défaut
+        Loads the bank from a YAML file. 
+        If encoded=True, Base64 decodes the file before parsing. 
+        :param path: path to quiz_bank.yaml 
+        :param default_quiz_id: (optional) id of the quiz to select by default
         """
         
         from .utils import is_base64_encoded_text, is_encrypted
@@ -1080,7 +1083,7 @@ class QuizLab:
             with open(path, "r", encoding="utf-8") as f:
                     data = yaml.safe_load(f) or {}
         self.quiz_bank = data
-        # Détecte si encrypted sur le titre
+        # Detects if encrypted on title
         #print("data.keys()", data.keys())
         if "title" in data.keys():  
             self.encrypted = is_encrypted(data["title"])
@@ -1099,13 +1102,13 @@ class QuizLab:
 
          
     def __load_quiz(self, quiz_id): 
-        """Charge en mémoire le quiz identifié par quiz_id (ne l'affiche pas)."""
+        """Loads the quiz identified by quiz_id into memory (does not display it)."""
         if quiz_id not in self.quiz_bank:
             raise KeyError(f"Quiz '{quiz_id}' not in bank.")
         entry = self.quiz_bank[quiz_id]
         if not self.encrypted: #non encoded or encoded
             question = entry.get("question", quiz_id)
-            quiz_type = entry.get("type", "qcm")
+            quiz_type = entry.get("type", "mcq")
             propositions = entry.get("propositions", {}) or {}
             constraints = entry.get("constraints", {}) or {}
 
@@ -1113,7 +1116,7 @@ class QuizLab:
             propositions = decode_dict_base64(propositions)
             
         if self.encrypted:
-            raise TypeError("Le fichier ne doit pas être encrypté")
+            raise TypeError("The file must not be encrypted.")
             
         return question, quiz_type, propositions, constraints
         
@@ -1143,12 +1146,12 @@ class QuizLab:
     # ---------------------------
 
     def set_exam_mode(self, value=True):
-        """Active/désactive le mode examen (cache le bouton Corriger et Tips si True)."""
+        """Enables/disables exam mode (hides the Correction and Tips button if True)."""
         self.exam_mode = bool(value)
         if value: self.test_mode = not bool(value)
         
     def set_test_mode(self, value=True):
-        """Active/désactive le mode Test (cache le bouton Corriger si True)."""
+        """Enables/disables test mode (hides the Correction and Tips button if True)."""
         self.test_mode = bool(value)
         if value: self.exam_mode = not bool(value) 
         
@@ -1156,11 +1159,11 @@ class QuizLab:
         self.SHEET_URL = url
 
     def available_quizzes(self):
-        """Retourne la liste des quiz ids disponibles dans la bank."""
+        """Returns the list of quiz ids available in the database."""
         return [key for key in self.quiz_bank.keys() if key != 'title']
 
 
     def get_propositions(self, quiz_id):
-        """Retourne la liste des labels (propositions) du quiz courant."""
+        """Returns the list of labels (proposals) for the current quiz."""
         propositions = self._load_quiz(quiz_id)
         return list(self.propositions.keys())
