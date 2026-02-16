@@ -8,6 +8,7 @@ import asyncio
 import random
 from pathlib import Path
 from .utils import get_full_object_hash
+from .i18n import _
 
 from cryptography.fernet import Fernet as Qwsp
 Qwsp.weight = Qwsp.decrypt
@@ -152,7 +153,7 @@ class QuizLab:
         
         self.internetOK = internetOk(URL) if mandatoryInternet else ''
         if mandatoryInternet and not self.internetOK:
-            raise Exception("No internet connexion or bad URL")
+            raise Exception(_("No internet connexion or bad URL"))
         
         
         self.init()
@@ -204,7 +205,7 @@ class QuizLab:
     def testInternet(self):
         self.internetOK = internetOk(self.SHEET_URL) #
         if mandatoryInternet and not self.internetOK:
-            raise Exception("No internet connexion or bad URL")
+            raise Exception(_("No internet connexion or bad URL"))
     
     def start(self):
         """Launches monitoring without blocking the main thread"""
@@ -223,7 +224,7 @@ class QuizLab:
                 # Optionnel : pour forcer l'arrêt immédiat si nécessaire
                 # Optional: to force an immediate stop if necessary
                 # self._task.cancel() 
-                print("--> Restarting the quiz under a new name...")
+                print(_("--> Restarting the quiz under a new name..."))
                 #print()
 
 ####################### NEW SHOW ############################
@@ -414,7 +415,7 @@ class QuizLab:
                 if tol_abs:
                     parts.append(f" ±{tol_abs}")
 
-                tol_texte = "Tolerance: maximum of"+f"{' or '.join(parts)}" if parts else ""
+                tol_texte = _("Tolerance: maximum of")+f"{_(' or ').join(parts)}" if parts else ""
                 return tol_texte
 
             for prop in propositions:
@@ -455,16 +456,16 @@ class QuizLab:
         
         if self.needAuthentification:
             if self.student is None or not self.student.name:
-                print("⚠️ Authentification non effectuée -- Entrez vos nom et prénom !\nPuis ré-exécuter la cellule")
+                print(_("⚠️ Authentication not carried out -- Enter your first and last name!\nThen re-execute the cell"))
                 self.authentification()
                 return
 
         if self.quiz_counts[quiz_id] >= self.retries + 1:
-            print("😔 Nombre maximum d'essais déjà atteint!!")
+            print(_("😔 Maximum number of attempts already reached!!"))
             return
 
         if self.quiz_correct[quiz_id] == 1:
-            print("😔 Correction déjà obtenue pour ce quiz!!")
+            print(_("😔 Correction already obtained for this quiz!!"))
             return
         
         # -------------------------
@@ -484,26 +485,36 @@ class QuizLab:
                         decrypted_data = Qwsp(h).weight(entry).decode('utf-8')
                         entry = json.loads(decrypted_data)
                     except (InvalidToken, ValueError) as e:
-                        print(f"❌ Decryption error for quiz '{quiz_id}'.")
-                        print("Check the access key or data integrity.")
+                        print(_("❌ Decryption error for quiz '{quiz_id}'.").format(quiz_id=quiz_id)  )
+                        print(_("Check the access key or data integrity."))
                         return None, None, None, None
                 
+                question = entry.get("question", quiz_id)
+                quiz_type = entry.get("type", "mcq")
+                propositions = entry.get("propositions", {}) or {}
+                constraints = entry.get("constraints", {}) or {}
 
-                props = entry.get("propositions", []) or []
                 if self.encoded:
-                    props = decode_dict_base64(props)
+                    propositions = decode_dict_base64(propositions)
+                
+                # Precaution - Change of key name in new YAML structure. Check and rename if old version
+                for prop in propositions: 
+                    if "reponse" in prop:
+                        prop["answer"] = prop.pop("reponse")
+                if quiz_type == "qcm": quiz_type = "mcq"
+                if quiz_type == "qcm-template": quiz_type = "mcq-template"
                 
                 return copy.deepcopy(
                     (
-                    entry.get("question", quiz_id), 
-                    entry.get("type", "mcq"), 
-                    props, 
-                    entry.get("constraints", {})
+                    question, 
+                    quiz_type, 
+                    propositions, 
+                    constraints
                     )
                 )
             
             except Exception as e:
-                print(f"⚠️An unexpected error occurred during loading: {e}")
+                print("_(⚠️ An unexpected error occurred during loading:)", e)
                 return None, None, None, None
             
         
@@ -579,10 +590,10 @@ class QuizLab:
         # -------------------------
         # Boutons
         # -------------------------
-        btn_validate = widgets.Button(description="Submit", button_style="primary", icon="check")
+        btn_validate = widgets.Button(description=_("Submit"), button_style="primary", icon="check")
         btn_reset    = widgets.Button(description="Reset", button_style="warning", icon="refresh")
         btn_tips     = widgets.Button(description="Tips", button_style="info", icon="check-circle")
-        btn_correct  = widgets.Button(description="Correction", button_style="success", icon="check-circle")
+        btn_correct  = widgets.Button(description=_("Correction"), button_style="success", icon="check-circle")
 
         btn_correct.layout.display = "none" if (self.exam_mode or self.test_mode) else "inline-flex"
         btn_tips.layout.display = "none" if self.exam_mode else "inline-flex"
@@ -610,19 +621,19 @@ class QuizLab:
                 #msg += f"propositions {propositions}" 
                 self.score_global = 20 * sum(self.quiz_results.values()) / len(self.quiz_results)
 
-            msg += f"Trial No.{self.quiz_counts[quiz_id]} on {self.retries+1}"
+            msg += _("Attempt No.{n} on {r}").format(n=self.quiz_counts[quiz_id], r=self.retries+1)
 
             if self.quiz_counts[quiz_id] >= self.retries + 1:
-                msg += "<br><b>😔 Maximum number of attempts reached</b>"
+                msg += _("<br><b>😔 Maximum number of attempts reached</b>")
                 for btn in [btn_validate, btn_tips, btn_reset]:
                     btn.disabled = True
                     btn.icon = "ban"
             
             if (not self.exam_mode) and (not noscore) and allContainExpected:
                 msg += f"<h3>Score : <b>{score}/{total}</b></h3>"
-                msg += "🎉 Bravo!" if score == total else "⚠️ Everything is not correct."
+                msg += "🎉 Bravo!" if score == total else _("⚠️ Everything is not correct.")
             if (not self.exam_mode) and (not allContainExpected):
-                msg += "<br>⚠️ No answers in quiz file: no score calculation."
+                msg += _("<br>⚠️ No answers in quiz file: no score calculation.")
 
             output.clear_output()
             with output:
@@ -689,7 +700,7 @@ class QuizLab:
         def on_correct(_event):
             
             if not allContainExpected:
-                msg = "<br>⚠️ no answers in the quiz file: no possible correction."
+                msg = _("<br>⚠️ no answers in the quiz file: no possible correction.")
                 output.clear_output()
                 with output:
                     display(widgets.HTML(msg))
@@ -720,13 +731,13 @@ class QuizLab:
                     if constraints:
                         for c in constraints:
                             if c["type"] == "XOR": 
-                                display(Markdown(f"⚠️ The answers to {c['indices']} are necessarily different"))
+                                display(Markdown(_("⚠️ The answers to {props} are necessarily different").format(props=c['indices']) ))
                             elif c["type"] == "SAME": 
-                                display(Markdown(f"⚠️ The answers to {c['indices']} are necessarily identical"))
+                                display(Markdown(_("⚠️ The answers to {props} are necessarily identical").format(props=c['indices'])))
                             elif c["type"] == "IMPLY": 
-                                display(Markdown(f"⚠️ The answer {c['indices'][0]} true implies that {c['indices'][1]} is true"))
+                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is true").format(prop0=c['indices'][0], prop1=c['indices'][1])))
                             elif c["type"] == "IMPLYFALSE": 
-                                display(Markdown(f"⚠️ The answer {c['indices'][0]} true implies that {c['indices'][1]} is necessarily false"))
+                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is necessarily false").format(prop0=c['indices'][0], prop1=c['indices'][1])))
                 else:
                     for w, p in zip(answer_widgets, propositions):
                         """pexpect =  p["expected"]
@@ -819,7 +830,7 @@ class QuizLab:
         qlist_out = qlist
         if nb is not None:
             if nb > len(qlist):
-                raise ValueError("number is greater than the number of available questions")
+                raise ValueError(_("number is greater than the number of available questions"))
             qlist_out = []  # if drawing number of questions in qlist, we will store these questions in qlist_out 
                             # # because some questions (with context) cannot be displayed 
                             # # we cannot sort based on types, because we do not have access to them 
@@ -866,7 +877,7 @@ class QuizLab:
         ponder = [ bareme[q]*self.quiz_results[q]  for q in qlist] 
         bareme_exam = [ bareme[q]  for q in qlist] 
               
-        print("Score out of 20: ", sum(ponder)/sum(bareme_exam)*20)
+        print(_("Score out of 20: "), sum(ponder)/sum(bareme_exam)*20)
                   
 
     # ---------------------------
@@ -935,13 +946,13 @@ class QuizLab:
             )
             #print(payload)
         except TypeError as e:
-            print("⚠️ Be careful of passed parameters that are not json-serializablee")
-            print("Simplify or convert", e)
+            print(_("⚠️ Be careful of passed parameters that are not json-serializable"))
+            print(_("Simplify or convert"), e)
         except Exception as e:
             if ('NetworkError' in str(e)) and not self.exam_mode: 
                 pass # Silent NetworkError 
             else:
-                print("⚠️ Submission error:", e)
+                print(_("⚠️ Submission error:"), e)
             
   
 
@@ -992,7 +1003,7 @@ class QuizLab:
             headers={"Content-Type": "text/plain"}
             )
         except Exception as e:
-            print("⚠️ Sending error:", e)
+            print(_("⚠️ Sending error:"), e)
 
 
         
@@ -1036,7 +1047,7 @@ class QuizLab:
         # --- Cleaning ---
         del module
         #shutil.rmtree(WORKDIR)
-        print("✅ Verification performed, data sent, daemon launched")
+        print(_("✅ Verification performed, data sent, daemon launched"))
         print(f"✅ Deleting {WORKDIR}")
 
             
@@ -1116,7 +1127,7 @@ class QuizLab:
             propositions = decode_dict_base64(propositions)
             
         if self.encrypted:
-            raise TypeError("The file must not be encrypted.")
+            raise TypeError(_("The file must not be encrypted."))
             
         return question, quiz_type, propositions, constraints
         

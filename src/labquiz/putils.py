@@ -638,6 +638,7 @@ def correctAll(students_answers, quiz, df, seuil=0, exam_questions=None, weights
             except Exception as e:
                 print(f"Erreur pour la correction de {s}, quiz_id={quiz_id}")
                 #print(given, type(given), e)
+            #print(f"Correction de {s}, quiz_id={quiz_id}")
             Res.loc[s, quiz_id] = score/score_max
         Res.loc[s, 'maxpts'] = pd.Series([bareme[q] for q in exam_questions[s]]).sum()
     Res = Res.infer_objects(copy=False).dropna(axis=1, how="all").fillna(0)

@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import inspect
+from .i18n import _
 
 from types import ModuleType
 from typing import Iterable, Tuple
@@ -110,21 +111,21 @@ class StudentForm:
         self.output = widgets.Output()
 
         self.student_lastname = widgets.Text(
-        placeholder="FAMILY NAME",
-        description="FAMILY NAME:",
+        placeholder=_("FAMILY NAME"),
+        description=_("FAMILY NAME:"),
         style={'description_width': '70px'},
         layout=widgets.Layout(width="250px"),
         continuous_update=True
     )   
         self.student_firstname = widgets.Text(
-        placeholder="First name",
-        description="First name:",
+        placeholder=_("First name"),
+        description=_("First name:"),
         style={'description_width': '70px'},
         layout=widgets.Layout(width="250px"),
         continuous_update=True
     )
         self.save_name_button = widgets.Button(
-        description="Save",
+        description=_("Save"),
         button_style="info",
         icon="check"
     )
@@ -139,17 +140,17 @@ class StudentForm:
         self.validate(None)  # Attend la synchro - disabled au départ
 
 
-    def on_submit(self, _):
+    def on_submit(self, _button):
         self.on_save(None)
     
     
-    def validate(self, _):
+    def validate(self, _button):
         self.save_name_button.disabled = not (
             self.student_firstname.value.strip()
             and self.student_lastname.value.strip()
         )
 
-    def on_save(self, _):
+    def on_save(self, _button):
         self.name = (
             self.student_lastname.value.strip()
             + " "
@@ -162,12 +163,13 @@ class StudentForm:
         
         with self.output:
             self.output.clear_output()
-            display(Markdown(f"✔️ **Name recorded** `{self.name}`"))
+            display(Markdown(_("✔️ **Name recorded**") + f" `{self.name}`"))
 
     
     def display(self):
+        enter_msg = _("Enter your first name and LAST NAME here.")
         form = widgets.VBox([
-            widgets.HTML("<h2 style='margin-top: 0; margin-bottom: 0; line-height: 1.2;'>Enter your first name and LAST NAME here </h2>"),
+            widgets.HTML("<h2 style='margin-top: 0; margin-bottom: 0; line-height: 1.2;'> {enter_msg} </h2>".format(enter_msg=enter_msg)),
             #widgets.HTML("<b> &nbsp;&nbsp;&nbsp; ⚠️ (appuyez sur Entrée pour valider) </b>"),
             widgets.HBox([self.student_firstname, self.student_lastname]),
             self.save_name_button,
@@ -705,6 +707,14 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
     # another reference matrix is not passed as an argument 
     # Format: (User_Response, Expected)
     
+    # Precaution - Change of key name in new YAML structure. Check and rename if old version
+    for prop in propositions: 
+        if "reponse" in prop:
+            prop["answer"] = prop.pop("reponse")
+    if quiz_type == "qcm": quiz_type = "mcq"
+    if quiz_type == "qcm-template": quiz_type = "mcq-template"
+
+    # Weights
     if weights is None:
         default_weights = {
                 (True, True):   1,  # Vrai Positif
@@ -724,7 +734,7 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
     score = 0.0
     total_possible = 0.0
     if not isinstance(user_answers, dict): 
-        print(f"❌ Erreur : user_answers doit être un dictionnaire")
+        print(_("❌ Error : user_answers must be a dictionary."))
 
     # Correction in the case of a template
     if quiz_type in ['numeric-template', 'mcq-template']:
@@ -919,7 +929,7 @@ def check_installed_package_integrity():
     
     spec = importlib.util.find_spec("labquiz")
     if spec is None:
-        print("⚠️ LabQuiz is not installed!")
+        print(_("⚠️ LabQuiz is not installed!"))
         return 
 
     PACKAGE_NAME = __package__.split(".", 1)[0]
@@ -936,9 +946,9 @@ def check_installed_package_integrity():
     installed_hash, f = package_hash(labdir, exclude=EXCLUDE)
     recorded_hash = get_package_hash("labquiz")
     if installed_hash != recorded_hash:
-        print(f"""⚠️ Package hash different than expected -- this is recorded 
+        print(_("⚠️ Package hash different than expected -- this is recorded"),""" 
               Installed: {installed_hash} 
-              Expected: {recorded_hash}""")
+              Expected: {recorded_hash}""".format(installed_hash=installed_hash, recorded_hash=recorded_hash))
         return False
     print(f"LabQuiz, {PACKAGE_NAME} version {__version__}")
     return True
