@@ -105,6 +105,7 @@ class QuizLab:
     def __init__(self,  URL="", QUIZFILE="", needAuthentification=True, retries=2,
                  exam_mode=False, test_mode=False, 
                  mandatoryInternet=False, CHECKALIVE=600,
+                 INACTIVITY_TIMEOUT=3600,
                  in_streamlit=False):
         from .utils import StudentForm,  check_installed_package_integrity
         
@@ -139,6 +140,8 @@ class QuizLab:
         #self.question = ""
         self.machine_id = ""
         self.internetOK = ''
+        self.last_activity = time.monotonic()
+        self.inactivity_timeout = INACTIVITY_TIMEOUT
         
         self.style = widgets.HTML( 
             "<style>"
@@ -226,7 +229,16 @@ class QuizLab:
                 # self._task.cancel() 
                 print(_("--> Restarting the quiz under a new name..."))
                 #print()
+    def register_activity(self):
+        """Shall be called on each form submission to update the last activity time."""
+        self.last_activity = time.monotonic()
 
+    def is_active(self):
+        active = (time.monotonic() - self.last_activity) < self.inactivity_timeout
+        if not active:
+            print(_("Inactivity timeout... Pausing event monitoring..."))
+        return active
+    
 ####################### NEW SHOW ############################
     checkbox_style = """
      /* base */
@@ -606,6 +618,7 @@ class QuizLab:
         # Callbacks
         # -------------------------
         def on_validate(_event):
+            self.register_activity()
             self.quiz_counts[quiz_id] += 1
             msg = ""
             user_answers = {p["label"]:w.value for p,w in zip(propositions,answer_widgets)} 
@@ -661,24 +674,26 @@ class QuizLab:
                 )
 
         def on_reset(_event):
+            self.register_activity()
             for w in answer_widgets:
                 if hasattr(w, "value"):
                     w.value = False if quiz_type == "mcq" else 0
             output.clear_output()
 
         def on_tips(_event):
+            self.register_activity()
             output.clear_output()
             with output:
-                if quiz_type == "mcq":
+                if quiz_type in ["mcq", "mcq-template"]:
                     for w, p in zip(answer_widgets, propositions):
                         if w.value != p.get("expected", False) and p.get("tip"):
                             display(Markdown(f"ℹ️ **{p.get('label','')}** — {p['tip']}"))
                 else:
                     for w, p in zip(answer_widgets, propositions):
-                        diff = abs(w.value - p.get("expected", 0))
+                        pexpected = float(p.get("expected", 0))
+                        diff = abs(w.value - pexpected)
                         tol = max(p.get("tolerance_abs", 0), 
-                              p.get("tolerance", 0) * abs(p.get("expected", 0)))
-                        
+                              p.get("tolerance", 0) * abs(pexpected))                  
                         if (diff> tol) and p.get("tip"):
                             display(Markdown(f"ℹ️ **{p.get('label','')}** — {p['tip']}"))
                         """tip = p.get("tip")
@@ -698,7 +713,7 @@ class QuizLab:
 
 
         def on_correct(_event):
-            
+            self.register_activity()
             if not allContainExpected:
                 msg = _("<br>⚠️ no answers in the quiz file: no possible correction.")
                 output.clear_output()
@@ -961,7 +976,9 @@ class QuizLab:
         from .utils import get_big_integrity_hash
         
         while not self.stop_event.is_set():
-            if self.keep_alive:
+            #if self.keep_alive:
+            # send event only if keep_alive and active (no timeout of activity)
+            if self.keep_alive and self.is_active():
                 parameters = self._getParameters()
                 big_hash = get_big_integrity_hash(self, modules = ['main', 'utils'],
                              WATCHLIST=['exam_mode', 'test_mode', 'retries'])
@@ -973,7 +990,7 @@ class QuizLab:
                 # Wait 600s OR until stop_event is activated
                 await asyncio.wait_for(self.stop_event.wait(), timeout=self._CHECKALIVE)
             except asyncio.TimeoutError:
-                # If the timeout expires, we simply continue the while loop
+                # If the asyncio timeout expires, we simply continue the while loop
                 pass
 
                 
