@@ -79,7 +79,7 @@ def main():
         lines.append(f"{file_hash(f)}  {f}")
 
     lines.append("")
-    full_hash, _ = package_hash()
+    full_hash, _ = package_hash(EXCLUDE)
     lines.append("[package]")
     lines.append(full_hash)
 

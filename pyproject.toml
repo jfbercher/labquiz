@@ -1,17 +1,15 @@
-
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-where = ["src"]
-
 [project]
 name = "labquiz"
-version = "0.7.9.1"
+version = "0.8.2"
 description = "Quizzes intégrés pour Jupyter"
-license = "GPL-3.0-or-later"
-authors = [{ name="J.-F. Bercher", email="jf.bercher@esiee.fr" }]
+license = { text = "GPL-3.0-or-later" }
+authors = [
+    { name = "J.-F. Bercher", email = "jf.bercher@esiee.fr" }
+]
 dependencies = [
     "ipywidgets>=7.6.5",
     "pyyaml",
@@ -20,5 +18,14 @@ dependencies = [
     "numpy",
     "pandas",
     "requests",
-] 
-keywords = ["quizzes", "jupyter", "hash:825b19ef2c49a9d2483e7bc5a725947f92186534d85efe0180b6dcf4a73d2cdc"]
+]
+keywords = ["quizzes", "jupyter", "hash:cd752c831e25670dcaf484904ce55118aa5966ccfb5a8f91c2dcc6acb5f48155"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"labquiz" = ["**/*.mo", "**/*.po"]
