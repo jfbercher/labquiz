@@ -764,7 +764,7 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
         user_val = bool(answer)
         case = (user_val, expected)
         
-        if quiz_type == "mcq":
+        if quiz_type in ["mcq", "mcq-template"]:
             #1. Calculation of the theoretical total
             total_possible += prop.get("bonus", default_weights[(True, True)]) if expected \
                    else prop.get("bonus", default_weights[(False, False)])
@@ -780,12 +780,13 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
                 # We make sure that the penalty is indeed deducted
                 score -= abs(val)
 
-        elif quiz_type == "numeric":
+        elif quiz_type in ["numeric", "numeric-template"]:
+            pexpected = float(prop.get("expected", 0))
             bonus = prop.get("bonus", 1)
             total_possible += bonus
-            diff = abs(answer - prop.get("expected", 0))
+            diff = abs(answer - pexpected)
             tol = max(prop.get("tolerance_abs", 0), 
-                      prop.get("tolerance", 0.01) * abs(prop.get("expected", 0))) 
+                      prop.get("tolerance", 0.01) * abs(pexpected)) 
             score += bonus if diff <= tol else -abs(prop.get("malus", 0))
 
            
