@@ -267,7 +267,8 @@ class QuizLab:
             color: currentColor; 
         } 
     
-    
+
+
 .custom.widget-checkbox input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
@@ -404,7 +405,8 @@ class QuizLab:
 
         if quiz_type == "mcq":
             for prop in propositions:
-                cb = widgets.Checkbox(value=False)
+                '''
+                cb = widgets.Checkbox(value=False, style={'description_width': '20%'})
                 cb.add_class("custom") 
                 cb.layout = widgets.Layout(margin="0px", padding="0px")
 
@@ -415,7 +417,37 @@ class QuizLab:
                 row.layout = widgets.Layout(align_items='flex-start', margin='4px 0', padding="0px")
 
                 rows.append(row)
+                widgets_list.append(cb)'''
+
+                # Checkbox : on lui donne une largeur fixe (ou flex-basis) 
+                # pour éviter qu'elle ne bouge
+                cb = widgets.Checkbox(value=False, indent=False) # indent=False aide aussi
+                cb.add_class("custom") 
+                cb.layout = widgets.Layout(
+                    width='auto', 
+                    flex='0 0 35px',      # Fixed width for the checkbox area
+                    margin='0px 0 0 30px'   # Margin: Top 0, Right 0, Bottom 0, Left 10px
+                )
+                
+
+                # Label : on retire la marge négative et on utilise flex-grow
+                lbl = self._make_question_widget(prop["proposition"])
+                lbl.layout = widgets.Layout(
+                    flex='1 1 auto',  # Prend tout l'espace restant
+                    width='auto',     # On laisse flexbox gérer la largeur
+                    margin='0px'      # Plus besoin de bidouiller les marges
+                )
+
+                row = widgets.HBox([cb, lbl])
+                row.layout = widgets.Layout(
+                    #align_items='center', # Aligne verticalement au centre (mieux pour les checkbox)
+                    align_items='baseline', #'flex-start', # Alignement en haut
+                    width='100%'
+                )
+
+                rows.append(row)
                 widgets_list.append(cb)
+
 
         elif quiz_type == "numeric":
             def tolerance_text(prop):
@@ -734,12 +766,19 @@ class QuizLab:
                         w.remove_class("mismatch")
                         w.add_class("custom")
                         if w.value == p.get("expected", False):
+                            correct = "Good answer ✅ - "
                             w.add_class("match")
                         else:
+                            correct = "Bad answer &nbsp;&nbsp;❌ - "
                             w.add_class("mismatch")
                         
-                        newlbl = self._make_question_widget(f"<b>{p.get('label','')}</b> - " + p["proposition"])
-                        newlbl.layout = widgets.Layout(width="70%", margin="5px 0 0 -15%")
+                        newlbl = self._make_question_widget(f"{correct:20}".format(correct) +f"<b>{p.get('label','')}</b> - " + p["proposition"])
+                        #newlbl.layout = widgets.Layout(width="70%", margin="5px 0 0 -15%")
+                        newlbl.layout = widgets.Layout(
+                            flex='1 1 auto',  
+                            width='auto',     
+                            margin='0px'      
+                        )
                         r.children = [r.children[0], newlbl]
                         if p.get("answer"):
                             display(Markdown(f"{'✅' if p.get('expected') else '❌'} **{p.get('label','')}** — {p['answer']}"))
