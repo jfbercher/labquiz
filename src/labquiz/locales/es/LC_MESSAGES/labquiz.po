@@ -1,5 +1,5 @@
-# French translations for PACKAGE package
-# Traductions françaises du paquet PACKAGE.
+# Spanish translations for PACKAGE package
+# Traductions espagnoles du paquet PACKAGE.
 # Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Jean-François BERCHER <jf.bercher@esiee.fr>, 2026.
@@ -11,8 +11,8 @@ msgstr ""
 "POT-Creation-Date: 2026-02-20 19:24+0100\n"
 "PO-Revision-Date: 2026-02-12 20:02+0100\n"
 "Last-Translator: Jean-François BERCHER <jf.bercher@esiee.fr>\n"
-"Language-Team: French <traduc@traduc.org>\n"
-"Language: fr\n"
+"Language-Team: Spanish <traduc@traduc.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,174 +20,178 @@ msgstr ""
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:114
 msgid "FAMILY NAME"
-msgstr "NOM DE FAMILLE"
+msgstr "APELLIDO"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:115
+#, fuzzy
 msgid "FAMILY NAME:"
-msgstr "NOM DE FAMILLE"
+msgstr "APELLIDO"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:121
 msgid "First name"
-msgstr "Prénom"
+msgstr "Nombre"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:122
+#, fuzzy
 msgid "First name:"
-msgstr "Prénom"
+msgstr "Nombre"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:128
 msgid "Save"
-msgstr "Enregistrer"
+msgstr "Guardar"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:166
 msgid "✔️ **Name recorded**"
-msgstr "✔️ **Nom enregistré**"
+msgstr "✔️ **Nombre registrado**"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:170
 msgid "Enter your first name and LAST NAME here."
-msgstr "Entrez votre prénom et votre NOM ici."
+msgstr "Introduzca su nombre y APELLIDO aquí."
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:737
 msgid "❌ Error : user_answers must be a dictionary."
-msgstr "❌ Erreur : user_answers doit être un dictionnaire."
+msgstr "❌ Error: user_answers debe ser un diccionario."
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:933
 msgid "⚠️ LabQuiz is not installed!"
-msgstr "⚠️ LabQuiz n'est pas installé !"
+msgstr "⚠️ ¡LabQuiz no está instalado!"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:950
 msgid "⚠️ Package hash different than expected -- this is recorded"
-msgstr "⚠️ Hash du package différent de celui attendu -- ceci est enregistré "
+msgstr "⚠️ Hash del paquete diferente al esperado -- esto ha sido registrado"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:159
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:211
 msgid "No internet connexion or bad URL"
-msgstr "Pas de connexion Internet ou URL incorrecte"
+msgstr "Sin conexión a Internet o URL incorrecta"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:230
 msgid "--> Restarting the quiz under a new name..."
-msgstr "--> Redémarrage du quiz sous un nouveau nom..."
+msgstr "--> Reiniciando el cuestionario bajo un nuevo nombre..."
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:239
 msgid "Inactivity timeout... Pausing event monitoring..."
-msgstr "Délai d'inactivité... Suspension de la surveillance des événements..."
+msgstr "Tiempo de inactividad agotado... Pausando la supervisión de eventos..."
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:462
 msgid "Tolerance: maximum of"
-msgstr "Tolérance : maximum de"
+msgstr "Tolerancia: máximo de"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:503
 msgid ""
 "⚠️ Authentication not carried out -- Enter your first and last name!\n"
 "Then re-execute the cell"
 msgstr ""
-"⚠️ Authentification non effectuée -- Entrez votre prénom et votre nom !\n"
-"Puis réexécutez la cellule"
+"⚠️ Autenticación no realizada -- ¡Introduzca su nombre y apellido!\n"
+"Luego vuelva a ejecutar la celda"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:508
 msgid "😔 Maximum number of attempts already reached!!"
-msgstr "😔 Nombre maximum de tentatives déjà atteint !!"
+msgstr "😔 ¡Número máximo de intentos ya alcanzado!"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:512
 msgid "😔 Correction already obtained for this quiz!!"
-msgstr "😔 Correction déjà obtenue pour ce quiz !!"
+msgstr "😔 ¡Corrección ya obtenida para este cuestionario!"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:532
 #, python-brace-format
 msgid "❌ Decryption error for quiz '{quiz_id}'."
-msgstr "❌ Erreur de décryptage pour le quiz “{quiz_id}"
+msgstr "❌ Error de descifrado para el cuestionario '{quiz_id}'."
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:533
 msgid "Check the access key or data integrity."
-msgstr "Vérifiez la clé d'accès ou l'intégrité des données."
+msgstr "Verifique la clave de acceso o la integridad de los datos."
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:637
 msgid "Submit"
-msgstr "Soumettre"
+msgstr "Enviar"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:640
 msgid "Correction"
-msgstr "Correction"
+msgstr "Corrección"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:669
 #, python-brace-format
 msgid "Attempt No.{n} on {r}"
-msgstr "Tentative n°{n} sur {r}"
+msgstr "Intento n°{n} de {r}"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:672
 msgid "<br><b>😔 Maximum number of attempts reached</b>"
-msgstr "<br><b>😔 Nombre maximum de tentatives atteint</b>"
+msgstr "<br><b>😔 Número máximo de intentos alcanzado</b>"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:679
 msgid "⚠️ Everything is not correct."
-msgstr "⚠️ Tout n'est pas correct."
+msgstr "⚠️ No todo es correcto."
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:681
 msgid "<br>⚠️ No answers in quiz file: no score calculation."
-msgstr "<br>⚠️ Aucune réponse dans le fichier quiz : aucun calcul de score."
+msgstr ""
+"<br>⚠️ Sin respuestas en el archivo del cuestionario: sin cálculo de "
+"puntuación."
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:750
 msgid "<br>⚠️ no answers in the quiz file: no possible correction."
 msgstr ""
-"<br>⚠️ Aucune réponse dans le fichier quiz : aucune correction possible."
+"<br>⚠️ Sin respuestas en el archivo del cuestionario: corrección imposible."
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:769
 msgid "Good answer ✅ - "
-msgstr "Bonne réponse ✅ - "
+msgstr "Buena respuesta ✅ - "
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:772
 msgid "Bad answer &nbsp;&nbsp;❌ - "
-msgstr "Mauvaise réponse &nbsp;&nbsp;❌ - "
+msgstr "Respuesta incorrecta &nbsp;&nbsp;❌ - "
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:788
 #, python-brace-format
 msgid "⚠️ The answers to {props} are necessarily different"
-msgstr "⚠️ Les réponses à {props} sont nécessairement différentes"
+msgstr "⚠️ Las respuestas a {props} son necesariamente diferentes"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:790
 #, python-brace-format
 msgid "⚠️ The answers to {props} are necessarily identical"
-msgstr "⚠️ Les réponses à {props} sont nécessairement identiques"
+msgstr "⚠️ Las respuestas a {props} son necesariamente idénticas"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:792
 #, fuzzy, python-brace-format
 msgid "⚠️ The answer {prop0} true implies that {prop1} is true"
-msgstr "⚠️ La réponse {prop0} vraie implique que {c[“indices”][1]} est vraie"
+msgstr "⚠️ La respuesta {prop0} verdadera implica que {prop} es verdadera"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:794
 #, python-brace-format
 msgid "⚠️ The answer {prop0} true implies that {prop1} is necessarily false"
 msgstr ""
-"⚠️ La réponse {prop0} vraie implique que {prop1} est nécessairement fausse"
+"⚠️ La respuesta {prop0} verdadera implica que {prop1} es necesariamente falsa"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:887
 msgid "number is greater than the number of available questions"
-msgstr "Le nombre est supérieur au nombre de questions disponibles"
+msgstr "El número es superior al número de preguntas disponibles"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:934
 msgid "Score out of 20: "
-msgstr "Score sur 20 :"
+msgstr "Puntuación sobre 20: "
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1003
 msgid "⚠️ Be careful of passed parameters that are not json-serializable"
 msgstr ""
-"⚠️ Attention aux paramètres transmis qui ne sont pas sérialisables en json"
+"⚠️ Atención a los parámetros transmitidos que no son serializables en JSON"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1004
 msgid "Simplify or convert"
-msgstr "Simplifier ou convertir"
+msgstr "Simplificar o convertir"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1009
 msgid "⚠️ Submission error:"
-msgstr "⚠️ Erreur de soumission :"
+msgstr "⚠️ Error de envío:"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1062
 msgid "⚠️ Sending error:"
-msgstr "⚠️ Erreur d'envoi :"
+msgstr "⚠️ Error de envío de datos:"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1106
 msgid "✅ Verification performed, data sent, daemon launched"
-msgstr "✅ Vérification effectuée, données envoyées, démon lancé "
+msgstr "✅ Verificación realizada, datos enviados, demonio iniciado"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1186
 msgid "The file must not be encrypted."
-msgstr "Le fichier ne doit pas être crypté."
+msgstr "El archivo no debe estar cifrado."
