@@ -1,16 +1,16 @@
-# Hashes générés le 2026-02-17T14:05:14.928565
+# Hashes générés le 2026-02-20T15:32:25.281965
 # Dossier analysé : /Users/bercherj/JFB/dev/labquizdev/src/labquiz
-# Version du package : 0.8.2
+# Version du package : 0.8.5
 
 [files]
-4b5c0fc91a3ca084eccec3d7e9190c289bedac9745efc278bc1d2a9155a96112  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/__init__.py
-424f0fc97fb88d3e2bbb60a8c1416344234628de7de8f1d3a4303735b3972247  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/i18n.py
-1645fa42ebc729ba555130f5cd126c5e0463796b7383696d8277b5129b9934ba  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py
-2dbd165761e1b6bfa77c1b4e03c0f4039b1d1e431c5c931f8dbf5b5f15c274df  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/putils.py
-07a696436af9c712d31dbe93254f8a535058de485652f79f19fb4e0e17ee26a2  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py
+473c7034537b01b120a80a682df8502363198b09f4a6d93110e3a1a7aae1bad1  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/__init__.py
+61917158fa500d0ffb93cf1106452b2997841a6939ee2d6c79a6349aa9c95362  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/i18n.py
+4063c78c8b5d5b085e9aba1a2fe4b51ba53a3fdc1322631e01ef9b77a4791c48  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py
+e43a8156faf0ec0ead118e7b00a79825d0a2c9bb7551405da2acba83788e5684  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/putils.py
+bca3c6132e7c0666cd40f51c3ee010aa80945ec41b6776ea1cbb96fb78ac5245  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py
 
 [package]
-cd752c831e25670dcaf484904ce55118aa5966ccfb5a8f91c2dcc6acb5f48155
+f4e677cd85ef11836d4449a49822f2451bdda9c58d5e5af6d565fca29e706f8b
 
 [package_without_putils]
-cd752c831e25670dcaf484904ce55118aa5966ccfb5a8f91c2dcc6acb5f48155
+f4e677cd85ef11836d4449a49822f2451bdda9c58d5e5af6d565fca29e706f8b
