@@ -766,10 +766,10 @@ class QuizLab:
                         w.remove_class("mismatch")
                         w.add_class("custom")
                         if w.value == p.get("expected", False):
-                            correct = "Good answer ✅ - "
+                            correct = _("Good answer ✅ - ")
                             w.add_class("match")
                         else:
-                            correct = "Bad answer &nbsp;&nbsp;❌ - "
+                            correct = _("Bad answer &nbsp;&nbsp;❌ - ")
                             w.add_class("mismatch")
                         
                         newlbl = self._make_question_widget(f"{correct:20}".format(correct) +f"<b>{p.get('label','')}</b> - " + p["proposition"])
