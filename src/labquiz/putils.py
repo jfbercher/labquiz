@@ -323,7 +323,7 @@ def readData(URL, SECRET):
         r = requests.get(URL, params={"secret": SECRET})
         r.raise_for_status()
         df = pd.read_csv(StringIO(r.text)) 
-        df.student = df.student.apply(lambda s: s.strip().title() if isinstance(s, str) else s)  #Normalization of student column
+        df.student = df.student.apply(lambda s: s.strip() if isinstance(s, str) else s)  #Normalization of student column
         df["answers"] = df.answers.apply(lambda x: parse_custom_dict(x)) #Decoding answers column
         df["parameters"] = df.parameters.apply(lambda x: parse_custom_dict(x)) #Decoding answers column
         now = datetime.now().strftime("%H:%M:%S")

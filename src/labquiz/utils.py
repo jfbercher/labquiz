@@ -152,9 +152,9 @@ class StudentForm:
 
     def on_save(self, _button):
         self.name = (
-            self.student_lastname.value.strip()
+            self.student_lastname.value.strip().upper()
             + " "
-            + self.student_firstname.value.strip()
+            + self.student_firstname.value.strip().title()
         )
         if len(self.name.strip()) <= 1:
             import time
