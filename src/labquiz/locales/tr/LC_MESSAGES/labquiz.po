@@ -1,0 +1,190 @@
+# Turkish translations for labquiz package.
+# Traductions turques du paquet PACKAGE.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Jean-François BERCHER <jf.bercher@esiee.fr>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 19:24+0100\n"
+"PO-Revision-Date: 2026-02-20 20:32+0100\n"
+"Last-Translator: Jean-François BERCHER <jf.bercher@esiee.fr>\n"
+"Language-Team: French <traduc@traduc.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:114
+msgid "FAMILY NAME"
+msgstr "SOYAD"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:115
+msgid "FAMILY NAME:"
+msgstr "SOYAD:"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:121
+msgid "First name"
+msgstr "Ad"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:122
+msgid "First name:"
+msgstr "Ad:"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:128
+msgid "Save"
+msgstr "Kaydet"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:166
+msgid "✔️ **Name recorded**"
+msgstr "✔️ **İsim kaydedildi**"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:170
+msgid "Enter your first name and LAST NAME here."
+msgstr "Adınızı ve SOYADINIZI buraya girin."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:737
+msgid "❌ Error : user_answers must be a dictionary."
+msgstr "❌ Hata: user_answers bir sözlük (dictionary) olmalıdır."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:933
+msgid "⚠️ LabQuiz is not installed!"
+msgstr "⚠️ LabQuiz kurulu değil!"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:950
+msgid "⚠️ Package hash different than expected -- this is recorded"
+msgstr "⚠️ Paket karması beklenenden farklı -- bu kaydedildi"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:159
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:211
+msgid "No internet connexion or bad URL"
+msgstr "İnternet bağlantısı yok veya hatalı URL"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:230
+msgid "--> Restarting the quiz under a new name..."
+msgstr "--> Test yeni bir isimle yeniden başlatılıyor..."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:239
+msgid "Inactivity timeout... Pausing event monitoring..."
+msgstr "Hareketsizlik aşımı... Olay izleme duraklatılıyor..."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:462
+msgid "Tolerance: maximum of"
+msgstr "Tolerans: maksimum"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:503
+msgid ""
+"⚠️ Authentication not carried out -- Enter your first and last name!\n"
+"Then re-execute the cell"
+msgstr ""
+"⚠️ Kimlik doğrulama yapılmadı -- Adınızı ve soyadınızı girin!\n"
+"Ardından hücreyi tekrar çalıştırın"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:508
+msgid "😔 Maximum number of attempts already reached!!"
+msgstr "😔 Maksimum deneme sayısına ulaşıldı!!"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:512
+msgid "😔 Correction already obtained for this quiz!!"
+msgstr "😔 Bu test için düzeltme zaten alındı!!"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:532
+#, python-brace-format
+msgid "❌ Decryption error for quiz '{quiz_id}'."
+msgstr "❌ '{quiz_id}' testi için şifre çözme hatası."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:533
+msgid "Check the access key or data integrity."
+msgstr "Erişim anahtarını veya veri bütünlüğünü kontrol edin."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:637
+msgid "Submit"
+msgstr "Gönder"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:640
+msgid "Correction"
+msgstr "Düzeltme"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:669
+#, python-brace-format
+msgid "Attempt No.{n} on {r}"
+msgstr "Deneme No.{n} / {r}"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:672
+msgid "<br><b>😔 Maximum number of attempts reached</b>"
+msgstr "<br><b>😔 Maksimum deneme sayısına ulaşıldı</b>"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:679
+msgid "⚠️ Everything is not correct."
+msgstr "⚠️ Hepsi doğru değil."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:681
+msgid "<br>⚠️ No answers in quiz file: no score calculation."
+msgstr "<br>⚠️ Test dosyasında yanıt yok: puan hesaplanamadı."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:750
+msgid "<br>⚠️ no answers in the quiz file: no possible correction."
+msgstr "<br>⚠️ Test dosyasında yanıt yok: düzeltme mümkün değil."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:769
+msgid "Good answer ✅ - "
+msgstr "Doğru yanıt ✅ - "
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:772
+msgid "Bad answer &nbsp;&nbsp;❌ - "
+msgstr "Hatalı yanıt &nbsp;&nbsp;❌ - "
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:788
+#, python-brace-format
+msgid "⚠️ The answers to {props} are necessarily different"
+msgstr "⚠️ {props} yanıtları mutlaka farklı olmalıdır"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:790
+#, python-brace-format
+msgid "⚠️ The answers to {props} are necessarily identical"
+msgstr "⚠️ {props} yanıtları mutlaka aynı olmalıdır"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:792
+#, python-brace-format
+msgid "⚠️ The answer {prop0} true implies that {prop1} is true"
+msgstr "⚠️ {prop0} yanıtının doğru olması, {prop1} yanıtının da doğru olmasını gerektirir"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:794
+#, python-brace-format
+msgid "⚠️ The answer {prop0} true implies that {prop1} is necessarily false"
+msgstr "⚠️ {prop0} yanıtının doğru olması, {prop1} yanıtının mutlaka yanlış olmasını gerektirir"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:887
+msgid "number is greater than the number of available questions"
+msgstr "Sayı, mevcut soru sayısından fazladır"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:934
+msgid "Score out of 20: "
+msgstr "20 üzerinden puan: "
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1003
+msgid "⚠️ Be careful of passed parameters that are not json-serializable"
+msgstr "⚠️ Dikkat: Gönderilen parametreler JSON olarak serileştirilemez"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1004
+msgid "Simplify or convert"
+msgstr "Basitleştirin veya dönüştürün"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1009
+msgid "⚠️ Submission error:"
+msgstr "⚠️ Gönderim hatası:"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1062
+msgid "⚠️ Sending error:"
+msgstr "⚠️ Gönderme hatası:"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1106
+msgid "✅ Verification performed, data sent, daemon launched"
+msgstr "✅ Doğrulama yapıldı, veriler gönderildi, daemon başlatıldı"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1186
+msgid "The file must not be encrypted."
+msgstr "Dosya şifrelenmiş olmamalıdır."
