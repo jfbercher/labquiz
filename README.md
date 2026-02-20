@@ -11,4 +11,4 @@ Companion programs:
 
 Sponsor:
 
-![https://wwww.esiee.fr](esiee_logo_moyen.png)
+[![ESIEE Paris](esiee_logo_moyen.png)](https://wwww.esiee.fr)   
