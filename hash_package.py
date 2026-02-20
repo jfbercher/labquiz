@@ -12,7 +12,8 @@ except ImportError:
 
 PACKAGE_DIR=Path('/Users/bercherj/JFB/dev/labquizdev/src/labquiz')
 PACKAGE_NAME = "labquiz"  # nom du package tel qu'il sera installé
-EXCLUDE =  {"putils.py", "__pycache__", ".ipynb_checkpoints", ".DS_Store"}
+EXCLUDE =  {"putils.py", "__pycache__", ".ipynb_checkpoints", ".DS_Store", "make_language.mak"}
+EXCLUDE_EXT = [".pot", ".po~"]
 
 def file_hash(path: Path, algo="sha256") -> str:
     h = hashlib.new(algo)
@@ -22,15 +23,17 @@ def file_hash(path: Path, algo="sha256") -> str:
     return h.hexdigest()
 
 
-def package_hash(exclude=None, algo="sha256"):
+def package_hash(exclude=None, exclude_ext=None, algo="sha256"):
     h = hashlib.new(algo)
     exclude = exclude or set()
+    excluded_ext = exclude_ext or set()
 
     files = sorted(
         p for p in PACKAGE_DIR.rglob("*")
-        if p.is_file() and p.name not in exclude and  not any(ex in p.parts for ex in exclude)
+        if p.is_file() and p.name not in exclude and p.suffix not in excluded_ext and  not any(ex in p.parts for ex in exclude)
     )
-    print("files in package_hash", files)
+    #print("files in package_hash", files)
+    for f in files: print(f)
 
     for path in files:
         h.update(path.read_bytes())
@@ -79,12 +82,12 @@ def main():
         lines.append(f"{file_hash(f)}  {f}")
 
     lines.append("")
-    full_hash, _ = package_hash(EXCLUDE)
+    full_hash, _ = package_hash()
     lines.append("[package]")
     lines.append(full_hash)
 
     lines.append("")
-    partial_hash, _ = package_hash(EXCLUDE)
+    partial_hash, _ = package_hash(exclude=EXCLUDE, exclude_ext=EXCLUDE_EXT)
     lines.append("[package_without_putils]")
     lines.append(partial_hash)
 
