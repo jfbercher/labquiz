@@ -23,15 +23,21 @@ def file_hash(path: Path, algo="sha256") -> str:
     return h.hexdigest()
 
 
-def package_hash(exclude=None, exclude_ext=None, algo="sha256"):
+def package_hash(exclude=None, includeOnly=None, exclude_ext=None, algo="sha256"):
     h = hashlib.new(algo)
     exclude = exclude or set()
     excluded_ext = exclude_ext or set()
 
-    files = sorted(
-        p for p in PACKAGE_DIR.rglob("*")
-        if p.is_file() and p.name not in exclude and p.suffix not in excluded_ext and  not any(ex in p.parts for ex in exclude)
-    )
+    if includeOnly is not None:
+        files = sorted(
+            p for p in package_dir.rglob("*")
+            if p.is_file() and p.name in includeOnly
+            )
+    else:
+        files = sorted(
+            p for p in PACKAGE_DIR.rglob("*")
+            if p.is_file() and p.name not in exclude and p.suffix not in excluded_ext and  not any(ex in p.parts for ex in exclude)
+        )
     #print("files in package_hash", files)
     for f in files: print(f)
 

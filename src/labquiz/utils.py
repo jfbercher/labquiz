@@ -891,7 +891,7 @@ def get_package_hash(package_name):
             return k.split(":", 1)[1]
     return None
 
-def package_hash(package_dir, exclude=None, algo="sha256"):
+def package_hash(package_dir, includeOnly=None, exclude=None, algo="sha256"):
     """
     Compute the hash of a package.
 
@@ -899,6 +899,8 @@ def package_hash(package_dir, exclude=None, algo="sha256"):
     ----------
     package_dir : Path or str
         Path to the package directory.
+    includeOnly : set or list, optional
+        List of ONLY file names to include in the hash computation.
     exclude : set or list, optional
         List of file names or directory names to exclude from the hash computation.
     algo : str, optional
@@ -914,10 +916,16 @@ def package_hash(package_dir, exclude=None, algo="sha256"):
     h = hashlib.new(algo)
     exclude = exclude or set()
 
-    files = sorted(
-        p for p in package_dir.rglob("*")
-        if p.is_file() and p.name not in exclude and  not any(ex in p.parts for ex in exclude)
-    )
+    if includeOnly is not None:
+        files = sorted(
+            p for p in package_dir.rglob("*")
+            if p.is_file() and p.name in includeOnly
+            )
+    else:
+        files = sorted(
+            p for p in package_dir.rglob("*")
+            if p.is_file() and p.name not in exclude and not any(ex in p.parts for ex in exclude)
+        )
 
     for path in files:
         h.update(path.read_bytes())
