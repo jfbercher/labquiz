@@ -59,12 +59,12 @@ def set_language(lang_code):
     global _current_trans
     available = get_available_languages()
     
-    if lang_code not in available:
+    if lang_code not in available and lang_code != "en":
         print(f"Warning: Language '{lang_code}' not found. Available: {available}")
         print("Defaulting to 'en'.")
 
     _current_trans = gettext.translation(
-        "labquiz", 
+        "labquiz",
         localedir=LOCALE_DIR, 
         languages=[lang_code], 
         fallback=True
