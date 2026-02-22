@@ -1,4 +1,5 @@
-PKG_DIR='/Users/bercherj/JFB/dev/labquizdev' # WAS #'/Users/bercherj/JFB/dev/LabQuizPkg'
+PKG_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+#PKG_DIR='/Users/bercherj/JFB/dev/labquizdev' # WAS #'/Users/bercherj/JFB/dev/LabQuizPkg'
 SRC_DIR=src/labquiz
 DEV_DIR='/Users/bercherj/JFB/dev/labquizdev/src/labquiz'
 

@@ -5,7 +5,8 @@
 # make -f make_language.mak extract LANG=es
 
 PKG = labquiz
-MAINDIR = /Users/bercherj/JFB/dev/labquizdev/src/labquiz
+MAINDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+#MAINDIR = /Users/bercherj/JFB/dev/labquizdev/src/labquiz
 ALL_LOCALES := $(wildcard $(MAINDIR)/locales/*)
 DIR_LOCALES := $(foreach f,$(ALL_LOCALES),\
                 $(if $(wildcard $(f)/*),$(f)))
