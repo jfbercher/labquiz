@@ -518,6 +518,7 @@ class QuizLab:
         def _get_protected_data():
             """Retrieves and decrypts data with error handling."""
             import copy, os
+            #print(f"{quiz_id=}")
             try:
                 entry = self.quiz_bank[quiz_id]
                 
@@ -543,6 +544,7 @@ class QuizLab:
                 
                 # Precaution - Change of key name in new YAML structure. Check and rename if old version
                 for prop in propositions: 
+                    #print("prop=", prop) 
                     if "reponse" in prop:
                         prop["answer"] = prop.pop("reponse")
                 if quiz_type == "qcm": quiz_type = "mcq"
@@ -608,7 +610,7 @@ class QuizLab:
         allContainExpected = all( 'expected' in p for p in propositions )
         
         if quiz_type in ['numeric-template', 'mcq-template']:
-            import numpy as np
+            #import numpy as np # not sure it is needed
             question = question.format(**context)
             for p in propositions:
                 pexpect =  p.get("expected", '' if quiz_type=='mcq-template' else 0)
@@ -792,14 +794,14 @@ class QuizLab:
                                 display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is true").format(prop0=c['indices'][0], prop1=c['indices'][1])))
                             elif c["type"] == "IMPLYFALSE": 
                                 display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is necessarily false").format(prop0=c['indices'][0], prop1=c['indices'][1])))
-                else:
+                else:  #numeric
                     for w, p in zip(answer_widgets, propositions):
                         """pexpect =  p["expected"]
                         w.value = eval(pexpect,{},context) if isinstance(pexpect, str) else pexpect"""
                         w.value = p["expected"] # ce qui précède pour extension future
                         rep = p.get("answer")
-                        #if rep:
-                        #    display(Markdown(rep))
+                        if rep:
+                            display(Markdown(rep))
 
             self.quiz_correct[quiz_id] = 1
             for btn in [btn_validate, btn_tips, btn_reset]:
