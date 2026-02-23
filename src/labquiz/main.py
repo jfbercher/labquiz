@@ -88,7 +88,32 @@ def internetOk(URL):
     except:
         print("No internet connexion")
         return False
+def strip_f_prefix(template: str) -> str:
+    import re
+    return re.sub(r'^\s*f([\'"]{1,3})', r'\1', template, count=1)
+
+def evaluate_fstring(template, context):
+    import re
+    if not isinstance(template, str): return template
+    template = strip_f_prefix(template)
     
+    # Replace $.{...}..$ with {{...}}
+    template = re.sub(
+        r'(?<!\\)\$(.+?)(?<!\\)\$',
+        lambda m: '$' + m.group(1).replace('{', '{{').replace('}', '}}') + '$',
+        template,
+        flags=re.DOTALL
+    )
+
+    import numpy as np
+
+    safe_globals = {
+        "__builtins__": {},
+        "np": np,
+    }
+
+    val = eval("f" + repr(template), safe_globals, context).strip("'").strip('"')
+    return val
     
 class QuizLab:
     
@@ -487,9 +512,12 @@ class QuizLab:
         """Displays a quiz (MCQ or numerical) with independent widgets"""
         from .utils import decode_dict_base64
         TYPE_MAP = {
-        "int": int,
-        "bool": lambda s: s.lower() == "true" if isinstance(s, str) else s,
-        "float": float,
+        int: int,
+        'int': int,
+        bool: lambda s: s.lower() == "true" if isinstance(s, str) else s,
+        'bool': lambda s: s.lower() == "true" if isinstance(s, str) else s,
+        float: float,
+        'float': float,
                     }
         # -------------------------
         # Sécurité & authentification
@@ -610,17 +638,23 @@ class QuizLab:
         allContainExpected = all( 'expected' in p for p in propositions )
         
         if quiz_type in ['numeric-template', 'mcq-template']:
-            #import numpy as np # not sure it is needed
+            import numpy as np #  needed for eval below
+            import pandas as pd # needed for eval below
             question = question.format(**context)
             for p in propositions:
                 pexpect =  p.get("expected", '' if quiz_type=='mcq-template' else 0)
-                ptype = p.get("type", bool if quiz_type == "mcq" else float)
+                ptype = p.get("type", bool if "mcq" in quiz_type else float)
                 ptype = TYPE_MAP.get(ptype, ptype)
-                panswer =  p.get("answer",'')
-                p["expected"] = ptype(eval(pexpect,{}, context)) if isinstance(pexpect, str) else pexpect
-                if isinstance(panswer, str) and (panswer.startswith('f"') or panswer.startswith("f'")): 
-                    p["answer"] = str(eval(panswer,{},context))
+                # pexepect can be a f-string or the direct formula (without {})
+                #p["expected"] = ptype(eval(pexpect,{}, context)) if isinstance(pexpect, str) else pexpect
+                # Previous eval replaced by 2 lines below
+                if not '{' in pexpect: pexpect = f'{{ {pexpect} }}'
+                p["expected"] = ptype(evaluate_fstring(pexpect, context)) if isinstance(pexpect, str) else pexpect
+                #if isinstance(panswer, str) and (panswer.startswith('f"') or panswer.startswith("f'")): 
+                #p["answer"] = str(eval(panswer,{},context))
+                p['answer'] = evaluate_fstring(p['answer'], context) if isinstance(p['answer'], str) else p['answer']
                 p['proposition'] = p['proposition'].format(**context)
+                p['tip'] = evaluate_fstring(p['tip'], context) if isinstance(p['tip'], str) else p['tip']
             quiz_type = quiz_type.split('-')[0]
             #print(quiz_type, pexpect, propositions, "panswer", panswer, p["answer"])
             
