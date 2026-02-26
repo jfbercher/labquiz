@@ -6,6 +6,8 @@ from io import BytesIO
 from cryptography.fernet import Fernet
 import asyncio
 import random
+import numpy as np
+import pandas as pd
 from pathlib import Path
 from .utils import get_full_object_hash
 from .i18n import _
@@ -13,6 +15,7 @@ from .i18n import _
 from cryptography.fernet import Fernet as Qwsp
 Qwsp.weight = Qwsp.decrypt
 
+rng = np.random.default_rng()
 
 # Patch for request so as not to block during logs
 # Synchronous request --> passes on a thread
@@ -105,8 +108,6 @@ def evaluate_fstring(template, context):
         flags=re.DOTALL
     )
 
-    import numpy as np
-
     safe_globals = {
         "__builtins__": {},
         "np": np,
@@ -115,6 +116,13 @@ def evaluate_fstring(template, context):
     val = eval("f" + repr(template), safe_globals, context).strip("'").strip('"')
     return val
     
+def safe_eval(expr):
+    """
+    Evaluate expression in a restricted namespace.
+    Only rng, numpy and pandas are allowed.
+    """
+    return eval(expr, {"__builtins__": {}}, {"rng": rng, "np": np, "pd": pd})
+
 class QuizLab:
     
     import ipywidgets as widgets
@@ -507,7 +515,7 @@ class QuizLab:
                                 propositions, constraints=constraints, weights=None)
         return score, total_possible
 
-    def show(self, quiz_id, noscore=False, **context):
+    def show(self, quiz_id, noscore=False, autovars=False, **context):
         from .utils import sanitize_dict
         """Displays a quiz (MCQ or numerical) with independent widgets"""
         from .utils import decode_dict_base64
@@ -566,6 +574,7 @@ class QuizLab:
                 quiz_type = entry.get("type", "mcq")
                 propositions = entry.get("propositions", {}) or {}
                 constraints = entry.get("constraints", {}) or {}
+                variables = entry.get("variables", {}) or {}
 
                 if self.encoded:
                     propositions = decode_dict_base64(propositions)
@@ -583,7 +592,8 @@ class QuizLab:
                     question, 
                     quiz_type, 
                     propositions, 
-                    constraints
+                    constraints, 
+                    variables
                     )
                 )
             
@@ -631,16 +641,24 @@ class QuizLab:
 
 
         entry = self.quiz_bank[quiz_id]
-        question, quiz_type, propositions, constraints = None, None, None, None
-        question, quiz_type, propositions, constraints = _get_protected_data()
+        question, quiz_type, propositions, constraints, variables = None, None, None, None, None
+        question, quiz_type, propositions, constraints, variables = _get_protected_data()
         #print(question, quiz_type, propositions, constraints)
 
         allContainExpected = all( 'expected' in p for p in propositions )
         
         if quiz_type in ['numeric-template', 'mcq-template']:
-            import numpy as np #  needed for eval below
-            import pandas as pd # needed for eval below
-            question = question.format(**context)
+            #import numpy as np #  needed for eval below
+            #import pandas as pd # needed for eval below
+            if autovars:
+                #variables = q_content.get('variables', [])
+                for var_name in variables.keys():
+                    engine = variables[var_name].get('engine')
+                    engine_call = variables[var_name].get('call')
+                    engine_prefix = "rng." if engine == "numpy rng." else "pd."
+                    expression = f"{engine_prefix}{engine_call}"
+                    context[var_name] = safe_eval(expression)
+                question = question.format(**context)
             for p in propositions:
                 pexpect =  p.get("expected", '' if quiz_type=='mcq-template' else 0)
                 ptype = p.get("type", bool if "mcq" in quiz_type else float)
