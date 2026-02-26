@@ -697,7 +697,7 @@ def is_encrypted(s):
 
 def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, constraints=None):
     """ 
-    constraints: List of dicts ex: [{"indices": (0, 1), "type": "XOR", "malus": 2}] 
+    constraints: List of dicts ex: [{"indexes": (0, 1), "type": "XOR", "malus": 2}] 
     - XOR (Exclusion) A and B must be different 
     - IMPLY (Implication) If A is TRUE then B is TRUE 
     - SAME (Coherence) A and B are equivalent (same value) 
@@ -793,7 +793,7 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
     # contraints
     if quiz_type == "mcq" and constraints:
         for rule in constraints:
-            idx1, idx2 = rule["indices"]
+            idx1, idx2 = rule["indexes"]
             ans1, ans2 = bool(user_answers[idx1]), bool(user_answers[idx2])
 
             violation = False

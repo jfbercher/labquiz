@@ -632,6 +632,10 @@ class QuizLab:
             for prop in propositions: 
                 if "reponse" in prop:
                     prop["answer"] = prop.pop("reponse")
+            # Rename 'indices' key to 'indexes' in constraints
+            for constraint in constraints:
+                if "indices" in constraint:
+                    constraint["indexes"] = constraint.pop("indices")
             if quiz_type == "qcm":
                 quiz_type = "mcq"
             if quiz_type == "qcm-template":
@@ -839,13 +843,13 @@ class QuizLab:
                     if constraints:
                         for c in constraints:
                             if c["type"] == "XOR": 
-                                display(Markdown(_("⚠️ The answers to {props} are necessarily different").format(props=c['indices']) ))
+                                display(Markdown(_("⚠️ The answers to {props} are necessarily different").format(props=c['indexes']) ))
                             elif c["type"] == "SAME": 
-                                display(Markdown(_("⚠️ The answers to {props} are necessarily identical").format(props=c['indices'])))
+                                display(Markdown(_("⚠️ The answers to {props} are necessarily identical").format(props=c['indexes'])))
                             elif c["type"] == "IMPLY": 
-                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is true").format(prop0=c['indices'][0], prop1=c['indices'][1])))
+                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is true").format(prop0=c['indexes'][0], prop1=c['indexes'][1])))
                             elif c["type"] == "IMPLYFALSE": 
-                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is necessarily false").format(prop0=c['indices'][0], prop1=c['indices'][1])))
+                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is necessarily false").format(prop0=c['indexes'][0], prop1=c['indexes'][1])))
                 else:  #numeric
                     for w, p in zip(answer_widgets, propositions):
                         """pexpect =  p["expected"]
