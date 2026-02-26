@@ -14,6 +14,8 @@ PACKAGE_DIR=Path('/Users/bercherj/JFB/dev/labquizdev/src/labquiz')
 PACKAGE_NAME = "labquiz"  # nom du package tel qu'il sera installé
 EXCLUDE =  {"putils.py", "__pycache__", ".ipynb_checkpoints", ".DS_Store", "make_language.mak"}
 EXCLUDE_EXT = [".pot", ".po~"]
+INCLUDEONLY = {"__init__.py", "i18n.py", "main.py", "utils.py"}
+
 
 def file_hash(path: Path, algo="sha256") -> str:
     h = hashlib.new(algo)
@@ -30,7 +32,7 @@ def package_hash(exclude=None, includeOnly=None, exclude_ext=None, algo="sha256"
 
     if includeOnly is not None:
         files = sorted(
-            p for p in package_dir.rglob("*")
+            p for p in PACKAGE_DIR.rglob("*")
             if p.is_file() and p.name in includeOnly
             )
     else:
@@ -93,7 +95,7 @@ def main():
     lines.append(full_hash)
 
     lines.append("")
-    partial_hash, _ = package_hash(exclude=EXCLUDE, exclude_ext=EXCLUDE_EXT)
+    partial_hash, _ = package_hash(exclude=EXCLUDE, includeOnly=INCLUDEONLY, exclude_ext=EXCLUDE_EXT)
     lines.append("[package_without_putils]")
     lines.append(partial_hash)
 
