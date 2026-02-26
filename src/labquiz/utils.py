@@ -951,8 +951,9 @@ def check_installed_package_integrity():
             return "non installé"
         
     EXCLUDE = {"putils.py", "__pycache__", ".ipynb_checkpoints", ".DS_Store"}
+    INCLUDEONLY = {"__init__.py", "i18n.py", "main.py", "utils.py"}
     labdir = get_package_directory("labquiz")
-    installed_hash, f = package_hash(labdir, exclude=EXCLUDE)
+    installed_hash, f = package_hash(labdir, includeOnly=INCLUDEONLY, exclude=EXCLUDE)
     recorded_hash = get_package_hash("labquiz")
     if installed_hash != recorded_hash:
         print(_("⚠️ Package hash different than expected -- this is recorded"),""" 
