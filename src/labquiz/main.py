@@ -584,6 +584,10 @@ class QuizLab:
                     #print("prop=", prop) 
                     if "reponse" in prop:
                         prop["answer"] = prop.pop("reponse")
+                # Rename 'indices' key to 'indexes' in constraints
+                for constraint in constraints:
+                    if "indices" in constraint:
+                        constraint["indexes"] = constraint.pop("indices")
                 if quiz_type == "qcm": quiz_type = "mcq"
                 if quiz_type == "qcm-template": quiz_type = "mcq-template"
                 
@@ -624,8 +628,8 @@ class QuizLab:
                 entry = json.loads(frt.decrypt(entry).decode('utf-8')) 
                 question = entry.get("question", quiz_id)
                 quiz_type = entry.get("type", "mcq")
-                propositions = entry.get("propositions", {}) or {}
-                constraints = entry.get("constraints", {}) or {}
+                propositions = entry.get("propositions", []) or []
+                constraints = entry.get("constraints", []) or []
                 # ---------------
 
             # Precaution - Change of key name in new YAML structure. Check and rename if old version
@@ -662,7 +666,7 @@ class QuizLab:
                     engine_prefix = "rng." if engine == "numpy rng." else "pd."
                     expression = f"{engine_prefix}{engine_call}"
                     context[var_name] = safe_eval(expression)
-                question = question.format(**context)
+            question = question.format(**context)
             for p in propositions:
                 pexpect =  p.get("expected", '' if quiz_type=='mcq-template' else 0)
                 ptype = p.get("type", bool if "mcq" in quiz_type else float)
@@ -708,6 +712,7 @@ class QuizLab:
         # Callbacks
         # -------------------------
         def on_validate(_event):
+            #print("on_validate")
             self.register_activity()
             self.quiz_counts[quiz_id] += 1
             msg = ""
@@ -717,10 +722,12 @@ class QuizLab:
                                                             #we build the dictionary #labels:user response
             if context: user_answers['context'] = context
             self.user_answers[quiz_id] = user_answers
-            
+            #print(self.exam_mode, allContainExpected, self.user_answers[quiz_id])
+
             if (not self.exam_mode) and allContainExpected:
                 score, total = self.compute_score(propositions, user_answers, quiz_type, constraints=constraints, weights=None) #  compute_score()
                 self.quiz_results[quiz_id] = score / total
+                #print(score)
                 #msg += f"propositions {propositions}" 
                 self.score_global = 20 * sum(self.quiz_results.values()) / len(self.quiz_results)
 
