@@ -155,7 +155,7 @@ msgstr "⚠️ Le risposte a {props} devono essere necessariamente identiche"
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:792
 #, fuzzy, python-brace-format
 msgid "⚠️ The answer {prop0} true implies that {prop1} is true"
-msgstr "⚠️ La risposta {prop0} vera implica che {prop} sia vera"
+msgstr "⚠️ La risposta {prop0} vera implica che {prop1} sia vera"
 
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:794
 #, python-brace-format
