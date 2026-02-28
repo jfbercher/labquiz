@@ -1,4 +1,6 @@
 # labquiz
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb)
+
 
 Integration of quizzes in jupyter notebooks
 - For self-assessment and evaluation
