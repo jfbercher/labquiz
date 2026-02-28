@@ -634,11 +634,12 @@ def correctAll(students_answers, quiz, df, seuil=0, exam_questions=None, weights
             if given == {}: continue
             score, score_max = 0,1   # précaution            
             try:
+                #print(f"Correcting student {s}, quiz_id={quiz_id}", "given", given)
                 score, score_max = correct_ans(quiz, quiz_id, given, weights=weights)
+                if score_max == 0: raise ValueError("score_max = 0...")
             except Exception as e:
-                print(f"Erreur pour la correction de {s}, quiz_id={quiz_id}")
+                print(f"Error correcting student {s}, quiz_id={quiz_id}", e)
                 #print(given, type(given), e)
-            #print(f"Correction de {s}, quiz_id={quiz_id}")
             Res.loc[s, quiz_id] = score/score_max
         Res.loc[s, 'maxpts'] = pd.Series([bareme[q] for q in exam_questions[s]]).sum()
     Res = Res.infer_objects(copy=False).dropna(axis=1, how="all").fillna(0)
@@ -891,7 +892,7 @@ def correctAllPrev(students_answers, quiz, df, seuil=0, weights=None, bareme=Non
             try:
                 score, score_max = correct_ans(quiz, quiz_id, given, weights=weights)
             except:
-                print(f"Erreur pour la correction de {s}, quiz_id={quiz_id}")
+                print(f"Error correcting student {s}, quiz_id={quiz_id}")
             Res.loc[s, quiz_id] = score/score_max
     Res = Res.infer_objects(copy=False).fillna(0)
     if seuil==0: Res[Res < 0] = 0
@@ -956,7 +957,7 @@ def start_integrity(starting_values, df):
         if not subans == starting_values:
             for key in starting_values:
                 if subans[key] != starting_values[key]: 
-                    print(f"{id} - enregistrement {idx} : Clé originale '{key}' modifiée de {starting_values[key]} vers {subans[key]}")
+                    print(f"{id} - record {idx} : original key '{key}' modified from {starting_values[key]} to {subans[key]}")
             #return False
     return True
 
@@ -1075,7 +1076,7 @@ def check_integrity(s, parameters, df):
         #ans = parse_custom_dict(ans.values[0])
         subrecord = {key:recorded_param.loc[idx].get(key, '') for key in parameters}
         if not subrecord == parameters:
-            print(f"{s} - enregistrement {idx} :")
+            print(f"{s} - record {idx} :")
             for key in parameters:
                 if subrecord[key] != parameters[key]:  
                     print(f"      - Original key '{key}' modified from {parameters[key]} to {subrecord[key]}")
