@@ -1286,6 +1286,10 @@ class QuizLab:
         """Enables/disables test mode (hides the Correction and Tips button if True)."""
         self.test_mode = bool(value)
         if value: self.exam_mode = not bool(value) 
+
+    def set_normal_mode(self):     
+        self.test_mode = False
+        self.exam_mode = False
         
     def set_sheet_url(self, url=""):
         self.SHEET_URL = url
