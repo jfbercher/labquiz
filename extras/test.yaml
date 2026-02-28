@@ -1,0 +1,843 @@
+quiz1:
+  question: 'What are the signal characteristics and the initial objectives described
+    in the $\text{Lab}$ on digital filtering?'
+  propositions:
+    - proposition: 'The studied signal is corrupted by a slow drift ($\text{drift}$)
+        of its mean value, a common problem in sensor measurements.'
+      label: 'Signal Corruption'
+      expected: true
+      tip: 'Check the initial description of the signal.'
+      answer: 'The signal is corrupted by a slow drift, which is a common problem
+        with sensor measurements.'
+    - proposition: 'One of the objectives of the $\text{Lab}$ is to design a filter
+        to remove this slow drift.'
+      label: 'Drift Removal Goal'
+      expected: true
+      tip: 'The first filtering objective is the removal of the drift.'
+      answer: 'A first filter will be designed in order to remove this drift.'
+    - proposition: 'The sampling frequency specified for the signal analysis is $\text{Fs}=800
+        \text{ Hz}$.'
+      label: 'Sampling Frequency'
+      expected: false
+      tip: 'Check the numerical value of the sampling frequency.'
+      answer: 'The specified sampling frequency is $\text{Fs}=8000 \text{ Hz}$.'
+    - proposition: 'The signal is periodic with a period of about $40 \text{ Hz}$
+        in the frequency domain.'
+      label: 'Periodicity Units'
+      expected: false
+      tip: 'The period is a time measurement, not a frequency measurement.'
+      answer: 'The signal is periodic with a period of about 40 in the time domain,
+        and not in frequencies.'
+  type: mcq
+  label: q:quiz1
+  category: essai
+  tags:
+    - tag
+quiz2:
+  question: 'According to the time and frequency analysis of signal $\text{x}$, which
+    observations are correct?'
+  propositions:
+    - proposition: 'The time signal $\text{x}$ is approximately periodic with a period
+        of about $40$ samples.'
+      label: 'Time Periodicity'
+      expected: true
+      tip: 'The analysis of the signal in the time domain is described.'
+      answer: 'We observe an approximately periodic time series, with a period of
+        about 40.'
+    - proposition: 'The Fourier Transform ($\text{FT}$) of the signal consists of
+        a series of regularly spaced spectral lines, indicating a periodic underlying
+        signal.'
+      label: 'FT Periodicity'
+      expected: true
+      tip: 'The appearance of the $\text{FT}$ is related to the periodicity of the
+        signal.'
+      answer: 'We see that the Fourier Transform consists of a series of regularly
+        spaced spectral lines, which is an indication that the underlying signal is
+        periodic.'
+    - proposition: 'The $\text{FT}$ of the signal shows a spectral peak spacing of
+        $0.025$ in non-normalized frequencies (Hertz).'
+      label: 'FT Spacing Units'
+      expected: false
+      tip: 'The spacing is given in normalized frequencies.'
+      answer: 'The peaks are spaced by $0.025$ in normalized frequencies.'
+    - proposition: 'The analysis of the $\text{FT}$ shows only the slow drift component
+        without any other spectral lines.'
+      label: 'FT Content'
+      expected: false
+      tip: 'The signal contains several frequency components.'
+      answer: 'The $\text{FT}$ shows a series of regularly spaced spectral lines and
+        a slow drift (average value).'
+  type: mcq
+  label: q:quiz2
+quiz3:
+  question: 'Regarding the theory of the averaging filter ($\text{g(n)}$) and the
+    subtracting filter ($\text{h(n)}$) to remove the drift $\text{M(n)}$, which relations
+    are valid?'
+  propositions:
+    - proposition: 'The corrected signal ($\text{xc(n)}$) is obtained by the difference
+        between the original signal ($\text{x(n)}$) and the drift $\text{M(n)}$.'
+      label: 'Centered Signal Def'
+      expected: true
+      tip: 'The corrected signal is the original signal from which the mean has been
+        subtracted.'
+      answer: 'The corrected signal is $\text{xc(n)} = \text{x(n)} - \text{M(n)}$.'
+    - proposition: 'The subtracting filter $\text{h(n)}$ is such that the corrected
+        signal $\text{xc(n)}$ is equal to the convolution of $\text{x(n)}$ by $\text{h(n)}$,
+        i.e., $\text{xc(n)} = \text{x(n)} \ast \text{h(n)}$.'
+      label: 'Subtraction Filter Conv'
+      expected: true
+      tip: 'Filtering in the time domain is a convolution.'
+      answer: 'The filter $\text{h(n)}$ that removes this mean is defined such that
+        $\text{xc(n)} = \text{x(n)} \ast \text{h(n)}$.'
+    - proposition: 'The analytical expression of $\text{H(z)}$ is derived from the
+        filter $\text{g(n)}$ and cancels high-frequency components.'
+      label: 'H(z) High Pass'
+      expected: false
+      tip: 'The subtracting filter must cancel the DC component ($\text{f}=0$).'
+      answer: 'The filter $\text{h(n)}$ removes the mean ($\text{M(n)}$), which is
+        a low-frequency component. The $\text{FT}$ of the filter $\text{g(n)}$ which
+        calculates the mean is a low-pass, but $\text{H(z)}$ must remove this mean.'
+    - proposition: 'The filter $\text{g(n)}$ which calculates the mean is an $\text{IIR}$
+        filter (Infinite Impulse Response).'
+      label: 'Filter Type g(n)'
+      expected: false
+      tip: 'Check the length of the impulse response $\text{g}$.'
+      answer: 'The filter $\text{g}$ is implemented as a finite vector of length $\text{L}=40$
+        ($\text{g} = \text{np.ones(L)}/\text{L}$), so it is an $\text{FIR}$ filter.'
+quiz4:
+  question: 'What are the Python methods and tools used for the implementation and
+    analysis of digital filters?'
+  propositions:
+    - proposition: 'The $\text{lfilter}$ function is the standard tool for calculating
+        the output vector $\text{y}$ of a digital filter defined by coefficients $\text{B}$
+        (numerator $\text{B(z)}$) and $\text{A}$ (denominator $\text{A(z)}$).'
+      label: 'lfilter Role'
+      expected: true
+      tip: 'Check the description of the $\text{lfilter}$ function.'
+      answer: '$\text{lfilter}$ implements the associated difference equation and
+        takes as input the vectors $\text{B}$ and $\text{A}$ as well as the input
+        vector $\text{x}$.'
+    - proposition: 'The $\text{freqz}$ function is used to calculate the frequency
+        response $\text{H}(e^{j2\pi f/\text{Fs}})$ of the filter in magnitude and
+        phase.'
+      label: 'freqz Role'
+      expected: true
+      tip: 'The $\text{freqz}$ function operates in the frequency domain.'
+      answer: '$\text{freqz}$ calculates the frequency response $\text{H}(e^{j2\pi
+        f/\text{Fs}})$ in magnitude and phase.'
+    - proposition: 'The calculation of the $\text{FT}$ of the impulse responses $\text{g}$
+        and $\text{h}$ is performed using the $\text{ifft}$ function from $\text{numpy.fft}$.'
+      label: 'FFT Function'
+      expected: false
+      tip: 'The $\text{FT}$ is calculated by $\text{fft}$.'
+      answer: 'The $\text{FT}$ is calculated using the $\text{fft}$ function (and
+        not $\text{ifft}$), and its magnitude ($\text{abs}$) is plotted.'
+    - proposition: 'The denominator $\text{A}$ of the implementation filter is defined
+        only if the filter is of $\text{IIR}$ type (Infinite Impulse Response).'
+      label: 'A(z) Usage'
+      expected: false
+      tip: 'The vector $\text{A}$ is always required by $\text{lfilter}$, even if
+        $\text{A(z)}=1$.'
+      answer: 'The $\text{lfilter}$ function uses $\text{A}$ even if $\text{A}=1$
+        ($\text{FIR}$ case), as in the example $\text{m}_{\text{estimated}} = \text{lfilter}(\text{g},
+        1, \text{x})$.'
+quiz5:
+  question: 'What are the characteristics of the implementation of the averaging filter
+    ($\text{g}$) and the analysis of its transfer function ($\text{G}$)?'
+  propositions:
+    - proposition: 'The impulse response $\text{g}$ is defined by a vector of length
+        $\text{L}=40$ where all components are $\text{1}/\text{L}$.'
+      label: 'g(n) Definition'
+      expected: true
+      tip: 'Check the definition of $\text{g}$.'
+      answer: 'The impulse response is defined by $\text{L} = 40$ and $\text{g} =
+        \text{np.ones(L)}/\text{L}$.'
+    - proposition: 'The transfer function $\text{G}$ is obtained by calculating the
+        $\text{FFT}$ of $\text{g}$ with zero-padding to 1000 points, and centering
+        it with $\text{fftshift}$.'
+      label: 'G(f) Calculation'
+      expected: true
+      tip: 'Zero-padding improves the visualization of the $\text{FT}$.'
+      answer: 'The transfer function is verified by $\text{G} = \text{fftshift}(\text{fft}(\text{g},
+        1000))$.'
+    - proposition: 'The time representation shows that the drift estimation $\text{m}_{\text{estimated}}$
+        is very unstable and does not follow the real drift $\text{m}$.'
+      label: 'Drift Estimation Quality'
+      expected: false
+      tip: 'The graph allows visualizing the quality of the estimation.'
+      answer: 'The graph plots $\text{m}_{\text{estimated}}$ and $\text{m}$ together,
+        implying a good estimation of the drift.'
+    - proposition: 'The transfer function $\text{G}$ is a high-pass filter canceling
+        low frequencies around $\text{f}=0$.'
+      label: 'G(f) Type'
+      expected: false
+      tip: 'The averaging filter extracts the continuous component and the slow drift.'
+      answer: 'The averaging filter acts as a low-pass filter because it only preserves
+        the frequency around $\text{f}=0$, its role being to extract the drift.'
+quiz6:
+  question: 'What are the properties and the effect of the averaging filter ($\text{g(n)}$)
+    in the frequency domain, according to the analysis?'
+  propositions:
+    - proposition: 'The transfer function $\text{G}$ has the property of perfectly
+        canceling the spectral peaks of the periodic signal at frequencies $\text{k}/\text{L}$.'
+      label: 'Peak Cancellation'
+      expected: true
+      tip: 'The effect on spectral lines is a major property of this filter.'
+      answer: 'This Fourier Transform has the good idea of canceling all $1/\text{L}$
+        components... Thus the peaks in the frequency representation of the periodic
+        signal are perfectly removed.'
+    - proposition: 'After filtering by $\text{g}$, only the frequency part around
+        $\text{f}=0$ remains, which confirms its role as a slow drift extractor.'
+      label: 'FT Remaining Content'
+      expected: true
+      tip: 'The averaging filter aims to isolate the DC component.'
+      answer: 'Only the frequency part around $\text{f}=0$ remains.'
+    - proposition: 'The cancellation of peaks is a property that depends only on the
+        sampling frequency $\text{Fs}$, and not on the filter length $\text{L}$.'
+      label: 'Cancellation Dependency'
+      expected: false
+      tip: 'The $\text{FT}$ of the rectangular filter depends on its width $\text{L}$.'
+      answer: 'Cancellation occurs for the $\text{k}/\text{L}$ components, which directly
+        depends on the length $\text{L}$ of the filter.'
+    - proposition: 'The transfer function $\text{G}$ of the averaging filter is plotted
+        only in non-normalized frequencies (Hertz).'
+      label: 'FT Frequency Axis'
+      expected: false
+      tip: 'The display uses normalized frequencies.'
+      answer: 'The plot title is "Transfer Function of the Averaging Filter" and the
+        x-axis is labeled "Normalized frequencies".'
+quiz7:
+  question: 'What are the characteristics of the drift subtracting filter ($\text{h}$)
+    and the results of the filtering on the corrected signal ($\text{xc}$)?'
+  propositions:
+    - proposition: 'The impulse response $\text{h}$ of the subtracting filter is defined
+        by $\text{h} = 1 - 1/\text{L}$ and $\text{h}[n] = -1/\text{L}$ for $n>0$.'
+      label: 'h(n) Definition'
+      expected: true
+      tip: 'Check the construction of the impulse response of the subtracting filter.'
+      answer: 'The impulse response $\text{h}$ is defined by $\text{h} = -\text{np.ones}(\text{L})/\text{L}$
+        with $\text{h}[0] = 1 - 1/\text{L}$.'
+    - proposition: 'The $\text{FT}$ of the filtered signal $\text{xc}$ shows that
+        the slow drift around $\text{f}=0$ has been effectively removed.'
+      label: 'xc FT Result'
+      expected: true
+      tip: 'The goal of the subtracting filter is to remove the drift.'
+      answer: 'The title of the graph for signal $\text{xc}$ is "Signal with removed
+        drift" and the $\text{FT}$ shows a reduction of the DC component.'
+    - proposition: 'The subtracting filter $\text{h}$ is applied with a complex denominator
+        $\text{A}$ to optimize drift suppression.'
+      label: 'A(z) Complexity'
+      expected: false
+      tip: 'Check the value of the denominator $\text{A}$ used in $\text{lfilter}$.'
+      answer: 'The filter is applied by $\text{xc} = \text{lfilter}(\text{h}, 1, \text{x})$,
+        where the denominator $\text{A}$ is simply $1$ (an $\text{FIR}$ filter).'
+    - proposition: 'The transfer function $\text{H}$ of the subtracting filter has
+        a maximum gain at $\text{f}=0$.'
+      label: 'H(f) DC Gain'
+      expected: false
+      tip: 'A zero gain at $\text{f}=0$ means there is no DC component.'
+      answer: 'The subtracting filter removes the average (DC), so its gain must be
+        zero or very low at $\text{f}=0$. The graph "Transfer Function of the Subtracting
+        Filter" (Figure 7) shows zero gain at $\text{f}=0$.'
+quiz8:
+  question: 'Regarding the design of the frequency accentuation filter, which statements
+    describing the theory are valid?'
+  propositions:
+    - proposition: 'Frequency accentuation is achieved by placing a pair of complex
+        conjugate poles, $\text{p0}$ and $\text{p1}$, in the transfer function $\text{H(z)}$.'
+      label: 'Poles Usage'
+      expected: true
+      tip: 'Poles control the frequency response and stability.'
+      answer: 'The derivation of the impulse response is done by selecting a pair
+        of complex conjugate poles for the frequency of interest.'
+    - proposition: 'The derivation of the impulse response $\text{h(n)}$ uses the
+        Heaviside partial fraction expansion of $\text{H(z)}$.'
+      label: 'Partial Fraction Use'
+      expected: true
+      tip: 'Check the decomposition method used.'
+      answer: 'Through Heaviside partial fraction expansion, $\text{H(z)}$ is decomposed
+        into two simple terms.'
+    - proposition: 'The impulse response $\text{h(n)}$ for complex poles is a $\text{Dirac}$
+        sequence modulated by a decaying exponential function $\rho^n$.'
+      label: 'h(n) Dirac'
+      expected: false
+      tip: 'The impulse response of a causal $\text{IIR}$ filter uses the step function.'
+      answer: 'The inverse $\text{z}$-transform of $\text{1}/(1 - a z^{-1})$ is $\text{a}^n
+        \text{u(n)}$, implying the use of the step function $\text{u(n)}$, and not
+        the Dirac function $\delta(n)$.'
+    - proposition: 'The final formula for $\text{h(n)}$ is proportional to $\rho^{n+1}$
+        multiplied by $\sin(2\pi \text{n} f_0)$.'
+      label: 'h(n) Formula Details'
+      expected: false
+      tip: 'Check the exponent and the argument of the sine function in the final
+        formula.'
+      answer: 'The provided final formula is proportional to $\rho^n \sin(2\pi(n+1)f_0)$.'
+  type: mcq
+  label: q:quiz8
+quiz9:
+  question: 'What methods are used and what results are observed during the practical
+    implementation of the $1000 \text{ Hz}$ accentuation filter and the combined drift
+    removal?'
+  propositions:
+    - proposition: 'The denominator $\text{A}$ of the accentuation filter is calculated
+        using the $\text{np.poly}$ function applied to the values of the complex conjugate
+        poles $\text{p1}$ and $\text{p2}$.'
+      label: 'Denominator Calculation'
+      expected: true
+      tip: 'The $\text{np.poly}$ function allows obtaining polynomial coefficients
+        from roots.'
+      answer: 'The denominator coefficient vector $\text{A(z)}$ is calculated by $\text{A}
+        = \text{np.poly}([p1, p2])$.'
+    - proposition: 'The combined accentuation and drift removal operation is performed
+        using the subtracting filter $\text{h}$ as the numerator and the denominator
+        $\text{A}$ of the accentuation filter.'
+      label: 'Combined Filtering'
+      expected: true
+      tip: 'Combined filtering uses coefficients from both operations: $\text{h}$
+        in the numerator and $\text{a}$ in the denominator.'
+      answer: 'The combined filter is implemented by $\text{sig}_{\text{accentuated\_centered}}
+        = \text{lfilter}(\text{h}, \text{a}, \text{x})$.'
+    - proposition: 'The accentuation filter is of $\text{FIR}$ type (Finite Impulse
+        Response) because the parameter $\rho$ is less than 1.'
+      label: 'Filter Type'
+      expected: false
+      tip: 'A non-trivial denominator generally characterizes an $\text{IIR}$ filter.'
+      answer: 'This filter uses a denominator $\text{A} \neq 1$, and since the poles
+        are within the unit circle ($\rho=0.95$), it is a stable $\text{IIR}$ filter
+        (Infinite Impulse Response).'
+    - proposition: 'The accentuated signal is displayed in the frequency domain using
+        only normalized frequencies (between $-0.5$ and $0.5$).'
+      label: 'FT Axis Scaling'
+      expected: false
+      tip: 'The display uses real frequencies (Hertz).'
+      answer: 'The plot of the $\text{FT}$ of the accentuated signal uses real frequencies
+        ($\text{Fs}$) via $\text{freq}(1000, \text{Fs})$ and the limits are set to
+        $[-\text{Fs}/2, \text{Fs}/2]$.'
+  type: mcq
+  label: q:quiz9
+quiz10:
+  question: 'Regarding the window method for $\text{FIR}$ low-pass filter design,
+    which theoretical statements are correct?'
+  propositions:
+    - proposition: 'The ideal low-pass filter has a transfer function $\text{H(f)}$
+        with a rectangular shape in magnitude in the frequency domain.'
+      label: 'Ideal Filter H(f)'
+      expected: true
+      tip: 'Check the shape of the ideal filter.'
+      answer: 'We consider the ideal low-pass filter whose transfer function $\text{H(f)}$
+        (in magnitude) is a rectangular function.'
+    - proposition: 'The ideal impulse response $\text{h(n)}$ is obtained by the inverse
+        Fourier transform of the $\text{rect}$ function and is proportional to a $\text{sinc}$
+        function.'
+      label: 'h(n) Sinc Form'
+      expected: true
+      tip: 'The $\text{FT}$ of a rectangle is a $\text{sinc}$.'
+      answer: 'The inverse $\text{FT}$ of $\text{rect}_{2\text{B}}(\text{f})$ is $h(n)
+        = \frac{2\text{B} \sin(2\pi\text{B}n)}{2\pi\text{B}n}$, which is a $\text{sinc}$
+        function.'
+    - proposition: 'The impulse of the ideal impulse response $\text{h(n)}$ has a
+        finite support and is causal.'
+      label: 'Ideal h(n) Properties'
+      expected: false
+      tip: 'The ideality of the filter poses practical problems with support and causality.'
+      answer: 'The problems that arise are that the impulse response $\text{h(n)}$
+        has infinite support and is non-causal.'
+    - proposition: 'The final $\text{FIR}$ filter is designed to preserve components
+        from $250 \text{ Hz}$ to $8000 \text{ Hz}$.'
+      label: 'Filter Band'
+      expected: false
+      tip: 'It is a low-pass filter, retaining low frequencies.'
+      answer: 'The filter is designed to only preserve the low-frequency components
+        ($0 \text{ to } 250 \text{ Hz}$) of the corrected signal $\text{xc}$.'
+  type: mcq
+  label: q:quiz10
+quiz11:
+  question: 'What steps are necessary to obtain the causal and truncated $\text{FIR}$
+    impulse response in practice?'
+  propositions:
+    - proposition: 'To obtain an impulse response on $\text{L}$ points, it is necessary
+        to truncate the ideal response and delay it to make it causal.'
+      label: 'FIR Requirement Steps'
+      expected: true
+      tip: 'Causality and finite support are required for $\text{FIR}$ implementation.'
+      answer: 'It is necessary to truncate the impulse response, then shift it to
+        obtain a causal response.'
+    - proposition: 'The implementation of the $\text{sinc}(x)$ function must handle
+        the case where $x=0$ by returning $1$.'
+      label: 'Sinc Implementation'
+      expected: true
+      tip: 'The limit value of $\sin(x)/x$ as $x \to 0$ is 1.'
+      answer: 'The $\text{sinc(x)}$ function is defined such that if $n=0$, it returns
+        1.'
+    - proposition: 'The bandwidth $\text{B}$ used in the $\text{sinc}$ formula is
+        initially normalized by $250 \text{ Hz}$ before calculation.'
+      label: 'Bandwidth Normalization'
+      expected: false
+      tip: 'Normalization is done relative to $\text{Fs}$.'
+      answer: 'The bandwidth $\text{B}$ is normalized by the sampling frequency $\text{Fs}$:
+        $\text{B} = \text{B}/\text{Fs}$ (i.e., $250/8000$).'
+    - proposition: 'Truncation consists of keeping the samples of $\text{h(n)}$ around
+        $n=0$ using a very large number of points (for example, 500 or more).'
+      label: 'Truncation Size'
+      expected: false
+      tip: 'The truncation is limited to $\text{L}$ points.'
+      answer: 'Truncation retains a limited number of points (here 101 points, i.e.,
+        $\text{L}=50$ around $n=0$).'
+  type: mcq
+  label: q:quiz11
+quiz12:
+  question: 'What are the characteristics of the frequency response of the truncated
+    low-pass $\text{FIR}$ filter ($\text{H}_{\text{tronq}}$)?'
+  propositions:
+    - proposition: 'Truncation consists of keeping the samples between $-50$ and $50$
+        for a total length of 101 points.'
+      label: 'Truncation Range'
+      expected: true
+      tip: 'Check the size of the truncation window.'
+      answer: 'Truncation consists of keeping the samples between $-50$ and $50$ (for
+        a total of 101 points).'
+    - proposition: 'The $\text{FT}$ of the truncated response $\text{H}_{\text{tronq}}$
+        is calculated with a padding of 1000 points to improve resolution during display.'
+      label: 'FT Resolution'
+      expected: true
+      tip: 'Padding is used for the visualization of the $\text{FT}$.'
+      answer: '$\text{H}_{\text{tronq}} = \text{fft}(\text{h}_{\text{tronq}}, 1000)$
+        is the calculation performed, using 1000 points for the $\text{FFT}$.'
+    - proposition: 'The response $\text{H}_{\text{tronq}}$ is perfectly rectangular
+        in the frequency domain and presents no ripples.'
+      label: 'Ideal FT Shape'
+      expected: false
+      tip: 'A truncated $\text{FIR}$ filter is not ideal.'
+      answer: 'Truncation by a rectangular window introduces ripples (Gibbs phenomenon)
+        in the frequency response, shown in the comparison with the ideal response
+        $\text{R}$.'
+    - proposition: 'The frequencies displayed for the frequency response are limited
+        between $-100 \text{ Hz}$ and $100 \text{ Hz}$.'
+      label: 'Frequency Zoom Range'
+      expected: false
+      tip: 'Check the $\text{xlim}$ limits for the graph display.'
+      answer: 'The Frequency Response graph is zoomed between $-1000 \text{ Hz}$ and
+        $1000 \text{ Hz}$.'
+  type: mcq
+  label: q:quiz12
+quiz13:
+  question: 'What are the characteristics of the $\text{Group Delay}$ calculated for
+    the low-pass $\text{FIR}$ filter?'
+  propositions:
+    - proposition: 'The group delay is calculated from the ratio of the $\text{FFT}$
+        of the weighted impulse response over the $\text{FFT}$ of the unweighted impulse
+        response.'
+      label: 'Td Calculation'
+      expected: true
+      tip: 'Check the components of the $\text{grpdelay}$ function.'
+      answer: 'The $\text{grpdelay}$ function uses $\text{num} = \text{fft}(\text{hn})$
+        (weighted) and $\text{den} = \text{fft}(\text{h})$ (unweighted) to calculate
+        $\text{Td} = \text{real}(\text{num}/\text{den})$.'
+    - proposition: 'The group delay observed in the passband of the filter is approximately
+        50 samples.'
+      label: 'Observed Delay'
+      expected: true
+      tip: 'The observation of the result is explicit.'
+      answer: 'Thus, we see that we have a group delay of about 50 in the filter band.'
+    - proposition: 'The low-pass filtered signal is necessarily applied to the signal
+        $\text{xc}$ (corrected signal) and not to the original signal $\text{x}$.'
+      label: 'Input Signal'
+      expected: false
+      tip: 'The implementation in the source code uses $\text{x}$.'
+      answer: 'Although the prompt asks to use $\text{xc}$, the code for low-pass
+        filtering uses $\text{x}$ ($\text{sig}_{\text{lowpass}} = \text{lfilter}(\text{h},
+        1, \text{x})$).'
+    - proposition: 'The values of $\text{Td}$ are forced to 1 when the denominator
+        of the $\text{FFT}$ is close to zero.'
+      label: 'Td Zero Handling'
+      expected: false
+      tip: 'Check the handling of denominators close to zero.'
+      answer: 'The values of $\text{Td}$ are forced to 0 when the magnitude of the
+        denominator is low.'
+  type: mcq
+  label: q:quiz13
+quiz14:
+  question: 'Which statements are correct regarding the properties of linear phase
+    $\text{FIR}$ filters, derived from the $\text{Lab}$?'
+  propositions:
+    - proposition: 'The low-pass $\text{FIR}$ filter is designed using the window
+        method to guarantee linear phase.'
+      label: 'Linear Phase Method'
+      expected: true
+      tip: 'The window method is specified for creating a linear phase filter.'
+      answer: 'The filter is designed using the window method, which leads to a linear
+        phase filter.'
+    - proposition: 'A constant group delay in the passband is an attribute observed
+        for this truncated $\text{FIR}$ filter.'
+      label: 'Constant Group Delay'
+      expected: true
+      tip: 'Group delay is constant for linear phase filters.'
+      answer: 'The group delay is about 50 in the filter band, which is characteristic
+        of a linear phase filter.'
+    - proposition: 'The window method allows obtaining a perfectly rectangular transfer
+        function, without ripples in the passband.'
+      label: 'Gibbs Phenomenon'
+      expected: false
+      tip: 'Truncation degrades the frequency response.'
+      answer: 'Truncation by a rectangular window is known to introduce ripples (Gibbs
+        phenomenon) in the passband.'
+    - proposition: 'The calculation of the group delay $\text{Td}$ is performed by
+        taking the imaginary part of the ratio of the $\text{FFT}$s.'
+      label: 'Td Imaginary Part'
+      expected: false
+      tip: 'Check the $\text{real}$ function used in the definition of $\text{Td}$.'
+      answer: 'The group delay $\text{Td}$ is calculated using the real part ($\text{real}$)
+        of the ratio.'
+  type: mcq
+  label: q:quiz14
+quiz15:
+  question: 'What are the final conclusions and the properties of the functions used
+    in the last part of the $\text{Lab}$?'
+  propositions:
+    - proposition: 'The $\text{FT}$ of the ideal impulse response is a $\text{sinc}$
+        function, and its truncation is necessary to obtain an implementable $\text{FIR}$
+        filter.'
+      label: 'Sinc Truncation'
+      expected: true
+      tip: 'The relation $\text{rect} \rightleftharpoons \text{sinc}$ is fundamental
+        here.'
+      answer: 'The impulse response is proportional to $\text{sinc}$, and it is necessary
+        to truncate it to obtain a response over $\text{L}$ points.'
+    - proposition: 'The filter is designed to have a constant group delay, with an
+        observed value of about 50 samples in the passband.'
+      label: 'Constant Delay Value'
+      expected: true
+      tip: 'Group delay is a characteristic property of the designed filter.'
+      answer: 'A group delay of about 50 is observed in the filter band, which is
+        the goal of a linear phase filter.'
+    - proposition: 'The Python function $\text{sinc(x)}$ is implemented to avoid division
+        by zero by returning $0$ when $x=0$.'
+      label: 'Sinc x=0 Handling'
+      expected: false
+      tip: 'The limit value of $\text{sinc}(x)$ at $x=0$ is 1.'
+      answer: 'The function $\text{sinc(x)}$ returns $1$ (and not $0$) when $x=0$.'
+    - proposition: 'The group delay is a measure of the phase distortion introduced
+        by the filter, and a zero value is always desirable.'
+      label: 'Td Ideal Value'
+      expected: false
+      tip: 'A causal $\text{FIR}$ necessarily introduces a delay (delay > 0).'
+      answer: 'The observed group delay is 50, and a zero delay is not possible for
+        a causal $\text{FIR}$ filter of this size.'
+  type: mcq
+  label: q:quiz15
+quiz23:
+  question: This is the question text
+  type: "mcq"
+  constraints: [{"type": "IMPLYFALSE", "malus": 2, indexes: [label2, label1]}]
+  propositions:
+    - proposition: text of the first proposition (false)
+      type: bool
+      label: label1
+      expected: false
+      tip: text of a hint or guidance toward the right answer
+      answer: explanatory text for the correct answer
+    - proposition: 'text of the second proposition (true) with a : that must be taken
+        into account'
+      label: label2
+      type: bool
+      expected: true
+      tip: text of a hint or guidance toward the right answer, with quotes '' if
+        necessary
+      answer: explanatory text for the correct answer, with quotes '' if 
+        necessary
+    - proposition: text of a third proposition with penalty
+      label: label3
+      type: bool
+      expected: true
+      malus: 2
+      tip: text of a hint
+      answer: ''
+  label: q:quiz23
+quiz24:
+  question: Please enter the number of points and the mean and standard 
+    deviation values of the time series below
+  type: numeric
+  propositions:
+    - proposition: Mean
+      label: moyenne
+      type: float
+      expected: '0.0'
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: Enter the value
+      answer: '0'
+    - proposition: Standard deviation
+      label: sigma
+      type: float
+      expected: '1.0'
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: Enter the value
+      answer: "1"
+    - proposition: Number of points
+      label: N
+      type: int
+      expected: '512'
+      tolerance: 0.01
+      tolerance_abs: 2
+      bonus: 2
+      malus: 3
+      tip: Enter the value
+      answer: The number of points `len(serie)` or `serie.shape[0]` is 512
+  label: q:quiz24
+quiz53:
+  question: 'This is an MCQ question depending on two values passed as arguments:
+    A = {A} and B = {B}'
+  type: "mcq-template"
+  constraints: [{"type": "XOR", "malus": 2, indexes: ['somme_paire', 'somme_impaire']}]
+  propositions:
+    - proposition: 'The sum of {A} and {B} is even'
+      type: bool
+      label: 'somme_paire'
+      expected: f'{(A+B)%2 == 0 }'
+      tip: 'Check if the sum is divisible by two'
+      answer: Answer is {(A+B)%2 == 0 }
+    - proposition: 'The sum of {A} and {B} is odd'
+      label: 'somme_impaire'
+      type: bool
+      expected: f'{(A+B)%2 != 0}'
+      tip: 'Check that the remainder of the division is non-zero'
+      answer: Answer is {(A+B)%2 != 0}
+  label: q:quiz53
+  variables:
+    A:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 10)
+    B:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 10)
+quiz54:
+  question: "This is a numeric question where you must calculate the sum and difference
+    of {a:.2f} and {b:.2f}"
+  type: "numeric-template"
+  propositions:
+    - proposition: "Sum: "
+      label: "somme"
+      type: "float"
+      expected: f'{a+b:.4f}'
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: The sum of {a:.2f} and {b:.2f} is {a+b:.2f}
+    - proposition: "Difference: "
+      label: "difference"
+      type: "float"
+      expected: f'{a-b:.4f}'
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: The difference of {a:.2f} and {b:.2f} is {a-b:.2f}'
+  label: q:quiz54
+  variables:
+    a:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+    b:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+quiz55:
+  question: "This is a numeric question where you must provide pi and e"
+  type: "numeric"
+  propositions:
+    - proposition: "Pi value: "
+      label: "essai pi"
+      type: "numeric"
+      expected: '3.141592'
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: "3.14"
+    - proposition: "Value of e: "
+      label: "essai e"
+      type: "numeric"
+      expected: '2.718'
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: "2.718"
+  label: q:quiz55
+quiz56:
+  question: "This is a numeric question where you must answer 3"
+  type: "numeric"
+  propositions:
+    - proposition: "Value: "
+      label: "essai trois"
+      expected: '3'
+      tolerance: 0.01
+      tolerance_abs: 0
+      tip: "Enter the value"
+      answer: "3"
+  label: q:quiz56
+quiz57:
+  question: "This is a question with contradictions and implications. The number is
+    6"
+  type: "mcq"
+  constraints: [{"type": "XOR", "malus": 2, indexes: ['parité', 'impair']}, {"type": "SAME",
+        "malus": 2, indexes: ['parité', 'multiple 2']}, {"type": "XOR", "malus": 
+          2, indexes: ['parité', 'plus1pair']}, {"type": "IMPLY", "malus": 2, 
+          indexes: ['parité', 'plus1impair']}]
+  propositions:
+    - proposition: 'The number is even'
+      label: 'parité'
+      expected: true
+      tip: 'Check the statement.'
+      bonus: 2
+      malus: 1
+      answer: "It is 6, it is even"
+    - proposition: 'The number is a multiple of two'
+      label: 'multiple 2'
+      expected: true
+      tip: 'Check the statement.'
+      answer: "It is 6, it is even"
+    - proposition: 'The number is odd'
+      label: 'impair'
+      expected: false
+      tip: 'Check the statement.'
+      answer: "It is 6, it is even"
+    - proposition: 'The number plus 1 is even'
+      label: 'plus1pair'
+      expected: false
+      tip: 'Check the statement.'
+      answer: "It would be 7, which is odd"
+    - proposition: 'The number plus 1 is odd'
+      label: 'plus1impair'
+      expected: true
+      tip: 'Check the statement.'
+      answer: "It would be 7, which is odd"
+  label: q:quiz57
+quiz58:
+  question: 'This is an MCQ question regarding the definition of the Fourier Transform'
+  type: "mcq"
+  constraints: [{"type": "IMPLYFALSE", "malus": 2, indexes: ['TF2', 'TF1']}]
+  propositions:
+    - proposition: 'The continuous frequency FT is  $$X(f) = \sum_n x(n) \exp(j2 \pi
+        fn)$$'
+      type: bool
+      label: 'TF1'
+      expected: false
+      tip: 'Remember: it is the dot product with the complex exponential basis $\exp(j2
+        \pi fn)$'
+      answer: 'There is a minus sign in the exponential'
+    - proposition: 'The continuous frequency FT is $$X(f) = \sum_n x(n) \exp(-j2 \pi
+        fn)$$'
+      label: 'TF2'
+      type: bool
+      expected: true
+      tip: 'Remember: it is the dot product with the complex exponential basis $\exp(j2
+        \pi fn)$'
+      answer: 'There is indeed a minus sign in the exponential: $$X(f) = \sum_n x(n)
+        \exp(-j2 \pi fn)$$'
+  label: q:quiz58
+quiz59:
+  question: "Please enter the mean and standard deviation values of the time series
+    above"
+  type: "numeric"
+  propositions:
+    - proposition: "Mean: "
+      label: "moyenne"
+      type: "numeric"
+      expected: '0.0'
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: The mean is 0
+    - proposition: "Standard deviation "
+      label: "sigma"
+      type: "numeric"
+      expected: '1.0'
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: The standard deviation is 1
+  label: q:quiz59
+quiz61:
+  question: "This is a numeric question where the coefficient of variation of the
+    series s={s} must be calculated"
+  type: "numeric-template"
+  propositions:
+    - proposition: "Coef of variation"
+      label: "cv"
+      type: "float"
+      expected: f'{np.std(s)/np.mean(s)}'
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: f'The coefficient of variation is {np.std(s)/np.mean(s)}'
+  label: q:quiz61
+  variables:
+    s:
+      type: float
+      structure: numpy array
+      engine: numpy rng.
+      call: normal(0, 1, size=5)
+quiz62:
+  type: mcq-template
+  question: a positive, negative question on the sum of {A} and {B}
+  propositions:
+    - proposition: The sum is positive
+      expected: (A+B) > 0
+      label: Pos
+      answer: The sum is {A+B}
+      tip: The sum is {A+B}
+    - label: Neg
+      proposition: The difference is positive
+      expected: (A-B)>0
+      answer: The difference is {A-B}
+      tip: The difference is {A-B}
+  label: q:quiz62
+  variables:
+    A:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 10)
+    B:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 10)
+quiz63:
+  type: mcq-template
+  question: What is the derivative of $x^n$, with n={n}, that is  $x^{n}$, 
+  propositions:
+    - proposition: The derivative is ${n} x^{n-1}$
+      expected: 'True'
+      label: correct_derivative
+      answer: ''
+      tip: ''
+    - label: wrong
+      proposition: The derivative is $\frac{1}{n} x^{n}$
+      expected: 'False'
+      answer: ''
+      tip: ''
+    - label: wrong2
+      proposition: The derivative is $\frac 1{n-1} x^{n-1}$
+      expected: 'False'
+      answer: ''
+      tip: ''
+    - label: wrong3
+      proposition: The derivative is ${n-1} x^{n-1}$
+      expected: 'False'
+      answer: ''
+      tip: ''
+  label: q:quiz63
+  variables:
+    n:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 10)
+title: New file

@@ -169,4 +169,4 @@ def do_the_check_old(obj,WORKDIR):
 	session_hash=compute_local_hash(WORKDIR);EXCLUDE={'putils.py','__pycache__','.ipynb_checkpoints','.DS_Store'};labdir=get_package_directory('labquiz');installed_hash,f=package_hash(labdir,exclude=EXCLUDE);output={'installed_hash':installed_hash,_J:session_hash,_H:get_full_object_hash(obj),'src_hash':get_source_integrity_hash(obj.__class__),_F:obj.retries,_D:obj.exam_mode,_E:obj.test_mode,'transfer':obj.sheetTransfer,'quizfile':obj.QUIZFILE};payload={_K:obj.machine_id,_L:obj.student.name,_M:_Q,_N:datetime.datetime.now().isoformat(timespec='seconds'),_O:'teacher_check',_P:output,'score':0}
 	try:r=requests.post(obj.SHEET_URL,data=json.dumps(payload),headers={_R:_S})
 	except Exception as e:print(_T,e)
-# noqa: E501  # 35e5c5e979187d19
+# noqa: E501  # 6adfeb620e5a6aac
