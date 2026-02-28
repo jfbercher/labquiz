@@ -95,18 +95,52 @@ def strip_f_prefix(template: str) -> str:
     import re
     return re.sub(r'^\s*f([\'"]{1,3})', r'\1', template, count=1)
 
+def replace_latex_braces(template):
+    import re
+    def process_math(match):
+        content = match.group(1)
+
+        content = re.sub(
+            r'\\[a-zA-Z]+\{[^{}]*\}',
+            lambda m: m.group(0).replace('{', '{{').replace('}', '}}'),
+            content
+        )
+
+        return f"${content}$"
+
+    return re.sub(
+        r'(?<!\\)\$(.+?)(?<!\\)\$',
+        process_math,
+        template,
+        flags=re.DOTALL
+    )
+
 def evaluate_fstring(template, context):
     import re
     if not isinstance(template, str): return template
     template = strip_f_prefix(template)
     
     # Replace $.{...}..$ with {{...}}
-    template = re.sub(
+    '''template = re.sub(
         r'(?<!\\)\$(.+?)(?<!\\)\$',
         lambda m: '$' + m.group(1).replace('{', '{{').replace('}', '}}') + '$',
         template,
         flags=re.DOTALL
+    )'''
+    
+    # Replace $.{...}..$ with {{...}} for latex commands but not for possible "f-strings"
+    template = re.sub(
+    r'(?<!\\)\$(.+?)(?<!\\)\$',
+    lambda m: '$' + re.sub(
+        r'\\[a-zA-Z]+\{[^{}]*\}',
+        lambda c: c.group(0).replace('{', '{{').replace('}', '}}'),
+        m.group(1)
+    ) + '$',
+    template,
+    flags=re.DOTALL
     )
+    
+    #template = replace_latex_braces(template)
 
     safe_globals = {
         "__builtins__": {},
@@ -666,7 +700,7 @@ class QuizLab:
                     engine_prefix = "rng." if engine == "numpy rng." else "pd."
                     expression = f"{engine_prefix}{engine_call}"
                     context[var_name] = safe_eval(expression)
-            question = question.format(**context)
+            question = evaluate_fstring(question, context) #question.format(**context)
             for p in propositions:
                 pexpect =  p.get("expected", '' if quiz_type=='mcq-template' else 0)
                 ptype = p.get("type", bool if "mcq" in quiz_type else float)
@@ -679,7 +713,7 @@ class QuizLab:
                 #if isinstance(panswer, str) and (panswer.startswith('f"') or panswer.startswith("f'")): 
                 #p["answer"] = str(eval(panswer,{},context))
                 p['answer'] = evaluate_fstring(p['answer'], context) if isinstance(p['answer'], str) else p['answer']
-                p['proposition'] = p['proposition'].format(**context)
+                p['proposition'] = evaluate_fstring(p['proposition'], context) if isinstance(p['proposition'], str) else p['proposition']
                 p['tip'] = evaluate_fstring(p['tip'], context) if isinstance(p['tip'], str) else p['tip']
             quiz_type = quiz_type.split('-')[0]
             #print(quiz_type, pexpect, propositions, "panswer", panswer, p["answer"])
