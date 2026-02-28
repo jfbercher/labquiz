@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "labquiz"
-version = "0.8.6"
+version = "0.8.8"
 description = "Quizzes intégrés pour Jupyter"
 license = { text = "GPL-3.0-or-later" }
 authors = [
@@ -19,7 +19,7 @@ dependencies = [
     "pandas",
     "requests",
 ]
-keywords = ["quizzes", "jupyter", "hash:56a11326234d2e6d9e66676bceb99226cb031030dfa6c5eceaab6d9b3266fe3f"]
+keywords = ["quizzes", "jupyter", "hash:c0d88ebbf681d5a2bbfb732f56baecc96f3b01d34355cca40937f3e020ec3cba"]
 
 [tool.setuptools]
 include-package-data = true
@@ -29,3 +29,8 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "labquiz" = ["**/*.mo", "**/*.po"]
+
+[project.optional-dependencies]
+demo = [
+  "jupyterlab_myst",
+]
