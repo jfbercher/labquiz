@@ -5,4 +5,4 @@ numpy
 pandas
 PyYAML
 Requests
--e .[demo]
+labquiz[demo] @ git+https://github.com/jfbercher/labquiz.git@main
