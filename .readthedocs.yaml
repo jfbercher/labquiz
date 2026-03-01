@@ -16,6 +16,7 @@ build:
     # Install myst
     - npm install -g mystmd
     # Build the site
+    - cd docs
     - myst build --html
     # Copy the output to Read the Docs expected location
     - mkdir -p $READTHEDOCS_OUTPUT/html/
