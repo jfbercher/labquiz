@@ -6,7 +6,7 @@
 
 Sponsor:
 
-[![ESIEE Paris](esiee_logo_moyen.png)](https://www.esiee.fr)   
+[![ESIEE Paris](https://github.com/jfbercher/labquiz/raw/main/esiee_logo_moyen.png)](https://www.esiee.fr)   
 
 
 
