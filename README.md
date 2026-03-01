@@ -1,3 +1,6 @@
+[![PyPI version](https://img.shields.io/pypi/v/labquiz.svg)](https://pypi.org/project/labquiz/)
+[![Python versions](https://img.shields.io/pypi/pyversions/labquiz.svg)](https://pypi.org/project/labquiz/)
+[![License](https://img.shields.io/pypi/l/labquiz.svg)](https://pypi.org/project/labquiz/)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb)
 [![Documentation Status](https://readthedocs.org/projects/labquiz/badge/?version=latest)](https://labquiz.readthedocs.io/en/latest/)   
 
@@ -85,15 +88,15 @@ quiz.show("quiz1")
 ## Multiple-choice question (with hints & correction)
 
 
-![MCQ Example](docs/doc_images/quiz2.gif)
+![MCQ Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz2.gif)
 
 ## Numerical question
 
-![Numeric Example](docs/doc_images/quiz59.gif)
+![Numeric Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz59.gif)
 
 ## Template-based question (dynamic variables)
 
-![Template Example](docs/doc_images/quiz54.png)
+![Template Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz54.png)
 
 ---
 
@@ -152,16 +155,17 @@ LabQuiz also includes multiple anti-cheating mechanisms (Machine fingerprinting,
 
 # ⚙️ Installation
 
-From source (until PyPI release):
 
-```bash
-pip install git+https://github.com/jfbercher/labquiz.git
-```
-
-## From PyPI
+From PyPI
 
 ```bash
 pip install labquiz
+```
+
+From source:
+
+```bash
+pip install git+https://github.com/jfbercher/labquiz.git
 ```
 
 Import:
@@ -213,7 +217,7 @@ Install locally:
 pip install quiz-editor
 ```
 
-![Quiz Editor](docs/doc_images/quiz_editor_2.png)
+![Quiz Editor](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz_editor_2.png)
 
 
 ---
@@ -235,7 +239,7 @@ It connects to your Google Sheet backend and provides:
 Online version:
 👉 [https://jfb-quizdash.streamlit.app/](https://jfb-quizdash.streamlit.app/)
 
-![Dashboard](docs/doc_images/Monitoring_marks.png)
+![Dashboard](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/Monitoring_marks.png)
 
 
 ---
