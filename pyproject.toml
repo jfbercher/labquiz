@@ -4,8 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "labquiz"
-version = "0.8.9"
-description = "Quizzes intégrés pour Jupyter"
+version = "0.8.10"
+description = "LabQuiz is a Python package that allows to integrate interactive quizzes directly into Jupyter notebooks — useful for labs, tutorials, practical assignments, continuous assessment, and controlled exams"
+readme = "README.md"
 license = { text = "GPL-3.0-or-later" }
 authors = [
     { name = "J.-F. Bercher", email = "jf.bercher@esiee.fr" }
