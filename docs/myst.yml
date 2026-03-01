@@ -1,0 +1,63 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  id: 4802dc76-71d4-46b2-a056-91ba66ba2d49
+  title: LabQuiz suite documentation
+  numbering:
+    title: true
+    heading_1: false
+    headings:
+      continue: true
+    chapters: 
+      continue: true
+    sections: true
+    subsections: true
+    figure:
+      continue: true
+
+
+  # To autogenerate a Table of Contents, run "myst init --write-toc"
+  toc:
+    - file: index.md
+      title: General index
+      numbered: false
+    - title: labQuiz suite documentation
+      numbered: true
+      continue: true
+      children:
+        - file: Overview.md
+        - file: introduction.md
+        - file: Usage.md
+        - file: question_file_structure.md
+        - file: ScoreAndCorrection.md
+        - file: Security.md
+        - file: ManualPreparationOfQuestionFile.md
+        - file: quiz_editor.md
+        #- file: quiz_editor_README.md
+        - file: quiz_dash.md
+        #- file: quiz_dash_README.md
+        - file: GoogleSheetPreparation.md
+        - file: JupyterLiteDeployment.md
+        - file: DemonstrationAndExercises.md
+    
+  bibliography:
+    - references.bib
+
+site:
+  template: book-theme
+  # options:
+  #   favicon: favicon.ico
+  #   logo: site_logo.png
+  #base_url: ~bercherj/4201A/ # FAIRE export BASE_URL="/~bercherj/4201A"
+  #template: article-theme
+  title: "LabQuiz suite documentation"
+  logo_text: "LabQuiz suite documentation"
+  parts:
+    footer: "LabQuiz suite doc"
+    primary_sidebar_footer: "LabQuiz suite doc"
+
+# Configuration d'exclusion
+exclude:
+  # Exclut tous les dossiers et leur contenu, 
+  # SAUF le dossier courant et ses sous-dossiers spécifiés.
+  - "*/"
