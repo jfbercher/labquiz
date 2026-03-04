@@ -178,7 +178,7 @@ class StudentForm:
         with self.output:
             self.output.clear_output()
             text = _("✔️ **Name recorded**") + f" `{sname.strip()}`"
-            text += ', ' + _('Group/Class: ') +f"{self.group.value}" if self.groups else ""
+            text += ', ' + _('Class/Group: ') +f"{self.group.value}" if self.groups else ""
             display(Markdown(text))
 
     
