@@ -106,9 +106,10 @@ from IPython.display import display, Markdown
 
 
 class StudentForm:
-    def __init__(self):
+    def __init__(self, groups=[]):
         self.name = None
         self.output = widgets.Output()
+        self.groups = groups
 
         self.student_lastname = widgets.Text(
         placeholder=_("FAMILY NAME"),
@@ -124,6 +125,13 @@ class StudentForm:
         layout=widgets.Layout(width="250px"),
         continuous_update=True
     )
+        self.group = widgets.Dropdown(
+        options=['--'] + self.groups,
+        description=_("Group/Class:"),
+        style={'description_width': '70px'},
+        layout=widgets.Layout(width="250px")
+    )
+
         self.save_name_button = widgets.Button(
         description=_("Save"),
         button_style="info",
@@ -132,6 +140,7 @@ class StudentForm:
     
         self.student_firstname.observe(self.validate, "value")
         self.student_lastname.observe(self.validate, "value")
+        if self.groups: self.group.observe(self.validate, names="value")
         
         self.save_name_button.on_click(self.on_save)
         self.student_firstname.on_submit(self.on_submit) 
@@ -145,17 +154,22 @@ class StudentForm:
     
     
     def validate(self, _button):
-        self.save_name_button.disabled = not (
-            self.student_firstname.value.strip()
-            and self.student_lastname.value.strip()
+
+        self.save_name_button.disabled =  not (
+            (self.student_firstname.value.strip() != '')
+            and (self.student_lastname.value.strip() != '')
+            and (self.group.value in self.groups if self.groups else True)
         )
 
     def on_save(self, _button):
-        self.name = (
+        sname = (
             self.student_lastname.value.strip().upper()
-            + " "
+            + ", "
             + self.student_firstname.value.strip().title()
         )
+        if self.groups:
+            self.name = sname + ", " + str(self.group.value)
+
         if len(self.name.strip()) <= 1:
             import time
             time.sleep(0.3)
@@ -163,18 +177,24 @@ class StudentForm:
         
         with self.output:
             self.output.clear_output()
-            display(Markdown(_("✔️ **Name recorded**") + f" `{self.name}`"))
+            text = _("✔️ **Name recorded**") + f" `{sname.strip()}`"
+            text += ', ' + _('Group/Class: ') +f"{self.group.value}" if self.groups else ""
+            display(Markdown(text))
 
     
     def display(self):
         enter_msg = _("Enter your first name and LAST NAME here.")
+        if self.groups:
+            enter_msg += _(" Then, select your group.")
+        children = [self.student_firstname, self.student_lastname] + ([self.group] if self.groups else [])
         form = widgets.VBox([
             widgets.HTML("<h2 style='margin-top: 0; margin-bottom: 0; line-height: 1.2;'> {enter_msg} </h2>".format(enter_msg=enter_msg)),
             #widgets.HTML("<b> &nbsp;&nbsp;&nbsp; ⚠️ (appuyez sur Entrée pour valider) </b>"),
-            widgets.HBox([self.student_firstname, self.student_lastname]),
+            widgets.HBox(children),
             self.save_name_button,
             self.output
            ])
+
         display(form)
 
 ###
