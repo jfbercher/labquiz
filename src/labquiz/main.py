@@ -127,7 +127,7 @@ def evaluate_fstring(template, context):
         template,
         flags=re.DOTALL
     )'''
-    
+
     # Replace $.{...}..$ with {{...}} for latex commands but not for possible "f-strings"
     template = re.sub(
     r'(?<!\\)\$(.+?)(?<!\\)\$',
@@ -170,7 +170,7 @@ class QuizLab:
 
     
     def __init__(self,  URL="", QUIZFILE="", needAuthentification=True, retries=2,
-                 exam_mode=False, test_mode=False, 
+                 exam_mode=False, test_mode=False, groups=[],
                  mandatoryInternet=False, CHECKALIVE=600,
                  INACTIVITY_TIMEOUT=3600,
                  in_streamlit=False):
@@ -193,7 +193,7 @@ class QuizLab:
         self.score_global = 0.0
         self.user_answers = {}
         self.keep_alive = True
-        self.student = StudentForm()
+        self.student = StudentForm(groups=groups)
         self.student.name = ""
         self.needAuthentification = needAuthentification
         self.encoded = False
