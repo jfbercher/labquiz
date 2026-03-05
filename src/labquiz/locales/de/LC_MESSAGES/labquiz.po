@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 19:24+0100\n"
+"POT-Creation-Date: 2026-03-04 22:10+0100\n"
 "PO-Revision-Date: 2026-02-12 20:20+0100\n"
 "Last-Translator: Jean-François BERCHER <jf.bercher@esiee.fr>\n"
 "Language-Team: German <traduc@traduc.org>\n"
@@ -18,66 +18,80 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:114
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:115
 msgid "FAMILY NAME"
 msgstr "NACHNAME"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:115
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:116
 #, fuzzy
 msgid "FAMILY NAME:"
 msgstr "NACHNAME"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:121
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:122
 msgid "First name"
 msgstr "Vorname"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:122
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:123
 #, fuzzy
 msgid "First name:"
 msgstr "Vorname"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:128
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:130
+msgid "Group/Class:"
+msgstr "Gruppe/Klasse:"
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:136
 msgid "Save"
 msgstr "Speichern"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:166
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:180
 msgid "✔️ **Name recorded**"
 msgstr "✔️ **Name gespeichert**"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:170
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:181
+msgid "Class/Group: "
+msgstr "Klasse/Gruppe: "
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:186
 msgid "Enter your first name and LAST NAME here."
 msgstr "Geben Sie hier Ihren Vornamen und NACHNAMEN ein."
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:737
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:188
+msgid " Then, select your group."
+msgstr " Wählen Sie dann Ihre Gruppe aus."
+
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:757
 msgid "❌ Error : user_answers must be a dictionary."
 msgstr "❌ Fehler: user_answers muss ein Wörterbuch sein."
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:933
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:961
 msgid "⚠️ LabQuiz is not installed!"
 msgstr "⚠️ LabQuiz ist nicht installiert!"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:950
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py:979
 msgid "⚠️ Package hash different than expected -- this is recorded"
 msgstr "⚠️ Paket-Hash weicht vom Erwarteten ab -- dies wird protokolliert"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:159
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:211
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:226
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:278
 msgid "No internet connexion or bad URL"
 msgstr "Keine Internetverbindung oder fehlerhafte URL"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:230
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:297
 msgid "--> Restarting the quiz under a new name..."
 msgstr "--> Quiz wird unter neuem Namen neu gestartet..."
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:239
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:306
 msgid "Inactivity timeout... Pausing event monitoring..."
-msgstr "Zeitüberschreitung aufgrund von Inaktivität... Ereignisüberwachung wird angehalten..."
+msgstr ""
+"Zeitüberschreitung aufgrund von Inaktivität... Ereignisüberwachung wird "
+"angehalten..."
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:462
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:529
 msgid "Tolerance: maximum of"
 msgstr "Toleranz: maximal"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:503
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:573
 msgid ""
 "⚠️ Authentication not carried out -- Enter your first and last name!\n"
 "Then re-execute the cell"
@@ -85,108 +99,108 @@ msgstr ""
 "⚠️ Authentifizierung fehlgeschlagen -- Geben Sie Vor- und Nachnamen ein!\n"
 "Führen Sie die Zelle dann erneut aus"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:508
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:578
 msgid "😔 Maximum number of attempts already reached!!"
 msgstr "😔 Maximale Anzahl der Versuche bereits erreicht!!"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:512
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:582
 msgid "😔 Correction already obtained for this quiz!!"
 msgstr "😔 Korrektur für dieses Quiz bereits erhalten!!"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:532
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:603
 #, python-brace-format
 msgid "❌ Decryption error for quiz '{quiz_id}'."
 msgstr "❌ Entschlüsselungsfehler für Quiz '{quiz_id}'."
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:533
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:604
 msgid "Check the access key or data integrity."
 msgstr "Überprüfen Sie den Zugriffsschlüssel oder die Datenintegrität."
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:637
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:733
 msgid "Submit"
 msgstr "Absenden"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:640
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:736
 msgid "Correction"
 msgstr "Korrektur"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:669
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:768
 #, python-brace-format
 msgid "Attempt No.{n} on {r}"
 msgstr "Versuch Nr. {n} von {r}"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:672
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:771
 msgid "<br><b>😔 Maximum number of attempts reached</b>"
 msgstr "<br><b>😔 Maximale Anzahl der Versuche erreicht</b>"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:679
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:778
 msgid "⚠️ Everything is not correct."
 msgstr "⚠️ Nicht alles ist korrekt."
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:681
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:780
 msgid "<br>⚠️ No answers in quiz file: no score calculation."
 msgstr "<br>⚠️ Keine Antworten in der Quiz-Datei: keine Punktcalculate."
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:750
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:849
 msgid "<br>⚠️ no answers in the quiz file: no possible correction."
 msgstr "<br>⚠️ Keine Antworten in der Quiz-Datei: keine Korrektur möglich."
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:769
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:868
 msgid "Good answer ✅ - "
 msgstr "Gute Antwort ✅ - "
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:772
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:871
 msgid "Bad answer &nbsp;&nbsp;❌ - "
 msgstr "Falsche Antwort &nbsp;&nbsp;❌ - "
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:788
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:887
 #, python-brace-format
 msgid "⚠️ The answers to {props} are necessarily different"
 msgstr "⚠️ Die Antworten auf {props} müssen unterschiedlich sein"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:790
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:889
 #, python-brace-format
 msgid "⚠️ The answers to {props} are necessarily identical"
 msgstr "⚠️ Die Antworten auf {props} müssen identisch sein"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:792
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:891
 #, fuzzy, python-brace-format
 msgid "⚠️ The answer {prop0} true implies that {prop1} is true"
 msgstr "⚠️ Wenn {prop0} wahr ist, muss auch {prop1} wahr sein"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:794
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:893
 #, python-brace-format
 msgid "⚠️ The answer {prop0} true implies that {prop1} is necessarily false"
 msgstr "⚠️ Wenn {prop0} wahr ist, muss {prop1} falsch sein"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:887
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:986
 msgid "number is greater than the number of available questions"
 msgstr "Die Zahl ist größer als die Anzahl der verfügbaren Fragen"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:934
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1033
 msgid "Score out of 20: "
 msgstr "Punktzahl (von 20): "
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1003
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1102
 msgid "⚠️ Be careful of passed parameters that are not json-serializable"
 msgstr "⚠️ Achtung: Übergebene Parameter sind nicht JSON-serialisierbar"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1004
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1103
 msgid "Simplify or convert"
 msgstr "Vereinfachen oder konvertieren"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1009
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1108
 msgid "⚠️ Submission error:"
 msgstr "⚠️ Übermittlungsfehler:"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1062
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1161
 msgid "⚠️ Sending error:"
 msgstr "⚠️ Sende-Fehler:"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1106
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1205
 msgid "✅ Verification performed, data sent, daemon launched"
 msgstr "✅ Verifizierung durchgeführt, Daten gesendet, Daemon gestartet"
 
-#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1186
+#: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1285
 msgid "The file must not be encrypted."
 msgstr "Die Datei darf nicht verschlüsselt sein."
