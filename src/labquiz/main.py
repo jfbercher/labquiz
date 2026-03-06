@@ -1244,6 +1244,7 @@ class QuizLab:
         from .utils import is_base64_encoded_text, is_encrypted
 
         if isinstance(path, BytesIO):
+            path.seek(0) # security
             data = yaml.safe_load(path)
         else:
             with open(path, "r", encoding="utf-8") as f:
