@@ -334,6 +334,7 @@ def readData(URL, SECRET):
     except Exception as e:
         footer_msg =  f"<span style='color:red; font-weight:bold'>✘ Loading error {e}</span>"
         display(HTML(footer_msg))
+        return None, None
         
     df = df.sort_values("timestamp")
     #df_last = df.drop_duplicates(
