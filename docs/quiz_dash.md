@@ -61,3 +61,8 @@ Some screenshots of actual monitoring:
 :width: 90%
 `quiz_dash` -- Automated correction, with the option to adjust the scoring system (automatic recalculation); (student names have been hidden). Of course, the results table can be downloaded.  
 :::
+
+Since version 0.9, `quiz_dash` 
+
+- allows to take into account different classes or groups of students and display the overall results or results by group,
+- has been made `persistent` with data saved in the browser's localStorage, allowing you to resume work in the event of a session (network) interruption, reloading, or closing the browser.

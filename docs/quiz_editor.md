@@ -40,10 +40,10 @@ It allows you to edit the files whose structure has been described and has some 
 - preparation of an encoded or encrypted version (as described above),
 - <mark>conversion to AMC-$\LaTeX$ </mark> format, so that questions can be reused in a paper-based AMC multiple-choice quiz,
  
-(Categories are used to define the `\element` type), an example of output [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/demo_export.tex)
+(Categories are used to define the `\element` type), an example of output [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/export_demo.tex)
 - <mark>conversion to HTML format</mark>
-  with integrated answers, so that a "self-assessment" web page can be created -- an example of the export result [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/demo_export_train.html)
-- conversion to HTML format **exam**, without answers, and with real-time submission of results to a Google Sheet, with subsequent correction, as described in [](calcul_du_score_correction) or using the dashboard as described below [](quiz_dash)  -- example [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/demo_export_exam.html)
+  with integrated answers, so that a "self-assessment" web page can be created -- an example of the export result [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/export_demo.html)
+- conversion to HTML format **exam**, without answers, and with real-time submission of results to a Google Sheet, with subsequent correction, as described in [](calcul_du_score_correction) or using the dashboard as described below [](quiz_dash)  -- example [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/export_demo_exam.html)
   
 :::{figure} doc_images/quiz_editor_2.png
 :name: quiz_editor_1

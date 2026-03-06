@@ -42,15 +42,20 @@ from labquiz import QuizLab
 and instantiate a quiz with
 ```{code}
 URL = "" # path to a URL to collect results
-QUIZFILE = "name_of_quiz_file" # for example "quizzes_basic_filtering_test.yaml"
+QUIZFILE = "name_of_quiz_file.yaml" # for example "quizzes_basic_filtering_test.yaml"
 quiz = QuizLab(URL, QUIZFILE)
 ```
 Additional parameters can be specified (default values below)
 ```
-needAuthentication=True,  # Authentication required yes/no
+needAuthentication=True,    # Authentication required yes/no
 retries=2,                  # number of possible attempts = retries + 1
-mandatoryInternet=False,    # requirement to have a valid internet connection
+exam_mode=False,            # default False 
+test_mode=False,            # default False
+groups=[],                  # list of groups (or classes) of students, eg ['A', 'B', 'C'] - used to present a dropdown of choices
+mandatoryInternet=False,    # requirement to have a valid internet connection (in particular for exams with encrypted YAML file with remote password)
 CHECKALIVE=60,              # integrity check every CHECKALIVE seconds
+INACTIVITY_TIMEOUT=3600,    # suspend the integrity daemon if no activity recorded during this time
+in_streamlit=False,         # put it to True is quiz is instancied in streamlit app
 #(no changes to the program or parameters)
 ```
                             
