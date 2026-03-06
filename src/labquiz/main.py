@@ -120,14 +120,6 @@ def evaluate_fstring(template, context):
     if not isinstance(template, str): return template
     template = strip_f_prefix(template)
     
-    # Replace $.{...}..$ with {{...}}
-    '''template = re.sub(
-        r'(?<!\\)\$(.+?)(?<!\\)\$',
-        lambda m: '$' + m.group(1).replace('{', '{{').replace('}', '}}') + '$',
-        template,
-        flags=re.DOTALL
-    )'''
-
     # Replace $.{...}..$ with {{...}} for latex commands but not for possible "f-strings"
     template = re.sub(
     r'(?<!\\)\$(.+?)(?<!\\)\$',
@@ -140,7 +132,6 @@ def evaluate_fstring(template, context):
     flags=re.DOTALL
     )
     
-    #template = replace_latex_braces(template)
 
     safe_globals = {
         "__builtins__": {},
