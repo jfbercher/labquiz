@@ -196,6 +196,7 @@ class QuizLab:
         self.QUIZFILE = QUIZFILE if isinstance(QUIZFILE, str) else QUIZFILE.name
         self._CHECKALIVE = CHECKALIVE
         self.current_quiz_id = ""
+        self.weights = None
         #self.question = ""
         self.machine_id = ""
         self.internetOK = ''
@@ -536,7 +537,7 @@ class QuizLab:
         from .utils import calculate_quiz_score
 
         score, total_possible = calculate_quiz_score(quiz_type, user_answers, 
-                                propositions, constraints=constraints, weights=None)
+                                propositions, constraints=constraints, weights=weights)
         return score, total_possible
 
     def show(self, quiz_id, noscore=False, autovars=False, **context):
@@ -749,7 +750,7 @@ class QuizLab:
             #print(self.exam_mode, allContainExpected, self.user_answers[quiz_id])
 
             if (not self.exam_mode) and allContainExpected:
-                score, total = self.compute_score(propositions, user_answers, quiz_type, constraints=constraints, weights=None) #  compute_score()
+                score, total = self.compute_score(propositions, user_answers, quiz_type, constraints=constraints, weights=self.weights) #  compute_score()
                 self.quiz_results[quiz_id] = score / total
                 #print(score)
                 #msg += f"propositions {propositions}" 
@@ -842,7 +843,7 @@ class QuizLab:
                     display(widgets.HTML(msg))
                 return
                         
-            score, total = self.compute_score(propositions, self.user_answers[quiz_id], quiz_type, constraints=constraints, weights=None) #  compute_score()
+            score, total = self.compute_score(propositions, self.user_answers[quiz_id], quiz_type, constraints=constraints, weights=self.weights) #  compute_score()
             msg = f"<h3>Score : <b>{score}/{total}</b></h3>"
             output.clear_output()
             with output:
@@ -1318,6 +1319,19 @@ class QuizLab:
         
     def set_sheet_url(self, url=""):
         self.SHEET_URL = url
+
+    def set_weights(self, weights):
+        default = {(True,True):1, (True,False):-1, (False,True):0, (False,False):0}
+        if not isinstance(weights, dict):
+            raise TypeError("weights must be a dict")
+
+        w = {**default, **weights}  # or default | weights # complete with default values
+        if set(w) != set(default):
+            raise ValueError(f"Invalid key. Allowed keys: {list(default_weights)}")
+        if not  not all(isinstance(v,(int,float)) for v in w.values()):
+            raise ValueError("Invalid weights: all values must be int or float")
+
+        self.weights = w
 
     def available_quizzes(self):
         """Returns the list of quiz ids available in the database."""
