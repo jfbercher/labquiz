@@ -952,7 +952,7 @@ def package_hash(package_dir, includeOnly=None, exclude=None, algo="sha256"):
 
     return h.hexdigest(), files
 
-def check_installed_package_integrity():
+def check_installed_package_integrity(silentStart=False):
     from importlib.metadata import version, PackageNotFoundError
     import importlib.util
     
@@ -980,7 +980,7 @@ def check_installed_package_integrity():
               Installed: {installed_hash} 
               Expected: {recorded_hash}""".format(installed_hash=installed_hash, recorded_hash=recorded_hash))
         return False
-    print(f"LabQuiz, {PACKAGE_NAME} version {__version__}")
+    if not silentStart: print(f"LabQuiz, {PACKAGE_NAME} version {__version__}")
     return True
 #_ = check_installed_package_integrity()
 

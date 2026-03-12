@@ -164,7 +164,8 @@ class QuizLab:
                  exam_mode=False, test_mode=False, groups=[],
                  mandatoryInternet=False, CHECKALIVE=600,
                  INACTIVITY_TIMEOUT=3600,
-                 in_streamlit=False):
+                 in_streamlit=False,
+                 silentStart=False):
         from .utils import StudentForm,  check_installed_package_integrity
         
         QUIZFILE_ORI = QUIZFILE
@@ -218,10 +219,8 @@ class QuizLab:
         
         
         self.init()
-        #print("ensure !")
-        #print(self.checkbox_style)     
         ensure_style(self.checkbox_style, style_id="custom-checkbox")
-        check_installed_package_integrity()
+        check_installed_package_integrity(silentStart=silentStart)
         
         if not QUIZFILE_ORI=="": 
             tic = time.perf_counter()
@@ -297,7 +296,7 @@ class QuizLab:
             print(_("Inactivity timeout... Pausing event monitoring..."))
         return active
     
-####################### NEW SHOW ############################
+## Styling of checkboxes and correction
     checkbox_style = """
      /* base */
         .custom.widget-checkbox_bis input[type="checkbox"] {
