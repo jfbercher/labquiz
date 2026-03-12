@@ -735,15 +735,14 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
     if quiz_type == "qcm-template": quiz_type = "mcq-template"
 
     # Weights
-    if weights is None:
-        default_weights = {
-                (True, True):   1,  # Vrai Positif
-                (True, False): -1,  # Faux Positif 
-                (False, True):  0,  # Faux Négatif (oubli)
-                (False, False): 0   # Vrai Négatif
+    if weights is None: 
+            weights = {
+                (True, True):   1,  # True Positive
+                (True, False): -1,  # False Positive
+                (False, True):  0,  # False Negative (forgotten)
+                (False, False): 0   # True Negative
             }
-    else:
-        default_weights = weights
+
 
     TYPE_MAP = {
         "int": int,
@@ -786,17 +785,17 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
         
         if quiz_type in ["mcq", "mcq-template"]:
             #1. Calculation of the theoretical total
-            total_possible += prop.get("bonus", default_weights[(True, True)]) if expected \
-                   else prop.get("bonus", default_weights[(False, False)])
+            total_possible += prop.get("bonus", weights[(True, True)]) if expected \
+                   else prop.get("bonus", weights[(False, False)])
 
             #2. Calculation of the score for this proposition
             if user_val == expected:
                 # Correct Case (VP ou VN)
-                val = prop.get("bonus", default_weights[case])
+                val = prop.get("bonus", weights[case])
                 score += val
             else:
                 # Incorrect Case (FP or FN)
-                val = prop.get("malus", default_weights[case])              
+                val = prop.get("malus", weights[case])              
                 # We make sure that the penalty is indeed deducted
                 score -= abs(val)
 
