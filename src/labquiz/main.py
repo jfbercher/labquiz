@@ -1320,16 +1320,27 @@ class QuizLab:
     def set_sheet_url(self, url=""):
         self.SHEET_URL = url
 
-    def set_weights(self, weights):
+    def set_weights(self, weights=None):
+        # set correction weights
+        # eg: quiz.set_weights({(False, True):-2.0})
+        # Format: (User_Response, Expected)
+        
         default = {(True,True):1, (True,False):-1, (False,True):0, (False,False):0}
+        if weights is None:
+            print("⚠️ weights must be a dictionary like {(True,True):1, (True,False):-1, (False,True):0, (False,False):0}")
+            return
+        
         if not isinstance(weights, dict):
-            raise TypeError("weights must be a dict")
+            print("⚠️ weights must be a dict")
+            return
 
         w = {**default, **weights}  # or default | weights # complete with default values
         if set(w) != set(default):
-            raise ValueError(f"Invalid key. Allowed keys: {list(default_weights)}")
-        if not  not all(isinstance(v,(int,float)) for v in w.values()):
-            raise ValueError("Invalid weights: all values must be int or float")
+            print(f"⚠️ Invalid key. Allowed keys: {list(default_weights)}")
+            return
+        if not all(isinstance(v,(int,float)) for v in w.values()):
+            print("⚠️ Invalid weights: all values must be int or float")
+            return
 
         self.weights = w
 
