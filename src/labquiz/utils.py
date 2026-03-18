@@ -715,7 +715,7 @@ def is_encrypted(s):
     except: # InvalidToken:
         return False
 
-def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, constraints=None):
+def calculate_quiz_score(quiz_type, user_answers, propositions, question=None, weights=None, constraints=None, return_details=False):
     """ 
     constraints: List of dicts ex: [{"indexes": (0, 1), "type": "XOR", "malus": 2}] 
     - XOR (Exclusion) A and B must be different 
@@ -752,13 +752,18 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
     
     score = 0.0
     total_possible = 0.0
+    marks = {}
+
     if not isinstance(user_answers, dict): 
         print(_("❌ Error : user_answers must be a dictionary."))
 
     # Correction in the case of a template
     if quiz_type in ['numeric-template', 'mcq-template']:
+        
         context = user_answers.get('context', {})
-        #print(context)
+        if question is None:  # If a question was provided, try to format it
+            question = question.format(**context)
+
         for p in propositions:
             pexpect =  p["expected"]
             ptype = p.get("type", bool if quiz_type == "mcq" else float)
@@ -779,7 +784,17 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
     for answer, prop in zip(user_answers.values(), propositions):
         expected = prop.get("expected", None)
         # default was False
-        if expected is None: return 0, 1 #No solution known in proposition
+        if expected is None: 
+            print(_("❌ Error : expected value is missing"))
+            details = {
+                "score": 0,
+                "total_possible": 1,
+                "propositions": propositions,
+                "marks": {},
+                "violations": {},
+            }
+            if return_details: return 0, 1, details
+            return 0, 1 #No solution known in proposition // This shoud not happen
         user_val = bool(answer)
         case = (user_val, expected)
         
@@ -798,6 +813,7 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
                 val = prop.get("malus", weights[case])              
                 # We make sure that the penalty is indeed deducted
                 score -= abs(val)
+            marks[prop['label']] = val
 
         elif quiz_type in ["numeric", "numeric-template"]:
             pexpected = float(prop.get("expected", 0))
@@ -806,13 +822,17 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
             diff = abs(answer - pexpected)
             tol = max(prop.get("tolerance_abs", 0), 
                       prop.get("tolerance", 0.01) * abs(pexpected)) 
-            score += bonus if diff <= tol else -abs(prop.get("malus", 0))
+            val= bonus if diff <= tol else -abs(prop.get("malus", 0))
+            score += val
+            marks[prop['label']] = val
 
            
     # contraints
+    violations = {}
     if quiz_type == "mcq" and constraints:
         for rule in constraints:
             idx1, idx2 = rule["indexes"]
+            malus = rule.get("malus", 1)
             ans1, ans2 = bool(user_answers[idx1]), bool(user_answers[idx2])
 
             violation = False
@@ -821,24 +841,38 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, weights=None, co
             if r_type == "XOR": #The two cannot be identical
                 if not (ans1 != ans2) :
                     violation = True
+                    violations["XOR"] = {'indexes': (idx1, idx2), 'malus': malus}
                     #print(f"violation XOR entre {idx1} et {idx2}")
             elif r_type == "IMPLY": # If 1 is TRUE, then 2 MUST be TRUE (otherwise contradiction)
                 if ans1 and not ans2:
                     violation = True
+                    violations["IMPLY"] = {'indexes': (idx1, idx2), 'malus': malus}
                     #print(f"violation IMPLY entre {idx1} et {idx2}")
             elif r_type == "IMPLYFALSE": # If 1 is TRUE, then 2 MUST be FALSE (otherwise contradiction)
                 if ans1: 
                     if ans2:
                         violation = True
+                    violations["IMPLYFALSE"] = {'indexes': (idx1, idx2), 'malus': malus}
                     #print(f"violation IMPLY entre {idx1} et {idx2}")
             elif r_type == "SAME": # Must have the same value
                 if ans1 != ans2:
                     violation = True
+                    violations["SAME"] = {'indexes': (idx1, idx2), 'malus': malus}
                     #print(f"violation SAME between {idx1} and {idx2}")
 
             if violation:
                 # We subtract the contradiction malus
                 score -= abs(rule.get("malus", 1))
+
+
+    if return_details:
+        details = {
+            "question": question, # current question (with variables replaced)
+            "propositions": propositions, # list of propositions (with variables replaced)
+            "marks": marks,    # {label: val}
+            "violations": violations,  #{'indexes': (idx1, idx2), 'malus': malus}
+        }
+        return score, total_possible, details
 
     return score, total_possible
 
