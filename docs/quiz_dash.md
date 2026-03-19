@@ -27,6 +27,7 @@ Based on the Google Sheet URL specification, the associated read password, and t
 - <mark>check integrity</mark>, i.e., verify that the parameters (number of attempts allowed, mode, etc.) have not been modified, verify the hash of the sources, the object in memory, and its dependencies, 
 - <mark>view</mark>, over time, the progress of each participant (filterable) and of the entire group,
 - <mark>correct</mark> and retrieve the results table, 
+- download pdf reports of full corrections for all participants,
 - with the possibility of adjusting the weight matrix (for multiple-choice questions) and the scoring scale per question. .
 Some screenshots of actual monitoring:
 :::{figure} doc_images/dash_parameters.png
@@ -61,8 +62,21 @@ Some screenshots of actual monitoring:
 :width: 90%
 `quiz_dash` -- Automated correction, with the option to adjust the scoring system (automatic recalculation); (student names have been hidden). Of course, the results table can be downloaded.  
 :::
+:::{figure} doc_images/Zipping_all_pdf_reports.png
+:name: Correction_reports
+:label:fig30
+:alt: quiz_dash
+:align: center
+:width: 90%
+`quiz_dash` -- Individual reports can be downloaded so that you can distribbute them to the students.
+:::
 
 Since version 0.9, `quiz_dash` 
 
 - allows to take into account different classes or groups of students and display the overall results or results by group,
 - has been made `persistent` with data saved in the browser's localStorage, allowing you to resume work in the event of a session (network) interruption, reloading, or closing the browser.
+
+Since version 0.9.6, `quiz_dash` 
+
+- allows to analyze a timeline of responses and scores over time
+- allows to generate detailed grading reports for all students and download the reports in HTML or PDF format for either individuals or the entire class

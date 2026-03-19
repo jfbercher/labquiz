@@ -162,16 +162,16 @@ LabQuiz also includes multiple anti-cheating mechanisms (Machine fingerprinting,
 
 # ⚙️ Installation
 
-From source (until PyPI release):
-
-```bash
-pip install git+https://github.com/jfbercher/labquiz.git
-```
-
 ## From PyPI
 
 ```bash
 pip install labquiz
+```
+
+## From source
+
+```bash
+pip install git+https://github.com/jfbercher/labquiz.git
 ```
 
 Import:
@@ -238,8 +238,9 @@ It connects to your Google Sheet backend and provides:
 * Live class overview
 * 👤 Student-by-student monitoring
 * 🔍 Integrity checks (mode changes, retries tampering, hash verification)
-* ⚖ Adjustable grading weights
+* ⚖ Adjustable grading weights and scale
 * 🔄 Automatic recalculation
+* 📔 Full individual corrections available for download
 * 📥 CSV export of results
 
 Online version:
