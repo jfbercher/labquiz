@@ -68,7 +68,7 @@ Some screenshots of actual monitoring:
 :alt: quiz_dash
 :align: center
 :width: 90%
-`quiz_dash` -- Individual reports can be downloaded so that you can distribbute them to the students.
+`quiz_dash` -- Individual reports can be downloaded so that you can distribute them to the students.
 :::
 
 Since version 0.9, `quiz_dash` 

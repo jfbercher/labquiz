@@ -839,5 +839,5 @@ quiz63:
       type: int
       structure: scalar
       engine: numpy rng.
-      call: integers(0, 10)
+      call: integers(1, 10)
 title: New file

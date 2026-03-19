@@ -12,6 +12,8 @@ Sponsor:
 
 **LabQuiz** is a Python package that allows to seamlessly integrate interactive quizzes directly into Jupyter notebooks — useful for labs, tutorials, practical assignments, continuous assessment, and controlled exams.
 
+* 👉🏼 `Live version`  Try it in [binder](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb) ! 
+
 It combines:
 
 * ✅ Multiple-choice and numerical questions
@@ -29,7 +31,6 @@ And it comes with two optional companion tools:
 * 📊 **`quiz_dash`** — Monitor, correct, and analyze results in real time [streamlit app](https://jfb-quizdash.streamlit.app/) | [src code](https://github.com/jfbercher/quiz_dash)
 ---
 
-* 👉🏼 `Live version`  Try it in [binder](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb) 
 * `Installation`: 
 ```bash
 # From source
@@ -96,7 +97,7 @@ quiz.show("quiz1")
 
 ## Template-based question (dynamic variables)
 
-![Template Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz54.png)
+![Template Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz54.gif)
 
 ---
 
