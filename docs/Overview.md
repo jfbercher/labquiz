@@ -36,15 +36,6 @@ And it comes with two optional companion tools:
 * 📊 **`quiz_dash`** — Monitor, correct, and analyze results in real time
 ---
 
-* 👉🏼 `Live version`  Try it in [binder](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb) 
-* `Installation`: 
-```bash
-# From source
-   pip install git+https://github.com/jfbercher/labquiz.git
-# or from PyPI
-   pip install labquiz
-```
----
 ```mermaid
 flowchart LR
     %% Nodes
@@ -87,6 +78,15 @@ flowchart LR
 ```
 Figure: Overview of the `LabQuiz` ecosystem. Dashed arrows indicate optional components. YAML quizzes drive both interactive notebooks and exports, monitored via a dashboard producing analytics, marks tables, and student reports.
 
+---
+* 👉🏼 `Live version`  Try it in [binder](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb) 
+* `Installation`: 
+```bash
+# From source
+   pip install git+https://github.com/jfbercher/labquiz.git
+# or from PyPI
+   pip install labquiz
+```
 ---
 
 # 🚀 Why LabQuiz?
