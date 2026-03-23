@@ -70,7 +70,9 @@ flowchart LR
     class F,G,H outputs;
     class I,J export;
 ```
+
 Figure: Overview of the `LabQuiz` ecosystem. Dashed arrows indicate optional components. YAML quizzes drive both interactive notebooks and exports, monitored via a dashboard producing analytics, marks tables, and student reports.
+
 ---
 
 * `Installation`: 
