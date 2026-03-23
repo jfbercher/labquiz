@@ -44,6 +44,48 @@ And it comes with two optional companion tools:
 # or from PyPI
    pip install labquiz
 ```
+---
+```mermaid
+flowchart LR
+    %% Nodes
+    A["YAML Quiz<br/>(Quiz-as-Code)"]
+    B["quiz_editor<br/>Authoring Interface<br/>(optional)"]
+    C["Jupyter Notebook<br/>+ Interactive Quizzes"]
+    D["Remote Backend<br/>(e.g., Google Sheets)"]
+    E["quiz_dash<br/>Monitoring Dashboard"]
+    F[Analytics]
+    G[Marks Table]
+    H[Student Reports]
+    I[Exports: <br/>Web-based Training Quizzes <br/>AMC / LaTeX Paper Quizzes]
+
+    %% Flows
+    B -.-> A
+    A ---> C
+    C -.-> D
+    D --> E
+    E --> F
+    E --> G
+    E --> H
+    A -.-> I
+    
+
+    %% Styles
+    classDef authoring fill:#e3f2fd,stroke:#1e88e5,stroke-width:1px;
+    classDef runtime fill:#e8f5e9,stroke:#43a047,stroke-width:1px;
+    classDef backend fill:#fff3e0,stroke:#fb8c00,stroke-width:1px;
+    classDef dashboard fill:#f3e5f5,stroke:#8e24aa,stroke-width:1px;
+    classDef outputs fill:#fce4ec,stroke:#d81b60,stroke-width:1px;
+    classDef export fill:#e0f7fa,stroke:#00838f,stroke-width:1px;
+
+    %% Assign classes
+    class A,B authoring;
+    class C runtime;
+    class D backend;
+    class E dashboard;
+    class F,G,H outputs;
+    class I,J export;
+```
+Figure: Overview of the `LabQuiz` ecosystem. Dashed arrows indicate optional components. YAML quizzes drive both interactive notebooks and exports, monitored via a dashboard producing analytics, marks tables, and student reports.
 
 ---
 
