@@ -79,7 +79,7 @@ Data from the `Config` sheet.
 NKEEP is the maximum number of rows kept in the sheet. Thresholding occurs as soon as the number of rows exceeds NMAX. 
 👉🏼  In the Config sheet, select cell `B2`. Go to the `Data` menu and select `Data Validation`. Then, in `Data Validation Rule`, select `Checkbox`. Make sure the box is checked, otherwise you will not receive anything! 
 ⚠️ *And so to stop receiving data, uncheck*! --> This can be useful because some people leave things running on their computers, and since there is a `check_alive` integrity check sent periodically, this can fill up the Google Sheet (even though we have set a maximum limit). 
-- 5 - In the `Extensions` menu, click on `Apps Script`. In the tab that opens, name your project, then in the code page, after deleting what is there, paste the code attached in the code_gs.txt file (`extras` folder) and replace the value of `SECRET` on the first line. If your first sheet is not called `Sheet 1`, rename it or change the constant `SHEET1`. txt file (`extras` folder) and replace the value of `SECRET` on the first line. If your first sheet is not called `Sheet 1`, rename it or modify the constant on the third line of the code. 
+- 5 - In the `Extensions` menu, click on `Apps Script`. In the tab that opens, name your project, then in the code page, after deleting what is there, paste the code attached in the code_gs.txt file (`extras` folder) and replace the value of `SECRET` on the first line. If your first sheet is not called `Feuille 1`, rename it or change the constant `SHEET1` on the third line of the code. 
 :::{figure} doc_images/ExtensionsAppsScript.png
 :name: dashboard
 :label:fig19

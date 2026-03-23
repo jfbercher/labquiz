@@ -33,7 +33,7 @@ An overall score, which is the average of the results on the quizzes taken, can 
                 (False, False): 0   # True Negative  # Did not check and the correct answer was indeed false
             }
 ```
-In short, here we award one point for correct answers that were checked and deduct one point for correct answers that were not checked. Depending on the case, we might want to adapt this to penalize correct answers that were not checked, or give less weight to an omission, for example
+In short, here we award one point for correct answers that were checked and deduct one point for correct answers that were not checked. The weight matrix can be specified using the quiz set_weight() method, eg `quiz.set_weight(D)`, where `D` is a dictionary, with the default above. Depending on the case, we might want to adapt this to penalize correct answers that were not checked, or give less weight to an omission, for example
 ```
         
 weights = {
@@ -53,7 +53,9 @@ weights = {
 }
 ```
 
-The weight matrix cannot be modified when calculating the score online, but it can be modified when recalculating retrospectively based on the recorded results; see correction by the teacher [](correction_by_teacher)
+The weight matrix cannot be modified when calculating the score online, but it can be modified when recalculating retrospectively based on the recorded results; see correction by the teacher [](correction_by_teacher).
+
+Inside a given question, all propositions have the same weight by default. However it is possible to adjust this using a system of bonus-malus. A proposition can be given a weight (bonus) of 2 while the oter have a weight of one for example. Or a bad answer a malus of -2 while the default is -1. For a given question, the total score is always normalized to 1. 
 - **bonus malus** - As we have seen in the file structure [](question_file_structure), `bonuses` and `penalties` can be integrated into the questions themselves. This allows, for a given question, to give more weight to a particular correct answer, or conversely to penalize a wrong answer, independently of the general weighting matrix. 
 - **logical constraints** - *Logical constraints* can be integrated into questions and used to calculate the score. These constraints are specified question by question in the question file, and penalties are applied if the constraint is violated. The following constraints can be used: 
 ```
@@ -68,7 +70,7 @@ See an example at the end of [](structure_type_qcm).
 Remember that the tolerance is specified in the question file, and that the greater of the values between tolerance_abs and tolerance_relative*expected is used. If the relative tolerance `tolerance` has not been specified, the value used is 1%. 
 Bonuses (default 1) and penalties (default 0) may also be  applied depending on whether the difference between the given value and the expected value is greater or less than the tolerance.
  
-[^1]: It would be possible to set the score based on the (relative) value of this difference, but this has not been done and will be discussed later.  
+[^1]: It would be possible to set the score based on the (relative) value of this difference, but this has not been done and is left for "later".  
 
 (teacher_correction)=
 ## Correction by the teacher
@@ -107,7 +109,7 @@ exam_questions = getExamQuestions("Test to see", data)
 students = exam_questions.keys()
 students_answers = getAllStudentsAnswers(students, data, maxtries=3)
 correctAll (students_answers, quiz, data_filt, threshold=0, 
-           exam_questions=exam_questions, weights=None, grading=None, maxtries=3)
+           exam_questions=exam_questions, weights=None, bareme=None, maxtries=3)
 ```
 ```python
 from labquiz.putils import correctQuizzes
@@ -126,17 +128,19 @@ where the title of the test to be corrected is specified by the `title` paramete
 Example of a results table (`exam_show`). 
 :::
 ## Correction options
-A few additional options can be used during correction. 
+
+Recall that a weighting matrix can be used to assign weights to the four possible response/expected outcome situations encountered in a multiple-choice questionnaire, 
+as shown in [](#score-calculation). In addition, the different options within a given question can be weighted using a bonus–penalty system. Finally, the overall balance of the questionnaire is adjusted through a global scoring scheme—referred to as “coefficients”—which allows greater weight to be assigned to specific questions, each question initially having a maximum score of 1.
+
+Additional options can be used during correction. 
 ```python
-def correctQuizzes(URL, SECRET, QUIZFILE, title=None, threshold=0, weights=None, grading=None, maxtries=1)
+def correctQuizzes(URL, SECRET, QUIZFILE, title=None, threshold=0, weights=None, bareme=None, maxtries=1)
 ````
 - title: if title is not None, this indicates that it is the correction of a test with randomly selected questions of type `exam_show`, and whose title is title,
 - threshold: threshold=0 sets the scores for each question to zero (otherwise negative scores are possible)
  ; this is the default value, but if you want to allow negative scores per question, you can set it to -10, for example.
-- weights: the weight matrix (dictionary) already discussed in [](score_calculation)
-- scale:  weight of the different questions in the quiz. If there is no scale, all 
-            questions have the same weight for the calculation of the score. If the weight of a question 
-            is not specified, it defaults to 1. Example: bareme = {‘quiz3’:4, ‘quiz55’:0} assigns a coefficient of 4 to question quiz3 and neutralizes question quiz55 (all other questions will have a weight of 1),
+- weights: the weight matrix (dictionary) already discussed in [](#score_calculation)
+- bareme (scale):  weight of the different questions in the quiz. If there is no scale, all questions have the same weight for the calculation of the score. If the weight of a question is not specified, it defaults to 1. Example: bareme = {‘quiz3’:4, ‘quiz55’:0} assigns a coefficient of 4 to question quiz3 and neutralizes question quiz55 (all other questions will have a weight of 1),
 - maxtries: Number of attempts allowed. Correction is performed on the last attempt less than or equal to maxtries (and before any correction request, "Correct" button, if available).
 
 ## Dashboard

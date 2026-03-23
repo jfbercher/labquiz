@@ -46,7 +46,7 @@ Some screenshots of actual monitoring:
 :width: 90%
 `quiz_dash` -- Integrity monitoring
 :::
-:::{figure} doc_images/Monitoring_quizzes.png
+:::{figure} doc_images/Monitoring_quizzes_2.png
 :name: Monitoring_activity
 :label:fig28
 :alt: quiz_dash
@@ -62,6 +62,17 @@ Some screenshots of actual monitoring:
 :width: 90%
 `quiz_dash` -- Automated correction, with the option to adjust the scoring system (automatic recalculation); (student names have been hidden). Of course, the results table can be downloaded.  
 :::
+
+:::{figure} doc_images/Individual_correction.png
+:name: Individual_correction
+:label:fig30b
+:alt: quiz_dash
+:align: center
+:width: 90%
+`quiz_dash` -- Individual correction can be generated for a student.
+:::
+
+
 :::{figure} doc_images/Zipping_all_pdf_reports.png
 :name: Correction_reports
 :label:fig30
