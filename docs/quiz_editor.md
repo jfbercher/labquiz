@@ -61,6 +61,17 @@ It allows you to edit the files whose structure has been described and has some 
 :width: 90%
 `quiz_editor` -- editing a proposition -- correct or incorrect, hint (tip), answer (displayed during correction), bonus, penalty, etc.
 :::
+
+:::{figure} doc_images/quiz_editor_3.png
+:name: quiz_editor_3
+:label:fig25b
+:alt: quiz_editor
+:align: center
+:width: 90%
+`quiz_editor` -- example of template usage with potentially external variables, including an editor preview based on automatically generated variables.
+:::
+
+
 :::{figure} doc_images/exports1.png
 :name: quiz_editor_exports
 :label:fig26
