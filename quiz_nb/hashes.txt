@@ -1,6 +1,6 @@
-# Hashes générés le 2026-03-24T15:16:34.275963
+# Hashes générés le 2026-03-24T19:46:52.821933
 # Dossier analysé : /Users/bercherj/JFB/dev/labquizdev/src/labquiz
-# Version du package : 0.9.7
+# Version du package : 0.9.8
 
 [files]
 473c7034537b01b120a80a682df8502363198b09f4a6d93110e3a1a7aae1bad1  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/__init__.py
