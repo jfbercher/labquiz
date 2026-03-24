@@ -1,0 +1,9 @@
+[project]
+name = "LabQuizBundle"
+version = "0.9"
+
+dependencies = [
+    "labquiz==0.9.6",
+    "quiz_editor==0.9",
+    "quiz_dash==0.9.3"
+]
