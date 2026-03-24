@@ -1030,7 +1030,7 @@ def main():
 
     # Set page config and apply custom styles
     st.set_page_config(layout="wide", page_title=_("YAML Editor - {FILE_PATH}").format(FILE_PATH=FILE_PATH),  
-                    page_icon="src/quiz_editor/1F4C3.png") #📃")
+                    page_icon="quiz_editor/src/quiz_editor/1F4C3.png") #📃")
     apply_custom_styles()
     
 
