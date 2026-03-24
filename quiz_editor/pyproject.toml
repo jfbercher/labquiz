@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quiz_editor"
+version = "0.8.12"
+description = "A tool to create and edit quizzes, for LabQuiz and more"
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+authors = [
+    { name = "J.-F. Bercher", email = "jf.bercher@esiee.fr" }
+]
+dependencies = [
+    "numpy",
+    "pandas",
+    "ruamel.yaml",
+    "streamlit>=1.50",
+    "altair==4.2.2",
+    "labquiz>=0.8.9"
+]
+keywords = ["quizzes", "jupyter"]
+
+classifiers = [
+    # État de développement (3 - Alpha, 4 - Beta, 5 - Production/Stable)
+    "Development Status :: 4 - Beta",
+    
+    # Public cible
+    "Intended Audience :: Education",
+
+    # LICENCE : Très important pour le badge "License"
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+
+    # VERSIONS PYTHON : Très important pour le badge "Python versions"
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    
+    # Environnement
+    "Operating System :: OS Independent",
+    "Topic :: Education :: Testing-Programming-Instruction",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jfbercher/quiz_editor"
+"Bug Tracker" = "https://github.com/jfbercher/quiz_editor/issues"
+"Documentation" = "https://github.com/jfbercher/quiz_editor#readme"
+"Source" = "https://github.com/jfbercher/quiz_editor"
+
+[project.scripts]
+quiz_editor = "quiz_editor.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"quiz_editor" = ["**/*.mo", "**/*.po"]

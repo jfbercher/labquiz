@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Interactif</title>
+    <script>window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 850px; margin: auto; padding: 20px; background: #f0f4f8; color: #2d3436; }
+        #global-score-banner {
+            position: sticky; top: 0; background: #0984e3; color: white;
+            padding: 15px; text-align: center; font-size: 1.4em; font-weight: bold;
+            border-radius: 0 0 15px 15px; margin-bottom: 30px; z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .question-card { background: white; padding: 25px; margin-bottom: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-left: 6px solid #0984e3; }
+        .question-text { font-size: 1.15em; font-weight: 600; margin-bottom: 20px; }
+        .option { display: flex; align-items: flex-start; margin: 10px 0; padding: 10px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; }
+        .option:hover { background: #f8f9fa; border-color: #eee; }
+        .numeric-input { padding: 10px; font-size: 1em; border: 2px solid #dfe6e9; border-radius: 6px; width: 160px; margin: 10px 0; }
+        .explanation-box { display: none; margin-top: 10px; padding: 15px; border-radius: 8px; background: #e0fbfa; border-left: 4px solid #00cec9; }
+        .btn-group { margin-top: 20px; display: flex; gap: 10px; border-top: 1px solid #eee; padding-top: 15px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-validate { background: #2ecc71; color: white; }
+        .btn-correct { background: #00cec9; color: white; }
+        .btn-reset { background: #dfe6e9; color: #636e72; }
+        .disabled { opacity: 0.4; pointer-events: none; filter: grayscale(1); }
+        .match { background: #eafff0 !important; border-color: #2ecc71 !important; }
+        .mismatch { background: #fff0f0 !important; border-color: #e74c3c !important; }
+        .attempts-hint { font-size: 0.85em; color: #7f8c8d; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div id="global-score-banner">
+        Questions on Model Selection And Regularization <br>
+        👉🏼 Global Score <span id="total-score">0.00</span> / <span id="total-max">0</span>
+    </div>
+
+<div class='question-card' id='card_quiz1' data-type='mcq' data-attempts='0'>
+<div class='question-text'>According to the data preparation steps for the $\text{Hitters}$ dataset, how should missing values be handled before modeling?</div>
+<div class='options-container'>
+
+                <div class='option' id='opt_quiz1_0' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>Impute missing $\text{Salary}$ values using the mean of the available observations to preserve the dataset size.</span>
+                        <div class='explanation-box' id='expl_quiz1_0'>The lab chooses to drop the rows entirely rather than imputing values.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz1_1' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>Missing values can be left as is because Python's linear regression models handle $\text{NaN}$ values automatically.</span>
+                        <div class='explanation-box' id='expl_quiz1_1'>The document notes that missing observations must be removed to avoid errors in the calculation algorithms.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz1_2' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>Perform a `.reset_index()` on the resulting DataFrame after removing rows to maintain index continuity.</span>
+                        <div class='explanation-box' id='expl_quiz1_2'>The documentation explicitly mentions performing a 'reset of the index' on the resulting array after dropping NAs.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz1_3' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>Use the `.dropna()` method to remove all rows containing missing observations, specifically for the $\text{Salary}$ variable.</span>
+                        <div class='explanation-box' id='expl_quiz1_3'>The sources state that `.dropna()` is used to drop rows with missing salary data because those values are necessary for the regression.</div>
+                    </div>
+                </div>
+</div>
+
+            <div id='feedback_quiz1' style='margin-top:15px; font-weight:bold; color:#2c3e50;'></div>
+            <div class='attempts-hint' id='hint_quiz1'>Attempts: 0 / 3</div>
+            <div class='btn-group' id='btns_quiz1'>
+                <button class='btn btn-validate' id='val_quiz1' onclick='validate("quiz1")'>Submit</button>
+                <button class='btn btn-correct' id='corr_quiz1' onclick='correct("quiz1")'>Correction</button>
+                <button class='btn btn-reset' onclick='resetQuestion("quiz1")'>Reset</button>
+            </div>
+        </div>
+<div class='question-card' id='card_quiz2' data-type='mcq' data-attempts='0'>
+<div class='question-text'>Regarding the preparation of the feature matrix $X$ in the lab, which statements about categorical variables are true?</div>
+<div class='options-container'>
+
+                <div class='option' id='opt_quiz2_0' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>In Python, explicit encoding is often required, whereas libraries like `statsmodels` or the R language might handle them automatically.</span>
+                        <div class='explanation-box' id='expl_quiz2_0'>A 'NB' note in the text mentions that R or statsmodels might not require manual dummy encoding.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz2_1' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>The `pd.get_dummies()` function is recommended for 'one-hot' encoding these categorical variables.</span>
+                        <div class='explanation-box' id='expl_quiz2_1'>The lab suggests using `pd.get_dummies()` to create binary indicators for qualitative variables.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz2_2' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>Variables like $\text{League}$, $\text{Division}$, and $\text{NewLeague}$ are categorical and require encoding.</span>
+                        <div class='explanation-box' id='expl_quiz2_2'>The source identifies these specific variables as categorical and states they must be encoded.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz2_3' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>The original text-based categorical columns should be kept in $X$ alongside the new binary columns.</span>
+                        <div class='explanation-box' id='expl_quiz2_3'>The lab specifies that you must 'remove the starting categorical columns' after encoding them.</div>
+                    </div>
+                </div>
+</div>
+
+            <div id='feedback_quiz2' style='margin-top:15px; font-weight:bold; color:#2c3e50;'></div>
+            <div class='attempts-hint' id='hint_quiz2'>Attempts: 0 / 3</div>
+            <div class='btn-group' id='btns_quiz2'>
+                <button class='btn btn-validate' id='val_quiz2' onclick='validate("quiz2")'>Submit</button>
+                <button class='btn btn-correct' id='corr_quiz2' onclick='correct("quiz2")'>Correction</button>
+                <button class='btn btn-reset' onclick='resetQuestion("quiz2")'>Reset</button>
+            </div>
+        </div>
+<div class='question-card' id='card_quiz3' data-type='mcq' data-attempts='0'>
+<div class='question-text'>What are the core characteristics of &#x27;Best Subset Selection&#x27; (BSS) as described in the lecture and lab texts?</div>
+<div class='options-container'>
+
+                <div class='option' id='opt_quiz3_0' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>BSS is computationally efficient and suitable for high-dimensional data where $p > 40$.</span>
+                        <div class='explanation-box' id='expl_quiz3_0'>The lecture text states BSS is only possible for low-dimensional models because evaluation becomes 'crazy' as $p$ grows.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz3_1' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>BSS involves selecting the best model among all possible models for each subset size $k$, from $1$ to $p$.</span>
+                        <div class='explanation-box' id='expl_quiz3_1'>The procedure identifies the best model for every possible number of predictors.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz3_2' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>The total number of models to be evaluated grows exponentially, reaching $2^p$ combinations.</span>
+                        <div class='explanation-box' id='expl_quiz3_2'>The lecture text states that testing all models leads to $2^p$ possibilities, which is computationally expensive.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz3_3' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>The method uses the Residual Sum of Squares ($\text{RSS}$) to select the best model $M_k$ for a specific size $k$.</span>
+                        <div class='explanation-box' id='expl_quiz3_3'>For a fixed size k, the best model is chosen based on training performance like RSS or $R^2$.</div>
+                    </div>
+                </div>
+</div>
+
+            <div id='feedback_quiz3' style='margin-top:15px; font-weight:bold; color:#2c3e50;'></div>
+            <div class='attempts-hint' id='hint_quiz3'>Attempts: 0 / 3</div>
+            <div class='btn-group' id='btns_quiz3'>
+                <button class='btn btn-validate' id='val_quiz3' onclick='validate("quiz3")'>Submit</button>
+                <button class='btn btn-correct' id='corr_quiz3' onclick='correct("quiz3")'>Correction</button>
+                <button class='btn btn-reset' onclick='resetQuestion("quiz3")'>Reset</button>
+            </div>
+        </div>
+<div class='question-card' id='card_quiz4' data-type='mcq' data-attempts='0'>
+<div class='question-text'>In the BSS procedure, how is the final &#x27;best&#x27; model chosen from the set of models $M_0, M_1, \dots, M_p$?</div>
+<div class='options-container'>
+
+                <div class='option' id='opt_quiz4_0' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>By always choosing the model with the lowest training $\text{RSS}$ regardless of its size.</span>
+                        <div class='explanation-box' id='expl_quiz4_0'>Training RSS always decreases with model size, so this would lead to picking the largest model every time.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz4_1' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>By using cross-validation to estimate the test error of each model $M_k$.</span>
+                        <div class='explanation-box' id='expl_quiz4_1'>The document notes that the optimal model can be selected by cross-validation as an alternative to theoretical criteria.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz4_2' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>By selecting the model that includes all available predictors to ensure no information is lost.</span>
+                        <div class='explanation-box' id='expl_quiz4_2'>The goal is selection and interpretability; we seek the best trade-off, not necessarily the largest model.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz4_3' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>By using criteria that penalize model complexity, such as $\ text{AIC}$, $\text{BIC}$, or Adjusted $R^2$.</span>
+                        <div class='explanation-box' id='expl_quiz4_3'>Step 3 of the algorithm involves selecting the best model across different sizes using these specific metrics.</div>
+                    </div>
+                </div>
+</div>
+
+            <div id='feedback_quiz4' style='margin-top:15px; font-weight:bold; color:#2c3e50;'></div>
+            <div class='attempts-hint' id='hint_quiz4'>Attempts: 0 / 3</div>
+            <div class='btn-group' id='btns_quiz4'>
+                <button class='btn btn-validate' id='val_quiz4' onclick='validate("quiz4")'>Submit</button>
+                <button class='btn btn-correct' id='corr_quiz4' onclick='correct("quiz4")'>Correction</button>
+                <button class='btn btn-reset' onclick='resetQuestion("quiz4")'>Reset</button>
+            </div>
+        </div>
+<div class='question-card' id='card_quiz17' data-type='mcq' data-attempts='0'>
+<div class='question-text'>What is the fundamental idea of regularization methods (Ridge and Lasso)?</div>
+<div class='options-container'>
+
+                <div class='option' id='opt_quiz17_0' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>They are primarily used to increase the bias of a model in order to reduce its variance.</span>
+                        <div class='explanation-box' id='expl_quiz17_0'>By shrinking coefficients, regularization introduces bias but significantly lowers variance, often leading to lower total MSE.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz17_1' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>Regularization is a manual feature selection technique where the user chooses which pixels to ignore.</span>
+                        <div class='explanation-box' id='expl_quiz17_1'>Regularization is an automated mathematical technique, unlike manual selection.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz17_2' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>They keep all predictors in the model but constrain their coefficients to reduce variance.</span>
+                        <div class='explanation-box' id='expl_quiz17_2'>Regularization controls model flexibility by penalizing the size of the coefficients.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz17_3' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>They minimize a criterion that balances 'data attachment' (fitting) and a 'regularization term' (penalty).</span>
+                        <div class='explanation-box' id='expl_quiz17_3'>Formula (10) shows the cost function as $RSS + \lambda \|\beta\|$.</div>
+                    </div>
+                </div>
+</div>
+
+            <div id='feedback_quiz17' style='margin-top:15px; font-weight:bold; color:#2c3e50;'></div>
+            <div class='attempts-hint' id='hint_quiz17'>Attempts: 0 / 3</div>
+            <div class='btn-group' id='btns_quiz17'>
+                <button class='btn btn-validate' id='val_quiz17' onclick='validate("quiz17")'>Submit</button>
+                <button class='btn btn-correct' id='corr_quiz17' onclick='correct("quiz17")'>Correction</button>
+                <button class='btn btn-reset' onclick='resetQuestion("quiz17")'>Reset</button>
+            </div>
+        </div>
+<div class='question-card' id='card_quiz18' data-type='mcq' data-attempts='0'>
+<div class='question-text'>Regarding Ridge Regression in the lab, why is an alpha grid created using `10**np.linspace(5,-4,100)`?</div>
+<div class='options-container'>
+
+                <div class='option' id='opt_quiz18_0' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>To test a wide range of penalty strengths from very high ($10^5$) to very low ($10^{-4}$).</span>
+                        <div class='explanation-box' id='expl_quiz18_0'>The grid covers many orders of magnitude to find the optimal shrinkage level.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz18_1' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>Ridge regression requires alpha to be a power of 10 to ensure matrix inversion.</span>
+                        <div class='explanation-box' id='expl_quiz18_1'>Alpha can be any positive real number; the powers of 10 are just for convenience in searching.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz18_2' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>A very small alpha (e.g., $10^{-4}$) creates a 'huge penalty' that reduces the model to just the intercept.</span>
+                        <div class='explanation-box' id='expl_quiz18_2'>A very *large* alpha creates a huge penalty. Small alpha approaches standard OLS.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz18_3' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>The effect of the penalty $\lambda$ (alpha) is best analyzed on a log scale.</span>
+                        <div class='explanation-box' id='expl_quiz18_3'>The lab uses `ax.set_xscale('log')` to visualize how coefficients shrink as alpha grows exponentially.</div>
+                    </div>
+                </div>
+</div>
+
+            <div id='feedback_quiz18' style='margin-top:15px; font-weight:bold; color:#2c3e50;'></div>
+            <div class='attempts-hint' id='hint_quiz18'>Attempts: 0 / 3</div>
+            <div class='btn-group' id='btns_quiz18'>
+                <button class='btn btn-validate' id='val_quiz18' onclick='validate("quiz18")'>Submit</button>
+                <button class='btn btn-correct' id='corr_quiz18' onclick='correct("quiz18")'>Correction</button>
+                <button class='btn btn-reset' onclick='resetQuestion("quiz18")'>Reset</button>
+            </div>
+        </div>
+<div class='question-card' id='card_quiz20' data-type='mcq' data-attempts='0'>
+<div class='question-text'>Based on the Ridge study with different $\alpha$ values,  ($\alpha=4$ $\alpha=10^{10}$, 
+$\alpha=0$), what are the findings?</div>
+<div class='options-container'>
+
+                <div class='option' id='opt_quiz20_0' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>The non-regularized model ($\alpha=0$) always provides the best predictive power on the test set.</span>
+                        <div class='explanation-box' id='expl_quiz20_0'>Regularization often yields better test performance than OLS because it reduces overfitting.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz20_1' data-expected='false' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>A massive alpha reduces the $\text{MSE}$ because it simplifies the model to its most basic form.</span>
+                        <div class='explanation-box' id='expl_quiz20_1'>A massive alpha leads to *higher* MSE because it over-simplifies (underfits) the model.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz20_2' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>A model with a moderate alpha (e.g., 4) can result in a lower $\text{MSE}$ than a non-regularized model ($\alpha=0$).</span>
+                        <div class='explanation-box' id='expl_quiz20_2'>The lab demonstrates that proper regularization improves generalization on the test set.</div>
+                    </div>
+                </div>
+
+                <div class='option' id='opt_quiz20_3' data-expected='true' onclick='toggleOption(this)'>
+                    <input type='checkbox' style='margin-right:12px' onclick='event.stopPropagation()'>
+                    <div>
+                        <span>A 'huge' alpha ($10^{10}$) reduces the model to a constant (the intercept).</span>
+                        <div class='explanation-box' id='expl_quiz20_3'>An enormous penalty forces all slopes to nearly zero, leaving only the constant term.</div>
+                    </div>
+                </div>
+</div>
+
+            <div id='feedback_quiz20' style='margin-top:15px; font-weight:bold; color:#2c3e50;'></div>
+            <div class='attempts-hint' id='hint_quiz20'>Attempts: 0 / 3</div>
+            <div class='btn-group' id='btns_quiz20'>
+                <button class='btn btn-validate' id='val_quiz20' onclick='validate("quiz20")'>Submit</button>
+                <button class='btn btn-correct' id='corr_quiz20' onclick='correct("quiz20")'>Correction</button>
+                <button class='btn btn-reset' onclick='resetQuestion("quiz20")'>Reset</button>
+            </div>
+        </div>
+
+<script>
+    let questionScores = {};
+    const MAX_ATTEMPTS = 3;
+
+    function updateGlobalScore() {
+        let totalPoints = 0;
+        let count = 0;
+        for (let key in questionScores) {
+            totalPoints += questionScores[key];
+            count++;
+        }
+        document.getElementById('total-score').innerText = totalPoints.toFixed(2);
+        document.getElementById('total-max').innerText = count;
+    }
+
+    function toggleOption(el) {
+        const card = el.closest('.question-card');
+        if (document.getElementById('val_' + card.id.split('_')[1]).disabled) return;
+        const cb = el.querySelector('input');
+        cb.checked = !cb.checked;
+    }
+
+
+    function validate(id) {
+        const card = document.getElementById('card_' + id);
+        let attempts = parseInt(card.getAttribute('data-attempts')) + 1;
+        card.setAttribute('data-attempts', attempts);
+        document.getElementById('hint_' + id).innerText = `Attempts: ${attempts} / ${MAX_ATTEMPTS}`;
+
+
+        if (card.getAttribute('data-type').includes('numeric')) {
+            let matches = 0;
+            // On cible directement les INPUTS qui possèdent les data-expected
+            const inputs = card.querySelectorAll('.numeric-input'); 
+            inputs.forEach(input => {
+                const val = parseFloat(input.value);
+                const exp = parseFloat(input.getAttribute('data-expected'));
+                const tolAbs = parseFloat(input.getAttribute('data-tol-abs')) || 0;
+                const tolRel = parseFloat(input.getAttribute('data-tol-rel')) || 0.01;
+                const tol = Math.max(tolAbs, tolRel * Math.abs(exp));
+
+                // On ne compte le point que si la valeur n'est PAS NaN ET qu'elle est dans la tolérance
+                if (!isNaN(val) && Math.abs(val - exp) <= tol) {
+                    matches++;
+                    //input.style.borderColor = '#2ecc71'; // Vert si juste
+                } 
+            });
+            score = matches / inputs.length;
+        }
+        else {
+            let matches = 0;
+            const opts = card.querySelectorAll('.option');
+            opts.forEach(o => {
+                const checked = o.querySelector('input').checked;
+                const expected = o.getAttribute('data-expected') === 'true';
+                if (checked === expected) matches++;
+            });
+            score = matches / opts.length;
+        }
+
+
+        questionScores[id] = score;
+        updateGlobalScore();
+        document.getElementById('feedback_' + id).innerText = "Score : " + score.toFixed(2) + " / 1";
+
+        if (attempts >= MAX_ATTEMPTS) {
+            const btn = document.getElementById('val_' + id);
+            btn.disabled = true;
+            btn.classList.add('disabled');
+        }
+    }
+
+    function correct(id) {
+        const card = document.getElementById('card_' + id);
+        // Désactivation validation
+        const btnVal = document.getElementById('val_' + id);
+        btnVal.disabled = true;
+        btnVal.classList.add('disabled');
+
+        // Affichage correction
+        card.querySelectorAll('.numeric-input').forEach(i => i.value = i.getAttribute('data-expected'));
+        card.querySelectorAll('.explanation-box').forEach(e => e.style.display = 'block');
+        card.querySelectorAll('.option').forEach(o => {
+            const cb = o.querySelector('input');
+            const exp = o.getAttribute('data-expected') === 'true';
+            o.classList.add(cb.checked === exp ? 'match' : 'mismatch');
+            cb.checked = exp;
+        });
+        if (window.MathJax) MathJax.typeset();
+    }
+
+    function resetQuestion(id) {
+        const card = document.getElementById('card_' + id);
+        
+        // 1. Réinitialisation standard (Essais, bouton, feedback)
+        card.setAttribute('data-attempts', 0);
+        document.getElementById('hint_' + id).innerText = `Attempts: 0 / ${MAX_ATTEMPTS}`;
+        document.getElementById('feedback_' + id).innerText = "";
+        
+        const btnVal = document.getElementById('val_' + id);
+        btnVal.disabled = false;
+        btnVal.classList.remove('disabled');
+
+        // 2. Nettoyage des champs numériques
+        card.querySelectorAll('.numeric-input').forEach(i => {
+            i.value = ""; 
+            i.style.borderColor = "#dfe6e9";
+        });
+
+        // 3. Nettoyage des options (QCM/QCU)
+        card.querySelectorAll('.option').forEach(o => {
+            o.querySelector('input').checked = false;
+            o.classList.remove('match', 'mismatch');
+        });
+
+        card.querySelectorAll('.explanation-box').forEach(e => e.style.display = 'none');
+
+        // 4. MÉLANGE SI NON NUMÉRIQUE
+        // On vérifie si data-type ne contient PAS "numeric"
+        const type = card.getAttribute('data-type');
+        if (type && !type.includes('numeric')) {
+            // On cherche le conteneur des options (la div qui contient les .option)
+            const container = card.querySelector('.options-container') ;
+            if (container) {
+                let options = Array.from(container.querySelectorAll('.option'));
+                // Mélange de Fisher-Yates
+                for (let i = options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    // On échange dans le tableau
+                    [options[i], options[j]] = [options[j], options[i]];
+                }
+                // On les ré-attache au conteneur (appendChild déplace l'élément s'il existe déjà)
+                options.forEach(opt => container.appendChild(opt));
+            }
+        }
+    }
+
+    function resetQuestionOld(id) {
+        const card = document.getElementById('card_' + id);
+        card.setAttribute('data-attempts', 0);
+        document.getElementById('hint_' + id).innerText = `Attempts: 0 / ${MAX_ATTEMPTS}`;
+        document.getElementById('feedback_' + id).innerText = "";
+        
+        const btnVal = document.getElementById('val_' + id);
+        btnVal.disabled = false;
+        btnVal.classList.remove('disabled');
+
+        card.querySelectorAll('.numeric-input').forEach(i => { i.value = ""; i.style.borderColor = "#dfe6e9"; });
+        card.querySelectorAll('.explanation-box').forEach(e => e.style.display = 'none');
+        card.querySelectorAll('.option').forEach(o => {
+            o.querySelector('input').checked = false;
+            o.classList.remove('match', 'mismatch');
+        });
+    }
+</script>
+</body>
+</html>

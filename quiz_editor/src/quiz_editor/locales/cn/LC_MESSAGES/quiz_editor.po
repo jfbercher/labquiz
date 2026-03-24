@@ -1,0 +1,615 @@
+# Chinese translations for quiz_editor package.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Jean-François BERCHER <jf.bercher@esiee.fr>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-24 22:53+0100\n"
+"PO-Revision-Date: 2026-02-25 00:25+0100\n"
+"Last-Translator: Jean-François BERCHER <jf.bercher@esiee.fr>\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_interactive_html.py:55
+msgid "Global Score"
+msgstr "总分"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_interactive_html.py:99
+msgid "Answer:"
+msgstr "答案："
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_interactive_html.py:131
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_interactive_html.py:294
+msgid "Attempts:"
+msgstr "尝试次数："
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_interactive_html.py:131
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:152
+msgid "Submit"
+msgstr "提交"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_interactive_html.py:131
+msgid "Correction"
+msgstr "批改"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:83
+msgid "NAME (UPPERCASE)"
+msgstr "姓（大写）"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:84
+msgid "First name"
+msgstr "名"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:85
+msgid "Confirm identity"
+msgstr "确认身份"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:288
+msgid "Input in progress..."
+msgstr "正在输入..."
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:289
+msgid "Please enter your first name and LAST NAME here."
+msgstr "请在此输入您的名字和姓氏。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:290
+msgid "Student identified as "
+msgstr "学生身份识别为 "
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:291
+msgid "Modified input"
+msgstr "已修改输入"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:292
+msgid "❌ Error sending data"
+msgstr "❌ 发送数据错误"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:293
+msgid "✅ Recorded at "
+msgstr "✅ 记录于 "
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:294
+msgid "Send in progress..."
+msgstr "正在发送..."
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:295
+msgid "Please enter your first name and LAST NAME before continuing."
+msgstr "继续前请输入您的名字和姓氏。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:296
+msgid "Unknown"
+msgstr "未知"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:297
+#: /Users/bercherj/JFB/dev/quiz_editor/convert_to_html_exam.py:298
+msgid "Feedback recorded at "
+msgstr "反馈记录于 "
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:45
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:47
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:211
+msgid "New Quiz"
+msgstr "新建测试"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:80
+msgid "⚠️ Unclosed brace"
+msgstr "⚠️ 未关闭的花括号"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:112
+#, python-brace-format
+msgid "Render preview ({label}) :</div>"
+msgstr "渲染预览 ({label}) :</div>"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:130
+msgid "The file name cannot be empty."
+msgstr "文件名不能为空。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:143
+#, python-brace-format
+msgid "File saved successfully as `{filename}`"
+msgstr "文件已成功保存为 `{filename}`"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:223
+msgid "Enter a title here"
+msgstr "在此输入标题"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:249
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:257
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:258
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:596
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:971
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:972
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:973
+msgid "None"
+msgstr "无"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:272
+#, python-brace-format
+msgid "YAML Editor - {FILE_PATH}"
+msgstr "YAML 编辑器 - {FILE_PATH}"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:362
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:853
+msgid "Document Title"
+msgstr "文档标题"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:401
+msgid ""
+"⚠️ File encrypted with password. Be sure to use the `mandatoryInternet=True` "
+"option when initializing the quiz"
+msgstr "⚠️ 文件已加密。初始化测试时请务必使用 `mandatoryInternet=True` 选项"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:408
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:816
+msgid "Configure & Export"
+msgstr "配置与导出"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:413
+msgid "my_quiz"
+msgstr "我的测试"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:414
+msgid "File name (without extension)"
+msgstr "文件名（不含扩展名）"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:415
+msgid "Reindex question labels"
+msgstr "重排问题标签索引"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:416
+msgid "Reindex to ensure continuity of labels, e.g.: quiz1, quiz2, etc."
+msgstr "重排索引以确保标签连续，例如：quiz1, quiz2 等。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:418
+msgid "Untitled"
+msgstr "未命名"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:433
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:486
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:812
+msgid "Extract (YAML)"
+msgstr "提取 (YAML)"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:434
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:436
+msgid "Encrypted YAML"
+msgstr "加密的 YAML"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:434
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:438
+msgid "Encoded YAML"
+msgstr "编码的 YAML"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:434
+msgid "Unencoded YAML"
+msgstr "未编码的 YAML"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:445
+msgid "Password"
+msgstr "密码"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:445
+msgid "💡 This pwd participates in encryption"
+msgstr "💡 此密码用于加密"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:455
+msgid ""
+"💡 This mode allows you to save all or part of the questions in a new file, "
+msgstr "💡 此模式允许您将全部或部分问题保存到新文件中，"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:456
+msgid "with optional encryption."
+msgstr "可选加密。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:458
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:812
+msgid "Interactive (self-assessment)"
+msgstr "交互式（自我评估）"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:463
+msgid "💡 This mode allows immediate self-correction for students."
+msgstr "💡 此模式允许学生进行即时自我纠错。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:465
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:812
+msgid "Exam (Server)"
+msgstr "考试（服务器）"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:466
+msgid "Receiving server URL"
+msgstr "接收服务器 URL"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:473
+msgid "Please enter the server URL to continue."
+msgstr "请输入服务器 URL 以继续。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:476
+msgid "Negative points (-1 malus)"
+msgstr "扣分（-1 罚分）"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:481
+msgid "💡 Extraction in LaTeX-AMC format."
+msgstr "💡 以 LaTeX-AMC 格式提取。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:488
+#, python-brace-format
+msgid "⬇️ Download {file_name}{extension}"
+msgstr "⬇️ 下载 {file_name}{extension}"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:504
+#, python-brace-format
+msgid "⬇️ Download {file_name}{mode}{extension}"
+msgstr "⬇️ 下载 {file_name}{mode}{extension}"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:515
+#, python-brace-format
+msgid "⬇️ Download {file_name}_qo{mode}{extension} (questions only)"
+msgstr "⬇️ 下载 {file_name}_qo{mode}{extension}（仅限问题）"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:530
+msgid "📂 Browse"
+msgstr "📂 浏览"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:535
+msgid "📥 Import new file"
+msgstr "📥 导入新文件"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:539
+msgid "Choose file"
+msgstr "选择文件"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:541
+msgid "Loads the contents of a YAML file into the editor"
+msgstr "将 YAML 文件的内容加载到编辑器中"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:553
+msgid "📖 Enter a title here"
+msgstr "📖 在此输入标题"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:562
+#, python-brace-format
+msgid "File `{file_name}` loaded successfully!"
+msgstr "文件 `{file_name}` 已成功加载！"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:566
+msgid "Read Error:"
+msgstr "读取错误："
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:570
+msgid "🎰🎲♠ Quiz management"
+msgstr "🎰🎲♠ 测试管理"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:583
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:585
+#, python-brace-format
+msgid "All ({len_all})"
+msgstr "全部 ({len_all})"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:584
+msgid "Category"
+msgstr "分类"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:589
+msgid "Filter by Tags"
+msgstr "按标签筛选"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:590
+msgid "Choose a tag"
+msgstr "选择标签"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:626
+#, python-brace-format
+msgid "Choose a question from {lenf}"
+msgstr "从 {lenf} 中选择一个问题"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:643
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1374
+msgid "👯 Duplicate"
+msgstr "👯 复制"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:659
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1369
+msgid "🗑️ Delete"
+msgstr "🗑️ 删除"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:664
+msgid "❗ Confirm?"
+msgstr "❗ 确认？"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:672
+msgid "Last quiz!"
+msgstr "最后一个测试！"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:675
+msgid "Cancel"
+msgstr "取消"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:699
+msgid "➕ New Quiz"
+msgstr "➕ 新建测试"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:702
+msgid "Select quiz type"
+msgstr "选择测试类型"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:704
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1059
+msgid "Defines the validation behavior of the quiz."
+msgstr "定义测试的验证行为。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:710
+msgid "Create"
+msgstr "创建"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:726
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:736
+msgid "New question"
+msgstr "新问题"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:728
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:738
+msgid "Choice 1"
+msgstr "选项 1"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:759
+msgid "📤 Export"
+msgstr "📤 导出"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:767
+msgid "✅ Select all"
+msgstr "✅ 全选"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:775
+msgid "❌ Deselect all"
+msgstr "❌ 取消全选"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:783
+msgid "Select questions"
+msgstr "选择问题"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:802
+#, python-brace-format
+msgid "**{lsq} question(s) selected**"
+msgstr "**已选择 {lsq} 个问题**"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:811
+msgid "Choose export format"
+msgstr "选择导出格式"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:822
+msgid "Check questions to export."
+msgstr "勾选要导出的问题。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:856
+msgid "The main title of the YAML file (key ‘title’) - Editable here."
+msgstr "YAML 文件的主要标题（键名 'title'） —— 可在此编辑。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:862
+#, python-brace-format
+msgid "Current file: `{shared_fn}`"
+msgstr "当前文件：`{shared_fn}`"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:868
+msgid "Edit to ‘Save As’."
+msgstr "编辑以“另存为”。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:871
+msgid "‘Save As’."
+msgstr "“另存为”。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:887
+msgid "💾 Save"
+msgstr "💾 保存"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:890
+msgid "YAML cleaned and saved ✔️"
+msgstr "YAML 已清理并保存 ✔️"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:896
+msgid "Download!"
+msgstr "下载！"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:901
+msgid "Only AFTER saving the YAML"
+msgstr "仅在保存 YAML 之后"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:942
+#, python-brace-format
+msgid "Editing {current_quiz}"
+msgstr "正在编辑 {current_quiz}"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:951
+msgid "Export"
+msgstr "导出"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:955
+msgid "Check to include this question in future YAML exports"
+msgstr "勾选以在未来的 YAML 导出中包含此问题"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:973
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:991
+msgid "➕ New category..."
+msgstr "➕ 新分类..."
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:983
+msgid "🗂️ Category"
+msgstr "🗂️ 分类"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:987
+msgid "Question category"
+msgstr "问题分类"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:993
+msgid "Name of the new category"
+msgstr "新分类名称"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:994
+msgid "Enter the name here..."
+msgstr "在此输入名称..."
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:996
+msgid "Type to add the categor"
+msgstr "输入以添加分类"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1022
+msgid "🏷️ Tags (Difficulty, Sub-theme...)"
+msgstr "🏷️ 标签（难度、子主题...）"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1026
+msgid "Choose or enter a new tag"
+msgstr "选择或输入新标签"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1044
+msgid "Question text"
+msgstr "题目文本"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1047
+msgid "Supports Markdown and LaTeX (e.g., $x^2$)."
+msgstr "支持 Markdown 和 LaTeX (例如 $x^2$)。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1062
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1324
+msgid "Label"
+msgstr "标签"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1064
+msgid "Question label."
+msgstr "问题标签。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1150
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1178
+msgid "Template variables"
+msgstr "模板变量"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1179
+msgid ""
+"\n"
+"                In the case of templates, define the *names* of variables, "
+"and \n"
+"                define how to generate values for html or $\\LaTeX$-AMC "
+"exports.\n"
+"                - size is ajustable,\n"
+"                - default values are generated corresponding to type and "
+"size, but these can be edited. In particular, all distributions from [numpy "
+"Generator](https://numpy.org/doc/stable/reference/random/generator.html) can "
+"be used.\n"
+"                "
+msgstr ""
+"\n"
+"                对于模板，请定义变量的 *名称*，\n"
+"                并定义如何为 HTML 或 $\\LaTeX$-AMC 导出生成值。\n"
+"                - 大小可调节，\n"
+"                - 系统根据类型和大小生成默认值，但这些值可以编辑。特别地，可以使用 [numpy Generator](https://numpy.org/doc/stable/reference/random/generator.html) 中的所有分布。\n"
+"                "
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1188
+msgid "➕ Add variable"
+msgstr "➕ 添加变量"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1260
+#, python-brace-format
+msgid "'{name}' is not a valid Python identifier"
+msgstr "'{name}' 不是有效的 Python 标识符"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1292
+msgid "🔗 Logical constraints (XOR, IMPLY...)"
+msgstr "🔗 逻辑约束 (XOR, IMPLY...)"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1307
+msgid "Remove this constraint"
+msgstr "移除此约束"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1311
+msgid "➕ Add constraint"
+msgstr "➕ 添加约束"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1317
+msgid "Propositions"
+msgstr "选项/命题"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1324
+msgid "Short identifier for the proposition."
+msgstr "选项的简短标识符。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1330
+msgid "Correct?"
+msgstr "正确？"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1335
+msgid "Expected value"
+msgstr "预期值"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1349
+msgid "Text"
+msgstr "文本"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1350
+msgid "Proposition"
+msgstr "选项内容"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1352
+msgid "Explanation (answer)"
+msgstr "解析（答案）"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1352
+msgid "Message displayed after validation."
+msgstr "验证后显示的消息。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1353
+msgid "Hint (tip)"
+msgstr "提示 (tip)"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1353
+msgid "Optional hint."
+msgstr "可选提示。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1357
+msgid "Bonus"
+msgstr "加分"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1357
+msgid "Points added (default = 1)."
+msgstr "增加的分数（默认为 1）。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1358
+msgid "Penalty"
+msgstr "扣分"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1358
+msgid "Points deducted (default = 0)."
+msgstr "扣除的分数（默认为 0）。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1361
+msgid "Tolerance %"
+msgstr "容差 %"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1361
+msgid "Tolerance in % (default = 0)."
+msgstr "百分比容差（默认为 0）。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1362
+msgid "Tolerance Abs"
+msgstr "绝对容差"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1362
+msgid "Tolerance in absolute value (default = 0.01)."
+msgstr "绝对值容差（默认为 0.01）。"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1377
+msgid "copy"
+msgstr "副本"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1387
+msgid "➕ Add a proposal"
+msgstr "➕ 添加选项"
+
+#: /Users/bercherj/JFB/dev/quiz_editor/quiz_editor.py:1392
+msgid "Use the sidebar to navigate or create a new quiz."
+msgstr "使用侧边栏进行导航或创建新测试。"

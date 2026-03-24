@@ -1,0 +1,92 @@
+
+% --- quiz1 ---
+\element{Aucune}{
+  \begin{questionmult}{q:quiz1}
+  According to the data preparation steps for the $\text{Hitters}$ dataset, how should missing values be handled before modeling?
+    \begin{choices}
+      \correctchoice{Use the `.dropna()` method to remove all rows containing missing observations, specifically for the $\text{Salary}$ variable.} \scoring{b=1,m=0}
+      \correctchoice{Perform a `.reset_index()` on the resulting DataFrame after removing rows to maintain index continuity.} \scoring{b=1,m=0}
+      \wrongchoice{Impute missing $\text{Salary}$ values using the mean of the available observations to preserve the dataset size.} \scoring{b=0,m=-1}
+      \wrongchoice{Missing values can be left as is because Python's linear regression models handle $\text{NaN}$ values automatically.} \scoring{b=0,m=-1}
+    \end{choices}
+\end{questionmult}
+}
+
+% --- quiz2 ---
+\element{LabModelSelection}{
+  \begin{questionmult}{q:quiz2}
+  Regarding the preparation of the feature matrix $X$ in the lab, which statements about categorical variables are true?
+    \begin{choices}
+      \correctchoice{Variables like $\text{League}$, $\text{Division}$, and $\text{NewLeague}$ are categorical and require encoding.} \scoring{b=1,m=0}
+      \correctchoice{The `pd.get_dummies()` function is recommended for 'one-hot' encoding these categorical variables.} \scoring{b=1,m=0}
+      \correctchoice{In Python, explicit encoding is often required, whereas libraries like `statsmodels` or the R language might handle them automatically.} \scoring{b=1,m=0}
+      \wrongchoice{The original text-based categorical columns should be kept in $X$ alongside the new binary columns.} \scoring{b=0,m=-1}
+    \end{choices}
+\end{questionmult}
+}
+
+% --- quiz3 ---
+\element{LabModelSelection}{
+  \begin{questionmult}{q:quiz3}
+  What are the core characteristics of 'Best Subset Selection' (BSS) as described in the lecture and lab texts?
+    \begin{choices}
+      \correctchoice{BSS involves selecting the best model among all possible models for each subset size $k$, from $1$ to $p$.} \scoring{b=1,m=0}
+      \correctchoice{The total number of models to be evaluated grows exponentially, reaching $2^p$ combinations.} \scoring{b=1,m=0}
+      \wrongchoice{BSS is computationally efficient and suitable for high-dimensional data where $p > 40$.} \scoring{b=0,m=-1}
+      \correctchoice{The method uses the Residual Sum of Squares ($\text{RSS}$) to select the best model $M_k$ for a specific size $k$.} \scoring{b=1,m=0}
+    \end{choices}
+\end{questionmult}
+}
+
+% --- quiz4 ---
+\element{LabModelSelection}{
+  \begin{questionmult}{q:quiz4}
+  In the BSS procedure, how is the final 'best' model chosen from the set of models $M_0, M_1, \dots, M_p$?
+    \begin{choices}
+      \correctchoice{By using criteria that penalize model complexity, such as $\ text{AIC}$, $\text{BIC}$, or Adjusted $R^2$.} \scoring{b=1,m=0}
+      \correctchoice{By using cross-validation to estimate the test error of each model $M_k$.} \scoring{b=1,m=0}
+      \wrongchoice{By always choosing the model with the lowest training $\text{RSS}$ regardless of its size.} \scoring{b=0,m=-1}
+      \wrongchoice{By selecting the model that includes all available predictors to ensure no information is lost.} \scoring{b=0,m=-1}
+    \end{choices}
+\end{questionmult}
+}
+
+% --- quiz17 ---
+\element{LabRegularization}{
+  \begin{questionmult}{q:quiz17}
+  What is the fundamental idea of regularization methods (Ridge and Lasso)?
+    \begin{choices}
+      \correctchoice{They keep all predictors in the model but constrain their coefficients to reduce variance.} \scoring{b=1,m=0}
+      \correctchoice{They minimize a criterion that balances 'data attachment' (fitting) and a 'regularization term' (penalty).} \scoring{b=1,m=0}
+      \correctchoice{They are primarily used to increase the bias of a model in order to reduce its variance.} \scoring{b=1,m=0}
+      \wrongchoice{Regularization is a manual feature selection technique where the user chooses which pixels to ignore.} \scoring{b=0,m=-1}
+    \end{choices}
+\end{questionmult}
+}
+
+% --- quiz18 ---
+\element{LabRegularization}{
+  \begin{questionmult}{q:quiz18}
+  Regarding Ridge Regression in the lab, why is an alpha grid created using `10**np.linspace(5,-4,100)`?
+    \begin{choices}
+      \correctchoice{To test a wide range of penalty strengths from very high ($10^5$) to very low ($10^{-4}$).} \scoring{b=1,m=0}
+      \correctchoice{The effect of the penalty $\lambda$ (alpha) is best analyzed on a log scale.} \scoring{b=1,m=0}
+      \wrongchoice{Ridge regression requires alpha to be a power of 10 to ensure matrix inversion.} \scoring{b=0,m=-1}
+      \wrongchoice{A very small alpha (e.g., $10^{-4}$) creates a 'huge penalty' that reduces the model to just the intercept.} \scoring{b=0,m=-1}
+    \end{choices}
+\end{questionmult}
+}
+
+% --- quiz20 ---
+\element{LabRegularization}{
+  \begin{questionmult}{q:quiz20}
+  Based on the Ridge study with different $\alpha$ values,  ($\alpha=4$ $\alpha=10^{10}$, 
+$\alpha=0$), what are the findings?
+    \begin{choices}
+      \correctchoice{A model with a moderate alpha (e.g., 4) can result in a lower $\text{MSE}$ than a non-regularized model ($\alpha=0$).} \scoring{b=1,m=0}
+      \correctchoice{A 'huge' alpha ($10^{10}$) reduces the model to a constant (the intercept).} \scoring{b=1,m=0}
+      \wrongchoice{The non-regularized model ($\alpha=0$) always provides the best predictive power on the test set.} \scoring{b=0,m=-1}
+      \wrongchoice{A massive alpha reduces the $\text{MSE}$ because it simplifies the model to its most basic form.} \scoring{b=0,m=-1}
+    \end{choices}
+\end{questionmult}
+}
