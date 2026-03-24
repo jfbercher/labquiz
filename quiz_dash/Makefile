@@ -17,6 +17,8 @@ endif
 
 release: clean version build
 
+release_simple: clean build
+
 clean:
 	cd $(PKG_DIR) && \
 	rm -rf __pycache__  quiz_editor.egg-info

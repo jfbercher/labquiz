@@ -50,7 +50,10 @@ def package_hash(exclude=None, includeOnly=None, exclude_ext=None, algo="sha256"
 
 
 def get_version():
-    import tomllib
+    try:
+        import tomllib
+    except ImportError:
+        import tomli as tomllib
     from pathlib import Path
     pyproject = Path("pyproject.toml") #Path(__file__).resolve().parents[1] / "pyproject.toml"
     data = tomllib.loads(pyproject.read_text())

@@ -1,5 +1,4 @@
 import argparse
-import tomllib  # Python ≥3.11
 from pathlib import Path
 
 try:
