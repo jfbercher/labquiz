@@ -1068,7 +1068,7 @@ pip install quiz-editor
 ``` 
 🛠 or from git 
 ```bash
-pip install git+https://github.com/jfbercher/quiz_editor.git
+pip install git+https://github.com/jfbercher/labquiz.git#subdirectory=quiz_editor
 ``` 
 
 

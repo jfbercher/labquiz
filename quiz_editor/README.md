@@ -37,7 +37,7 @@ pip install quiz-editor
 ### From source
 
 ```bash
-pip install git+https://github.com/jfbercher/quiz_editor.git
+pip install git+https://github.com/jfbercher/labquiz.git#subdirectory=quiz_editor
 ```
 
 ---

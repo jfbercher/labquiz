@@ -38,7 +38,7 @@ pip install quiz-dash
 ### From source
 
 ```bash
-pip install git+https://github.com/jfbercher/quiz_dash.git
+pip install git+https://github.com/jfbercher/labquiz.git#subdirectory=quiz_dash
 ```
 
 ---
