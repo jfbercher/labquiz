@@ -23,6 +23,8 @@ hash:
 
 release: clean version hash build
 
+release_simple: clean hash build
+
 prepare:
 	cd $(PKG_DIR) && \
 	mkdir -p $(SRC_DIR) && \
