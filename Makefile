@@ -162,7 +162,7 @@ publish-meta:
 
 # ===== MAIN =====
 
-release: resolve_targets version build publish update-meta bump-meta build-meta publish-meta tag
+release: clean resolve_targets version build publish update-meta bump-meta build-meta publish-meta tag
 	@rm -f .targets
 	@echo "✅ Release complete"
 
