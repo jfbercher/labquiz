@@ -1,0 +1,3 @@
+# This is a "fake" requirements.txt for streamlit.io (streamlit app deployements)
+# for actual requirements/pyprojects see in packages dir
+-e .
