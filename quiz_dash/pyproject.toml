@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quiz_dash"
-version = "0.9.4.0"
+version = "0.9.5.0"
 description = "LabQuiz streamlit-based dashboard that provides live tracking, integrity verification, and automated correction."
 readme = "README.md"
 license = { text = "GPL-3.0-or-later" }
@@ -52,10 +52,10 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/jfbercher/quiz_dash"
-"Bug Tracker" = "https://github.com/jfbercher/quiz_dash/issues"
-"Documentation" = "https://github.com/jfbercher/quiz_dash#readme"
-"Source" = "https://github.com/jfbercher/quiz_dash"
+"Homepage" = "https://github.com/jfbercher/labquiz"
+"Bug Tracker" = "https://github.com/jfbercher/labquiz/issues"
+"Documentation" = "https://github.com/jfbercher/labquiz/tree/main/quiz_dash#readme"
+"Source" = "https://github.com/jfbercher/labquiz/tree/main/quiz_editor"
 
 [project.scripts]
 quiz_dash = "quiz_dash.cli:main"

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quiz_editor"
-version = "0.9.2.0"
+version = "0.9.2"
 description = "A tool to create and edit quizzes, for LabQuiz and more"
 readme = "README.md"
 license = { text = "GPL-3.0-or-later" }
@@ -40,15 +40,15 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     
     # Environnement
-    "Operating System :: OS Independent",
-    "Topic :: Education :: Testing-Programming-Instruction",
+    "Topic :: Education",
+    "Topic :: Software Development :: User Interfaces",
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/jfbercher/quiz_editor"
-"Bug Tracker" = "https://github.com/jfbercher/quiz_editor/issues"
-"Documentation" = "https://github.com/jfbercher/quiz_editor#readme"
-"Source" = "https://github.com/jfbercher/quiz_editor"
+"Homepage" = "https://github.com/jfbercher/labquiz"
+"Bug Tracker" = "https://github.com/jfbercher/labquiz/issues"
+"Documentation" = "https://github.com/jfbercher/labquiz/tree/main/quiz_editor#readme"
+"Source" = "https://github.com/jfbercher/labquiz/tree/main/quiz_editor"
 
 [project.scripts]
 quiz_editor = "quiz_editor.cli:main"
