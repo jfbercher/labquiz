@@ -15,6 +15,7 @@ import hashlib, base64, json
 import tarfile
 from cryptography.fernet import Fernet, InvalidToken
 
+
 qz = ('prep '*3).strip().split(' ')
 qz.extend(['_get_protected_data', 'show', 'QuizLab'])
 
