@@ -1,15 +1,43 @@
-.DS_Store
-__pycache__
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[codz]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
 _build
+
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Jupyter Notebook & other
 .ipynb_checkpoints
+.DS_Store
+sav/
+._last_release_commit
+.targets
 Thumbs.db   
 *.log
 *.tmp
 *.lock   
 *.bak
 dist
-labquiz.egg-info
 *.po~
 *.md~
-._last_release_commit
+labquiz.egg-info
 .targets
