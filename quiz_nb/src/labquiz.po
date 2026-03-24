@@ -1,0 +1,175 @@
+# French translations for PACKAGE package
+# Traductions françaises du paquet PACKAGE.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Jean-François BERCHER <jf.bercher@esiee.fr>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-12 20:02+0100\n"
+"PO-Revision-Date: 2026-02-12 20:02+0100\n"
+"Last-Translator: Jean-François BERCHER <jf.bercher@esiee.fr>\n"
+"Language-Team: French <traduc@traduc.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: labquiz/main.py:187 labquiz/main.py:239
+msgid "No internet connexion or bad URL"
+msgstr "Pas de connexion Internet ou URL incorrecte"
+
+
+#: labquiz/main.py:258
+msgid "--> Restarting the quiz under a new name..."
+msgstr "--> Redémarrage du quiz sous un nouveau nom..."
+
+
+#: labquiz/main.py:449
+msgid "Tolerance: maximum of"
+msgstr "Tolérance : maximum de"
+
+#: labquiz/main.py:490
+msgid "⚠️ Authentication not carried out -- Enter your first and last name!\n"
+"Then re-execute the cell"
+msgstr "⚠️ Authentification non effectuée -- Entrez votre prénom et votre nom !\n"
+"Puis réexécutez la cellule"
+
+
+#: labquiz/main.py:495
+msgid "😔 Maximum number of attempts already reached!!"
+msgstr "😔 Nombre maximum de tentatives déjà atteint !!"
+
+
+#: labquiz/main.py:499
+msgid "😔 Correction already obtained for this quiz!!"
+msgstr "😔 Correction déjà obtenue pour ce quiz !!"
+
+
+#: labquiz/main.py:519
+#, python-brace-format
+msgid "❌ Decryption error for quiz '{quiz_id}'."
+msgstr "❌ Erreur de décryptage pour le quiz “{quiz_id}"
+
+
+#: labquiz/main.py:520
+msgid "Check the access key or data integrity."
+msgstr "Vérifiez la clé d'accès ou l'intégrité des données."
+
+#: labquiz/main.py:614
+msgid "Submit"
+msgstr "Soumettre"
+
+#: labquiz/main.py:617
+msgid "Correction"
+msgstr "Correction"
+
+#: labquiz/main.py:645
+#, python-brace-format
+msgid "Attempt No.{n} on {r}"
+msgstr "Tentative n°{n} sur {r}"
+
+#: labquiz/main.py:648
+msgid "<br><b>😔 Maximum number of attempts reached</b>"
+msgstr "<br><b>😔 Nombre maximum de tentatives atteint</b>"
+
+#: labquiz/main.py:655
+msgid "⚠️ Everything is not correct."
+msgstr "⚠️ Tout n'est pas correct."
+
+#: labquiz/main.py:657
+msgid "<br>⚠️ No answers in quiz file: no score calculation."
+msgstr "<br>⚠️ Aucune réponse dans le fichier quiz : aucun calcul de score."
+
+#: labquiz/main.py:724
+msgid "<br>⚠️ no answers in the quiz file: no possible correction."
+msgstr "<br>⚠️ Aucune réponse dans le fichier quiz : aucune correction possible."
+
+#: labquiz/main.py:755
+#, python-brace-format
+msgid "⚠️ The answers to {props} are necessarily different"
+msgstr "⚠️ Les réponses à {props} sont nécessairement différentes"
+
+#: labquiz/main.py:757
+#, python-brace-format
+msgid "⚠️ The answers to {props} are necessarily identical"
+msgstr "⚠️ Les réponses à {props} sont nécessairement identiques"
+
+#: labquiz/main.py:759
+msgid "⚠️ The answer {prop0} true implies that {prop} is true"
+msgstr "⚠️ La réponse {prop0} vraie implique que {c[“indices”][1]} est vraie"
+
+#: labquiz/main.py:761
+msgid "⚠️ The answer {prop0} true implies that {prop1} is necessarily false"
+msgstr "⚠️ La réponse {prop0} vraie implique que {prop1} est nécessairement fausse"
+
+#: labquiz/main.py:854
+msgid "number is greater than the number of available questions"
+msgstr "Le nombre est supérieur au nombre de questions disponibles"
+
+#: labquiz/main.py:901
+msgid "Score out of 20: "
+msgstr "Score sur 20 :"
+
+#: labquiz/main.py:970
+msgid "⚠️ Be careful of passed parameters that are not json-serializable"
+msgstr "⚠️ Attention aux paramètres transmis qui ne sont pas sérialisables en json"
+
+#: labquiz/main.py:971
+msgid "Simplify or convert"
+msgstr "Simplifier ou convertir"
+
+#: labquiz/main.py:976
+msgid "⚠️ Submission error:"
+msgstr "⚠️ Erreur de soumission :"
+
+#: labquiz/main.py:1027
+msgid "⚠️ Sending error:"
+msgstr "⚠️ Erreur d'envoi :"
+
+#: labquiz/main.py:1071
+msgid "✅ Verification performed, data sent, daemon launched"
+msgstr "✅ Vérification effectuée, données envoyées, démon lancé "
+
+#: labquiz/main.py:1151
+msgid "The file must not be encrypted."
+msgstr "Le fichier ne doit pas être crypté."
+
+#: labquiz/utils.py:114
+msgid "FAMILY NAME"
+msgstr "NOM DE FAMILLE"
+
+#: labquiz/utils.py:115
+msgid "FAMILY NAME:"
+msgstr "NOM DE FAMILLE"
+
+#: labquiz/utils.py:121
+msgid "First name"
+msgstr "Prénom"
+
+#: labquiz/utils.py:122
+msgid "First name:"
+msgstr "Prénom"
+
+#: labquiz/utils.py:128
+msgid "Save"
+msgstr "Enregistrer"
+
+#: labquiz/utils.py:166
+msgid "✔️ **Name recorded**"
+msgstr "✔️ **Nom enregistré**"
+
+#: labquiz/utils.py:170
+msgid "Enter your first name and LAST NAME here."
+msgstr "Entrez votre prénom et votre NOM ici."
+
+#: labquiz/utils.py:924
+msgid "⚠️ LabQuiz is not installed!"
+msgstr "⚠️ LabQuiz n'est pas installé !"
+
+#: labquiz/utils.py:941
+msgid "⚠️ Package hash different than expected -- this is recorded"
+msgstr "⚠️ Hash du package différent de celui attendu -- ceci est enregistré "

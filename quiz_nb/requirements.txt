@@ -1,0 +1,8 @@
+cryptography
+ipython
+ipywidgets
+numpy
+pandas
+PyYAML
+Requests
+labquiz[demo] @ git+https://github.com/jfbercher/labquiz.git@main

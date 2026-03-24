@@ -1,0 +1,764 @@
+title: 'Questions sur le TP de filtrage numérique'
+quiz1:
+  question: 'Quelles sont les caractéristiques du signal et des objectifs initiaux
+    décrits dans le $\text{Lab}$ sur le filtrage numérique ?'
+  propositions:
+    - proposition: 'Le signal étudié est corrompu par une dérive lente ($\text{drift}$)
+        de sa valeur moyenne, un problème courant dans les mesures de capteurs.'
+      label: 'Signal Corruption'
+      expected: true
+      reponse: 'Le signal est corrompu par une dérive lente, ce qui est un problème
+        courant avec les mesures de capteurs.'
+      tip: 'Vérifiez la description initiale du signal.'
+    - proposition: 'L''un des objectifs du $\text{Lab}$ est de concevoir un filtre
+        pour supprimer cette dérive lente.'
+      label: 'Drift Removal Goal'
+      expected: true
+      reponse: 'Un premier filtre sera conçu afin de supprimer cette dérive.'
+      tip: 'Le premier objectif de filtrage est la suppression de la dérive.'
+    - proposition: 'La fréquence d''échantillonnage spécifiée pour l''analyse du signal
+        est $\text{Fs}=800 \text{ Hz}$.'
+      label: 'Sampling Frequency'
+      expected: false
+      reponse: 'La fréquence d''échantillonnage spécifiée est $\text{Fs}=8000 \text{
+        Hz}$.'
+      tip: 'Vérifiez la valeur numérique de la fréquence d''échantillonnage.'
+    - proposition: 'Le signal est périodique avec une période d''environ $40 \text{
+        Hz}$ dans le domaine fréquentiel.'
+      label: 'Periodicity Units'
+      expected: false
+      reponse: 'Le signal est périodique avec une période d''environ 40 dans le domaine
+        temporel, et non en fréquences.'
+      tip: 'La période est une mesure temporelle, pas fréquentielle.'
+
+
+  type: qcm
+quiz54:
+  question: "Ceci est une question numérique où il faut faire la somme et la différence
+    de {a} et {b}"
+  type: "numeric-template"
+  propositions:
+    - proposition: "Somme : "
+      label: "somme"
+      type: "float"
+      expected: f'{a+b:.4f}'
+      reponse: f'{a+b:.4f}'
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Entrer la valeur"
+    - proposition: "Différence : "
+      label: "difference"
+      type: "float"
+      expected: f'{a-b:.4f}'
+      reponse: f'{a-b:.4f}'
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Entrer la valeur"
+
+quiz61:
+  question: "Ceci est une question numérique où il faut faire le calcul du coefficient
+    de variation"
+  type: "numeric-template"
+  propositions:
+    - proposition: "Coef de variation"
+      label: "cv"
+      type: "float"
+      expected: f'{np.std(s)/np.mean(s)}'
+      reponse: f'Le coefficient de variation est {np.std(s)/np.mean(s)}'
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Entrer la valeur"
+
+      
+quiz53:
+  question: 'Ceci est une question de QCM dépendant de deux valeurs passées en argument
+    :  A = {A} et B = {B} '
+  type: "qcm-template"
+  constraints: [{"indices": ["somme_paire", "somme_impaire"], "type": "XOR", "malus": 2}]
+  propositions:
+    - proposition: 'La somme de {A} et {B} est paire'
+      type: bool
+      label: 'somme_paire'
+      expected: f'{(A+B)%2 == 0 }'
+      tip: 'Vérifiez si la somme est divisible par deux'
+      reponse: f'(A+B)%2 == 0 {(A+B)%2 == 0 }'
+    - proposition: 'La somme de {A} et {B} est impaire'
+      label: 'somme_impaire'
+      type: bool
+      expected: f'{(A+B)%2 != 0}'
+      tip: 'Vérifiez que le reste de la division est non nul'
+      reponse: f'(A+B)%2 != 0 {(A+B)%2 != 0}'
+
+
+quiz55:
+  question: "Ceci est une question numérique où il faut répondre pi et e"
+  type: "numeric"
+  propositions:
+    - proposition: "Valeur pi : "
+      label: "essai pi"
+      type: "numeric"
+      expected: 3.141592
+      reponse: "3.14"
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Entrer la valeur"
+    - proposition: "Valeur de e: "
+      label: "essai e"
+      type: "numeric"
+      expected: 2.718
+      reponse: "2.718"
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Entrer la valeur"
+quiz56:
+  question: "Ceci est une question numérique où il faut répondre 3"
+  type: "numeric"
+  propositions:
+    - proposition: "Valeur : "
+      label: "essai trois"
+      expected: 3
+      reponse: "3"
+      tolerance: 0.01
+      tolerance_abs: 0
+      tip: "Entrer la valeur"
+quiz57:
+  question: "Ceci est une question avec des contradictions et implications. Le nombre
+    est 6"
+  type: "qcm"
+  constraints: [{"indices": ["parité", "impair"], "type": "XOR", "malus": 2}, {"indices": [
+          "parité", "multiple 2"], "type": "SAME", "malus": 2}, {"indices": ["parité",
+          "plus1pair"], "type": "XOR", "malus": 2}, {"indices": ["parité", "plus1impair"],
+        "type": "IMPLY", "malus": 2}]
+  propositions:
+    - proposition: 'Le nombre est pair'
+      label: 'parité'
+      expected: true
+      reponse: "C'est 6, c'est pair"
+      tip: 'Vérifiez l énoncé.'
+      bonus: 2
+      malus: 1
+    - proposition: 'Le nombre est multiple de deux'
+      label: 'multiple 2'
+      expected: true
+      reponse: "C'est 6, c'est pair"
+      tip: 'Vérifiez l énoncé.'
+    - proposition: 'Le nombre est impair'
+      label: 'impair'
+      expected: false
+      reponse: "C'est 6, c'est pair"
+      tip: 'Vérifiez l énoncé.'
+    - proposition: 'Le nombre plus 1 est pair'
+      label: 'plus1pair'
+      expected: false
+      reponse: "Ce serait 7, c'est impair"
+      tip: 'Vérifiez l énoncé.'
+    - proposition: 'Le nombre plus 1 est impair'
+      label: 'plus1impair'
+      expected: true
+      reponse: "Ce serait 7, c'est impair"
+      tip: 'Vérifiez l énoncé.'
+
+quiz58:
+  question: 'Ceci est une question de QCM portant sur la définition de la transformée
+    de Fourier'
+  type: "qcm"
+  constraints: [{"indices": ["TF2", "TF1"], "type": "IMPLYFALSE", "malus": 2}]
+  propositions:
+    - proposition: 'La TF à fréquence continue est  $$X(f) = \sum_n x(n) \exp(j2 \pi
+        fn)$$'
+      type: bool
+      label: 'TF1'
+      expected: false
+      tip: 'Rappelez vous : c''est le produit scalaire avec la base des exponentielles
+        complexes $\exp(j2 \pi fn)$'
+      reponse: 'Il y a un signe moins dans l''exponentielle'
+    - proposition: 'La TF à fréquence continue est $$X(f) = \sum_n x(n) \exp(-j2 \pi
+        fn)$$'
+      label: 'TF2'
+      type: bool
+      expected: true
+      tip: 'Rappelez vous : c''est le produit scalaire avec la base des exponentielles
+        complexes $\exp(j2 \pi fn)$'
+      reponse: 'Il y a bien un signe moins dans l''exponentielle : $$X(f) = \sum_n
+        x(n) \exp(-j2 \pi fn)$$'
+
+
+quiz59:
+  question: "Veuillez entrer ci-dessous les valeurs de la moyenne et de l'écart type
+    de la série temporelle"
+  type: "numeric"
+  propositions:
+    - proposition: "Moyenne : "
+      label: "moyenne"
+      type: "numeric"
+      expected: 0.0
+      reponse: "0"
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: "Entrer la valeur"
+    - proposition: "Écart type "
+      label: "sigma"
+      type: "numeric"
+      expected: 1.0
+      reponse: "1"
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: "Entrer la valeur"
+
+quiz23:
+  question: Ceci est le texte de la question
+  type: "qcm"           #"qcm" ou "numeric" (optionnel - "qcm" par défaut)
+  constraints: [{"indices": ["label2", "label1"], "type": "IMPLYFALSE", "malus": 2}]
+  propositions:
+    - proposition: texte de la première proposition (fausse)
+      type: bool             # optionnel - par défaut "bool" si type "qcm", "float" si type "numeric"
+      label: label1          # optionnel mais nécessaire pour les corrections
+      expected: false        # valeur attendue pour la réponse
+      tip: texte d'un indice ou d'une orientation vers la bonne réponse
+      reponse: texte explicatif pour la bonne réponse
+    - proposition: 'texte de la seconde proposition (vraie) avec un : qu''il faut
+        prendre en compte'
+      label: label2
+      type: bool
+      expected: true
+      tip: texte d'un indice ou d'une orientation vers la bonne réponse, avec quotes
+        '' si nécessaire
+      reponse: texte explicatif pour la bonne réponse, avec quotes '' si nécessaire
+    - proposition: texte d'une troisième proposition avec malus
+      label: label3
+      type: bool
+      expected: true
+      malus: 2         #malus appliqué ici si la case n'est pas cochée
+      tip: texte d'un indice
+
+quiz24:
+  question: Veuillez entrer ci-dessous le nombre de points et les valeurs de la moyenne
+    et de l'écart type de la série temporelle
+  type: numeric
+  propositions:
+    - proposition: Moyenne
+      label: moyenne
+      type: float
+      expected: 0.0
+      reponse: 0
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: Entrer la valeur
+    - proposition: Écart type
+      label: sigma
+      type: float
+      expected: 1.0
+      reponse: "1"
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: Entrer la valeur
+    - proposition: Nombre de points
+      label: N
+      type: int
+      expected: 512
+      reponse: Le nombre de points `len(serie)` ou `serie.shape[0]` est de 512
+      tolerance: 0.01
+      tolerance_abs: 2
+      bonus: 2
+      malus: 3
+      tip: Entrer la valeur
+
+
+quiz2:
+  question: 'Selon l''analyse temporelle et fréquentielle du signal $\text{x}$, quelles
+    observations sont correctes ?'
+  propositions:
+    - proposition: 'Le signal temporel $\text{x}$ est approximativement périodique
+        avec une période d''environ $40$ échantillons.'
+      label: 'Time Periodicity'
+      expected: true
+      reponse: 'Nous observons une série temporelle approximativement périodique,
+        avec une période d''environ 40.'
+      tip: 'L''analyse du signal dans le domaine temporel est décrite.'
+    - proposition: 'La transformée de Fourier ($\text{TF}$) du signal consiste en
+        une série de raies spectrales régulièrement espacées, signe d''un signal sous-jacent
+        périodique.'
+      label: 'FT Periodicity'
+      expected: true
+      reponse: 'Nous voyons que la transformée de Fourier consiste en une série de
+        raies spectrales régulièrement espacées, ce qui est l''indication que le signal
+        sous-jacent est périodique.'
+      tip: 'L''aspect de la $\text{TF}$ est lié à la périodicité du signal.'
+    - proposition: 'La $\text{TF}$ du signal montre un espacement des pics spectraux
+        de $0.025$ en fréquences non normalisées (Hertz).'
+      label: 'FT Spacing Units'
+      expected: false
+      reponse: 'Les pics sont espacés de $0.025$ en fréquences normalisées.'
+      tip: 'L''espacement est donné en fréquences normalisées.'
+    - proposition: 'L''analyse de la $\text{TF}$ montre uniquement la composante de
+        dérive lente sans aucune autre raie spectrale.'
+      label: 'FT Content'
+      expected: false
+      reponse: 'La $\text{TF}$ montre une série de raies spectrales régulièrement
+        espacées et une dérive lente (valeur moyenne).'
+      tip: 'Le signal contient plusieurs composantes de fréquence.'
+
+quiz3:
+  question: 'Concernant la théorie du filtre de moyenne ($\text{g(n)}$) et du filtre
+    soustracteur ($\text{h(n)}$) pour retirer la dérive $\text{M(n)}$, quelles relations
+    sont valides ?'
+  propositions:
+    - proposition: 'Le signal corrigé ($\text{xc(n)}$) est obtenu par la différence
+        entre le signal original ($\text{x(n)}$) et la dérive $\text{M(n)}$.'
+      label: 'Centered Signal Def'
+      expected: true
+      reponse: 'Le signal corrigé est $\text{xc(n)} = \text{x(n)} - \text{M(n)}$.'
+      tip: 'Le signal corrigé est le signal original duquel on a soustrait la moyenne.'
+    - proposition: 'Le filtre soustracteur $\text{h(n)}$ est tel que le signal corrigé
+        $\text{xc(n)}$ est égal à la convolution de $\text{x(n)}$ par $\text{h(n)}$,
+        soit $\text{xc(n)} = \text{x(n)} \ast \text{h(n)}$.'
+      label: 'Subtraction Filter Conv'
+      expected: true
+      reponse: 'Le filtre $\text{h(n)}$ qui retire cette moyenne est défini tel que
+        $\text{xc(n)} = \text{x(n)} \ast \text{h(n)}$.'
+      tip: 'Le filtrage dans le domaine temporel est une convolution.'
+    - proposition: 'L''expression analytique de $\text{H(z)}$ est déduite du filtre
+        $\text{g(n)}$ et annule les composantes hautes fréquences.'
+      label: 'H(z) High Pass'
+      expected: false
+      reponse: 'Le filtre $\text{h(n)}$ retire la moyenne ($\text{M(n)}$), qui est
+        une composante basse fréquence. La $\text{TF}$ du filtre $\text{g(n)}$ qui
+        calcule la moyenne est un passe-bas, mais $\text{H(z)}$ doit retirer cette
+        moyenne.'
+      tip: 'Le filtre soustracteur doit annuler la composante continue ($\text{f}=0$).'
+    - proposition: 'Le filtre $\text{g(n)}$ qui calcule la moyenne est un filtre $\text{IIR}$
+        (Réponse Impulsionnelle Infinie).'
+      label: 'Filter Type g(n)'
+      expected: false
+      reponse: 'Le filtre $\text{g}$ est implémenté comme un vecteur fini de longueur
+        $\text{L}=40$ ($\text{g} = \text{np.ones(L)}/\text{L}$), c''est donc un filtre
+        $\text{FIR}$.'
+      tip: 'Vérifiez la longueur de la réponse impulsionnelle $\text{g}$.'
+
+quiz4:
+  question: 'Quelles sont les méthodes et outils Python utilisés pour l''implémentation
+    et l''analyse des filtres numériques ?'
+  propositions:
+    - proposition: 'La fonction $\text{lfilter}$ est l''outil standard pour calculer
+        le vecteur de sortie $\text{y}$ d''un filtre numérique défini par les coefficients
+        $\text{B}$ (numérateur $\text{B(z)}$) et $\text{A}$ (dénominateur $\text{A(z)}$).'
+      label: 'lfilter Role'
+      expected: true
+      reponse: '$\text{lfilter}$ implémente l''équation aux différences associée et
+        prend en entrée les vecteurs $\text{B}$ et $\text{A}$ ainsi que le vecteur
+        d''entrée $\text{x}$.'
+      tip: 'Vérifiez la description de la fonction $\text{lfilter}$.'
+    - proposition: 'La fonction $\text{freqz}$ est utilisée pour calculer la réponse
+        fréquentielle $\text{H}(e^{j2\pi f/\text{Fs}})$ du filtre en module et en
+        phase.'
+      label: 'freqz Role'
+      expected: true
+      reponse: '$\text{freqz}$ calcule la réponse fréquentielle $\text{H}(e^{j2\pi
+        f/\text{Fs}})$ en module et en phase.'
+      tip: 'La fonction $\text{freqz}$ opère dans le domaine fréquentiel.'
+    - proposition: 'Le calcul de la $\text{TF}$ des réponses impulsionnelles $\text{g}$
+        et $\text{h}$ est réalisé en utilisant la fonction $\text{ifft}$ de $\text{numpy.fft}$.'
+      label: 'FFT Function'
+      expected: false
+      reponse: 'La $\text{TF}$ est calculée en utilisant la fonction $\text{fft}$
+        (et non $\text{ifft}$), et son module ($\text{abs}$) est tracé.'
+      tip: 'La $\text{TF}$ est calculée par $\text{fft}$.'
+    - proposition: 'Le dénominateur $\text{A}$ du filtre d''implémentation est défini
+        uniquement si le filtre est de type $\text{IIR}$ (Réponse Impulsionnelle Infinie).'
+      label: 'A(z) Usage'
+      expected: false
+      reponse: 'La fonction $\text{lfilter}$ utilise $\text{A}$ même si $\text{A}=1$
+        (cas $\text{FIR}$), comme dans l''exemple $\text{m}_{\text{estimated}} = \text{lfilter}(\text{g},
+        1, \text{x})$.'
+      tip: 'Le vecteur $\text{A}$ est toujours requis par $\text{lfilter}$, même si
+        $\text{A(z)}=1$.'
+
+quiz5:
+  question: 'Quelles sont les caractéristiques de l''implémentation du filtre de moyenne
+    ($\text{g}$) et de l''analyse de sa fonction de transfert ($\text{G}$) ?'
+  propositions:
+    - proposition: 'La réponse impulsionnelle $\text{g}$ est définie par un vecteur
+        de longueur $\text{L}=40$ dont toutes les composantes valent $\text{1}/\text{L}$.'
+      label: 'g(n) Definition'
+      expected: true
+      reponse: 'La réponse impulsionnelle est définie par $\text{L} = 40$ et $\text{g}
+        = \text{np.ones(L)}/\text{L}$.'
+      tip: 'Vérifiez la définition de $\text{g}$.'
+    - proposition: 'La fonction de transfert $\text{G}$ est obtenue en calculant la
+        $\text{FFT}$ de $\text{g}$ avec un $\text{zero-padding}$ à 1000 points, et
+        en la centrant avec $\text{fftshift}$.'
+      label: 'G(f) Calculation'
+      expected: true
+      reponse: 'La fonction de transfert est vérifiée par $\text{G} = \text{fftshift}(\text{fft}(\text{g},
+        1000))$.'
+      tip: 'Le $\text{zero-padding}$ améliore la visualisation de la $\text{TF}$.'
+    - proposition: 'La représentation temporelle montre que l''estimation de la dérive
+        $\text{m}_{\text{estimated}}$ est très instable et ne suit pas la dérive réelle
+        $\text{m}$.'
+      label: 'Drift Estimation Quality'
+      expected: false
+      reponse: 'Le graphique trace $\text{m}_{\text{estimated}}$ et $\text{m}$ ensemble,
+        sous-entendant une bonne estimation de la dérive.'
+      tip: 'Le graphique permet de visualiser la qualité de l''estimation.'
+    - proposition: 'La fonction de transfert $\text{G}$ est un filtre passe-haut annulant
+        les basses fréquences autour de $\text{f}=0$.'
+      label: 'G(f) Type'
+      expected: false
+      reponse: 'Le filtre de moyenne agit comme un filtre passe-bas car il ne conserve
+        que la fréquence autour de $\text{f}=0$,, son rôle étant d''extraire la dérive.'
+      tip: 'Le filtre de moyenne extrait la composante continue et la dérive lente.'
+
+quiz6:
+  question: 'Quelles sont les propriétés et l''effet du filtre de moyenne ($\text{g(n)}$)
+    dans le domaine fréquentiel, selon l''analyse ?'
+  propositions:
+    - proposition: 'La fonction de transfert $\text{G}$ a la propriété d''annuler
+        parfaitement les pics spectraux du signal périodique aux fréquences $\text{k}/\text{L}$.'
+      label: 'Peak Cancellation'
+      expected: true
+      reponse: 'Cette transformée de Fourier a la bonne idée d''annuler toutes les
+        composantes $1/\text{L}$... Ainsi les pics dans la représentation fréquentielle
+        du signal périodique sont parfaitement retirés.'
+      tip: 'L''effet sur les raies spectrales est une propriété majeure de ce filtre.'
+    - proposition: 'Après filtrage par $\text{g}$, il ne reste que la partie fréquentielle
+        autour de $\text{f}=0$, ce qui confirme son rôle d''extracteur de la dérive
+        lente.'
+      label: 'FT Remaining Content'
+      expected: true
+      reponse: 'Il ne reste que la partie fréquentielle autour de $\text{f}=0$.'
+      tip: 'Le filtre de moyenne vise à isoler la composante continue.'
+    - proposition: 'L''annulation des pics est une propriété qui dépend uniquement
+        de la fréquence d''échantillonnage $\text{Fs}$, et non de la longueur $\text{L}$
+        du filtre.'
+      label: 'Cancellation Dependency'
+      expected: false
+      reponse: 'L''annulation se produit pour les composantes $\text{k}/\text{L}$,
+        ce qui dépend directement de la longueur $\text{L}$ du filtre.'
+      tip: 'La $\text{TF}$ du filtre rectangulaire dépend de sa largeur $\text{L}$.'
+    - proposition: 'La fonction de transfert $\text{G}$ du filtre de moyenne est tracée
+        uniquement en fréquences non normalisées (Hertz).'
+      label: 'FT Frequency Axis'
+      expected: false
+      reponse: 'Le titre du graphique est "Transfer Function of the Averaging Filter"
+        et l''axe $x$ est labellisé "Normalized frequencies".'
+      tip: 'L''affichage utilise les fréquences normalisées.'
+
+quiz7:
+  question: 'Quelles sont les caractéristiques du filtre soustracteur de moyenne ($\text{h}$)
+    et les résultats du filtrage sur le signal corrigé ($\text{xc}$) ?'
+  propositions:
+    - proposition: 'La réponse impulsionnelle $\text{h}$ du filtre soustracteur est
+        définie par $\text{h} = 1 - 1/\text{L}$ et $\text{h}[n] = -1/\text{L}$ pour
+        $n>0$.'
+      label: 'h(n) Definition'
+      expected: true
+      reponse: 'La réponse impulsionnelle $\text{h}$ est définie par $\text{h} = -\text{np.ones}(\text{L})/\text{L}$
+        avec $\text{h} = 1 - 1/\text{L}$.'
+      tip: 'Vérifiez la construction de la réponse impulsionnelle du filtre soustracteur.'
+    - proposition: 'La $\text{TF}$ du signal filtré $\text{xc}$ montre que la dérive
+        lente autour de $\text{f}=0$ a été effectivement retirée.'
+      label: 'xc FT Result'
+      expected: true
+      reponse: 'Le titre du graphique du signal $\text{xc}$ est "Signal with removed
+        drift" et la $\text{TF}$ montre une réduction de la composante DC.'
+      tip: 'L''objectif du filtre soustracteur est de retirer la dérive,.'
+    - proposition: 'Le filtre soustracteur $\text{h}$ est appliqué avec un dénominateur
+        $\text{A}$ complexe pour optimiser la suppression de la dérive.'
+      label: 'A(z) Complexity'
+      expected: false
+      reponse: 'Le filtre est appliqué par $\text{xc} = \text{lfilter}(\text{h}, 1,
+        \text{x})$, où le dénominateur $\text{A}$ est simplement $1$ (un filtre $\text{FIR}$).'
+      tip: 'Vérifiez la valeur du dénominateur $\text{A}$ utilisé dans $\text{lfilter}$.'
+    - proposition: 'La fonction de transfert $\text{H}$ du filtre soustracteur a un
+        gain maximal à $\text{f}=0$.'
+      label: 'H(f) DC Gain'
+      expected: false
+      reponse: 'Le filtre soustracteur retire la moyenne (DC), donc son gain doit
+        être nul ou très faible à $\text{f}=0$. Le graphique "Transfer Function of
+        the Subtracting Filter" (Figure 7) montre un gain nul à $\text{f}=0$.'
+      tip: 'Un gain nul à $\text{f}=0$ signifie qu''il n''y a pas de composante continue.'
+
+quiz8:
+  question: 'Concernant la conception du filtre d''accentuation de fréquence, quelles
+    affirmations décrivant la théorie sont valides ?'
+  propositions:
+    - proposition: 'L''accentuation d''une fréquence est réalisée en plaçant une paire
+        de pôles conjugués complexes, $\text{p0}$ et $\text{p1}$, dans la fonction
+        de transfert $\text{H(z)}$.'
+      label: 'Poles Usage'
+      expected: true
+      reponse: 'La dérivation de la réponse impulsionnelle se fait en sélectionnant
+        une paire de pôles conjugués complexes pour la fréquence d''intérêt.'
+      tip: 'Les pôles contrôlent la réponse fréquentielle et la stabilité.'
+    - proposition: 'La dérivation de la réponse impulsionnelle $\text{h(n)}$ utilise
+        la décomposition en fractions partielles de Heaviside de $\text{H(z)}$.'
+      label: 'Partial Fraction Use'
+      expected: true
+      reponse: 'Par l''expansion en fractions partielles de Heaviside, $\text{H(z)}$
+        est décomposé en deux termes simples.'
+      tip: 'Vérifiez la méthode de décomposition utilisée.'
+    - proposition: 'La réponse impulsionnelle $\text{h(n)}$ pour des pôles complexes
+        est une séquence de $\text{Dirac}$ modulée par une fonction exponentielle
+        décroissante $\rho^n$.'
+      label: 'h(n) Dirac'
+      expected: false
+      reponse: 'La transformée en $\text{z}$ inverse de $\text{1}/(1 - a z^{-1})$
+        est $\text{a}^n \text{u(n)}$, impliquant l''utilisation de la fonction échelon
+        $\text{u(n)}$, et non la fonction de Dirac $\delta(n)$.'
+      tip: 'La réponse impulsionnelle d''un filtre $\text{IIR}$ causal utilise la
+        fonction échelon.'
+    - proposition: 'La formule finale de $\text{h(n)}$ est proportionnelle à $\rho^{n+1}$
+        multiplié par $\sin(2\pi \text{n} f_0)$.'
+      label: 'h(n) Formula Details'
+      expected: false
+      reponse: 'La formule finale fournie est proportionnelle à $\rho^n \sin(2\pi(n+1)f_0)$.'
+      tip: 'Vérifiez l''exposant et l''argument de la fonction sinus dans la formule
+        finale.'
+
+quiz9:
+  question: 'Quelles sont les méthodes utilisées et les résultats observés lors de
+    l''implémentation pratique du filtre d''accentuation de $1000 \text{ Hz}$ et de
+    la suppression de la dérive combinée ?'
+  propositions:
+    - proposition: 'Le dénominateur $\text{A}$ du filtre d''accentuation est calculé
+        en utilisant la fonction $\text{np.poly}$ appliquée aux valeurs des pôles
+        complexes conjugués $\text{p1}$ et $\text{p2}$.'
+      label: 'Denominator Calculation'
+      expected: true
+      reponse: 'Le vecteur des coefficients du dénominateur $\text{A(z)}$ est calculé
+        par $\text{A} = \text{np.poly}([p1, p2])$.'
+      tip: 'La fonction $\text{np.poly}$ permet d''obtenir les coefficients du polynôme
+        à partir des racines.'
+    - proposition: 'L''opération combinée d''accentuation et de suppression de la
+        dérive est réalisée en utilisant le filtre soustracteur $\text{h}$ comme numérateur
+        et le dénominateur $\text{A}$ du filtre d''accentuation.'
+      label: 'Combined Filtering'
+      expected: true
+      reponse: 'Le filtre combiné est implémenté par $\text{sig}_{\text{accentuated\_centered}}
+        = \text{lfilter}(\text{h}, \text{a}, \text{x})$.'
+      tip: 'Le filtrage combiné utilise les coefficients des deux opérations : $\text{h}$
+        au numérateur et $\text{a}$ au dénominateur.'
+    - proposition: 'Le filtre d''accentuation est de type $\text{FIR}$ (Réponse Impulsionnelle
+        Finie) car le paramètre $\rho$ est inférieur à 1.'
+      label: 'Filter Type'
+      expected: false
+      reponse: 'Ce filtre utilise un dénominateur $\text{A} \neq 1$, et puisque les
+        pôles sont dans le cercle unité ($\rho=0.95$), c''est un filtre $\text{IIR}$
+        stable (Réponse Impulsionnelle Infinie).'
+      tip: 'Un dénominateur non trivial caractérise généralement un filtre $\text{IIR}$.'
+    - proposition: 'Le signal accentué est affiché dans le domaine fréquentiel en
+        utilisant uniquement les fréquences normalisées (entre $-0.5$ et $0.5$).'
+      label: 'FT Axis Scaling'
+      expected: false
+      reponse: 'Le tracé de la $\text{TF}$ du signal accentué utilise les fréquences
+        réelles ($\text{Fs}$) via $\text{freq}(1000, \text{Fs})$ et les limites sont
+        fixées à $[-\text{Fs}/2, \text{Fs}/2]$.'
+      tip: 'L''affichage utilise les fréquences réelles (Hertz).'
+
+quiz10:
+  question: 'Concernant la méthode de la fenêtre pour la conception du filtre passe-bas
+    $\text{FIR}$, quelles affirmations théoriques sont correctes ?'
+  propositions:
+    - proposition: 'Le filtre passe-bas idéal a une fonction de transfert $\text{H(f)}$
+        de forme rectangulaire en module dans le domaine fréquentiel.'
+      label: 'Ideal Filter H(f)'
+      expected: true
+      reponse: 'Nous considérons le filtre passe-bas idéal dont la fonction de transfert
+        $\text{H(f)}$ (en module) est une fonction rectangulaire.'
+      tip: 'Vérifiez la forme du filtre idéal.'
+    - proposition: 'La réponse impulsionnelle idéale $\text{h(n)}$ est obtenue par
+        transformée de Fourier inverse de la fonction $\text{rect}$ et est proportionnelle
+        à une fonction $\text{sinc}$.'
+      label: 'h(n) Sinc Form'
+      expected: true
+      reponse: 'La $\text{TF}$ inverse de $\text{rect}_{2\text{B}}(\text{f})$ est
+        $h(n) = \frac{2\text{B} \sin(2\pi\text{B}n)}{2\pi\text{B}n}$, soit une fonction
+        $\text{sinc}$.'
+      tip: 'La $\text{TF}$ d''un rectangle est une $\text{sinc}$.'
+    - proposition: 'L''impulsion de la réponse impulsionnelle idéale $\text{h(n)}$
+        a un support fini et est causale.'
+      label: 'Ideal h(n) Properties'
+      expected: false
+      reponse: 'Les problèmes qui apparaissent sont que la réponse impulsionnelle
+        $\text{h(n)}$ a un support infini et est non-causale.'
+      tip: 'L''idéalité du filtre pose des problèmes pratiques de support et de causalité.'
+    - proposition: 'Le filtre $\text{FIR}$ final est conçu pour conserver les composantes
+        de $250 \text{ Hz}$ à $8000 \text{ Hz}$.'
+      label: 'Filter Band'
+      expected: false
+      reponse: 'Le filtre est conçu pour ne conserver que les composantes basses fréquences
+        ($0 \text{ à } 250 \text{ Hz}$) du signal corrigé $\text{xc}$.'
+      tip: 'Il s''agit d''un filtre passe-bas, retenant les basses fréquences.'
+
+quiz11:
+  question: 'Quelles étapes sont nécessaires pour obtenir la réponse impulsionnelle
+    $\text{FIR}$ causale et tronquée dans la pratique ?'
+  propositions:
+    - proposition: 'Pour obtenir une réponse impulsionnelle sur $\text{L}$ points,
+        il est nécessaire de tronquer la réponse idéale et de la retarder pour la
+        rendre causale.'
+      label: 'FIR Requirement Steps'
+      expected: true
+      reponse: 'Il est nécessaire de tronquer la réponse impulsionnelle, puis de la
+        décaler pour obtenir une réponse causale.'
+      tip: 'La causalité et le support fini sont requis pour l''implémentation $\text{FIR}$.'
+    - proposition: 'L''implémentation de la fonction $\text{sinc}(x)$ doit gérer le
+        cas où $x=0$ en retournant $1$.'
+      label: 'Sinc Implementation'
+      expected: true
+      reponse: 'La fonction $\text{sinc(x)}$ est définie de manière à ce que si $n=0$,
+        elle retourne 1.'
+      tip: 'La valeur limite de $\sin(x)/x$ quand $x \to 0$ est 1.'
+    - proposition: 'La largeur de bande $\text{B}$ utilisée dans la formule $\text{sinc}$
+        est initialement normalisée par $250 \text{ Hz}$ avant le calcul.'
+      label: 'Bandwidth Normalization'
+      expected: false
+      reponse: 'La largeur de bande $\text{B}$ est normalisée par la fréquence d''échantillonnage
+        $\text{Fs}$: $\text{B} = \text{B}/\text{Fs}$ (soit $250/8000$).'
+      tip: 'La normalisation se fait par rapport à $\text{Fs}$.'
+    - proposition: 'La troncature consiste à conserver les échantillons de $\text{h(n)}$
+        autour de $n=0$ en utilisant un très grand nombre de points (par exemple,
+        500 ou plus).'
+      label: 'Truncation Size'
+      expected: false
+      reponse: 'La troncature retient un nombre limité de points (ici 101 points,
+        soit $\text{L}=50$ autour de $n=0$).'
+      tip: 'La troncature est limitée à $\text{L}$ points.'
+
+quiz12:
+  question: 'Quelles sont les caractéristiques de la réponse fréquentielle du filtre
+    $\text{FIR}$ passe-bas tronqué ($\text{H}_{\text{tronq}}$) ?'
+  propositions:
+    - proposition: 'La troncature consiste à garder les échantillons entre $-50$ et
+        $50$ pour une longueur totale de 101 points.'
+      label: 'Truncation Range'
+      expected: true
+      reponse: 'La troncature consiste à garder les échantillons entre $-50$ et $50$
+        (pour un total de 101 points).'
+      tip: 'Vérifiez la taille de la fenêtre de troncature.'
+    - proposition: 'La $\text{TF}$ de la réponse tronquée $\text{H}_{\text{tronq}}$
+        est calculée avec un $\text{padding}$ de 1000 points pour améliorer la résolution
+        lors de l''affichage.'
+      label: 'FT Resolution'
+      expected: true
+      reponse: '$\text{H}_{\text{tronq}} = \text{fft}(\text{h}_{\text{tronq}}, 1000)$
+        est le calcul effectué, utilisant 1000 points pour la $\text{FFT}$.'
+      tip: 'Le $\text{padding}$ est utilisé pour la visualisation de la $\text{TF}$.'
+    - proposition: 'La réponse $\text{H}_{\text{tronq}}$ est parfaitement rectangulaire
+        dans le domaine fréquentiel et ne présente aucune ondulation.'
+      label: 'Ideal FT Shape'
+      expected: false
+      reponse: 'La troncature par fenêtre rectangulaire introduit des ondulations
+        (phénomène de Gibbs) dans la réponse fréquentielle, montrée dans la comparaison
+        avec la réponse idéale $\text{R}$.'
+      tip: 'Un filtre $\text{FIR}$ tronqué n''est pas idéal.'
+    - proposition: 'Les fréquences affichées pour la réponse fréquentielle sont limitées
+        entre $-100 \text{ Hz}$ et $100 \text{ Hz}$.'
+      label: 'Frequency Zoom Range'
+      expected: false
+      reponse: 'Le graphique de la Réponse Fréquentielle est zoomé entre $-1000 \text{
+        Hz}$ et $1000 \text{ Hz}$.'
+      tip: 'Vérifiez les limites $\text{xlim}$ pour l''affichage du graphique.'
+
+quiz13:
+  question: 'Quelles sont les caractéristiques du $\text{délai de groupe}$ ($\text{Group
+    Delay}$) calculé pour le filtre passe-bas $\text{FIR}$ ?'
+  propositions:
+    - proposition: 'Le délai de groupe est calculé à partir du rapport de la $\text{FFT}$
+        de la réponse impulsionnelle pondérée sur la $\text{FFT}$ de la réponse impulsionnelle
+        non pondérée.'
+      label: 'Td Calculation'
+      expected: true
+      reponse: 'La fonction $\text{grpdelay}$ utilise $\text{num} = \text{fft}(\text{hn})$
+        (pondérée) et $\text{den} = \text{fft}(\text{h})$ (non pondérée) pour calculer
+        $\text{Td} = \text{real}(\text{num}/\text{den})$.'
+      tip: 'Vérifiez les composantes de la fonction $\text{grpdelay}$.'
+    - proposition: 'Le délai de groupe observé dans la bande passante du filtre est
+        d''environ 50 échantillons.'
+      label: 'Observed Delay'
+      expected: true
+      reponse: 'Ainsi, nous voyons que nous avons un délai de groupe d''environ 50
+        dans la bande du filtre.'
+      tip: 'L''observation du résultat est explicite.'
+    - proposition: 'Le signal filtré passe-bas est nécessairement appliqué au signal
+        $\text{xc}$ (signal corrigé) et non au signal original $\text{x}$.'
+      label: 'Input Signal'
+      expected: false
+      reponse: 'Bien que l''énoncé demande d''utiliser $\text{xc}$, le code pour le
+        filtrage passe-bas utilise $\text{x}$ ($\text{sig}_{\text{lowpass}} = \text{lfilter}(\text{h},,
+        \text{x})$).'
+      tip: 'L''implémentation dans le code source utilise $\text{x}$.'
+    - proposition: 'Les valeurs de $\text{Td}$ sont forcées à 1 lorsque le dénominateur
+        de la $\text{FFT}$ est proche de zéro.'
+      label: 'Td Zero Handling'
+      expected: false
+      reponse: 'Les valeurs de $\text{Td}$ sont forcées à 0 lorsque la magnitude du
+        dénominateur est faible ($\text{Td[abs(den)<Mden /10]=0}$).'
+      tip: 'Vérifiez la gestion des dénominateurs proches de zéro.'
+
+quiz14:
+  question: 'Quelles affirmations sont correctes concernant les propriétés des filtres
+    $\text{FIR}$ à phase linéaire, déduites du $\text{Lab}$ ?'
+  propositions:
+    - proposition: 'Le filtre passe-bas $\text{FIR}$ est conçu à l''aide de la méthode
+        de la fenêtre pour garantir la phase linéaire.'
+      label: 'Linear Phase Method'
+      expected: true
+      reponse: 'Le filtre est conçu en utilisant la méthode de la fenêtre, ce qui
+        conduit à un filtre à phase linéaire.'
+      tip: 'La méthode de la fenêtre est spécifiée pour créer un filtre à phase linéaire.'
+    - proposition: 'Un délai de groupe constant dans la bande passante est un attribut
+        observé pour ce filtre $\text{FIR}$ tronqué.'
+      label: 'Constant Group Delay'
+      expected: true
+      reponse: 'Le délai de groupe est d''environ 50 dans la bande du filtre, ce qui
+        est caractéristique d''un filtre à phase linéaire.'
+      tip: 'Le délai de groupe est constant pour les filtres à phase linéaire.'
+    - proposition: 'La méthode de la fenêtre permet d''obtenir une fonction de transfert
+        parfaitement rectangulaire, sans ondulations dans la bande passante.'
+      label: 'Gibbs Phenomenon'
+      expected: false
+      reponse: 'La troncature par fenêtre rectangulaire est connue pour introduire
+        des ondulations (phénomène de Gibbs) dans la bande passante.'
+      tip: 'La troncature dégrade la réponse fréquentielle.'
+    - proposition: 'Le calcul du délai de groupe $\text{Td}$ est réalisé en prenant
+        la partie imaginaire du rapport des $\text{FFT}$.'
+      label: 'Td Imaginary Part'
+      expected: false
+      reponse: 'Le délai de groupe $\text{Td}$ est calculé en utilisant la partie
+        réelle ($\text{real}$) du rapport.'
+      tip: 'Vérifiez la fonction $\text{real}$ utilisée dans la définition de $\text{Td}$.'
+
+quiz15:
+  question: 'Quelles sont les conclusions finales et les propriétés des fonctions
+    utilisées dans la dernière partie du $\text{Lab}$ ?'
+  propositions:
+    - proposition: 'La $\text{TF}$ de la réponse impulsionnelle idéale est une fonction
+        $\text{sinc}$, et son troncage est nécessaire pour obtenir un filtre $\text{FIR}$
+        implémentable.'
+      label: 'Sinc Truncation'
+      expected: true
+      reponse: 'La réponse impulsionnelle est proportionnelle à $\text{sinc}$, et
+        il est nécessaire de la tronquer pour obtenir une réponse sur $\text{L}$ points.'
+      tip: 'La relation $\text{rect} \rightleftharpoons \text{sinc}$ est fondamentale
+        ici.'
+    - proposition: 'Le filtre est conçu pour avoir un délai de groupe constant, avec
+        une valeur observée d''environ 50 échantillons dans la bande passante.'
+      label: 'Constant Delay Value'
+      expected: true
+      reponse: 'Un délai de groupe d''environ 50 est observé dans la bande du filtre,
+        ce qui est l''objectif d''un filtre à phase linéaire.'
+      tip: 'Le délai de groupe est une propriété caractéristique du filtre conçu.'
+    - proposition: 'La fonction Python $\text{sinc(x)}$ est implémentée pour éviter
+        la division par zéro en retournant $0$ lorsque $x=0$.'
+      label: 'Sinc x=0 Handling'
+      expected: false
+      reponse: 'La fonction $\text{sinc(x)}$ retourne $1$ (et non $0$) lorsque $x=0$.'
+      tip: 'La valeur limite de $\text{sinc}(x)$ en $x=0$ est 1.'
+    - proposition: 'Le délai de groupe est une mesure de la distorsion de phase introduite
+        par le filtre, et sa valeur nulle est toujours souhaitable.'
+      label: 'Td Ideal Value'
+      expected: false
+      reponse: 'Le délai de groupe observé est 50, et un délai nul n''est pas possible
+        pour un filtre $\text{FIR}$ causal de cette taille.'
+      tip: 'Un $\text{FIR}$ causal introduit nécessairement un retard (délai > 0).'
