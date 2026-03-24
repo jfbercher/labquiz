@@ -1,4 +1,4 @@
-# Hashes générés le 2026-03-18T19:33:54.023356
+# Hashes générés le 2026-03-24T11:42:12.245454
 # Dossier analysé : /Users/bercherj/JFB/dev/labquizdev/src/labquiz
 # Version du package : 0.9.6
 
@@ -10,7 +10,7 @@
 ee3f7fdf95ff4d5cb587148f755e13f86c881f13ab1005eb92f763e00d51bbfe  /Users/bercherj/JFB/dev/labquizdev/src/labquiz/utils.py
 
 [package]
-dff1cce4fc527251f5092c8bd9b27cb88b728560ad15f73ef5789dbbe79db9b0
+c1473ba4685623a419849e3ff3c117632947c292bad094c55e7ff4d586b48649
 
 [package_without_putils]
 d68079861ea53c8fff730e896c1a713f9d71a9b272c9509aad2602cc9bbf5499
