@@ -11,3 +11,4 @@ dist
 labquiz.egg-info
 *.po~
 *.md~
+._last_release_commit
