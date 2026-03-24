@@ -156,6 +156,6 @@ An example of a call could be
 ql = quiz.exam_show(exam_title="Test to see", shuffle=True, nb=4)
 ```
 Intermediate results are not displayed (if in learning or test mode). 
-The results obtained can then be viewed by the student with `quiz.exam_result(ql, bareme=None)`.
+The results obtained can then be viewed by the student with `quiz.exam_result(ql, marking_scheme=None)`.
  
 In exam mode, results are not calculated or viewable, and the teacher can correct all exams as described in [](correction_par_enseignant).

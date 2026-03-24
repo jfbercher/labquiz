@@ -577,7 +577,7 @@ def parse_custom_dict(text):
 
 
 
-def correctAll(students_answers, quiz, df, seuil=0, exam_questions=None, weights=None, bareme=None, maxtries=3):
+def correctAll(students_answers, quiz, df, seuil=0, exam_questions=None, weights=None, marking_scheme=None, maxtries=3):
     """Correct all answers
 
     correctAll(students, floors, df, threshold=0, Weight=None, scale=None)
@@ -625,10 +625,10 @@ def correctAll(students_answers, quiz, df, seuil=0, exam_questions=None, weights
     students = students_answers.keys()
     if exam_questions is None: exam_questions = {s:allquizzes for s in students}
     Res = pd.DataFrame(index=students, columns=allquizzes)
-    if bareme is not None: 
-        bareme = {q:1 if q not in bareme.keys() else bareme[q] for q in allquizzes }
+    if marking_scheme is not None: 
+        marking_scheme = {q:1 if q not in marking_scheme.keys() else marking_scheme[q] for q in allquizzes }
     else:
-        bareme = {q:1 for q in allquizzes}
+        marking_scheme = {q:1 for q in allquizzes}
     for s in students:
         for quiz_id in exam_questions[s]:
             given = students_answers[s].get(quiz_id, {})
@@ -642,22 +642,22 @@ def correctAll(students_answers, quiz, df, seuil=0, exam_questions=None, weights
                 print(f"Error correcting student {s}, quiz_id={quiz_id}", e)
                 #print(given, type(given), e)
             Res.loc[s, quiz_id] = score/score_max
-        Res.loc[s, 'maxpts'] = pd.Series([bareme[q] for q in exam_questions[s]]).sum()
+        Res.loc[s, 'maxpts'] = pd.Series([marking_scheme[q] for q in exam_questions[s]]).sum()
     Res = Res.infer_objects(copy=False).dropna(axis=1, how="all").fillna(0)
     if seuil==0: Res[Res < 0] = 0
-    poids = pd.Series({q: bareme[q] for q in Res.columns if q != 'maxpts'})
+    poids = pd.Series({q: marking_scheme[q] for q in Res.columns if q != 'maxpts'})
     Res['Note'] = Res[poids.index].dot(poids) / Res['maxpts'] * 20
       
     return Res
 
-#correctAllBis(students_answers, quiz, data_filt, seuil=0, exam_questions=exam_questions, weights=None, bareme=None, maxtries=3)
-# Res = correctAllBis(students_answers, quiz, data_filt, seuil=0, exam_questions=None, weights=None, bareme=None, maxtries=3)
+#correctAllBis(students_answers, quiz, data_filt, seuil=0, exam_questions=exam_questions, weights=None, marking_scheme=None, maxtries=3)
+# Res = correctAllBis(students_answers, quiz, data_filt, seuil=0, exam_questions=None, weights=None, marking_scheme=None, maxtries=3)
 """
 # All students case
 import time
 tic = time.perf_counter()
 ResDataFiltBis = correctAllBis(students_answers, quiz, 
-                            data_filt, bareme={ 'quiz13':0, 'quiz55':0, 'quiz56':0, 'quiz57':0})
+                            data_filt, marking_scheme={ 'quiz13':0, 'quiz55':0, 'quiz56':0, 'quiz57':0})
 toc = time.perf_counter()
 print(f"Temps d'exécution : {toc-tic:.3f} seconde(s)")
 """
@@ -668,7 +668,7 @@ print(f"Temps d'exécution : {toc-tic:.3f} seconde(s)")
 exam_questions = getExamQuestions("Examen de Truc", data)
 students = exam_questions.keys()
 students_answers = getAllStudentsAnsvers(students, data, maxtries=3)
-correctAllBis(students_answers, quiz, data_filt, seuil=0, exam_questions=exam_questions, weights=None, bareme=None, maxtries=3)
+correctAllBis(students_answers, quiz, data_filt, seuil=0, exam_questions=exam_questions, weights=None, marking_scheme=None, maxtries=3)
 """
 
 """
@@ -678,7 +678,7 @@ SECRET = "MOT_DE_PASSE_SECRET_SPÉCIFIÉ_DANS_LE_SHEET"
 QUIZFILE = "quizzes_basic_filtering_test.yml"
 """
 
-def correctQuizzes(URL, SECRET, QUIZFILE, title=None, seuil=0, weights=None, bareme=None, maxtries=1):
+def correctQuizzes(URL, SECRET, QUIZFILE, title=None, seuil=0, weights=None, marking_scheme=None, maxtries=1):
     """
     Correct all quizzes in URL
     Arguments
@@ -738,15 +738,15 @@ def correctQuizzes(URL, SECRET, QUIZFILE, title=None, seuil=0, weights=None, bar
 
     ## 4 - Corriger !
     ResDataFilt = correctAll(students_answers, quiz, data_filt, seuil=seuil, 
-                    exam_questions=exam_questions, weights=weights, bareme=bareme, maxtries=maxtries)
+                    exam_questions=exam_questions, weights=weights, marking_scheme=marking_scheme, maxtries=maxtries)
     
-    if bareme is not None:
-        colsToDrop = [quiz_id for quiz_id, val in bareme.items() if val==0 and quiz_id in ResDataFilt.columns]
+    if marking_scheme is not None:
+        colsToDrop = [quiz_id for quiz_id, val in marking_scheme.items() if val==0 and quiz_id in ResDataFilt.columns]
         return ResDataFilt.drop(columns=colsToDrop)
     return ResDataFilt
 
 
-def correctQuizzesDf(data, data_filt, quiz, title=None, seuil=0, weights=None, bareme=None, maxtries=1):
+def correctQuizzesDf(data, data_filt, quiz, title=None, seuil=0, weights=None, marking_scheme=None, maxtries=1):
     """
     Correct all quizzes in URL
     Arguments
@@ -798,10 +798,10 @@ def correctQuizzesDf(data, data_filt, quiz, title=None, seuil=0, weights=None, b
 
     ## 4 - Correct all!
     ResDataFilt = correctAll(students_answers, quiz, data_filt, seuil=seuil, 
-                    exam_questions=exam_questions, weights=weights, bareme=bareme, maxtries=maxtries)
+                    exam_questions=exam_questions, weights=weights, marking_scheme=marking_scheme, maxtries=maxtries)
     
-    if bareme is not None:
-        colsToDrop = [quiz_id for quiz_id, val in bareme.items() if val==0 and quiz_id in ResDataFilt.columns]
+    if marking_scheme is not None:
+        colsToDrop = [quiz_id for quiz_id, val in marking_scheme.items() if val==0 and quiz_id in ResDataFilt.columns]
         return ResDataFilt.drop(columns=colsToDrop)
     return ResDataFilt
 
@@ -837,7 +837,7 @@ def getExamQuestions(exam_title, data):
 #exam_questions = getExamQuestions("Examen de Truc", data)
 
 
-def correctAllPrev(students_answers, quiz, df, seuil=0, weights=None, bareme=None, maxtries=3):
+def correctAllPrev(students_answers, quiz, df, seuil=0, weights=None, marking_scheme=None, maxtries=3):
     """Correct all answers
     correctAll(students, floors, df, threshold=0, Weight=None, scale=None)
     return Res 
@@ -882,10 +882,10 @@ def correctAllPrev(students_answers, quiz, df, seuil=0, weights=None, bareme=Non
     allquizzes = [q for q in quiz.quiz_bank.keys() if q != "title"]
     students = students_answers.keys()
     Res = pd.DataFrame(index=students, columns=allquizzes)
-    if bareme is not None: 
-        bareme = {q:1 if q not in bareme.keys() else bareme[q] for q in allquizzes }
+    if marking_scheme is not None: 
+        marking_scheme = {q:1 if q not in marking_scheme.keys() else marking_scheme[q] for q in allquizzes }
     else:
-        bareme = {q:1 for q in allquizzes}
+        marking_scheme = {q:1 for q in allquizzes}
     for s in students:
         for quiz_id in allquizzes:
             given = students_answers[s].get(quiz_id, {})
@@ -897,7 +897,7 @@ def correctAllPrev(students_answers, quiz, df, seuil=0, weights=None, bareme=Non
             Res.loc[s, quiz_id] = score/score_max
     Res = Res.infer_objects(copy=False).fillna(0)
     if seuil==0: Res[Res < 0] = 0
-    poids = pd.Series(bareme)
+    poids = pd.Series(marking_scheme)
     Res['FinalMark'] = Res[poids.index].dot(poids) / poids.sum()*20
       
     return Res
@@ -909,7 +909,7 @@ students_answers = getAllStudentsAnsvers(students, data, maxtries=3)
 import time
 tic = time.perf_counter()
 ResDataFiltBis = correctAllBis(students_answers, quiz, 
-                            data_filt, bareme={ 'quiz13':0, 'quiz53':0, 'quiz54':0,
+                            data_filt, marking_scheme={ 'quiz13':0, 'quiz53':0, 'quiz54':0,
                                                'quiz55':0, 'quiz56':0, 'quiz57':0})
 toc = time.perf_counter()
 print(f"Temps d'exécution : {toc-tic:.3f} seconde(s)")

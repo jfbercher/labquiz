@@ -46,7 +46,7 @@ def set_defaults():
     st.session_state["url"] = ""
     st.session_state["secret"] = ""
     st.session_state["group"] = _('All')
-    st.session_state["bareme_str"] = "{}"
+    st.session_state["marking_scheme_str"] = "{}"
     st.session_state["maxtries"] = 3
     st.session_state["seuil"] = 0.0 
     st.session_state["exam_title"] = "" 
@@ -147,9 +147,9 @@ def generate_cols_from_student(df, dropStudent=False):
     if dropStudent: newdf = newdf.drop(columns='student')
     return newdf
 
-def recompute_score(adj_bareme, questions, exam_title, df_results, full_df, full_df_filt, quiz, seuil, final_weights, maxtries):
+def recompute_score(adj_marking_scheme, questions, exam_title, df_results, full_df, full_df_filt, quiz, seuil, final_weights, maxtries):
 
-    coeffs = adj_bareme.loc["Coefficient"]
+    coeffs = adj_marking_scheme.loc["Coefficient"]
     res_copy = df_results.copy()
     
     if exam_title == "":
@@ -160,7 +160,7 @@ def recompute_score(adj_bareme, questions, exam_title, df_results, full_df, full
         res_copy = correctQuizzesDf(
             data=full_df, data_filt=full_df_filt, quiz=quiz, 
             title=exam_title, seuil=seuil, weights=final_weights, 
-            bareme=coeffs, maxtries=maxtries
+            marking_scheme=coeffs, maxtries=maxtries
         )
         res_copy["FinalMark"] = res_copy["Note"]
         res_copy.drop(columns='Note', inplace=True, errors='ignore')
@@ -560,7 +560,7 @@ def prepare_student_data(df_last, marks_df, quiz_stats, selected_student):
 
     return student_data
 
-def make_individual_report(selected_student, df_last, student_data, quiz, final_weights, bareme, fullCorrection=True):
+def make_individual_report(selected_student, df_last, student_data, quiz, final_weights, marking_scheme, fullCorrection=True):
     
     FinalMarkScale = int(st.session_state.TrueFinalMarkScale)
     full_avg_note = st.session_state.df_final["FinalMark"].mean()*FinalMarkScale/20
@@ -611,11 +611,11 @@ def make_individual_report(selected_student, df_last, student_data, quiz, final_
         """
 
     block_size = 12
-    n_cols = bareme.shape[1]
-    bareme_html = ""
+    n_cols = marking_scheme.shape[1]
+    marking_scheme_html = ""
     for i in range(0, n_cols, block_size):
-        sub_df = bareme.iloc[:, i:i+block_size]
-        bareme_html += "<br>" + sub_df.to_html(index=True, float_format='{:.2f}'.format, classes='table table-bordered', border=1)
+        sub_df = marking_scheme.iloc[:, i:i+block_size]
+        marking_scheme_html += "<br>" + sub_df.to_html(index=True, float_format='{:.2f}'.format, classes='table table-bordered', border=1)
 
     if html_output:
         html += """<h1>{Report_for} {student_name}</h1>
@@ -623,7 +623,7 @@ def make_individual_report(selected_student, df_last, student_data, quiz, final_
             <p></p>
             <p>{scale_str} {scale}</p>
             """.format(Report_for=_("Correction for"), Student=(_("Student")),
-                scale_str=_("Scale:"), scale=bareme_html, student_name=selected_student, info_marks=info_marks)
+                scale_str=_("Scale:"), scale=marking_scheme_html, student_name=selected_student, info_marks=info_marks)
         html += '<hr style="border: none; border-top: 2px solid #000; margin: 20px 0;">'
     else:
         st.markdown(_("#### Report for ") + selected_student)
@@ -887,7 +887,7 @@ def main():
     local_storage.deleteItem = lambda key: old_deleteItem(key, key=key+'_'+str(time.time()))
 
     monitored_parameters = ["selected_lang", "url", "secret", "params_str", "maxtries",
-                            "groups", "group","seuil", "exam_title",  "bareme_str",
+                            "groups", "group","seuil", "exam_title",  "marking_scheme_str",
                             "main_nav_state", "monitoring_nav_state", "correction_nav_state", 'FinalMarkScale']
     
 
@@ -1096,9 +1096,9 @@ def main():
 
             with col_p4:
                 st.markdown(_("**Grading scale per question**"))
-                bareme_str = st.text_area(_("Scale dictionary (e.g.: {'q1': 2})"), 
+                marking_scheme_str = st.text_area(_("Scale dictionary (e.g.: {'q1': 2})"), 
                                         #value="{}", 
-                                        key="bareme_str", on_change=sync, args=("bareme_str",)) #key="bareme_str")
+                                        key="marking_scheme_str", on_change=sync, args=("marking_scheme_str",)) #key="marking_scheme_str")
 
 
     # --- DATA PROCESSING ---
@@ -1350,7 +1350,7 @@ def main():
                                 st.caption(_('Last update of corrections: ') + f"{st.session_state.last_correction_update}")
                                 with st.spinner(_("Calculating scores per question...")):
                                     try:
-                                        b_dict = eval(bareme_str)              
+                                        b_dict = eval(marking_scheme_str)              
                                     except:
                                         b_dict = {}
                                     
@@ -1361,7 +1361,7 @@ def main():
                                         title=exam_title if exam_title != "" else None, 
                                         seuil=seuil, 
                                         weights=final_weights, 
-                                        bareme=b_dict, 
+                                        marking_scheme=b_dict, 
                                         maxtries=maxtries
                                     )
                                     st.session_state.df_results = st.session_state.df_results.reset_index().rename(columns={"index": "student"})
@@ -1393,17 +1393,17 @@ def main():
                                 questions = [c for c in st.session_state.df_results.columns if c not in ["student", "maxpts", "Note", "FinalMark", 'name', 'firstname', 'class_group']]
                                 
                                 # Create a mini-table to adjust weights without recalculating everything
-                                adj_bareme = st.data_editor(
+                                adj_marking_scheme = st.data_editor(
                                     pd.DataFrame({ "AvgScore": st.session_state.df_results[questions].mean(axis=0), 
                                                 "Coefficient": st.session_state.coeffs.values()},
                                                 ).transpose(),
                                     hide_index=False,
                                     width='stretch',
                                 )
-                                st.session_state.scale = adj_bareme
+                                st.session_state.scale = adj_marking_scheme
 
                                 st.session_state.df_results = recompute_score(
-                                    adj_bareme, 
+                                    adj_marking_scheme, 
                                     questions, 
                                     exam_title, 
                                     st.session_state.df_results, 
@@ -1433,7 +1433,7 @@ def main():
                                 std_note = st.session_state.df_results["FinalMark"].std()*int(FinalMarkScale)/20
                                 st.caption(_('Average: ') + f"{avg_note:.2f} / {FinalMarkScale}. " + _('Standard deviation: ') + f"{std_note:.2f}")
                                 # Compute stats for All groups
-                                coeffs = adj_bareme.loc["Coefficient"]
+                                coeffs = adj_marking_scheme.loc["Coefficient"]
                                 st.session_state.df_final["FinalMark"] = st.session_state.df_final[questions].dot(coeffs)*(20/sum(coeffs))
                                 full_avg_note = st.session_state.df_final["FinalMark"].mean()*int(FinalMarkScale)/20
                                 full_std_note = st.session_state.df_final["FinalMark"].std()*int(FinalMarkScale)/20

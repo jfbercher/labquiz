@@ -289,7 +289,7 @@ Un exemple d'appel pourrait être
 ql = quiz.exam_show(exam_title="Test pour voir", shuffle=True, nb=4)
 ```
 Les résultats intermédiaires ne sont pas affichés (si mode apprentissage ou test). 
-Les résultats obtenus sont ensuite consultables par l'étudiant avec `quiz.exam_result(ql, bareme=None)`. 
+Les résultats obtenus sont ensuite consultables par l'étudiant avec `quiz.exam_result(ql, marking_scheme=None)`. 
 En mode examen, les résultats ne sont pas calculés ni consultables, et l'enseignant pourra corriger l'ensemble des examens comme décrit dans [](correction_par_enseignant). 
 
 (structure_fichier_question)= 
@@ -641,7 +641,7 @@ exam_questions = getExamQuestions("Test pour voir", data)
 students = exam_questions.keys()
 students_answers = getAllStudentsAnsvers(students, data, maxtries=3)
 correctAll(students_answers, quiz, data_filt, seuil=0, 
-           exam_questions=exam_questions, weights=None, bareme=None, maxtries=3)
+           exam_questions=exam_questions, weights=None, marking_scheme=None, maxtries=3)
 ```
 
 ```python
@@ -669,14 +669,14 @@ Exemple de tableau de résultats (`exam_show`).
 
 Quelques options supplémentaires peuvent être utilisées lors de la correction. 
 ```python
-def correctQuizzes(URL, SECRET, QUIZFILE, title=None, seuil=0, weights=None, bareme=None, maxtries=1)
+def correctQuizzes(URL, SECRET, QUIZFILE, title=None, seuil=0, weights=None, marking_scheme=None, maxtries=1)
 ````
 - title: si title n'est pas None, cela indique qu'il s'agit de la correction d'un test avec tirage au sort des questions de type `exam_show`, et dont le titre est title,
 - seuil: seuil=0 seuille à zéros les notes de chaque question (sinon note négative possible) ; c'est la valeur par défaut, mais si on veut permetter des notes négatives par question, on peut la passer à -10 par exemple,
 - weights: la matrice de poids (dictionnaire) dont on a déjà discuté dans [](calcul_du_score) 
-- bareme:  poids des différentes questions dans le quiz. Si pas de barème, toutes les 
+- marking_scheme:  poids des différentes questions dans le quiz. Si pas de barème, toutes les 
             questions sont au même poids pour le calcul de la note. Si poids d'une question 
-            non spécifié, il est à 1 par défaut. Exemple: bareme = {'quiz3':4, 'quiz55':0} affecte un coefficient de 4 à la question quiz3 et neutralise la question quiz55 (toutes les autres questions auront un poids de 1),
+            non spécifié, il est à 1 par défaut. Exemple: marking_scheme = {'quiz3':4, 'quiz55':0} affecte un coefficient de 4 à la question quiz3 et neutralise la question quiz55 (toutes les autres questions auront un poids de 1),
 - maxtries: Nombre d'essais permis. La correction s'effectue sur la dernière tentative inférieure ou égale à maxtries (et avant toute demande de correction, bouton "Corriger", si celui-ci est disponible).
 
 

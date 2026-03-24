@@ -1009,19 +1009,19 @@ class QuizLab:
                               answers=qlist_out, score=0)
         return qlist_out
     
-    def exam_result(self, qlist, bareme=None):
+    def exam_result(self, qlist, marking_scheme=None):
         allquizzes = [q for q in self.quiz_bank.keys() if q != "title"]
-        if bareme is not None: 
-            bareme = {q:1 if q not in bareme.keys() else bareme[q] for q in allquizzes }
+        if marking_scheme is not None: 
+            marking_scheme = {q:1 if q not in marking_scheme.keys() else marking_scheme[q] for q in allquizzes }
         else:
-            bareme = {q:1 for q in allquizzes}
+            marking_scheme = {q:1 for q in allquizzes}
         for n,quiz_id in enumerate(qlist):    
-            print(f"Question {n} : {self.quiz_results[quiz_id]*bareme[quiz_id]} sur {bareme[quiz_id]}")
+            print(f"Question {n} : {self.quiz_results[quiz_id]*marking_scheme[quiz_id]} sur {marking_scheme[quiz_id]}")
         print('-'*22)    
-        ponder = [ bareme[q]*self.quiz_results[q]  for q in qlist] 
-        bareme_exam = [ bareme[q]  for q in qlist] 
+        ponder = [ marking_scheme[q]*self.quiz_results[q]  for q in qlist] 
+        marking_scheme_exam = [ marking_scheme[q]  for q in qlist] 
               
-        print(_("Score out of 20: "), sum(ponder)/sum(bareme_exam)*20)
+        print(_("Score out of 20: "), sum(ponder)/sum(marking_scheme_exam)*20)
                   
 
     # ---------------------------

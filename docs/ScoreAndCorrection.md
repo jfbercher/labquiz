@@ -109,7 +109,7 @@ exam_questions = getExamQuestions("Test to see", data)
 students = exam_questions.keys()
 students_answers = getAllStudentsAnswers(students, data, maxtries=3)
 correctAll (students_answers, quiz, data_filt, threshold=0, 
-           exam_questions=exam_questions, weights=None, bareme=None, maxtries=3)
+           exam_questions=exam_questions, weights=None, marking_scheme=None, maxtries=3)
 ```
 ```python
 from labquiz.putils import correctQuizzes
@@ -134,13 +134,13 @@ as shown in [](#score-calculation). In addition, the different options within a 
 
 Additional options can be used during correction. 
 ```python
-def correctQuizzes(URL, SECRET, QUIZFILE, title=None, threshold=0, weights=None, bareme=None, maxtries=1)
+def correctQuizzes(URL, SECRET, QUIZFILE, title=None, threshold=0, weights=None, marking_scheme=None, maxtries=1)
 ````
 - title: if title is not None, this indicates that it is the correction of a test with randomly selected questions of type `exam_show`, and whose title is title,
 - threshold: threshold=0 sets the scores for each question to zero (otherwise negative scores are possible)
  ; this is the default value, but if you want to allow negative scores per question, you can set it to -10, for example.
 - weights: the weight matrix (dictionary) already discussed in [](#score_calculation)
-- bareme (scale):  weight of the different questions in the quiz. If there is no scale, all questions have the same weight for the calculation of the score. If the weight of a question is not specified, it defaults to 1. Example: bareme = {‘quiz3’:4, ‘quiz55’:0} assigns a coefficient of 4 to question quiz3 and neutralizes question quiz55 (all other questions will have a weight of 1),
+- marking_scheme (scale):  weight of the different questions in the quiz. If there is no scale, all questions have the same weight for the calculation of the score. If the weight of a question is not specified, it defaults to 1. Example: marking_scheme = {‘quiz3’:4, ‘quiz55’:0} assigns a coefficient of 4 to question quiz3 and neutralizes question quiz55 (all other questions will have a weight of 1),
 - maxtries: Number of attempts allowed. Correction is performed on the last attempt less than or equal to maxtries (and before any correction request, "Correct" button, if available).
 
 ## Dashboard
