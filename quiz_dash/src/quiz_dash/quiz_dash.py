@@ -67,7 +67,7 @@ def set_defaults():
     if "last_processed_file" not in st.session_state:
         st.session_state.last_processed_file = None
     if "FinalMarkScale" not in st.session_state:
-        print("⚠️ Setting FinalMarkScale to 20 in set_defaults")
+        #print("⚠️ Setting FinalMarkScale to 20 in set_defaults")
         st.session_state.FinalMarkScale = "20"
         st.session_state.TrueFinalMarkScale = "20"
     if "main_nav_state" not in st.session_state:
