@@ -554,7 +554,7 @@ def prepare_student_data(df_last, marks_df, quiz_stats, selected_student):
 
     student_data = student_data.merge(df_marks, on="quiz_title", suffixes=('_old', ''))
     student_data = student_data.merge(quiz_stats, on="quiz_title", suffixes=('_old', '')).sort_values("timestamp") 
-    student_data["FinalMark"] = student_data["FinalMark"]*int(st.session_state.FinalMarkScale)/20
+    #student_data["FinalMark"] = student_data["FinalMark"]*int(st.session_state.FinalMarkScale)/20
 
     student_data.index = student_data['quiz_title']
 
@@ -566,6 +566,9 @@ def make_individual_report(selected_student, df_last, student_data, quiz, final_
     full_avg_note = st.session_state.df_final["FinalMark"].mean()*FinalMarkScale/20
     full_std_note = st.session_state.df_final["FinalMark"].std()*FinalMarkScale/20
     FinalMark = student_data.loc[:, 'FinalMark'].mean()*FinalMarkScale/20
+    #print("Selected student", selected_student, "FinalMark", FinalMark, "FinalMarkScale", FinalMarkScale)
+    #print("Given mark in table", student_data.loc[:, 'FinalMark'].mean())
+
     class_mean=full_avg_note
     class_std=full_std_note
 
@@ -573,6 +576,7 @@ def make_individual_report(selected_student, df_last, student_data, quiz, final_
                                         FinalMarkScale=FinalMarkScale, 
                                         class_mean=class_mean, class_std=class_std)
 
+    #print("info_marks", info_marks)
 
     html_output = True
 
