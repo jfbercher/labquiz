@@ -1,7 +1,7 @@
 ---
 title: Deploy to Jupyterlite
 subtitle: 'LabQuiz: A suite of tools for integrating quizzes into Jupyter notebooks'
-date: 02/27/2026
+date: 2026-03-25
 license: CC-BY-NC-SA-4.0
 settings:
     myst_to_tex:

@@ -37,7 +37,7 @@ project:
         - file: quiz_dash.md
         #- file: quiz_dash_README.md
         - file: GoogleSheetPreparation.md
-        - file: JupyterLiteDeployment.md
+        - file: JupyterLite_Deployment.md
         - file: DemonstrationAndExercises.md
     
   bibliography:
