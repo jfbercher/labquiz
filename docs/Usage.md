@@ -32,9 +32,16 @@ They can also be installed from source e.g.
 pip install git+https://github.com/jfbercher/labquiz.git#subdirectory=quiz_editor
 ```
 with subdirectories `meta` (the bundle) , `quiz_nb` (for `labquiz`), `quiz_editor` and `quiz_dash`. 
-
-
 Use `pip` in a terminal, or `%pip ...` in a notebook cell.
+
+For `quiz_editor` and `quiz_dash`, entry points are provided, allowing to use the apps directly from the command line by simply invoking  
+```bash
+quiz_dash
+# or
+quiz_editor [FILENAME.yaml]
+```
+
+
 It is possible to use a standalone version, *without any Python installation*, which runs in the browser. This is described in [](#jupyterlite).
 
 (usage)=

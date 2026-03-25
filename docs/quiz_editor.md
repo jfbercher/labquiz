@@ -23,14 +23,19 @@ Manual preparation is possible for small databases, but a specific editor has al
 This editor is available here:
 https://jfb-quizeditor.streamlit.app/
 
-🛠  It can also be installed from pypi by
+🛠  In addition to cloud deployment, the application can also be installed locally using from pypi by
 ```bash
 pip install quiz-editor 
 ``` 
-🛠 or from git 
+or from git 
 ```bash
 pip install git+https://github.com/jfbercher/labquiz.git#subdirectory=quiz_editor
 ``` 
+An entry point is provided, allowing it to be used directly from the command line by simply invoking 
+```bash
+quiz_editor [FILENAME.yaml]
+````
+ 
 
 
 It allows you to edit the files whose structure has been described and has some additional features:

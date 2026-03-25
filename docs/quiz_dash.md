@@ -19,8 +19,21 @@ exports:
 
 (quiz_dash)=
 #  `quiz_dash` - Monitor in real time and correct with `quiz_dash` - 🧑‍🏫🏫
-As described above, you can load the results table at the terminal level and perform all the tests and statistics you want. However, it is easier to use a small graphical utility to do this. This monitoring and analysis dashboard is available here:
+As described above, you can load the results table at the terminal level and perform all the tests and statistics you want. However, it is easier to use a small graphical utility to do this. This monitoring and analysis dashboard is available here: 
+
 https://jfb-quizdash.streamlit.app/
+
+🛠  In addition to cloud deployment, the application can also be installed locally using from pypi by
+```bash
+pip install quiz-dash 
+``` 
+🛠 or from git 
+```bash
+pip install git+https://github.com/jfbercher/labquiz.git#subdirectory=quiz_dash
+``` 
+An entry point is provided, allowing it to be used directly from the command line by simply invoking `quiz_dash`. 
+
+
 Based on the Google Sheet URL specification, the associated read password, and the YAML file containing the answers, this dashboard allows you to:
  
 - <mark>track over time</mark>, with an adjustable refresh rate, the submissions made by each participant, with the labels of the relevant quizzes,
