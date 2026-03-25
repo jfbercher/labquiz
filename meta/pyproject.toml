@@ -3,7 +3,7 @@ name = "LabQuizBundle"
 version = "0.9.4"
 description = "LabQuiz bundle that includes LabQuiz, Quiz-Editor, and Quiz-Dash."
 readme = "README.md"
-license = { text = "GPL-3.0-or-later" }
+license = "GPL-3.0-or-later"
 authors = [
     { name = "J.-F. Bercher", email = "jf.bercher@esiee.fr" }
 ]
@@ -24,8 +24,6 @@ classifiers = [
     "Intended Audience :: Education",
     "Intended Audience :: Developers",
 
-    # LICENCE : Très important pour le badge "License"
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 
     # VERSIONS PYTHON : Très important pour le badge "Python versions"
     "Programming Language :: Python :: 3",
@@ -44,5 +42,5 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/jfbercher/labquiz"
 "Bug Tracker" = "https://github.com/jfbercher/labquiz/issues"
-"Documentation" = "https://github.com/jfbercher/labquiz#readme"
+"Documentation" = "https://labquiz.readthedocs.io/en/latest/"
 "Source" = "https://github.com/jfbercher/labquiz"

@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quiz_editor"
-version = "0.9.2"
+version = "0.9.3"
 description = "A tool to create and edit quizzes, for LabQuiz and more"
 readme = "README.md"
-license = { text = "GPL-3.0-or-later" }
+license = "GPL-3.0-or-later"
 authors = [
     { name = "J.-F. Bercher", email = "jf.bercher@esiee.fr" }
 ]
@@ -28,9 +28,6 @@ classifiers = [
     # Public cible
     "Intended Audience :: Education",
 
-    # LICENCE : Très important pour le badge "License"
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-
     # VERSIONS PYTHON : Très important pour le badge "Python versions"
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -47,7 +44,7 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/jfbercher/labquiz"
 "Bug Tracker" = "https://github.com/jfbercher/labquiz/issues"
-"Documentation" = "https://github.com/jfbercher/labquiz/tree/main/quiz_editor#readme"
+"Documentation" = "https://labquiz.readthedocs.io/en/latest/"
 "Source" = "https://github.com/jfbercher/labquiz/tree/main/quiz_editor"
 
 [project.scripts]

@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quiz_dash"
-version = "0.9.5.0"
+version = "0.9.6"
 description = "LabQuiz streamlit-based dashboard that provides live tracking, integrity verification, and automated correction."
 readme = "README.md"
-license = { text = "GPL-3.0-or-later" }
+license = "GPL-3.0-or-later"
 authors = [
     { name = "J.-F. Bercher", email = "jf.bercher@esiee.fr" }
 ]
@@ -34,9 +34,6 @@ classifiers = [
     "Intended Audience :: Education",
     "Intended Audience :: Developers",
 
-    # LICENCE : Très important pour le badge "License"
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-
     # VERSIONS PYTHON : Très important pour le badge "Python versions"
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -54,8 +51,8 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/jfbercher/labquiz"
 "Bug Tracker" = "https://github.com/jfbercher/labquiz/issues"
-"Documentation" = "https://github.com/jfbercher/labquiz/tree/main/quiz_dash#readme"
-"Source" = "https://github.com/jfbercher/labquiz/tree/main/quiz_editor"
+"Documentation" = "https://labquiz.readthedocs.io/en/latest/"
+"Source" = "https://github.com/jfbercher/labquiz/tree/main/quiz_dash"
 
 [project.scripts]
 quiz_dash = "quiz_dash.cli:main"

@@ -4,10 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "labquiz"
-version = "0.9.8"
+version = "0.9.9"
 description = "LabQuiz is a Python package that allows to integrate interactive quizzes directly into Jupyter notebooks — useful for labs, tutorials, practical assignments, continuous assessment, and controlled exams"
 readme = "README.md"
-license = { text = "GPL-3.0-or-later" }
+license = "GPL-3.0-or-later"
+
 authors = [
     { name = "J.-F. Bercher", email = "jf.bercher@esiee.fr" }
 ]
@@ -20,7 +21,7 @@ dependencies = [
     "pandas",
     "requests",
 ]
-keywords = ["quizzes", "jupyter", "hash:d68079861ea53c8fff730e896c1a713f9d71a9b272c9509aad2602cc9bbf5499"]
+keywords = ["quizzes", "jupyter", "hash:087c59b7396742b830ca7f4cd7322e5b770244f825d34e01da476c4c8480f83b"]
 
 classifiers = [
     # État de développement (3 - Alpha, 4 - Beta, 5 - Production/Stable)
@@ -29,8 +30,6 @@ classifiers = [
     # Public cible
     "Intended Audience :: Education",
 
-    # LICENCE : Très important pour le badge "License"
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 
     # VERSIONS PYTHON : Très important pour le badge "Python versions"
     "Programming Language :: Python :: 3",
@@ -45,10 +44,10 @@ classifiers = [
     "Topic :: Software Development :: User Interfaces",
 ]
 
-project.urls]
+[project.urls]
 "Homepage" = "https://github.com/jfbercher/labquiz"
 "Bug Tracker" = "https://github.com/jfbercher/labquiz/issues"
-"Documentation" = "https://github.com/jfbercher/labquiz#readme"
+"Documentation" = "https://labquiz.readthedocs.io/en/latest/"
 "Source" = "https://github.com/jfbercher/labquiz"
 
 [tool.setuptools]
