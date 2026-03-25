@@ -1,7 +1,7 @@
 ---
 title: Introduction & first examples
 subtitle: 'LabQuiz: A suite of tools for integrating quizzes into Jupyter notebooks'
-date: 02/27/2026
+date: 2026-03-25
 license: CC-BY-NC-SA-4.0
 settings:
     myst_to_tex:
@@ -41,9 +41,9 @@ exports:
 ```{seealso} Links
 **Source code**
 
-- https://github.com/jfbercher/labquiz
-- https://github.com/jfbercher/quiz_editor
-- https://github.com/jfbercher/quiz_dash
+- https://github.com/jfbercher/labquiz/tree/main/quiz_nb
+- https://github.com/jfbercher/labquiz/tree/main/quiz_editor
+- https://github.com/jfbercher/labquiz/tree/main/quiz_dash
 
 **Online**
 

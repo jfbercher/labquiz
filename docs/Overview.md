@@ -1,7 +1,7 @@
 ---
 title: LabQuiz overview
 subtitle: 'Interactive Quizzes Inside Jupyter Notebooks — with Editor & Live Dashboard'
-date: 02/27/2026
+date: 2026-03-25
 license: CC-BY-NC-SA-4.0
 settings:
     myst_to_tex:
@@ -81,12 +81,22 @@ Figure: Overview of the `LabQuiz` ecosystem. Dashed arrows indicate optional com
 ---
 * 👉🏼 `Live version`  Try it in [binder](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb) 
 * `Installation`: 
+  All packages can be installed at once (`labquiz`, `quiz_editor` and `quiz_dash`)
 ```bash
-# From source
-   pip install git+https://github.com/jfbercher/labquiz.git
-# or from PyPI
+# From PyPI
+   pip install labquizbundle
+```
+or individually, e.g.
+```bash
    pip install labquiz
 ```
+They can also be installed from source e.g.
+```bash
+# From source
+pip install git+https://github.com/jfbercher/labquiz.git#subdirectory=quiz_editor
+```
+with subdirectories `meta` (the bundle) , `quiz_nb` (for `labquiz`), `quiz_editor` and `quiz_dash`. 
+
 ---
 
 # 🚀 Why LabQuiz?

@@ -1,7 +1,7 @@
 ---
 title: quiz_dash
 subtitle: 'LabQuiz: A suite of tools for integrating quizzes into Jupyter notebooks'
-date: 02/27/2026
+date: 2026-03-25
 license: CC-BY-NC-SA-4.0
 settings:
     myst_to_tex:
@@ -31,32 +31,28 @@ Based on the Google Sheet URL specification, the associated read password, and t
 - with the possibility of adjusting the weight matrix (for multiple-choice questions) and the scoring scale per question. .
 Some screenshots of actual monitoring:
 :::{figure} doc_images/dash_parameters.png
-:name: dash_parameters
-:label:fig26
+:name:fig26
 :alt: quiz_dash
 :align: center
 :width: 90%
 `quiz_dash` -- Entering monitoring/correction configuration parameters
 :::
 :::{figure} doc_images/Monitoring_integrity.png
-:name: Monitoring_integrity
-:label:fig27
+:name:fig27
 :alt: quiz_dash
 :align: center
 :width: 90%
 `quiz_dash` -- Integrity monitoring
 :::
 :::{figure} doc_images/Monitoring_quizzes_2.png
-:name: Monitoring_activity
-:label:fig28
+:name:fig28
 :alt: quiz_dash
 :align: center
 :width: 90%
 `quiz_dash` -- Monitoring of quizzes taken by students and the group. Automatic refresh possible and adjustable (student names have been hidden)
 :::
 :::{figure} doc_images/Monitoring_marks.png
-:name: Monitoring_marks
-:label:fig29
+:name:fig29
 :alt: quiz_dash
 :align: center
 :width: 90%
@@ -64,8 +60,7 @@ Some screenshots of actual monitoring:
 :::
 
 :::{figure} doc_images/Individual_correction.png
-:name: Individual_correction
-:label:fig30b
+:name:fig30b
 :alt: quiz_dash
 :align: center
 :width: 90%
@@ -74,8 +69,7 @@ Some screenshots of actual monitoring:
 
 
 :::{figure} doc_images/Zipping_all_pdf_reports.png
-:name: Correction_reports
-:label:fig30
+:name:fig30
 :alt: quiz_dash
 :align: center
 :width: 90%

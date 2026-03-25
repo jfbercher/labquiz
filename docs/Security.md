@@ -230,8 +230,7 @@ password_seal="SECOND_PASSWORD_TO_WATERMARK_SOURCES"
 )
 ```
 :::{figure} doc_images/secure_tar.png
-:name: secure_tar
-:label:fig17
+:name:fig17
 :alt: Create secure encrypted tar
 :align: center
 :width: 60%
@@ -244,8 +243,7 @@ quiz.check_quiz()
 ```
 on each machine, using the `password_open` password.
 :::{figure} doc_images/check_quiz.png
-:name: check_quiz
-:label:fig18
+:name:fig18
 :alt: Check config integrity
 :align: center
 :width: 60%

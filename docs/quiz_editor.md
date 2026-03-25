@@ -1,7 +1,7 @@
 ---
 title: quiz_editor
 subtitle: 'LabQuiz: A suite of tools for integrating quizzes into Jupyter notebooks'
-date: 02/27/2026
+date: 2026-03-25
 license: CC-BY-NC-SA-4.0
 settings:
     myst_to_tex:
@@ -43,19 +43,17 @@ It allows you to edit the files whose structure has been described and has some 
 (Categories are used to define the `\element` type), an example of output [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/export_demo.tex)
 - <mark>conversion to HTML format</mark>
   with integrated answers, so that a "self-assessment" web page can be created -- an example of the export result [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/export_demo.html)
-- conversion to HTML format **exam**, without answers, and with real-time submission of results to a Google Sheet, with subsequent correction, as described in [](calcul_du_score_correction) or using the dashboard as described below [](quiz_dash)  -- example [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/export_demo_exam.html)
+- conversion to HTML format **exam**, without answers, and with real-time submission of results to a Google Sheet, with subsequent correction, as described in [](#calcul_du_score_correction) or using the dashboard as described below [](#quiz_dash)  -- example [here](https://www.esiee.fr/~bercherj/labquizDemo/files/demo_export/export_demo_exam.html)
   
 :::{figure} doc_images/quiz_editor_2.png
-:name: quiz_editor_1
-:label:fig24
+:name:fig24
 :alt: quiz_editor
 :align: center
 :width: 90%
 `quiz_editor` -- editing a question, with category, tags, choice of question type (multiple choice, numeric, etc.)
 :::
 :::{figure} doc_images/quiz_editor_1.png
-:name: quiz_editor_2
-:label:fig25
+:name:fig25
 :alt: quiz_editor
 :align: center
 :width: 90%
@@ -63,8 +61,7 @@ It allows you to edit the files whose structure has been described and has some 
 :::
 
 :::{figure} doc_images/quiz_editor_3.png
-:name: quiz_editor_3
-:label:fig25b
+:name:fig25b
 :alt: quiz_editor
 :align: center
 :width: 90%
@@ -73,8 +70,7 @@ It allows you to edit the files whose structure has been described and has some 
 
 
 :::{figure} doc_images/exports1.png
-:name: quiz_editor_exports
-:label:fig26
+:name:fig26b
 :alt: quiz_editor_exports
 :align: center
 
@@ -82,8 +78,7 @@ It allows you to edit the files whose structure has been described and has some 
 :::
 
 :::{figure} doc_images/exports2.png
-:name: quiz_editor_exports_bis
-:label:fig27
+:name:fig27b
 :alt: quiz_editor_exports
 :align: center
 :width: 40%

@@ -56,7 +56,7 @@ weights = {
 The weight matrix cannot be modified when calculating the score online, but it can be modified when recalculating retrospectively based on the recorded results; see correction by the teacher [](correction_by_teacher).
 
 Inside a given question, all propositions have the same weight by default. However it is possible to adjust this using a system of bonus-malus. A proposition can be given a weight (bonus) of 2 while the oter have a weight of one for example. Or a bad answer a malus of -2 while the default is -1. For a given question, the total score is always normalized to 1. 
-- **bonus malus** - As we have seen in the file structure [](question_file_structure), `bonuses` and `penalties` can be integrated into the questions themselves. This allows, for a given question, to give more weight to a particular correct answer, or conversely to penalize a wrong answer, independently of the general weighting matrix. 
+- **bonus malus** - As we have seen in the file structure [](#question_file_structure), `bonuses` and `penalties` can be integrated into the questions themselves. This allows, for a given question, to give more weight to a particular correct answer, or conversely to penalize a wrong answer, independently of the general weighting matrix. 
 - **logical constraints** - *Logical constraints* can be integrated into questions and used to calculate the score. These constraints are specified question by question in the question file, and penalties are applied if the constraint is violated. The following constraints can be used: 
 ```
     # constraints: List of dictionaries e.g.: [{"indexes" : (0, 1), "type": ‘XOR’, "penalty": 2}]
@@ -65,7 +65,7 @@ Inside a given question, all propositions have the same weight by default. Howev
     - SAME (Consistency) A and B are equivalent (same value)
     - IMPLYFALSE: If A is TRUE, then B MUST be FALSE
 ```
-See an example at the end of [](structure_type_qcm).
+See an example at the end of [](#structure_type_qcm).
 - **numerical values** - In the case of numerical answers, the difference between the given value and the expected value is calculated. If this difference is less than the threshold defined by the tolerance, the answer is counted as correct[^1].
 Remember that the tolerance is specified in the question file, and that the greater of the values between tolerance_abs and tolerance_relative*expected is used. If the relative tolerance `tolerance` has not been specified, the value used is 1%. 
 Bonuses (default 1) and penalties (default 0) may also be  applied depending on whether the difference between the given value and the expected value is greater or less than the tolerance.
@@ -89,8 +89,7 @@ This provides a table of results in the following form
 Res
 ```
 :::{figure} doc_images/results_table.png
-:name: results
-:label:fig14
+:name:fig14
 :alt: Results table
 :align: center
 :width: 80%
@@ -113,15 +112,14 @@ correctAll (students_answers, quiz, data_filt, threshold=0,
 ```
 ```python
 from labquiz.putils import correctQuizzes
-URL = "https://URL_UTILISÉE_POUR_RECUEILLIR_LES_RÉSULTATS"
+URL = "https://URL_USED_TO_COLLECT_AND_STORE_RESULTS"
 SECRET = ‘SECRET_PASSWORD_SPECIFIED_IN_THE_SHEET’
 QUIZFILE = " NAME_OF_QUESTION_FILE.yml" #quiz file CONTAINING the expected values
 Res = correctQuizzes(URL, SECRET, QUIZFILE, title=‘Test title’)
 ```
 where the title of the test to be corrected is specified by the `title` parameter.
 :::{figure} doc_images/exam_show_results_table.png
-:name: results
-:label:fig15
+:name:fig15
 :alt: Results table
 :align: center
 :width: 80%
@@ -179,4 +177,4 @@ print("Scores obtained\n\n", score_by_student)
 print("Complete class\n\n", class_counts)
 ```
 We can even put this in the form of a small graphical *dashboard* that we will refresh regularly.
-The dashboard mentioned above was finally formatted into a dedicated application, which is described in [](quiz_dash) . 
+The dashboard mentioned above was finally formatted into a dedicated application, which is described in [](#quiz_dash) . 

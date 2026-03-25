@@ -1,7 +1,7 @@
 ---
 title: Google Sheet preparation
 subtitle: 'LabQuiz: A suite of tools for integrating quizzes into Jupyter notebooks'
-date: 02/27/2026
+date: 2026-03-25
 license: CC-BY-NC-SA-4.0
 settings:
     myst_to_tex:
@@ -43,8 +43,7 @@ You can browse the following if you want to create the Google Sheet yourself or 
 timestamp send_timestamp  notebook_id student quiz_title  event_type  parameters  answers score
 ```
 :::{figure} doc_images/1stRowSheet.png
-:name: dashboard
-:label:fig16
+:name:fig16
 :alt: 1stRowSheet.png
 :align: center
 :width: 90%
@@ -52,8 +51,7 @@ First row of the sheet.
 :::
 - 3 - Create a new sheet by pressing `+` and rename it Config (by CTRL + clicking on the corresponding tab).
 :::{figure} doc_images/creationfeuilleConfig.png
-:name: dashboard
-:label:fig17
+:name:fig17b
 :alt: creationfeuilleConfig
 :align: center
 :width: 30%
@@ -67,8 +65,7 @@ NMAX  NKEEP
 2000  2500
 ````
 :::{figure} doc_images/contenuFeuilleConfig.png
-:name: dashboard
-:label:fig18
+:name:fig18b
 :alt: contenuFeuilleConfig
 :align: center
 :width: 30%
@@ -81,8 +78,7 @@ NKEEP is the maximum number of rows kept in the sheet. Thresholding occurs as so
 ⚠️ *And so to stop receiving data, uncheck*! --> This can be useful because some people leave things running on their computers, and since there is a `check_alive` integrity check sent periodically, this can fill up the Google Sheet (even though we have set a maximum limit). 
 - 5 - In the `Extensions` menu, click on `Apps Script`. In the tab that opens, name your project, then in the code page, after deleting what is there, paste the code attached in the code_gs.txt file (`extras` folder) and replace the value of `SECRET` on the first line. If your first sheet is not called `Feuille 1`, rename it or change the constant `SHEET1` on the third line of the code. 
 :::{figure} doc_images/ExtensionsAppsScript.png
-:name: dashboard
-:label:fig19
+:name:fig19
 :alt: ExtensionsAppsScript
 :align: center
 :width: 60%
@@ -92,8 +88,7 @@ Create the extension to enter the Google Script code.
 🎉 Save and you're done!
 
 :::{figure} doc_images/deployments.png
-:name: dashboard
-:label:fig20
+:name:fig20
 :alt: manageDeployments
 :align: center
 :width: 60%

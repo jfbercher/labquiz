@@ -1,7 +1,7 @@
 ---
 title: Installation & Usage
 subtitle: 'LabQuiz: A suite of tools for integrating quizzes into Jupyter notebooks'
-date: 02/27/2026
+date: 2026-03-25
 license: CC-BY-NC-SA-4.0
 settings:
     myst_to_tex:
@@ -17,20 +17,25 @@ exports:
 ---
 
 # 🛠 Installation  
-From source:
-
+  All packages can be installed at once (`labquiz`, `quiz_editor` and `quiz_dash`)
 ```bash
-pip install git+https://github.com/jfbercher/labquiz.git
+# From PyPI
+   pip install labquizbundle
 ```
-
-## From PyPI
-
+or individually, e.g.
 ```bash
-pip install labquiz
+   pip install labquiz
 ```
+They can also be installed from source e.g.
+```bash
+# From source
+pip install git+https://github.com/jfbercher/labquiz.git#subdirectory=quiz_editor
+```
+with subdirectories `meta` (the bundle) , `quiz_nb` (for `labquiz`), `quiz_editor` and `quiz_dash`. 
 
-in a terminal, or `%pip ...` in a notebook cell.
-It is possible to use a standalone version, *without any Python installation*, which runs in the browser. This is described in [](jupyterlite).
+
+Use `pip` in a terminal, or `%pip ...` in a notebook cell.
+It is possible to use a standalone version, *without any Python installation*, which runs in the browser. This is described in [](#jupyterlite).
 
 (usage)=
 # Usage
@@ -60,13 +65,13 @@ in_streamlit=False,         # put it to True is quiz is instancied in streamlit 
 ```
                             
 :::{figure} doc_images/login.gif
-:name: login
-:label:fig
+:name:fig
 :alt: Login
 :align: left
 :width: 60%
 Login example
 :::
+
 # Features
 ⚠️ LabQuiz also works in **visual studio code**, but $\LaTeX$ portions are not rendered in questions, suggestions, and answers. This is a limitation of Visual Studio, which does not load MathJax, and may be improved in the future. In the meantime, it is better to use a classic Jupyter, Colab, or JupyterLite. In Visual Studio, this can be managed, but it is less effective if there is $\LaTeX$ in the text. 
 ## Types of quiz questions
@@ -76,12 +81,11 @@ Four types of questions are available:
 - numerical questions (`type: "numeric"`)
 - Context-dependent multiple-choice questions (`type: "qcm-template"`)
 - Context-dependent numerical questions (`type: "numeric-template"`)
-The structure of the question file, where these different types are indicated, is presented [](question_file_structure). How to prepare and even encrypt this file is presented in [](prepare_encode_file).
+The structure of the question file, where these different types are indicated, is presented [](#question_file_structure). How to prepare and even encrypt this file is presented in [](#prepare_encode_file).
  
 Templates allow you to ask questions that depend on local variables. This allows you to test specific values, orders of magnitude, the result of a calculation, or the consistency between several values. Here are two examples to illustrate this:
 :::{figure} doc_images/quiz5354.gif
-:name: quiz3
-:label:fig3
+:name:fig3
 :alt: Quiz example
 :align: center
 :width: 60%
@@ -90,19 +94,17 @@ Template questions that use numerical values passed as parameters
 
 ## Different presentation modes
 ### Learning mode
-In learning mode, all four buttons are available. The validate button displays the score obtained, see [](fig5). The tips button displays advice. The correct button displays the correction, see [](fig6) and [](fig7). The boxes turn green if they have been checked or unchecked correctly, and red if not. The checks entered by the user are retained, but colored green or red depending on the correct result. After the correction has been requested, the validate, reset, and tips buttons are disabled and become inoperative.
+In learning mode, all four buttons are available. The validate button displays the score obtained, see [](#fig5). The tips button displays advice. The correct button displays the correction, see [](#fig6) and [](#fig7). The boxes turn green if they have been checked or unchecked correctly, and red if not. The checks entered by the user are retained, but colored green or red depending on the correct result. After the correction has been requested, the validate, reset, and tips buttons are disabled and become inoperative.
  
 :::{figure} doc_images/4buttons_submit_actif.png
-:name: quiz3
-:label:fig5
+:name:fig5
 :alt: Quiz example
 :align: left
 :width: 60%
 Learning mode - the submit button has been pressed
 :::
 :::{figure} doc_images/4buttons_correction_active.png
-:name: quiz3
-:label:fig6
+:name:fig6
 :alt: Quiz example
 :align: left
 :width: 60%
@@ -110,8 +112,7 @@ Learning mode - the corrected button has been pressed
 :::
 
 :::{figure} doc_images/exemple_correction.png
-:name: quiz3
-:label:fig7
+:name:fig7
 :alt: Quiz example
 :align: left
 :width: 60%
@@ -120,8 +121,7 @@ Learning mode - the correct button has been pressed and the correction is displa
 ### Test mode
 In test mode, the correct button is removed. The student sees their score after validation and tips are possible. The number of validations is limited by the `retries` parameter passed at initialization.
 :::{figure} doc_images/3buttons_submit_active.png
-:name: quiz3
-:label:fig8
+:name:fig8
 :alt: Quiz example
 :align: left
 :width: 60%
@@ -130,8 +130,7 @@ Test mode - the validate button has been pressed
 ### Exam mode
 In exam mode, there is no score display, no tips, and no corrections. Only the reset and validate buttons appear.
 :::{figure} doc_images/2buttons_submit_active.png
-:name: quiz3
-:label:fig9
+:name:fig9
 :alt: Quiz example
 :align: left
 :width: 40%
@@ -158,4 +157,4 @@ ql = quiz.exam_show(exam_title="Test to see", shuffle=True, nb=4)
 Intermediate results are not displayed (if in learning or test mode). 
 The results obtained can then be viewed by the student with `quiz.exam_result(ql, marking_scheme=None)`.
  
-In exam mode, results are not calculated or viewable, and the teacher can correct all exams as described in [](correction_par_enseignant).
+In exam mode, results are not calculated or viewable, and the teacher can correct all exams as described in [](#correction_par_enseignant).

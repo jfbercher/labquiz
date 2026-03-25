@@ -1,7 +1,7 @@
 ---
 title: Manual preparation of question file
 subtitle: 'LabQuiz: A suite of tools for integrating quizzes into Jupyter notebooks'
-date: 02/27/2026
+date: 2026-03-25
 license: CC-BY-NC-SA-4.0
 settings:
     myst_to_tex:
@@ -18,7 +18,7 @@ exports:
 
 # Prepare and encode the question file (Manual preparation) - 🧑‍🏫 🏫 
 
-The question file is a text file, so it can be prepared and maintained using a simple text editor, following the structure detailed in [](question_file_structure). Once this file has been prepared, you may want to generate
+The question file is a text file, so it can be prepared and maintained using a simple text editor, following the structure detailed in [](#question_file_structure). Once this file has been prepared, you may want to generate
 - [enc] a base64-encoded version (to prevent it from being too easily viewed)
 - [crypt] an encrypted version with a hidden key
 - [qo] a "questions only" version without tips and answers
@@ -61,7 +61,7 @@ which produces
 - Creating qbf_qo_crypt.txt
 ⚠️ File encrypted with pwd. Ensure to use the `mandatoryInternet=True` option in quiz init
 ```
-➡️  You will copy the password, if any, into cell A2 of the Config sheet of the Google Sheet, see [](google-sheet), if you are using a GS to collect the results.
+➡️  You will copy the password, if any, into cell A2 of the Config sheet of the Google Sheet, see [](#google-sheet), if you are using a GS to collect the results.
  
 
 - For an exam, you will distribute the "questions only" file, encrypted or not (you can also use it outside of an exam, but in this case, students will not have tips, answers, or scores).

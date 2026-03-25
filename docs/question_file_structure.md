@@ -1,7 +1,7 @@
 ---
 title: Question file structure
 subtitle: 'LabQuiz: A suite of tools for integrating quizzes into Jupyter notebooks'
-date: 02/27/2026
+date: 2026-03-25
 license: CC-BY-NC-SA-4.0
 settings:
     myst_to_tex:
@@ -168,7 +168,7 @@ quiz23:
 ```
 - *Consistency constraints* on propositions can be added. For example, it can be required that the true answer to the proposition of label `label2` implies that the answer to the proposition `label1` is false. In case of violation, a penalty is applied.
 - Similarly, certain propositions can give rise to a *bonus* or a *penalty*. The bonus is the number of points awarded if the answer is the expected one (default 1) and the penalty is the number of points deducted if the answer is different from the expected one (default 0). 
-With these elements, the example could be completed as shown below. The implementation is then given [](fig10).
+With these elements, the example could be completed as shown below. The implementation is then given [](#fig10).
  
 ```
 quiz23:
@@ -200,8 +200,7 @@ quiz23:
 
 
 :::{figure} doc_images/quiz23.gif
-:name: quiz23
-:label:fig10
+:name:fig10
 :alt: Quiz example
 :align: center
 :width: 60%
@@ -263,8 +262,7 @@ quiz24:
       tip: Enter the value
 ```
 :::{figure} doc_images/quiz24.gif
-:name: quiz24
-:label:fig11
+:name:fig11
 :alt: Quiz example
 :align: center
 :width: 60%
@@ -334,8 +332,7 @@ quiz54:
       tip: "Enter the value"
 ```
 :::{figure} doc_images/quiz54.png
-:name: quiz54
-:label:fig12
+:name:fig12
 :alt: Quiz example
 :align: center
 :width: 60%
@@ -361,8 +358,7 @@ quiz61:
       expected:  np.std(s)/np.mean(s)
 ```
 :::{figure} doc_images/quiz61.png
-:name: quiz61
-:label:fig13
+:name:fig13
 :alt: Quiz example
 :align: center
 :width: 60%
