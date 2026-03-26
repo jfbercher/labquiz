@@ -10,7 +10,11 @@ except ImportError:
     from importlib_metadata import version, PackageNotFoundError
 
 
-PACKAGE_DIR=Path('/Users/bercherj/JFB/dev/labquizdev/src/labquiz')
+
+# répertoire du script
+BASE_DIR = Path(__file__).parent
+PACKAGE_DIR = BASE_DIR / "src" / "labquiz"
+#PACKAGE_DIR=Path('/Users/bercherj/JFB/dev/labquizdev/src/labquiz')
 PACKAGE_NAME = "labquiz"  # nom du package tel qu'il sera installé
 EXCLUDE =  {"putils.py", "__pycache__", ".ipynb_checkpoints", ".DS_Store", "make_language.mak"}
 EXCLUDE_EXT = [".pot", ".po~"]
