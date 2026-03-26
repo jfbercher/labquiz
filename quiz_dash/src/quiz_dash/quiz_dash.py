@@ -964,7 +964,7 @@ def main():
 
     # --- PAGE CONFIGURATION ---
     st.set_page_config(page_title=_("Dashboard LabQuiz"), layout="wide", 
-                    page_icon="quiz_dash/src/quiz_dash/1F4CA.png")#"📊")
+                    page_icon=":bar_chart:")#"quiz_dash/src/quiz_dash/1F4CA.png")#"📊")
     
     # Custom styles
     apply_custom_styles()
