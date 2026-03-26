@@ -41,3 +41,9 @@ dist
 *.md~
 labquiz.egg-info
 .targets
+
+# temp
+.quiz_dash_last_release_commit
+.quiz_editor_last_release_commit
+.quiz_nb_last_release_commit
+quiz_nb/hashes.txt
