@@ -1,7 +1,8 @@
 PKG_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 #PKG_DIR='/Users/bercherj/JFB/dev/labquizdev' # WAS #'/Users/bercherj/JFB/dev/LabQuizPkg'
 SRC_DIR=src/labquiz
-DEV_DIR='/Users/bercherj/JFB/dev/labquizdev/src/labquiz'
+DEV_DIR=$(PKG_DIR)/src/labquiz
+#'/Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz'
 
 #make release v=0.3.9
 #make build

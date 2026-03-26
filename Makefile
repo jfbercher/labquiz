@@ -37,7 +37,7 @@ fi
 endef
 
 define has_changed
-LAST_COMMIT_FILE=.${1}_last_release_commit; \
+LAST_COMMIT_FILE=".$(1)"_last_release_commit; \
 if [ -f $$LAST_COMMIT_FILE ]; then \
 	test -n "$$(git diff --name-only $$(cat $$LAST_COMMIT_FILE)..HEAD -- $(1))"; \
 else \
@@ -108,9 +108,9 @@ build:
 	@for p in $$(cat .targets); do \
 		# echo "Building $$p"; \
 		# cd $$p && $(PYTHON) -m build && cd -; \
-		echo "Releasing $$p"; \
+		echo "Building $$p"; \
 		$(MAKE) -C $$p release_simple; \
-		echo "$$(git rev-parse HEAD)" > .${p}_last_release_commit; \
+		echo "$$(git rev-parse HEAD)" > .$$p\_last_release_commit; \
 	done
 
 publish:
@@ -165,6 +165,13 @@ publish-meta:
 release: clean resolve_targets version build publish update-meta bump-meta build-meta publish-meta tag
 	@rm -f .targets
 	@echo "✅ Release complete"
+
+build-only: clean resolve_targets version build
+	@echo "✅ Build complete"
+	@echo "publish possible of: $(shell cat .targets)"
+
+update-publish-meta: update-meta bump-meta build-meta publish-meta 
+	@echo "✅ Update/publish meta complete"
 
 release-dry: resolve_targets
 	$(eval TARGETS_CONTENT := $(shell cat .targets))
