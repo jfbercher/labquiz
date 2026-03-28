@@ -707,7 +707,7 @@ def render_propositions_editor(q_id, q_data, lang_func):
                         p['expected'] = st.checkbox(_("Correct?"), p.get('expected', False), key=f"exp_{q_id}_{i}")
                     else:
                         # Standard mode: Numeric Input
-                        p['expected'] = st.number_input(_("Expected value"), p.get('expected', 0.0), key=f"exp_{q_id}_{i}")
+                        p['expected'] = st.number_input(_("Expected value"), value=p.get('expected', 0.0), key=f"exp_{q_id}_{i}")
                 else:
                     # Template mode: Text Input with f-string validation
                     exp_val = p.get('expected', "x+y" if q_data.get('type') == 'numeric-template' else "x + y > 0")
