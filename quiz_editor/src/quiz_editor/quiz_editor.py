@@ -708,7 +708,7 @@ def render_propositions_editor(q_id, q_data, lang_func):
                     else:
                         # Standard mode: Numeric Input
                         pexpect = p.get('expected', 0.0)
-                        pexpect = float(pexpect) if isinstance(pexpect, str)
+                        pexpect = float(pexpect) if isinstance(pexpect, str) else pexpect
                         p['expected'] = st.number_input(_("Expected value"), value=pexpect, key=f"exp_{q_id}_{i}")
                 else:
                     # Template mode: Text Input with f-string validation
