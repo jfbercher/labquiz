@@ -1495,8 +1495,8 @@ def make_anomalies_df_report(df, reference, ignore_keys=[], includeRAS=True):
             row = idx, df.loc[idx, 'timestamp'], df.loc[idx, 'student'], make_ano_report(out, includeRAS)
             Result.loc[len(Result)] = row
 
-    Result['timestamp'] = pd.to_datetime(Result["timestamp"].str.replace(r"\s*\(.*\)$", "", regex=True), errors="coerce" )
-    Result['timestamp'] = Result['timestamp'].dt.strftime("%Y-%m-%d %H:%M")
+    Result['timestamp'] = pd.to_datetime(Result["timestamp"].str.replace(r"\s*\(.*\)$", "", regex=True), utc=True, errors="coerce")
+    Result['timestamp'] = Result['timestamp'].dt.tz_convert('Europe/Paris').dt.strftime("%Y-%m-%d %H:%M")
     
     return Result
 
