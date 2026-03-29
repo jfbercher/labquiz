@@ -152,6 +152,7 @@ bump-meta:
 
 build-meta:
 	@if [ "$(target)" != "meta" ]; then \
+		cp quiz_nb/README.md $(META)/README.md; \
 		cd $(META) && $(PYTHON) -m build && cd -; \
 	fi
 
