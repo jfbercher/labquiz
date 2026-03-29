@@ -142,7 +142,8 @@ def adhocReadData(url, secret, autorefresh, button_refresh):
 
 def generate_cols_from_student(df, dropStudent=False):
     split_cols = df['student'].str.split(r'\s*,\s*', expand=True)
-    split_cols.columns = ['name', 'firstname', 'class_group'][:split_cols.shape[1]]
+    dim = min([split_cols.shape[1], 3])
+    split_cols.columns = ['name', 'firstname', 'class_group'][:dim]
     newdf = pd.concat([split_cols, df], axis=1)
     if dropStudent: newdf = newdf.drop(columns='student')
     return newdf
