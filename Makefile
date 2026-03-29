@@ -105,8 +105,9 @@ version:
 # ===== BUILD / PUBLISH =====
 
 build:
+	echo "Building targets: $(shell cat .targets)"
 	@for p in $$(cat .targets); do \
-		# echo "Building $$p"; \
+		echo "Building $$p"; \
 		# cd $$p && $(PYTHON) -m build && cd -; \
 		echo "Building $$p"; \
 		$(MAKE) -C $$p release_simple; \
@@ -163,7 +164,7 @@ publish-meta:
 
 # ===== MAIN =====
 
-release: clean resolve_targets version build publish update-meta bump-meta build-meta publish-meta tag
+release: clean resolve_targets version build publish update-meta bump-meta build-meta publish-meta
 	@rm -f .targets
 	@echo "✅ Release complete"
 
@@ -198,4 +199,4 @@ clean:
 	cd $(PKG_DIR) && \
 	rm -rf */dist */build */*.egg-info .targets
 
-.PHONY: release resolve_targets version build publish update-meta bump-meta build-meta publish-meta tag clean 
+.PHONY: release resolve_targets version build publish update-meta bump-meta build-meta publish-meta  clean 
