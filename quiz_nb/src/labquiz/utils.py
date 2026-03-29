@@ -163,9 +163,9 @@ class StudentForm:
 
     def on_save(self, _button):
         sname = (
-            self.student_lastname.value.strip().upper()
+            self.student_lastname.value.replace(",", "").strip().upper()
             + ", "
-            + self.student_firstname.value.strip().title()
+            + self.student_firstname.value.replace(",", "").strip().title()
         )
         if self.groups:
             self.name = sname + ", " + str(self.group.value)
