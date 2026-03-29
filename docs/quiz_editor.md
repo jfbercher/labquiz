@@ -38,7 +38,7 @@ quiz_editor [FILENAME.yaml]
  
 
 
-It allows you to edit the files whose structure has been described and has some additional features:
+It allows you to edit the files whose structure has been described in [](#question_file_structure) and has some additional features:
 - ability to define {underline}`categories` and {underline}`tags`, and to select questions by filtering on categories and tags,
 - define variables generation for templates,
 - extraction and saving of some of the questions,
