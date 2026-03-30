@@ -1214,8 +1214,10 @@ def main():
                                 help=_("Display anomalies only, or full report")):
                         includeRAS = False
 
+                    st.info("Before make_anomalies_df_report")
                     Tab_report = make_anomalies_df_report(df, reference, ignore_keys=[], 
                                                         includeRAS=includeRAS)
+                    st.info("After make_anomalies_df_report")
 
                     if st.checkbox(_("Collect anomalies per student"), value=False, 
                                 help=_("Group anomalies per student")):
