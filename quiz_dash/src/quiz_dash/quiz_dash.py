@@ -544,7 +544,7 @@ def prepare_student_data(df_last, marks_df, quiz_stats, selected_student):
 
     student_data = df_last[df_last["name"] + " " + df_last["firstname"] == selected_student].copy()
     student_data.drop(['send_timestamp', 'notebook_id', 'student', 'event_type', 'parameters', 'has_seen_correction'], axis=1, inplace=True)
-    student_data['timestamp'] = pd.to_datetime(student_data['timestamp'].str.split(' \(').str[0])
+    student_data['timestamp'] = pd.to_datetime(student_data['timestamp'].str.split(' \\(').str[0])
     from_marks = marks_df[marks_df["full_names"] == selected_student]
     id_vars = ['name', 'firstname', 'class_group', 'FinalMark', 'full_names']
     df_marks = from_marks.melt(
@@ -1214,10 +1214,10 @@ def main():
                                 help=_("Display anomalies only, or full report")):
                         includeRAS = False
 
-                    st.info("Before make_anomalies_df_report")
+                    #st.info("Before make_anomalies_df_report")
                     Tab_report = make_anomalies_df_report(df, reference, ignore_keys=[], 
                                                         includeRAS=includeRAS)
-                    st.info("After make_anomalies_df_report")
+                    #st.info("After make_anomalies_df_report")
 
                     if st.checkbox(_("Collect anomalies per student"), value=False, 
                                 help=_("Group anomalies per student")):
@@ -1324,7 +1324,7 @@ def main():
                             if selected_student:
                                 # 1. Data Prep
                                 student_data = df_last[df_last["student"] == selected_student].copy()
-                                student_data['timestamp'] = pd.to_datetime(student_data['timestamp'].str.split(' \(').str[0])
+                                student_data['timestamp'] = pd.to_datetime(student_data['timestamp'].str.split(' \\(').str[0])
                                 student_data = student_data.merge(quiz_stats, on="quiz_title").sort_values("timestamp")                          
                                 # 2. Plot
                                 fig_timeline = plot_student_session_track(student_data, selected_student)
