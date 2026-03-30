@@ -1494,10 +1494,13 @@ def make_anomalies_df_report(df, reference, ignore_keys=[], includeRAS=True):
         if not pd.isnull(df.loc[idx, 'student']):
             row = idx, df.loc[idx, 'timestamp'], df.loc[idx, 'student'], make_ano_report(out, includeRAS)
             Result.loc[len(Result)] = row
-
-    Result['timestamp'] = pd.to_datetime(Result["timestamp"].str.replace(r"\s*\(.*\)$", "", regex=True), utc=True, errors="coerce")
-    Result['timestamp'] = Result['timestamp'].dt.tz_convert('Europe/Paris').dt.strftime("%Y-%m-%d %H:%M")
-    
+    try:
+        Result['timestamp'] = pd.to_datetime(Result["timestamp"].str.replace(r"\s*\(.*\)$", "", regex=True), utc=True, errors="coerce")
+        Result['timestamp'] = Result['timestamp'].dt.tz_convert('Europe/Paris').dt.strftime("%Y-%m-%d %H:%M")
+    except Exception as e:
+        import streamlit as st
+        st.info(e)
+        st.write(Result.head())
     return Result
 
 def group_anomalies_per_student(Result):
