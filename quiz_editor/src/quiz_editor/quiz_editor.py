@@ -524,7 +524,7 @@ def export_config_dialog(data, selected_qids, format_type):
         export_data[key] = copy.deepcopy(data[old_id])
 
     
-    if format_type == _("Extract (YAML)"):
+    if format_type == "YAML":
         fmt = st.radio(_("Export Type"), [_("Encrypted YAML"), _("Encoded YAML"), _("Unencoded YAML")])
         pwd = ""
         if fmt == _("Encrypted YAML"):
@@ -539,10 +539,11 @@ def export_config_dialog(data, selected_qids, format_type):
         + _("with optional encryption."))
 
         col1, col2 = st.columns(2)
+        postfix = {"crypt": "_crypt", "enc": "_enc", "yml": ""}[mode]
         col1.download_button(_("📥 Full Quiz"), data=get_quiz_yaml_string(outdata), 
-                           file_name=f"{file_name}.yaml", mime="text/yaml")
+                           file_name=f"{file_name}{postfix}.yaml", mime="text/yaml")
         col2.download_button(_("📥 Questions Only"), data=get_quiz_yaml_string(outdata_only), 
-                           file_name=f"{file_name}_qo.yaml", mime="text/yaml")
+                           file_name=f"{file_name}_qo{postfix}.yaml", mime="text/yaml")
 
     if format_type == _("Interactive (self-assessment)"):
         from convert_to_interactive_html import convert_to_interactive_html
@@ -694,8 +695,8 @@ def render_propositions_editor(q_id, q_data, lang_func):
 
             p['proposition'] = st.text_area(_("Proposal Content"), p.get('proposition', ''), key=f"prop_{q_id}_{i}", height=70)
             render_preview('proposition', p['proposition'], context)
-            p['hint'] = st.text_input(_("Hint"), p.get('hint', ''), key=f"hin_{q_id}_{i}", help=_("Optional hint displayed if the user fails"))
-            render_preview('hint', p['hint'], context)
+            p['tip'] = st.text_input(_("Hint"), p.get('tip', ''), key=f"hin_{q_id}_{i}", help=_("Optional hint displayed if the user fails"))
+            render_preview('tip', p['tip'], context)
             p['answer'] = st.text_area(_("Answer/Feedback"), p.get('answer', ''), key=f"ans_{q_id}_{i}", height=70, help=_("Feedback shown after validation"))
             render_preview('answer', p['answer'], context)
         
@@ -772,7 +773,7 @@ def render_propositions_editor(q_id, q_data, lang_func):
 
     if st.button(_("➕ Add a proposal"), key=f"add_p_btn_{q_id}"):
         # Default initialization for new items
-        new_item = {"label": f"p{len(q_data['propositions'])+1}", "proposition": "", "hint": "", "answer": ""}
+        new_item = {"label": f"p{len(q_data['propositions'])+1}", "proposition": "", "tip": "", "answer": ""}
     
         if is_template:
             new_item["expected"] = "x+y" if q_data.get('type') == 'numeric-template' else "x + y > 0"
@@ -1264,7 +1265,7 @@ def main():
         # Export drop-down menu
         export_format = st.sidebar.selectbox(
             _("Choose export format"),
-            ["---", _("Extract (YAML)"), _("Interactive (self-assessment)"), _("Exam (Server)"), "AMC (LaTeX)"]
+            ["---", "YAML", _("Interactive (self-assessment)"), _("Exam (Server)"), "AMC (LaTeX)"]
         )
 
         if export_format != "---":
