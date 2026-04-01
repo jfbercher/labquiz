@@ -1,6 +1,6 @@
 [project]
 name = "LabQuizBundle"
-version = "0.9.6"
+version = "0.9.8"
 description = "LabQuiz bundle that includes labquiz, quiz-editor, and quiz-dash."
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -9,9 +9,9 @@ authors = [
 ]
 
 dependencies = [
-    "labquiz==0.9.9",
-    "quiz_editor==0.9.3",
-    "quiz_dash==0.9.6"
+    "labquiz==0.9.10",
+    "quiz_editor==0.9.4",
+    "quiz_dash==0.9.7"
 ]
 
 keywords = ["quizzes", "jupyter"]
