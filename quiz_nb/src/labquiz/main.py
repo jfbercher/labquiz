@@ -202,6 +202,7 @@ class QuizLab:
         self.internetOK = ''
         self.last_activity = time.monotonic()
         self.inactivity_timeout = INACTIVITY_TIMEOUT
+        self._timeout_logged = False
         
         self.style = widgets.HTML( 
             "<style>"
@@ -291,10 +292,20 @@ class QuizLab:
         """Shall be called on each form submission to update the last activity time."""
         self.last_activity = time.monotonic()
 
-    def is_active(self):
+    def is_active_old(self):
         active = (time.monotonic() - self.last_activity) < self.inactivity_timeout
         if not active:
             print(_("Inactivity timeout... Pausing event monitoring..."))
+        return active
+    
+    def is_active(self):
+        active = (time.monotonic() - self.last_activity) < self.inactivity_timeout
+        if not active:
+            if not self._timeout_logged:
+                print(_("Inactivity timeout... Pausing event monitoring..."))
+                self._timeout_logged = True
+        else:
+            self._timeout_logged = False  # reset if activity restarts
         return active
     
 ## Styling of checkboxes and correction
