@@ -167,13 +167,14 @@ class StudentForm:
             + ", "
             + self.student_firstname.value.replace(",", "").strip().title()
         )
+        self.name = sname
         if self.groups:
             self.name = sname + ", " + str(self.group.value)
 
         if len(self.name.strip()) <= 1:
             import time
             time.sleep(0.3)
-            self.onsave()
+            self.on_save(_button)
         
         with self.output:
             self.output.clear_output()
