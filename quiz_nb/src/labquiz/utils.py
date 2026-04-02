@@ -75,9 +75,10 @@ def getUser():
             user_id = "erreurUser"            
         return user_id
     else:   # We are not in JupyterLite
-        import os
+        import os, getpass
         try:
-            user = os.getlogin()
+            #user = os.getlogin()
+            user = getpass.getuser()
         except:
             user = "erreurUser"
     return user
