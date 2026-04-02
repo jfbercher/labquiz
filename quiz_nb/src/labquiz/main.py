@@ -593,7 +593,7 @@ class QuizLab:
                     except (InvalidToken, ValueError) as e:
                         print(_("❌ Decryption error for quiz '{quiz_id}'.").format(quiz_id=quiz_id)  )
                         print(_("Check the access key or data integrity."))
-                        return None, None, None, None
+                        return None, None, None, None, None
                 
                 question = entry.get("question", quiz_id)
                 quiz_type = entry.get("type", "mcq")
@@ -628,7 +628,7 @@ class QuizLab:
             
             except Exception as e:
                 print("_(⚠️ An unexpected error occurred during loading:)", e)
-                return None, None, None, None
+                return None, None, None, None, None
             
         
         # plus nécessaire
