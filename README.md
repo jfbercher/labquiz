@@ -1,6 +1,6 @@
-[![PyPI version](https://img.shields.io/pypi/v/labquiz.svg)](https://pypi.org/project/labquiz/)
-[![Python versions](https://img.shields.io/pypi/pyversions/labquiz.svg)](https://pypi.org/project/labquiz/)
-[![License](https://img.shields.io/pypi/l/labquiz.svg)](https://pypi.org/project/labquiz/)
+[![PyPI version](https://img.shields.io/pypi/v/labquizbundle.svg)](https://pypi.org/project/labquizbundle/)
+[![Python versions](https://img.shields.io/pypi/pyversions/labquizbundle.svg)](https://pypi.org/project/labquizbundle/)
+[![License](https://img.shields.io/pypi/l/labquizbundle.svg)](https://pypi.org/project/labquizbundle/)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb)
 [![Documentation Status](https://readthedocs.org/projects/labquiz/badge/?version=latest)](https://labquiz.readthedocs.io/en/latest/)   
 
