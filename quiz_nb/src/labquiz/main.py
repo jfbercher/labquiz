@@ -1244,13 +1244,40 @@ class QuizLab:
         """
         
         from .utils import is_base64_encoded_text, is_encrypted
+        from urllib.parse import urlparse
 
-        if isinstance(path, BytesIO):
+        def _read_from_url(url):
+            import requests
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.text
+
+    # --- File-like object (BytesIO, etc.)
+        if hasattr(path, "read"):
+            path.seek(0) 
+            data = yaml.safe_load(path)
+
+        # --- String path or URL
+        elif isinstance(path, str):
+            parsed = urlparse(path)
+            # URL case
+            if parsed.scheme in ("http", "https", "ftp"):
+                content = _read_from_url(path)
+                data = yaml.safe_load(content)
+            else: # local file
+                with open(path, "r", encoding="utf-8") as f:
+                    data = yaml.safe_load(f)
+        else:
+            raise TypeError("Unsupported path type")
+
+        was = """if isinstance(path, BytesIO):
             path.seek(0) # security
             data = yaml.safe_load(path)
         else:
             with open(path, "r", encoding="utf-8") as f:
-                    data = yaml.safe_load(f) or {}
+                    data = yaml.safe_load(f) or {}"""
+        
+        
         self.quiz_bank = data
         # Detects if encrypted on title
         #print("data.keys()", data.keys())
@@ -1267,6 +1294,7 @@ class QuizLab:
         self.quiz_results = {quiz_id:0 for quiz_id in self.quiz_bank}
         self.quiz_correct = {quiz_id:0 for quiz_id in self.quiz_bank}
         self.user_answers = {quiz_id:{} for quiz_id in self.quiz_bank if quiz_id != "title"}
+
 
 
          
