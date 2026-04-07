@@ -80,7 +80,7 @@ Figure: Overview of the `LabQuiz` ecosystem. Dashed arrows indicate optional com
 # From source
    pip install git+https://github.com/jfbercher/labquiz.git
 # or from PyPI
-   pip install labquiz
+   pip install labquizbundle
 ```
 
 ---
@@ -283,6 +283,14 @@ It connects to your Google Sheet backend and provides:
 
 Online version:
 👉 [https://jfb-quizdash.streamlit.app/](https://jfb-quizdash.streamlit.app/)
+
+Install locally:
+
+```bash
+pip install quiz-dash
+```
+
+
 
 ![Dashboard](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/Monitoring_marks.png)
 
