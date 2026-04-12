@@ -1276,21 +1276,54 @@ def main():
                                     
                         elif monitoring_tab == monitoring_tab_names[1]:
                         
-
                             # 3. Detailed Data Table (below the grid)
                             st.markdown(_("#### Detailed Activity Summary"))
-                            
+
                             # Preparing the table data
+                            df['recorded_timestamp'] = pd.to_datetime(df['timestamp'].str.split(' \\(').str[0])
+                            # Compute elapsed_time from full df (not df_last)
+                            elapsed = (
+                                df.groupby("student")["recorded_timestamp"]
+                                .agg(
+                                    elapsed_time=lambda x: x.max() - x.min(),
+                                    elapsed_time_minutes=lambda x: round((x.max() - x.min()).total_seconds() / 60),
+                                    first_quiz=lambda x: x.min())
+                                .reset_index()
+                            )
+                            df.drop(columns=['recorded_timestamp'], inplace=True)
+
                             detailed_stats = (
                                 df_last.groupby("student")
                                 .agg(
                                     nb_quizzes=("quiz_title", "size"),
                                     total_score=("score", "sum"),
-                                    quizzes_list=("quiz_title", lambda x: ", ".join(list(x)))
+                                    quizzes_list=("quiz_title", lambda x: ", ".join(list(x))),
+                                    #elapsed_time=("recorded_timestamp", lambda x: x.max() - x.min())
                                 )
                                 .reset_index()
                             )
-                            
+                            # Merge elapsed_time into detailed_stats
+                            detailed_stats = detailed_stats.merge(elapsed, on="student", how="left")
+
+                            # reorder columns
+                            detailed_stats = detailed_stats[['student', 'nb_quizzes', 'elapsed_time_minutes', 'elapsed_time', 'first_quiz', 'total_score', 'quizzes_list']]
+
+                            # Format elapsed_time: keep only days and hours/minutes, drop seconds/microseconds
+                            def format_elapsed(td):
+                                total_seconds = int(td.total_seconds())
+                                days, remainder = divmod(total_seconds, 86400)
+                                hours, remainder = divmod(remainder, 3600)
+                                minutes, _ = divmod(remainder, 60)
+                                
+                                if days > 0:
+                                    return f"{days}j {hours:02d}h{minutes:02d}"
+                                elif hours > 0:
+                                    return f"{hours}h{minutes:02d}"
+                                else:
+                                    return f"{minutes} min"
+
+                            detailed_stats['elapsed_time'] = detailed_stats['elapsed_time'].apply(format_elapsed)
+
                             detailed_stats['student'] = detailed_stats['student'].apply(
                                 lambda x: x.split(',')[0].strip().upper() + ' ' + x.split(',')[1].strip().title() 
                                     if len(x.split(',')) > 1 else x
@@ -1302,6 +1335,9 @@ def main():
                                 column_config={
                                     "student": st.column_config.TextColumn(_("Student")),
                                     "nb_quizzes": st.column_config.NumberColumn(_("Count")),
+                                    "elapsed_time": st.column_config.TextColumn(_("Elapsed Time")),
+                                    "elapsed_time_minutes": st.column_config.NumberColumn(_("Elapsed Time (min)"), format="%d min"),
+                                    "first_quiz": st.column_config.DatetimeColumn(_("First Quiz"), format="DD/MM/YYYY HH:mm"),
                                     "total_score": st.column_config.NumberColumn(_("Total Points"), format="%.1f"),
                                     "quizzes_list": st.column_config.TextColumn(_("List of Quizzes"))
                                 },
@@ -1468,8 +1504,15 @@ def main():
                             df_last = prepare_monitoring_data(full_df_filt)
                             
                             # 1. Global stats calculation
-                            quiz_stats = df_last.groupby("quiz_title")["score"].agg(["mean", "std"]).reset_index()
+                            # quiz_stats below were calculated on scores, not available in exam mode
+                            # and may be different from recalculated final marks (eg different weights)
+                            # quiz_stats = df_last.groupby("quiz_title")["score"].agg(["mean", "std"]).reset_index()
                             marks_df = st.session_state.df_final.copy()
+
+                            quiz_list = sorted(df_last["quiz_title"].unique())
+                            quiz_stats = marks_df[quiz_list].agg(['mean', 'std']).T.reset_index()
+                            quiz_stats.columns = ["quiz_title", "mean", "std"]
+                            
 
                             with st.expander(_("🎓 Individual analysis"), expanded=True):
                                 # 2. Student Selection
