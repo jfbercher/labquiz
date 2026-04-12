@@ -1,7 +1,9 @@
 # %load LabQuiz/utils.py
 import yaml, json, base64, sys
+import io, asyncio
+
 import ipywidgets as widgets
-from IPython.display import display, Markdown
+from IPython.display import display, Markdown, Javascript
 import hashlib, inspect, re, types
 from importlib.metadata import metadata
 from pathlib import Path
@@ -13,7 +15,17 @@ from .i18n import _
 from types import ModuleType
 from typing import Iterable, Tuple
 
+import contextlib
 
+
+
+SCOPES = ["openid", "https://www.googleapis.com/auth/userinfo.email", 
+          "https://www.googleapis.com/auth/userinfo.profile"]
+TOKEN_FILE = "token.json"
+
+"""
+pip install google-auth google-auth-oauthlib
+"""
 
 
 def b64_encode(text: str) -> str:
@@ -200,6 +212,212 @@ class StudentForm:
         display(form)
 
 ###
+
+def google_authentify(domains=None):
+    # Only imported if google_authentify is used
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from google.auth.transport import requests as google_requests
+    from google.oauth2 import id_token
+
+    try:
+        flow = InstalledAppFlow.from_client_secrets_file(
+            "client_desktop.json",
+            SCOPES
+        )
+        f = io.StringIO()
+
+        with contextlib.redirect_stdout(f):
+            creds = flow.run_local_server(
+                host="127.0.0.1",
+                port=8080,
+                #timeout_seconds=120,
+                #success_message="Authentification réussie. Vous pouvez fermer cette fenêtre."
+            )
+        
+    except Exception as e:
+        raise RuntimeError(_("Authentication failed or canceled")) from e
+
+    # Vérification identité
+    info = id_token.verify_oauth2_token(
+        creds.id_token,
+        google_requests.Request()
+    )
+
+    email = info["email"]
+    domain = email.split("@")[-1]
+
+    if domains is not None:
+        if domain not in domains:
+            print(_("User authentified, but"))
+            raise PermissionError(_("Access denied for"), email)
+    #print("info", info) # DEBUG
+    return creds, info
+
+
+def _on_bc_message(event):
+    """Receives the message from the main thread via BroadcastChannel."""
+    global _auth_data, _auth_event
+    try:
+        data = json.loads(str(event.data))
+        _auth_data = data
+        _auth_event.set()
+        #print("✅ Message received through BroadcastChannel:", data)
+    except Exception as e:
+        print(f"Erreur parsing BroadcastChannel: {e}")
+
+
+def google_authentify_lite_init():
+    import js
+    from pyodide.ffi import create_proxy
+
+    global _auth_event, _auth_data
+    _auth_event = asyncio.Event()
+    _auth_data = {}
+    
+    # ── Open a BroadcastChannel in the Worker (Python / Pyodide side) ──
+    _bc = js.BroadcastChannel.new("google_auth_channel")
+
+    _bc_proxy = create_proxy(_on_bc_message)
+    _bc.onmessage = _bc_proxy
+    
+async def get_check_user_info(timeout=30, domains=None):
+    """Waits for BroadcastChannel signal — no polling necessary."""
+    try:
+        await asyncio.wait_for(_auth_event.wait(), timeout=timeout)
+        if domains is not None:
+            if domain not in domains:
+                print(_("User authentified, but"))
+                raise PermissionError(_("Access denied for"), email)
+        return dict(_auth_data)
+    except asyncio.TimeoutError:
+        print("⏱ Timeout")
+        return None    
+
+async def google_authentify_lite(timeout=30, domains=None):
+    
+    global _auth_event, _auth_data
+    _auth_event.clear()
+    _auth_data.clear()
+
+    try:
+        with open("client_web.json", 'r') as f:
+            out = json.load(f)
+        client_id = out['web']['client_id']
+    except Exception as e:
+        raise RuntimeError(_("Missing or malformed client_web.json file"))
+
+    login_container = widgets.HTML(
+        value='<div id="google-btn-container">Chargement du bouton Google...</div>'
+    )
+
+    js_setup = f"""
+    (function() {{
+        function b64u(str) {{
+            str = str.replace(/-/g,'+').replace(/_/g,'/');
+            return decodeURIComponent(atob(str).split('').map(
+                c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join(''));
+        }}
+        const s = document.createElement('script');
+        s.src = "https://accounts.google.com/gsi/client";
+        s.onload = () => {{
+            google.accounts.id.initialize({{
+                client_id: "{client_id}",
+                callback: r => {{
+                    const p = JSON.parse(b64u(r.credential.split('.')[1]));
+                    const userData = JSON.stringify({{
+                        family_name: p.family_name,
+                        given_name:  p.given_name,
+                        email:       p.email,
+                        hd:          p.email.split('@')[1]
+                    }});
+
+                    // Envoie via BroadcastChannel → reçu par le Worker Python
+                    const bc = new BroadcastChannel("google_auth_channel");
+                    bc.postMessage(userData);
+                    bc.close();
+
+                    document.getElementById("google-btn-container").innerHTML = "✅ Connected";
+                    console.log("BroadcastChannel message envoyé:", userData);
+                }}
+            }});
+            google.accounts.id.renderButton(
+                document.getElementById("google-btn-container"), {{}});
+        }};
+        document.head.appendChild(s);
+    }})();
+    """
+    display(login_container)
+    display(Javascript(js_setup))
+    #
+    """Waits for BroadcastChannel signal — no polling necessary."""
+    try:
+        await asyncio.wait_for(_auth_event.wait(), timeout=timeout)
+        if domains is not None:
+            if domain not in domains:
+                print(_("User authentified, but"))
+                raise PermissionError(_("Access denied for"), email)
+        return dict(_auth_data)
+    except asyncio.TimeoutError:
+        print("⏱ Timeout")
+        return None    
+            
+
+
+def select_group_and_save(self, groups, info):
+
+    def validate(_button):
+        save_button.disabled =  not (
+            group.value in groups if groups else True
+        )
+
+    def on_save(_button):
+        sname = (
+            info['family_name'].replace(",", "").strip().upper()
+            + ", "
+            + info['given_name'].replace(",", "").strip().title()
+        )
+        self.student.name = sname
+        if groups: 
+            self.student.name = sname + ", " + str(group.value)
+        domain = ".".join(info['hd'].split('.')[-2:])
+        self.internetOK += '_' + domain
+
+        with output:
+            output.clear_output()
+            text = "</br>" + _("✔️ **Name recorded**") + f" `{sname.strip()}`"
+            text += ', ' + _('Class/Group: ') +f"{group.value}" if groups else ""
+            display(Markdown(text))
+
+    output = widgets.Output()
+    group = widgets.Dropdown(
+            options=['--'] + groups,
+            description=_("Group/Class:"),
+            style={'description_width': '70px'},
+            layout=widgets.Layout(width="250px")
+        )
+
+    save_button = widgets.Button(
+            description=_("Save"),
+            button_style="info",
+            icon="check",
+            disabled=True
+        )
+
+    if groups: 
+        group.observe(validate, names="value")
+        save_button.on_click(on_save)
+
+        enter_msg = _("Identification done. <br>Now, please select your class or group.")
+        form = widgets.VBox( 
+            [ 
+                widgets.HTML("<h3 style='margin-top: 0; margin-bottom: 0; line-height: 1.2;'> {enter_msg} </h2>".format(enter_msg=enter_msg)),
+                widgets.HBox([group, save_button]),
+                output
+            ])
+        display(form)
+    else:
+        on_save(None)
+
 
 
 def sanitize_dict(d):
