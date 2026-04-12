@@ -353,7 +353,7 @@ def load_data(FILE_PATH):
         data = convert_quiz_data_v1_to_v2(data)
         return data
     
-def prepare_data(indata, output_file, mode="crypt", pwd=""):    
+def prepare_data(indata, output_file, mode="crypt", pwd="", google_auth=False):    
     from labquiz.putils import crypt_data, encode_data
     import copy
 
@@ -391,7 +391,11 @@ def prepare_data(indata, output_file, mode="crypt", pwd=""):
         data_only_out = data_only
         
     if mode == "crypt" and pwd != '':
-        st.warning(_("⚠️ File encrypted with password. Be sure to use the `mandatoryInternet=True` option when initializing the quiz")) 
+        if google_auth:
+            st.warning(_("⚠️ File encrypted with password and google authentification required. " \
+            "Be sure to use both `mandatoryInternet=True` **and** ``googleAuthentification=True`` option when initializing the quiz."))
+        else:
+            st.warning(_("⚠️ File encrypted with password. Be sure to use the `mandatoryInternet=True` option when initializing the quiz.")) 
         #("⚠️ File crypted with pwd. Ensure to use the `mandatoryInternet=True` option in quiz init")   
         #st.warning("⚠️ File crypted with pwd. Ensure to use the `mandatoryInternet=True` option in quiz init")    
     
@@ -527,13 +531,21 @@ def export_config_dialog(data, selected_qids, format_type):
     if format_type == "YAML":
         fmt = st.radio(_("Export Type"), [_("Encrypted YAML"), _("Encoded YAML"), _("Unencoded YAML")])
         pwd = ""
+        google_auth = False
         if fmt == _("Encrypted YAML"):
             col_crypt1, col_crypt2  = st.columns([6, 4])
             with col_crypt1:
                 pwd = st.text_input(_("Password"), type="password", help=_("💡 This pwd participates in encryption"))
+            if st.checkbox(_("Use google authentification"), key="google_auth"):
+                google_auth = True
+                col_crypt3, col_crypt4  = st.columns([6, 4])
+                with col_crypt3:
+                    pwd2 = st.text_input(_("Google authentification: Main domain"), help=_("💡 Enter the main domain for authentification (will be used in encryption). " \
+                    "For example, if your main domain is 'edu.esiee.fr', enter 'esiee.fr' here."))
+                    pwd = f"{pwd}_{pwd2}"
         
         mode = "crypt" if fmt == _("Encrypted YAML") else ("enc" if fmt == _("Encoded YAML") else "yml")
-        outdata, outdata_only = prepare_data(export_data, file_name, mode=mode, pwd=pwd)
+        outdata, outdata_only = prepare_data(export_data, file_name, mode=mode, pwd=pwd, google_auth=google_auth)
 
         st.info(_("💡 This mode allows you to save all or part of the questions in a new file, ") \
         + _("with optional encryption."))
