@@ -160,8 +160,9 @@ class QuizLab:
     #_CHECKALIVE = 60
 
     
-    def __init__(self,  URL="", QUIZFILE="", needAuthentification=True, retries=2,
-                 exam_mode=False, test_mode=False, groups=[],
+    def __init__(self,  URL="", QUIZFILE="", 
+                 needAuthentification=True, googleAuthentification=False, 
+                 retries=2, exam_mode=False, test_mode=False, groups=[],
                  mandatoryInternet=False, CHECKALIVE=600,
                  INACTIVITY_TIMEOUT=3600,
                  in_streamlit=False,
@@ -188,6 +189,9 @@ class QuizLab:
         self.student = StudentForm(groups=groups)
         self.student.name = ""
         self.needAuthentification = needAuthentification
+        self.googleAuthentification = googleAuthentification
+        self.domains = None
+        self.groups = groups
         self.encoded = False
         self.encrypted = False
         self.retries = retries
@@ -570,10 +574,13 @@ class QuizLab:
         if quiz_id not in self.quiz_bank:
             raise KeyError(f"Quiz '{quiz_id}' not found in bank.")
         
-        if self.needAuthentification:
+        if self.needAuthentification or self.googleAuthentification:
             if self.student is None or not self.student.name:
                 print(_("⚠️ Authentication not carried out -- Enter your first and last name!\nThen re-execute the cell"))
-                self.authentification()
+                if self.googleAuthentification:
+                    self.googleAuthentify()
+                else:
+                    self.simpleAuthentification()
                 return
 
         if self.quiz_counts[quiz_id] >= self.retries + 1:
@@ -598,7 +605,7 @@ class QuizLab:
                     from .utils import prep
                     from cryptography.fernet import Fernet, InvalidToken
                     try:
-                        h = prep(4, quiz_id, os.path.splitext(self.QUIZFILE)[0], self.internetOK)
+                        h = prep(4, quiz_id, os.path.splitext(os.path.basename(self.QUIZFILE))[0], self.internetOK)
                         decrypted_data = Qwsp(h).weight(entry).decode('utf-8')
                         entry = json.loads(decrypted_data)
                     except (InvalidToken, ValueError) as e:
@@ -1068,14 +1075,22 @@ class QuizLab:
         #print(f"Temps d'exécution from_yaml : {toc-tic:.3f} seconde(s)")
         return inst
 
-    def authentification(self):
+    def simpleAuthentification(self):
         from .utils import compute_machine_id
         tic = time.perf_counter()
         self.student.display()  
         toc = time.perf_counter()
         #print(f"Temps d'exécution authentification : {toc-tic:.3f} seconde(s)")
   
-
+    async def googleAuthentify(self):
+        if IS_JUPYTERLITE:
+            from .utils import google_authentify_lite_init,  google_authentify_lite
+            google_authentify_lite_init()
+            info = await google_authentify_lite(timeout=30, domains=self.domains)
+        else:
+            from .utils import google_authentify, select_group_and_save
+            creds, info = google_authentify(domains=self.domains)
+        select_group_and_save(self, self.groups, info)
 
     def record_event(self, event_type, quiz_id, parameters, answers, score):
         """Sends a row to Google Sheets."""
@@ -1334,8 +1349,12 @@ class QuizLab:
                 parameters["src_hash"] = get_source_integrity_hash(self.__class__)
                 self.record_event("starting", "starting", parameters, "", 0)
                 #print("Ready")
-        if self.needAuthentification:
-            self.authentification()
+        #if self.needAuthentification:
+        #    self.authentification()
+        if self.googleAuthentification:
+            self.googleAuthentify()
+        elif self.needAuthentification:
+            self.simpleAuthentification()
 
 
     # ---------------------------
