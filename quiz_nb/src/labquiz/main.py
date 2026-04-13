@@ -160,7 +160,7 @@ class QuizLab:
     #_CHECKALIVE = 60
 
     
-    async def __init__(self,  URL="", QUIZFILE="", 
+    def __init__(self,  URL="", QUIZFILE="", 
                  needAuthentification=True, googleAuthentification=False, 
                  retries=2, exam_mode=False, test_mode=False, groups=[],
                  mandatoryInternet=False, CHECKALIVE=600,
@@ -224,7 +224,7 @@ class QuizLab:
             raise Exception(_("No internet connexion or bad URL"))
         
         
-        await self.init()
+        self.init()
         ensure_style(self.checkbox_style, style_id="custom-checkbox")
         check_installed_package_integrity(silentStart=silentStart)
         
@@ -577,7 +577,7 @@ class QuizLab:
         if self.needAuthentification or self.googleAuthentification:
             if self.student is None or not self.student.name:
                 print(_("⚠️ Authentication not carried out -- Enter your first and last name!\nThen re-execute the cell"))
-                print(_("👉 Please instanciate the quiz again and complete the authentication"))
+                print(_("👉 Please instanciate the quiz again and/or complete the authentication"))
                 #if self.googleAuthentification:
                 #    await self.googleAuthentify()
                 #else:
@@ -1335,7 +1335,7 @@ class QuizLab:
         
     
     
-    async def init(self):
+    def init(self):
         from .utils import compute_machine_id, get_source_integrity_hash, get_full_object_hash
         
         self.machine_id = compute_machine_id()
@@ -1350,11 +1350,8 @@ class QuizLab:
                 parameters["src_hash"] = get_source_integrity_hash(self.__class__)
                 self.record_event("starting", "starting", parameters, "", 0)
                 #print("Ready")
-        #if self.needAuthentification:
-        #    self.authentification()
-        if self.googleAuthentification:
-            await self.googleAuthentify()
-        elif self.needAuthentification:
+        
+        if self.needAuthentification and not self.googleAuthentification:
             self.simpleAuthentification()
 
 
