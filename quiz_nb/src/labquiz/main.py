@@ -1084,13 +1084,15 @@ class QuizLab:
         #print(f"Temps d'exécution authentification : {toc-tic:.3f} seconde(s)")
   
     async def googleAuthentify(self):
+        from .utils import select_group_and_save
         if IS_JUPYTERLITE:
             from .utils import google_authentify_lite_init,  google_authentify_lite
             google_authentify_lite_init()
             info = await google_authentify_lite(timeout=30, domains=self.domains)
         else:
-            from .utils import google_authentify, select_group_and_save
+            from .utils import google_authentify
             creds, info = google_authentify(domains=self.domains)
+            
         select_group_and_save(self, self.groups, info)
 
     def record_event(self, event_type, quiz_id, parameters, answers, score):
