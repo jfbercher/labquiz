@@ -160,7 +160,7 @@ class QuizLab:
     #_CHECKALIVE = 60
 
     
-    def __init__(self,  URL="", QUIZFILE="", 
+    async def __init__(self,  URL="", QUIZFILE="", 
                  needAuthentification=True, googleAuthentification=False, 
                  retries=2, exam_mode=False, test_mode=False, groups=[],
                  mandatoryInternet=False, CHECKALIVE=600,
@@ -224,7 +224,7 @@ class QuizLab:
             raise Exception(_("No internet connexion or bad URL"))
         
         
-        self.init()
+        await self.init()
         ensure_style(self.checkbox_style, style_id="custom-checkbox")
         check_installed_package_integrity(silentStart=silentStart)
         
@@ -555,7 +555,7 @@ class QuizLab:
                                 propositions, constraints=constraints, weights=weights)
         return score, total_possible
 
-    async def show(self, quiz_id, noscore=False, autovars=False, **context):
+    def show(self, quiz_id, noscore=False, autovars=False, **context):
         from .utils import sanitize_dict
         """Displays a quiz (MCQ or numerical) with independent widgets"""
         from .utils import decode_dict_base64
@@ -577,10 +577,11 @@ class QuizLab:
         if self.needAuthentification or self.googleAuthentification:
             if self.student is None or not self.student.name:
                 print(_("⚠️ Authentication not carried out -- Enter your first and last name!\nThen re-execute the cell"))
-                if self.googleAuthentification:
-                    await self.googleAuthentify()
-                else:
-                    self.simpleAuthentification()
+                print(_"Please instanciate the quiz again and complete the authentication")
+                #if self.googleAuthentification:
+                #    await self.googleAuthentify()
+                #else:
+                #    self.simpleAuthentification()
                 return
 
         if self.quiz_counts[quiz_id] >= self.retries + 1:
