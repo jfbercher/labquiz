@@ -577,7 +577,7 @@ class QuizLab:
         if self.needAuthentification or self.googleAuthentification:
             if self.student is None or not self.student.name:
                 print(_("⚠️ Authentication not carried out -- Enter your first and last name!\nThen re-execute the cell"))
-                print(_"Please instanciate the quiz again and complete the authentication")
+                print(_("👉 Please instanciate the quiz again and complete the authentication"))
                 #if self.googleAuthentification:
                 #    await self.googleAuthentify()
                 #else:
