@@ -555,7 +555,7 @@ class QuizLab:
                                 propositions, constraints=constraints, weights=weights)
         return score, total_possible
 
-    def show(self, quiz_id, noscore=False, autovars=False, **context):
+    async def show(self, quiz_id, noscore=False, autovars=False, **context):
         from .utils import sanitize_dict
         """Displays a quiz (MCQ or numerical) with independent widgets"""
         from .utils import decode_dict_base64
@@ -578,7 +578,7 @@ class QuizLab:
             if self.student is None or not self.student.name:
                 print(_("⚠️ Authentication not carried out -- Enter your first and last name!\nThen re-execute the cell"))
                 if self.googleAuthentification:
-                    self.googleAuthentify()
+                    await self.googleAuthentify()
                 else:
                     self.simpleAuthentification()
                 return
@@ -1334,7 +1334,7 @@ class QuizLab:
         
     
     
-    def init(self):
+    async def init(self):
         from .utils import compute_machine_id, get_source_integrity_hash, get_full_object_hash
         
         self.machine_id = compute_machine_id()
@@ -1352,7 +1352,7 @@ class QuizLab:
         #if self.needAuthentification:
         #    self.authentification()
         if self.googleAuthentification:
-            self.googleAuthentify()
+            await self.googleAuthentify()
         elif self.needAuthentification:
             self.simpleAuthentification()
 
