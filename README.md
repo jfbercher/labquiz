@@ -27,8 +27,8 @@ It combines:
 
 And it comes with two optional companion tools:
 
-* ✏️ **`quiz_editor`** — Create, edit, encrypt, and export question banks [streamlit app](https://jfb-quizeditor.streamlit.app/) | [src code](https://github.com/jfbercher/quiz_editor)
-* 📊 **`quiz_dash`** — Monitor, correct, and analyze results in real time [streamlit app](https://jfb-quizdash.streamlit.app/) | [src code](https://github.com/jfbercher/quiz_dash)
+* ✏️ **`quiz_editor`** — Create, edit, encrypt, and export question banks [streamlit app](https://jfb-quizeditor.streamlit.app/) | [src code](https://github.com/jfbercher/labquiz/tree/main/quiz_editor)
+* 📊 **`quiz_dash`** — Monitor, correct, and analyze results in real time [streamlit app](https://jfb-quizdash.streamlit.app/) | [src code](https://github.com/jfbercher/labquiz/tree/main/quiz_dash)
 ---
 ```mermaid
 flowchart LR
@@ -312,9 +312,10 @@ Perfect for fully web-based lab environments.
 
 📦 Repositories:
 
-* [https://github.com/jfbercher/labquiz](https://github.com/jfbercher/labquiz)
-* [https://github.com/jfbercher/quiz_editor](https://github.com/jfbercher/quiz_editor)
-* [https://github.com/jfbercher/quiz_dash](https://github.com/jfbercher/quiz_dash)
+* [Bundle](https://github.com/jfbercher/labquiz/)
+* [labquiz](https://github.com/jfbercher/labquiz/tree/main/quiz_nb)
+* [quiz_editor](https://github.com/jfbercher/labquiz/tree/main/quiz_editor)
+* [quiz_dash](https://github.com/jfbercher/labquiz/tree/main/quiz_dash)
 
 Online tools:
 
