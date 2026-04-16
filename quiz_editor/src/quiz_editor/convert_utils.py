@@ -39,7 +39,8 @@ def evaluate_fstring_previous(template, context):
     #if isinstance(val, bool): val = str(val).lower()
     return val
 
-def evaluate_fstring(template, context):
+def evaluate_fstring_previous_again(template, context):
+    # New version also take into account true LaTeX in propositions/questions
     import re
     if not isinstance(template, str): return template
     template = strip_f_prefix(template)
@@ -67,6 +68,46 @@ def evaluate_fstring(template, context):
     val = eval("f" + repr(template), safe_globals, context).strip("'").strip('"')
     return val
 
+def evaluate_fstring(template, context):
+    # This version also takes into account true LaTeX in propositions/questions
+    import re
+    if not isinstance(template, str): return template
+    template = strip_f_prefix(template)
+
+    def protect_latex_braces(text):
+        """Double the {} of the LaTeX commands: \cmd{...} → \cmd{{...}}"""
+        return re.sub(
+            r'\\[a-zA-Z]+\{[^{}]*\}',
+            lambda c: c.group(0).replace('{', '{{').replace('}', '}}'),
+            text
+        )
+
+    # Cut into alternating segments outside of math/mat
+    parts = re.split(r'(?<!\\)\$(.+?)(?<!\\)\$', template, flags=re.DOTALL)
+
+    # parts[::2] → segments excluding $...$ (always first, empty if necessary)
+    # parts[1::2] → segments between $...$
+    outside = [protect_latex_braces(p) for p in parts[::2]]
+    inside  = ['$' + protect_latex_braces(p) + '$' for p in parts[1::2]]
+
+    # Paste in the original order: out, math, out, math, ...
+    result = []
+    for i, out in enumerate(outside):
+        result.append(out)
+        if i < len(inside):
+            result.append(inside[i])
+
+    template = ''.join(result)
+
+    safe_globals = {
+        "__builtins__": {},
+        "np": np,
+    }
+
+    val = eval("f" + repr(template), safe_globals, context).strip("'").strip('"')
+    return val
+
+
 def safe_eval(expr):
     """
     Evaluate expression in a restricted namespace.
@@ -81,6 +122,7 @@ def processPropositions(p, q_type, context):
     v_exp = p.get('expected', '') 
     v_prop = p.get('proposition', '')
     v_rep = p.get('answer', '')
+    v_tip = p.get('tip', '')
     v_lab = evaluate_text(p.get('label', ''), context)
     if 'template' in q_type:
         if not '{' in v_exp: v_exp = f'{{ {v_exp} }}'
@@ -88,8 +130,9 @@ def processPropositions(p, q_type, context):
         v_exp = v_exp.strip().strip("'").strip('"')
         v_prop = evaluate_text(v_prop, context)
         v_rep = evaluate_text(v_rep, context)
+        v_tip = evaluate_text(v_tip, context)
         if "numeric" in q_type:
             v_exp = float(v_exp) # to extend later with type checking
         else:
             v_exp = v_exp == 'True'
-    return v_prop, v_exp, v_rep, v_lab
+    return v_prop, v_exp, v_rep, v_lab, v_tip
