@@ -168,6 +168,10 @@ release: clean resolve_targets version build publish update-meta bump-meta build
 	@rm -f .targets
 	@echo "✅ Release complete"
 
+release-without-version-nor-publish: clean resolve_targets build update-meta build-meta 
+	@rm -f .targets
+	@echo "✅ Release complete"
+
 build-only: clean resolve_targets version build
 	@echo "✅ Build complete"
 	@echo "publish possible of: $(shell cat .targets)"
@@ -178,7 +182,7 @@ update-publish-meta: update-meta bump-meta build-meta publish-meta
 release-dry: resolve_targets
 	$(eval TARGETS_CONTENT := $(shell cat .targets))
 	@echo "Would release: $(TARGETS_CONTENT)"
-	@rm -f .targets
+	#@rm -f .targets
 
 
 # ===== TAG =====

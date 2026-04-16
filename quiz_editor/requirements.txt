@@ -3,5 +3,6 @@ pandas
 ruamel.yaml
 streamlit>=1.50
 altair==4.2.2
+pypandoc
 git+https://github.com/jfbercher/labquiz.git#egg=labquiz
 
