@@ -1,5 +1,10 @@
 # This is a "fake" requirements.txt for streamlit.io (streamlit app deployements)
 # for actual requirements/pyprojects see in packages dir
+
+# Dependencies for the Binder interface
+jupyterlab-myst
+
+# Local packages
 -e ./quiz_nb
 -e ./quiz_editor
 -e ./quiz_dash

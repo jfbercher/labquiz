@@ -1,7 +1,0 @@
-# Dependencies for the Binder interface
-jupyterlab-myst
-
-# Local packages (we go up one level with ../)
--e ../quiz_nb
--e ../quiz_editor
--e ../quiz_dash
