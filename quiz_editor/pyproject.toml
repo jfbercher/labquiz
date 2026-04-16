@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quiz_editor"
-version = "0.9.4"
+version = "0.9.6"
 description = "A tool to create and edit quizzes, for LabQuiz and more"
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -17,7 +17,8 @@ dependencies = [
     "ruamel.yaml",
     "streamlit>=1.50",
     "altair==4.2.2",
-    "labquiz>=0.8.9"
+    "labquiz>=0.8.9",
+    "pypandoc",
 ]
 keywords = ["quizzes", "jupyter"]
 
