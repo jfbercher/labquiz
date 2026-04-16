@@ -1,4 +1,23 @@
-## 🔐 Google Authentication in QuizLab (Notebook / Web)
+---
+title: Google Authentication in QuizLab (Notebook / Web)
+subtitle: 'LabQuiz: A suite of tools for integrating quizzes into Jupyter notebooks'
+date: 2026-04-16
+license: CC-BY-NC-SA-4.0
+settings:
+    myst_to_tex:
+        code_style: listings
+    output_stderr: remove
+    output_matplotlib_strings: remove
+exports:
+  - format: docx
+  - format: pdf
+    template: arxiv_nips
+    article_type: article
+    chapters: []
+
+---
+
+# 🔐 Google Authentication in QuizLab (Notebook / Web)
 
 For instructors whose institution uses Google Workspace, it is possible, since version 1.0.0, to use Google authentication instead of the standard authentication enabled with `needAuthentification=True`.
 In that case, the parameter `googleAuthentification=True` must also be specified, in addition to the standard `mandatoryInternet=True`.
@@ -9,7 +28,7 @@ This short guide explains how to configure Google authentication and how to use 
 
 ---
 
-# 1. Enable authentication in QuizLab
+## Enable authentication in QuizLab
 
 In your code, use something like
 
@@ -36,7 +55,7 @@ if quiz.googleAuthentification:
 
 ---
 
-# 2. For instructors: Google Cloud configuration (once)
+##  For instructors: Google Cloud configuration (once)
 
 Go to: https://console.cloud.google.com/
 (Create a project if needed)
@@ -57,7 +76,7 @@ Menu: **APIs & Services → Credentials → Create Credentials → OAuth client 
 
 ---
 
-## 🖥️ Case 1 — Notebook / Local Python
+🖥️ **Case 1 — Notebook / Local Python**
 
 If you intend your students to use a local desktop version of jupyter notebook or jupyter lab
 
@@ -73,7 +92,7 @@ client_desktop.json
 
 ---
 
-## 🌐 Case 2 — Web application (e.g. JupyterLite)
+🌐 **Case 2 — Web application (e.g. JupyterLite)**
 
 * Application type: **Web application**
 
@@ -93,7 +112,7 @@ client_web.json
 
 ---
 
-# 3. IT support (if required)
+## IT support (if required)
 
 Contact your IT administrator if:
 
@@ -103,7 +122,7 @@ Contact your IT administrator if:
 
 ---
 
-# ✅ Result
+## ✅ Result
 
 * Users authenticate with their institutional Google account
 * Access is restricted to the organization
