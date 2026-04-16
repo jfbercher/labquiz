@@ -275,8 +275,15 @@ def render_preview(label, text, context=None):
     """Displays a preview if LaTeX or Markdown is present."""
     global _
     from convert_utils import evaluate_fstring, evaluate_text
+    import re
 
-    if text and ('$' in text or '{' in text):
+    def looks_like_markdown(text: str) -> bool:
+        #pattern = r"(\*{1,2}|_{1,2}|`)" # simple
+        #improved by requiring symbols to be balanced
+        pattern = r"(\*\*[^*]+\*\*|\*[^*]+\*|__[^_]+__|_[^_]+_|`[^`]+`)"
+        return bool(re.search(pattern, text))
+
+    if text and ('$' in text or '{' in text or looks_like_markdown(text)):
         with st.container():
             #st.caption(f"Aperçu du rendu ({label}) :")
             st.markdown(
