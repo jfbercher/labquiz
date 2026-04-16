@@ -1,6 +1,6 @@
-# Hashes générés le 2026-04-13T13:55:30.938420
+# Hashes générés le 2026-04-16T15:00:37.769310
 # Dossier analysé : /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz
-# Version du package : 0.9.17
+# Version du package : 1.0.0
 
 [files]
 473c7034537b01b120a80a682df8502363198b09f4a6d93110e3a1a7aae1bad1  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/__init__.py
@@ -10,7 +10,7 @@ f7d265a4473df2cbd036f415384c11ec181a0e61960fa884c3fc9fcf83200e99  /Users/bercher
 c5112fda72f3caa88c5fa33b93141cf04e966b0cd7c78d92c46eb68d343033a1  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/utils.py
 
 [package]
-fceb25e4ac432afd35369b8c5403cde31ea98e62970e004f144fceafcae8f620
+1940bab2f330c349692d92596f4f8808f488bbb36d10ac8ced07c058742550fe
 
 [package_without_putils]
 9cfe08c717ef0cda7deb1b8da057475804b4ef2e527e53f6af1bcdab9b9d6660

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quiz_editor"
-version = "0.9.6"
+version = "1.0.0"
 description = "A tool to create and edit quizzes, for LabQuiz and more"
 readme = "README.md"
 license = "GPL-3.0-or-later"
