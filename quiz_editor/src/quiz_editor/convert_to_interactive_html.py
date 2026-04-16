@@ -86,7 +86,7 @@ def convert_to_interactive_html(data, lang='en'):
         # 3. QUESTION CONTENT
         if "numeric" in q_type:
             for i, p in enumerate(props):
-                v_prop, v_exp, v_rep, v_lab = processPropositions(p, q_type, context)
+                v_prop, v_exp, v_rep, v_lab, v_tip = processPropositions(p, q_type, context)
                 html_content.append("""
                 <div class='numeric-unit'>
                     <label>{v_prop}</label><br>
@@ -103,7 +103,7 @@ def convert_to_interactive_html(data, lang='en'):
         else:
             html_content.append("<div class='options-container'>")
             for i, p in enumerate(props):
-                v_prop, v_exp, v_rep, v_lab = processPropositions(p, q_type, context)
+                v_prop, v_exp, v_rep, v_lab, v_tip = processPropositions(p, q_type, context)
                 is_exp = "true" if v_exp else "false"
                 #print("debug:", v_exp, type(v_exp), is_exp)
                 #print("--> checkboxes", p.get('expected', ''), v_exp, is_exp)

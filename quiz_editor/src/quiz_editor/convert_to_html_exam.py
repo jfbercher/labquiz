@@ -115,7 +115,7 @@ def convert_to_server_quiz(data, server_url, lang='en'):
         # 3. CONTENU QUESTION
         if "numeric" in q_type:
             for i, p in enumerate(props):
-                v_prop, v_exp, v_rep, v_lab = processPropositions(p, q_type, context)
+                v_prop, v_exp, v_rep, v_lab, v_tip = processPropositions(p, q_type, context)
                 html_content.append(f"""
                 <div class='numeric-unit' data-label='{v_lab}'>
                     <label>{v_prop}</label><br>
@@ -128,7 +128,7 @@ def convert_to_server_quiz(data, server_url, lang='en'):
         else:
             html_content.append("<div class='options-container'>")
             for i, p in enumerate(props):
-                v_prop, v_exp, v_rep, v_lab = processPropositions(p, q_type, context)
+                v_prop, v_exp, v_rep, v_lab, v_tip = processPropositions(p, q_type, context)
                 is_exp = "true" if p.get('expected') is True else "false"
                 html_content.append(f"""
                 <div class='option' id='opt_{q_id}_{i}' data-expected='{is_exp}' data-label='{v_lab}' onclick='toggleOption(this)'>
