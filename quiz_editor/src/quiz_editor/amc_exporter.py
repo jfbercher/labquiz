@@ -9,8 +9,10 @@ import pypandoc
 def looks_like_markdown(text: str) -> bool:
     #pattern = r"(\*{1,2}|_{1,2}|`)" # simple
     #improved by requiring symbols to be balanced
-    pattern = r"(\*\*[^*]+\*\*|\*[^*]+\*|__[^_]+__|_[^_]+_|`[^`]+`)"
-    return bool(re.search(pattern, text))
+    pattern = r"(\*\*[^*]+\*\*|\*[^*]+\*|__[^_]+__|_[^_]+_|`[^`]+`)" # detects bold, italic, and inline code
+    pattern_links = r'!\[.*?\]\(.*?\)|\[[^\]]+\]\([^)]+\)' # detects links
+
+    return bool(re.search(pattern, text)) or bool(re.search(pattern_links, text))
 
 def micro_text_cleaning(text):
     # Clean up special characters without requiring full conversion
@@ -94,8 +96,13 @@ def convert_to_amc_latex(data, use_negative_points=True, outputScoring=False):
                 cmd = "\\correctchoice" if is_correct else "\\wrongchoice"
                 
                 # Scoring logique
-                bonus = 1 if is_correct else 0
-                malus = -1 if (use_negative_points and not is_correct) else 0
+                bonus = p.get('bonus', 1 if is_correct else 0)
+                malus = p.get('malus', -1 if (use_negative_points and not is_correct) else 0)
+                malus = -abs(malus)
+                
+                # was
+                #bonus = 1 if is_correct else 0
+                #malus = -1 if (use_negative_points and not is_correct) else 0
                 if outputScoring:
                     latex_output.append(f"      {cmd}{{{v_prop}}} \\scoring{{b={bonus},m={malus}}}")
                 else:
