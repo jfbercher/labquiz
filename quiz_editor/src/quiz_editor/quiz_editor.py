@@ -3,8 +3,10 @@ from ruamel.yaml import YAML
 import sys
 import os
 import re
+import base64
 import types
 import copy 
+
 
 # Simulateur de f-strings
 import numpy as np # For simulation in the validator
@@ -270,7 +272,100 @@ def validate_fstring(text):
         start = end_brace + 1
     return None
 
-# Preview LaTeX
+
+def convert_markdown_images_to_base64(markdown_text, base_path="."):
+    """
+    Scans markdown for local image syntax ![alt](path) and replaces 
+    the path with a Base64 data URI.
+    """
+    # Regex pattern for ![alt](path)
+    # Group 1: alt text, Group 2: path/url
+    pattern = r'\!\[(.*?)\]\((.*?)\)'
+    
+    def replacer(match):
+        alt_text = match.group(1)
+        path_str = match.group(2)
+        
+        # 1. If it's a web URL, return the original match (do nothing)
+        if path_str.startswith(('http://', 'https://', 'data:')):
+            return match.group(0)
+        # 2. Check if the local file exists
+        img_path = Path(base_path) / path_str
+        if img_path.is_file():
+            # Perform conversion to Base64
+            with open(img_path, "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read()).decode()
+            extension = img_path.suffix.lower().replace('.', '')
+            # Default to png if extension is missing/weird
+            mime_type = extension if extension in ['png', 'jpg', 'jpeg', 'gif', 'webp'] else 'png'
+            # Return the new markdown string with embedded data
+            return f'![{alt_text}](data:image/{mime_type};base64,{encoded_string})'
+        # 3. If file not found, return original string (nothing to replace)
+        return match.group(0)
+    # If the pattern is found, replacer() is called; otherwise, text remains unchanged
+    return re.sub(pattern, replacer, markdown_text)
+
+
+def convert_markdown_images_to_html(markdown_text, base_path="."):
+    """
+    Converts ![alt](path){width=nn% height=mm%} into an HTML <img> tag.
+    dimensions using both HTML attributes and CSS object-fit.
+    """
+    pattern = r'\!\[(.*?)\]\((.*?)\)(?:\{(.*?)\})?'
+    
+    def replacer(match):
+        alt_text = match.group(1)
+        path_str = match.group(2)
+        attributes = match.group(3)
+        
+        # 1. If it's a web URL, return the original match (do nothing)
+        if path_str.startswith(('http://', 'https://', 'data:')):
+            return match.group(0)
+        
+        # 2. Check if the local file exists
+        img_path = Path(base_path) / path_str
+        
+        if img_path.is_file():
+            # Perform conversion to Base64
+            with open(img_path, "rb") as f:
+                data = base64.b64encode(f.read()).decode()
+            
+            # Default to png if extension is missing/weird
+            ext = img_path.suffix.lower().replace('.', '')
+            mime = ext if ext in ['png', 'jpg', 'jpeg', 'gif', 'webp'] else 'png'
+            
+            # Default style: ensure it doesn't break the container
+            # object-fit: contain ensures the image isn't stretched
+            style_parts = ["max-width: 100%;", "object-fit: contain;"]
+            html_attrs = []
+
+            if attributes:
+                w_match = re.search(r'width=(\d+%|\d+px|\d+)', attributes)
+                h_match = re.search(r'height=(\d+%|\d+px|\d+)', attributes)
+                
+                if w_match:
+                    w = w_match.group(1)
+                    val = w + ('px' if w.isdigit() else '')
+                    style_parts.append(f"width: {val} !important;")
+                    html_attrs.append(f'width="{val}"')
+                if h_match:
+                    h = h_match.group(1)
+                    val = h + ('px' if h.isdigit() else '')
+                    style_parts.append(f"height: {val} !important;")
+                    html_attrs.append(f'height="{val}"')
+
+            style_str = f' style="{" ".join(style_parts)}"'
+            attr_str = f' {" ".join(html_attrs)}' if html_attrs else ""
+
+             # Return the <img> string with embedded data and style
+            return f'<img src="data:image/{mime};base64,{data}" alt="{alt_text}"{attr_str}{style_str}>'
+        # 3. If file not found, return original string (nothing to replace)
+        return match.group(0)
+    # If the pattern is found, replacer() is called; otherwise, text remains unchanged
+    return re.sub(pattern, replacer, markdown_text)
+
+
+# Preview LaTeX/Markdown
 def render_preview(label, text, context=None):
     """Displays a preview if LaTeX or Markdown is present."""
     global _
@@ -281,9 +376,13 @@ def render_preview(label, text, context=None):
         #pattern = r"(\*{1,2}|_{1,2}|`)" # simple
         #improved by requiring symbols to be balanced
         pattern = r"(\*\*[^*]+\*\*|\*[^*]+\*|__[^_]+__|_[^_]+_|`[^`]+`)"
-        return bool(re.search(pattern, text))
+        return bool(re.search(pattern, text)) 
 
-    if text and ('$' in text or '{' in text or looks_like_markdown(text)):
+    def has_markdown_img_link(text: str) -> bool:
+        pattern_links = r'!\[.*?\]\(.*?\)|\[[^\]]+\]\([^)]+\)' # detects links
+        return  bool(re.search(pattern_links, text))
+
+    if text and ('$' in text or '{' in text or looks_like_markdown(text)) or has_markdown_img_link(text):
         with st.container():
             #st.caption(f"Aperçu du rendu ({label}) :")
             st.markdown(
@@ -294,7 +393,18 @@ def render_preview(label, text, context=None):
             if context:
                 #if not '{' in text: text = f'{{ {text} }}'
                 text = evaluate_text(text, context)
-            st.info(text) # st.info renders Markdown and LaTeX between $ natively
+
+            if has_markdown_img_link(text): text = convert_markdown_images_to_html(text)
+            # st.info(text) # st.info renders Markdown and LaTeX between $ natively
+            # Instead of st.info(processed_content) that does not support <img> 
+            st.markdown(
+                f"""
+                <div style="background-color: #e1f5fe; padding: 15px; border-radius: 5px; border-left: 5px solid #01579b; color: #01579b;">
+                    {text}
+                </div>
+                """, 
+                unsafe_allow_html=True
+            )
 
 def help_button(title, content, key):
     @st.dialog(title)
