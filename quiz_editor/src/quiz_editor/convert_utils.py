@@ -75,12 +75,24 @@ def evaluate_fstring(template, context):
     template = strip_f_prefix(template)
 
     def protect_latex_braces(text):
-        """Double the {} of the LaTeX commands: \cmd{...} → \cmd{{...}}"""
-        return re.sub(
+        """Double the {} of the LaTeX commands: \cmd{...} → \cmd{{...}}
+        and of Markdown images attributes: ![](){...} → ![](){{...}}"""
+        
+        # Protection of LaTeX commands: \cmd{...}
+        text = re.sub(
             r'\\[a-zA-Z]+\{[^{}]*\}',
             lambda c: c.group(0).replace('{', '{{').replace('}', '}}'),
             text
         )
+        
+        # Markdown Image Attribute Protection: ![ ... ]( ... ){ ... }
+        text = re.sub(
+            r'(!\[[^\]]*\]\([^\)]*\))\{([^{}]*)\}',
+            lambda m: m.group(1) + '{{' + m.group(2) + '}}',
+            text
+        )
+        
+        return text
 
     # Cut into alternating segments outside of math/mat
     parts = re.split(r'(?<!\\)\$(.+?)(?<!\\)\$', template, flags=re.DOTALL)
