@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from i18n import get_translator
-from convert_utils import evaluate_text, safe_eval, processPropositions
+from convert_utils import evaluate_text, safe_eval, processPropositions, to_html
 
 # --- CONFIGURATION ---
 NB_MAX_ATTEMPTS = 3
@@ -54,6 +54,16 @@ def convert_to_server_quiz(data, server_url, lang='en'):
         .match {{ background: #eafff0 !important; border-color: #2ecc71 !important; }}
         .mismatch {{ background: #fff0f0 !important; border-color: #e74c3c !important; }}
         .attempts-hint {{ font-size: 0.85em; color: #7f8c8d; margin-top: 5px; }}
+        table {{
+            width: 80%;
+            table-layout: fixed;
+            margin: auto;
+        }}
+        td, th {{
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }}
     </style>
 </head>
 <body>
@@ -87,7 +97,6 @@ def convert_to_server_quiz(data, server_url, lang='en'):
 )
     
 
-
     for q_id, q_content in data.items():
         if q_id == "title" or not isinstance(q_content, dict): continue
         
@@ -107,6 +116,7 @@ def convert_to_server_quiz(data, server_url, lang='en'):
         html_content.append(f"<div class='question-card' id='card_{q_id}' data-type='{q_type}' data-attempts='0'>")
         
         q_text = evaluate_text(q_content.get('question', ''), context)
+        q_text = to_html(q_text)
         html_content.append(f"<div class='question-text'>{q_text}</div>")
         
         props = q_content.get('propositions', [])
@@ -116,6 +126,8 @@ def convert_to_server_quiz(data, server_url, lang='en'):
         if "numeric" in q_type:
             for i, p in enumerate(props):
                 v_prop, v_exp, v_rep, v_lab, v_tip = processPropositions(p, q_type, context)
+                v_prop = to_html(v_prop)
+                v_rep = to_html(v_rep)
                 html_content.append(f"""
                 <div class='numeric-unit' data-label='{v_lab}'>
                     <label>{v_prop}</label><br>
@@ -129,6 +141,8 @@ def convert_to_server_quiz(data, server_url, lang='en'):
             html_content.append("<div class='options-container'>")
             for i, p in enumerate(props):
                 v_prop, v_exp, v_rep, v_lab, v_tip = processPropositions(p, q_type, context)
+                v_prop = to_html(v_prop)
+                v_rep = to_html(v_rep)
                 is_exp = "true" if p.get('expected') is True else "false"
                 html_content.append(f"""
                 <div class='option' id='opt_{q_id}_{i}' data-expected='{is_exp}' data-label='{v_lab}' onclick='toggleOption(this)'>
