@@ -11,6 +11,8 @@ import pandas as pd
 from pathlib import Path
 from .utils import get_full_object_hash
 from .i18n import _
+from .convert_utils import to_html, evaluate_fstring
+
 
 from cryptography.fernet import Fernet as Qwsp
 Qwsp.weight = Qwsp.decrypt
@@ -115,7 +117,7 @@ def replace_latex_braces(template):
         flags=re.DOTALL
     )
 
-def evaluate_fstring(template, context):
+def evaluate_fstring_prev(template, context):
     import re
     if not isinstance(template, str): return template
     template = strip_f_prefix(template)
@@ -454,7 +456,10 @@ class QuizLab:
     # -------------------------
     # Widgets for question
     # -------------------------
-    def _make_question_widget(self, question_html):
+    def _make_question_widget(self, question):
+
+        question_html = to_html(question)
+        print("question_html", question_html)
         try:
             inner = widgets.HTMLMath(
                 f"<div style='max-width:1800px; white-space: normal;'>{question_html}</div>"
@@ -934,10 +939,16 @@ class QuizLab:
         # -------------------------
         # Affichage final
         # -------------------------
-        output = widgets.Output()
+        from .convert_utils import convert_markdown_images_to_html, has_markdown_img_link, normalize_md
+        if has_markdown_img_link(question):
+            question = normalize_md(question)
+            question = convert_markdown_images_to_html(question)
+        question_html = to_html(question)
+        #!print("question_html", question_html)
+        output = widgets.Output(width='100%')
         container = widgets.VBox([
             self.style,
-            widgets.HTMLMath(f"<h3>{question}</h3>"),  #.format(**context)), Pour extension future 
+            widgets.HTMLMath(f"<h3>{question_html}</h3>", layout=widgets.Layout(width='100%', display='block')),  #.format(**context)), Pour extension future 
             widgets.VBox(rows),
             widgets.HTML("<div style='height:20px'></div>"),
             buttons,
