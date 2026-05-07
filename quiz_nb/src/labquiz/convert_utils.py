@@ -7,7 +7,7 @@ import html
 from pathlib import Path
 import base64
 import markdown
-import pypandoc
+#import pypandoc
 
 
 rng = np.random.default_rng()
@@ -88,48 +88,6 @@ def normalize_md(text):
     
     return text
 
-def to_html(text):
-    # pypandoc fait vraiment des misères avec -f markdown+tex_math_dollars
-    # ou le --mathjax - D'où l'extraction puis réinsertion des maths
-    if not looks_like_markdown(text):
-        return text
-
-    text = normalize_md(text)
-
-    # Extrait et protège les blocs maths
-    placeholders = {}
-    counter = 0
-
-    def protect(m):
-        nonlocal counter
-        key = f"MATHPLACEHOLDER{counter}X"
-        placeholders[key] = m.group(0)
-        counter += 1
-        return key
-
-    patterns = [
-        r'\$\$[\s\S]+?\$\$',          # display $$...$$
-        r'\\\[[\s\S]+?\\\]',           # display \[...\]
-        r'\$[^\$]+?\$',                # inline $...$
-        r'\\\(.+?\\\)',                # inline \(...\)
-    ]
-    protected = text
-    for pattern in patterns:
-        protected = re.sub(pattern, protect, protected, flags=re.DOTALL)
-
-    html = pypandoc.convert_text(
-        protected,
-        to="html",
-        format='markdown+pipe_tables+implicit_figures',  # or 'gfm',
-        extra_args=["--wrap=none"] 
-    )
-    html = html.replace("\n\n", "\n").rstrip()
-
-    # Restaure les maths
-    for key, val in placeholders.items():
-        html = html.replace(key, val)
-
-    return html
 
 def has_markdown_img_link(text: str) -> bool:
     pattern_links = r'!\[.*?\]\(.*?\)|\[[^\]]+\]\([^)]+\)' # detects links
@@ -171,7 +129,8 @@ def convert_markdown_images_to_base64(markdown_text, base_path="."):
 def convert_markdown_images_to_html(markdown_text, base_path="."):
     """
     Converts ![alt](path){width=nn% height=mm%} into an HTML <img> tag.
-    dimensions using both HTML attributes and CSS object-fit.
+    dimensions using both HTML attributes and CSS object-fit
+    AND embed the image by encoding it in base64.
     """
     pattern = r'\!\[(.*?)\]\((.*?)\)(?:\{(.*?)\})?'
     
@@ -226,6 +185,61 @@ def convert_markdown_images_to_html(markdown_text, base_path="."):
     # If the pattern is found, replacer() is called; otherwise, text remains unchanged
     return re.sub(pattern, replacer, markdown_text)
 
+
+def to_html(text, embedImages=True, protectMaths=True):
+    # pypandoc fait vraiment des misères avec -f markdown+tex_math_dollars
+    # ou le --mathjax - D'où l'extraction puis réinsertion des maths
+    if not looks_like_markdown(text):
+        return text
+
+    if embedImages and has_markdown_img_link(text):
+        text = convert_markdown_images_to_base64(text)
+
+    # Extra markdown normalization    
+    text = normalize_md(text)
+
+    # Extrait et protège les blocs maths
+    placeholders = {}
+    counter = 0
+
+    def protect(m):
+        nonlocal counter
+        key = f"MATHPLACEHOLDER{counter}X"
+        placeholders[key] = m.group(0)
+        counter += 1
+        return key
+
+    patterns = [
+        r'\$\$[\s\S]+?\$\$',          # display $$...$$
+        r'\\\[[\s\S]+?\\\]',           # display \[...\]
+        r'\$[^\$]+?\$',                # inline $...$
+        r'\\\(.+?\\\)',                # inline \(...\)
+    ]
+    protected = text
+    if protectMaths:
+        for pattern in patterns:
+            protected = re.sub(pattern, protect, protected, flags=re.DOTALL)
+
+    zz = '''html = pypandoc.convert_text(
+        protected,
+        to="html",
+        format='markdown+pipe_tables+implicit_figures',  # or 'gfm',
+        extra_args=["--wrap=none"] 
+    )''' 
+
+    html = markdown.markdown(protected, extensions=['tables', 'fenced_code', 'attr_list', 'nl2br'])
+
+    html = html.replace("\n\n", "\n").rstrip()
+
+    if protectMaths:
+        # Restore maths
+        for key, val in placeholders.items():
+            html = html.replace(key, val)
+
+    # Add style for tables
+    html = html.replace('<table>', '<table class="styled">')
+
+    return html
 
 def to_html_old(text):
     return markdown.markdown(text, extensions=['tables', 'fenced_code', 'nl2br'])
@@ -300,7 +314,7 @@ def evaluate_fstring_avant(template, context):
         "min": min,
         "max": max,
         "sum": sum,
-        "pow": pow
+        "pow": pow,
         }, "np": np, "math": math}
 
     def eval_expr(expr):
@@ -434,31 +448,21 @@ def _template_to_py(template, var_names):
     if '{' not in template: return template
 
     template = fix_latex_syntax(template)
-
-    def is_evaluable_old(expr):
-        """Returns True if expr involves only known variables and safe builtins."""
-        expr = expr.strip()
-        if not expr: return False
-        # Reject assignments and statements
-        if re.search(r'[=;]', expr): return False
-        # Check all identifiers in expr are known variables or builtins (np, math...)
-        identifiers = set(re.findall(r'\b[a-zA-Z_]\w*\b', expr))
-        allowed = set(var_names) | {'np', 'math', 'abs', 'int', 'float', 'str', 'pow', 
-                                     'round', 'min', 'max', 'sum', 'len', 'bool'}
-
-        return identifiers <= allowed
     
     def is_evaluable(expr):
         expr = expr.strip()
         if not expr:
             return False
-        if re.search(r'[=;]', expr):
-            return False
+        #if re.search(r'[=;]', expr):
+        #    return False
+
+        # Delete the content of the strings to avoid polluting the extraction of identifiers
+        expr = re.sub(r"(['\"])(?:(?=(\\?))\2.)*?\1", "", expr)
 
         identifiers = set(re.findall(r'\b[a-zA-Z_]\w*\b', expr))
         allowed = set(var_names) | {
             'np', 'math', 'abs', 'int', 'float', 'str', 'pow',
-            'round', 'min', 'max', 'sum', 'len', 'bool'
+            'round', 'min', 'max', 'sum', 'len', 'bool',  'if', 'else',
         }
 
         # autoriser attributs np.xxx et math.xxx
@@ -539,11 +543,20 @@ def process_braces(text):
     return text.replace('|!', '{').replace('!|', '}')
 
 def evaluate_fstring(template, context):
+
+    if template.replace(' ','').replace('{','').replace('}','').lower() == "true": return 'True'
+    if template.replace(' ','').replace('{','').replace('}','').lower()  == "false": return 'False'
+
     var_names = list(context.keys())
     template = _template_to_py(template, var_names)
     template = process_braces(template)
-    val = eval("f" + repr(template), safe_globals, context).strip("'").strip('"')
-    return val
+    try:
+        val = eval("f" + repr(template), safe_globals, context).strip("'").strip('"')
+        return val
+    except Exception as e:
+        print("Error evaluating" + repr(template), e )
+        return '[‼️ f-string evaluation error] ' + template
+    
 
 
 def safe_eval(expr):
@@ -554,8 +567,9 @@ def safe_eval(expr):
     return eval(expr, {"__builtins__": {}}, {"rng": rng, "np": np, "pd": pd})
 
 def evaluate_text(text, context):
-    #return html.escape(evaluate_fstring_avant_clde(text, context)).strip("'").strip('"')
-    return html.escape(evaluate_fstring(text, context)).strip("'").strip('"')
+    #return html.escape(evaluate_fstring(text, context)).strip("'").strip('"')
+    # Do not remember why I did put html.escape before..
+    return evaluate_fstring(text, context).strip("'").strip('"')
 
 
 def markdown_with_latex_to_html(text, mathml=True):
