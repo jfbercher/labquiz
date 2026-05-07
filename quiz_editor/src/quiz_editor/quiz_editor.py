@@ -6,6 +6,7 @@ import re
 import base64
 import types
 import copy 
+import markdown
 
 
 # Simulateur de f-strings
@@ -155,6 +156,38 @@ def apply_custom_styles():
     </style>
     """.format(doctitle=_("Document Title")), unsafe_allow_html=True)
 
+    st.markdown("""
+        <style>
+        /* Create a style for our custom block */
+        .custom-info-start {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 20px 20px 0px 20px;
+            border-radius: 8px 8px 0 0;
+            border-left: 8px solid #0c5460;
+            margin-top: 20px;
+        }
+        .custom-info-end {
+            background-color: #d1ecf1;
+            padding: 0px 20px 20px 20px;
+            border-radius: 0 0 8px 8px;
+            border-left: 8px solid #0c5460;
+            margin-bottom: 20px;
+        }
+        /* Style for the markdown content between the markers */
+        .custom-info-content {
+            background-color: #d1ecf1;
+            border-left: 8px solid #0c5460;
+            padding: 0px 20px;
+            color: #0c5460;
+        }
+        .custom-info-content p, .custom-info-content li {
+            color: #0c5460 !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+
 
 def init_session_states(FILE_PATH):
 
@@ -273,116 +306,20 @@ def validate_fstring(text):
     return None
 
 
-def convert_markdown_images_to_base64(markdown_text, base_path="."):
-    """
-    Scans markdown for local image syntax ![alt](path) and replaces 
-    the path with a Base64 data URI.
-    """
-    # Regex pattern for ![alt](path)
-    # Group 1: alt text, Group 2: path/url
-    pattern = r'\!\[(.*?)\]\((.*?)\)'
-    
-    def replacer(match):
-        alt_text = match.group(1)
-        path_str = match.group(2)
-        
-        # 1. If it's a web URL, return the original match (do nothing)
-        if path_str.startswith(('http://', 'https://', 'data:')):
-            return match.group(0)
-        # 2. Check if the local file exists
-        img_path = Path(base_path) / path_str
-        if img_path.is_file():
-            # Perform conversion to Base64
-            with open(img_path, "rb") as image_file:
-                encoded_string = base64.b64encode(image_file.read()).decode()
-            extension = img_path.suffix.lower().replace('.', '')
-            # Default to png if extension is missing/weird
-            mime_type = extension if extension in ['png', 'jpg', 'jpeg', 'gif', 'webp'] else 'png'
-            # Return the new markdown string with embedded data
-            return f'![{alt_text}](data:image/{mime_type};base64,{encoded_string})'
-        # 3. If file not found, return original string (nothing to replace)
-        return match.group(0)
-    # If the pattern is found, replacer() is called; otherwise, text remains unchanged
-    return re.sub(pattern, replacer, markdown_text)
-
-
-def convert_markdown_images_to_html(markdown_text, base_path="."):
-    """
-    Converts ![alt](path){width=nn% height=mm%} into an HTML <img> tag.
-    dimensions using both HTML attributes and CSS object-fit.
-    """
-    pattern = r'\!\[(.*?)\]\((.*?)\)(?:\{(.*?)\})?'
-    
-    def replacer(match):
-        alt_text = match.group(1)
-        path_str = match.group(2)
-        attributes = match.group(3)
-        
-        # 1. If it's a web URL, return the original match (do nothing)
-        if path_str.startswith(('http://', 'https://', 'data:')):
-            return match.group(0)
-        
-        # 2. Check if the local file exists
-        img_path = Path(base_path) / path_str
-        
-        if img_path.is_file():
-            # Perform conversion to Base64
-            with open(img_path, "rb") as f:
-                data = base64.b64encode(f.read()).decode()
-            
-            # Default to png if extension is missing/weird
-            ext = img_path.suffix.lower().replace('.', '')
-            mime = ext if ext in ['png', 'jpg', 'jpeg', 'gif', 'webp'] else 'png'
-            
-            # Default style: ensure it doesn't break the container
-            # object-fit: contain ensures the image isn't stretched
-            style_parts = ["max-width: 100%;", "object-fit: contain;"]
-            html_attrs = []
-
-            if attributes:
-                w_match = re.search(r'width=(\d+%|\d+px|\d+)', attributes)
-                h_match = re.search(r'height=(\d+%|\d+px|\d+)', attributes)
-                
-                if w_match:
-                    w = w_match.group(1)
-                    val = w + ('px' if w.isdigit() else '')
-                    style_parts.append(f"width: {val} !important;")
-                    html_attrs.append(f'width="{val}"')
-                if h_match:
-                    h = h_match.group(1)
-                    val = h + ('px' if h.isdigit() else '')
-                    style_parts.append(f"height: {val} !important;")
-                    html_attrs.append(f'height="{val}"')
-
-            style_str = f' style="{" ".join(style_parts)}"'
-            attr_str = f' {" ".join(html_attrs)}' if html_attrs else ""
-
-             # Return the <img> string with embedded data and style
-            return f'<img src="data:image/{mime};base64,{data}" alt="{alt_text}"{attr_str}{style_str}>'
-        # 3. If file not found, return original string (nothing to replace)
-        return match.group(0)
-    # If the pattern is found, replacer() is called; otherwise, text remains unchanged
-    return re.sub(pattern, replacer, markdown_text)
-
-
 # Preview LaTeX/Markdown
 def render_preview(label, text, context=None):
     """Displays a preview if LaTeX or Markdown is present."""
     global _
-    from convert_utils import evaluate_fstring, evaluate_text
-    import re
+    from convert_utils import evaluate_fstring, evaluate_text, fix_latex_syntax,  looks_like_markdown, markdown_with_latex_to_html, convert_markdown_images_to_html, normalize_md
+    import re 
 
-    def looks_like_markdown(text: str) -> bool:
-        #pattern = r"(\*{1,2}|_{1,2}|`)" # simple
-        #improved by requiring symbols to be balanced
-        pattern = r"(\*\*[^*]+\*\*|\*[^*]+\*|__[^_]+__|_[^_]+_|`[^`]+`)"
-        return bool(re.search(pattern, text)) 
 
     def has_markdown_img_link(text: str) -> bool:
         pattern_links = r'!\[.*?\]\(.*?\)|\[[^\]]+\]\([^)]+\)' # detects links
         return  bool(re.search(pattern_links, text))
 
     if text and ('$' in text or '{' in text or looks_like_markdown(text)) or has_markdown_img_link(text):
+        text = normalize_md(text)
         with st.container():
             #st.caption(f"Aperçu du rendu ({label}) :")
             st.markdown(
@@ -390,21 +327,34 @@ def render_preview(label, text, context=None):
                 + _("Render preview ({label}) :</div>").format(label=label),
                 unsafe_allow_html=True
             )
-            if context:
-                #if not '{' in text: text = f'{{ {text} }}'
-                text = evaluate_text(text, context)
+            text = evaluate_text(text, context)
 
-            if has_markdown_img_link(text): text = convert_markdown_images_to_html(text)
-            # st.info(text) # st.info renders Markdown and LaTeX between $ natively
-            # Instead of st.info(processed_content) that does not support <img> 
-            st.markdown(
-                f"""
-                <div style="background-color: #e1f5fe; padding: 15px; border-radius: 5px; border-left: 5px solid #01579b; color: #01579b;">
-                    {text}
-                </div>
-                """, 
-                unsafe_allow_html=True
-            )
+            if has_markdown_img_link(text): 
+                text = convert_markdown_images_to_html(text)
+                #with st.container(border=True):
+                #    # This is native Streamlit. 
+                #    st.markdown(text, unsafe_allow_html=True)
+                html_text = markdown_with_latex_to_html(text, mathml=True) #markdown.markdown(text, extensions=['tables', 'fenced_code', 'nl2br'])
+                st.markdown(
+                    f"""
+                    <div style="
+                    background-color: #1C83FF1A; 
+                    border: 1px solid #83c9ff;
+                    border-radius: 0.5rem;
+                    padding: 1rem;
+                    color: #0054A3;">
+                        {html_text} 
+                    </div>
+                    """, 
+                    unsafe_allow_html=True
+                )
+            else:
+                text = fix_latex_syntax(text)
+                st.info(text)
+                
+            #html_text = markdown_with_latex_to_html(text) #markdown.markdown(text, extensions=['tables', 'fenced_code', 'nl2br'])
+
+
 
 def help_button(title, content, key):
     @st.dialog(title)
@@ -548,7 +498,6 @@ def safe_eval(expr):
 # --- 1. Suggestion Helper ---
 def get_default_suggestion(var_type, var_structure, engine_display):
     """Logic to suggest a default string based on type/structure/engine."""
-    #print("default_suggestion", "var_type", var_type, "var_structure", var_structure, "engine_display", engine_display)
     size = 1 if var_structure == "scalar" else 3
     if engine_display == "numpy rng.":
         if var_type == "int":
@@ -674,26 +623,35 @@ def export_config_dialog(data, selected_qids, format_type):
         col2.download_button(_("📥 Questions Only"), data=get_quiz_yaml_string(outdata_only), 
                            file_name=f"{file_name}_qo{postfix}.yaml", mime="text/yaml")
 
-    if format_type == _("Interactive (self-assessment)"):
+    if format_type == _("HTML Interactive (self-assessment)"):
         from convert_to_interactive_html import convert_to_interactive_html
-        output_content = convert_to_interactive_html(export_data, lang=st.session_state.lang)
+        embed_images = st.checkbox(_("Embed images in output HTML file"), 
+                    help=_("Embed base64 images data directly in HTML"), value=True)
+        output_content = convert_to_interactive_html(export_data, lang=st.session_state.lang, embedImages=embed_images)
         st.info(_("💡 This mode allows immediate self-correction for students."))
         st.download_button(_("⬇️ Download HTML"), data=output_content, file_name=f"{file_name}.html", mime="text/html")
 
-    elif format_type == _("Exam (Server)"):
+    elif format_type == _("HTML Exam (Server)"):
         server_url = st.text_input(_("Receiving server URL"), placeholder="https://script.google.com/...")
         if server_url:
             from convert_to_html_exam import convert_to_server_quiz
             output_content = convert_to_server_quiz(export_data, server_url, lang=st.session_state.lang)
+            st.download_button(_("⬇️ Download HTML"), data=output_content, file_name=f"{file_name}.html", mime="text/html")
         else:
             st.warning(_("Please enter the server URL to continue."))
-        st.download_button(_("⬇️ Download HTML"), data=output_content, file_name=f"{file_name}.html", mime="text/html")
-
+        
     elif format_type == "AMC (LaTeX)":
         neg_points = st.checkbox(_("Negative points (-1 malus)"), value=True)
         from amc_exporter import convert_to_amc_latex
         output_content = convert_to_amc_latex(export_data, use_negative_points=neg_points)
         st.info(_("💡 Extraction in LaTeX-AMC format."))
+        st.download_button(_("⬇️ Download LaTeX-AMC"), data=output_content, file_name=f"{file_name}.tex", mime="text/latex")
+
+    elif format_type == "AMC PythonTeX (LaTeX)":
+        neg_points = st.checkbox(_("Negative points (-1 malus)"), value=True)
+        from amc_pythontex_exporter import convert_to_amc_pytex
+        output_content = convert_to_amc_pytex(export_data, use_negative_points=neg_points)
+        st.info(_("💡 Extraction in LaTeX-AMC (PythonTeX) format."))
         st.download_button(_("⬇️ Download LaTeX-AMC"), data=output_content, file_name=f"{file_name}.tex", mime="text/latex")
 
 
@@ -717,7 +675,8 @@ def render_template_editor(q_id, q_data, lang_func):
     # Sort and synchronize session_state with loaded data
     variables_dict = {k: variables_dict[k] for k in sorted(variables_dict)}
     st.session_state[q_id].rows = list(range(len(variables_dict)))
-    
+
+    idx = 0 # in case of
     for idx, (name, config) in enumerate(variables_dict.items()):
         # Pre-fill widgets keys to ensure persistence
         st.session_state[f"name_{q_id}_{idx}"] = name
@@ -727,70 +686,93 @@ def render_template_editor(q_id, q_data, lang_func):
             if field_key not in st.session_state:
                 st.session_state[field_key] = config.get(key if key != 'struct' else 'structure', "")
 
-    st.subheader(_("Template variables"))
-    
-    # Header with Help and Add buttons
-    cols_header = st.columns([0.06, 0.24, 0.7], gap="small")
-    with cols_header[0]:
-        help_button(_("Template variables"), 
-                    _("Define variable names and the rule to generate their values. "
-                      "These variables can be used in the question text or proposals using "
-                      "the Python f-string syntax: {var_name}. "
-                      "For HTML export, they are generated once per user. "
-                      "For LaTeX-AMC export, they are used to generate the requested number of versions."), 
-                    key=f"help_var_{q_id}")
-    with cols_header[1]:
-        if st.button(_("➕ Add variable"), key=f"btn_add_{q_id}"):
-            new_idx = max(st.session_state[q_id].rows) + 1 if st.session_state[q_id].rows else 0
-            st.session_state[q_id].rows.append(new_idx)
-            st.session_state[f"call_{q_id}_{new_idx}"] = get_default_suggestion("int", "scalar", "numpy rng.")
-            #st.rerun()
-    with cols_header[2]:
-        if st.button(_("🔁 Regenerate"), key=f"btn_resetVars_{q_id}"):
-           st.rerun()
+    idx += 1 # Cleaning
+    while f"name_{q_id}_{idx}" in st.session_state:
+        del st.session_state[f"name_{q_id}_{idx}"]
+        st.session_state.pop(f"name_{q_id}_{idx}_old", None)
+        for key in ['type', 'struct', 'engine', 'call']:
+            field_key = f"{key}_{q_id}_{idx}"
+            st.session_state.pop(field_key, None)
+        idx += 1
+
+    with st.expander("🔢 " + "**" + _("Template variables") + "**", expanded=True):
+        #st.subheader(_("Template variables"))
         
+        # Header with Help and Add buttons
+        cols_header = st.columns([0.06, 0.24, 0.7], gap="small")
+        with cols_header[0]:
+            help_button(_("Template variables"), 
+                        _("Define variable names and the rule to generate their values. "
+                        "These variables can be used in the question text or proposals using "
+                        "the Python f-string syntax: {var_name}, with support for simple "
+                        "operations on variables and optional string formatting. "
+                        "These variables can be used or regenerated on HTML/LaTeX exports."), 
+                        key=f"help_var_{q_id}")
+        with cols_header[1]:
+            if st.button(_("➕ Add variable"), key=f"btn_add_{q_id}"):
+                new_idx = max(st.session_state[q_id].rows) + 1 if st.session_state[q_id].rows else 0
+                st.session_state[q_id].rows.append(new_idx)
+                st.session_state[f"call_{q_id}_{new_idx}"] = get_default_suggestion("int", "scalar", "numpy rng.")
+                #st.rerun()
+        with cols_header[2]:
+            if st.button(_("🔁 Regenerate"), key=f"btn_resetVars_{q_id}"):
+                st.rerun()
+            
 
-    active_vars = {}
-    # Render table-like rows
-    for row_id in st.session_state[q_id].rows:
-        cols = st.columns([1.5, 1, 1.2, 1.2, 2.5, 0.6])
-        
-        key_name = f"name_{q_id}_{row_id}"
-        # Key for storing the old value
-        if f"{key_name}_old" not in st.session_state:
-            st.session_state[f"{key_name}_old"] = ""
-        var_name = cols[0].text_input("Name", key=f"name_{q_id}_{row_id}", label_visibility="collapsed",
-                                     on_change=on_change_update_and_save, args=(q_data, q_id, row_id)) 
-        
-        # Selectboxes for Type, Structure, and Engine
-        v_type = cols[1].selectbox("Type", ["int", "float"], key=f"type_{q_id}_{row_id}", label_visibility="collapsed",
-                                   on_change=on_change_update_and_save, args=(q_data, q_id, row_id))
-        v_struct = cols[2].selectbox("Structure", ["scalar", "list", "numpy array", "pandas Series", "pandas DataFrame"], 
-                                     key=f"struct_{q_id}_{row_id}", label_visibility="collapsed",
-                                     on_change=on_change_update_and_save, args=(q_data, q_id, row_id))
-        v_eng = cols[3].selectbox("Engine", ["numpy rng.", "pandas."], key=f"engine_{q_id}_{row_id}", label_visibility="collapsed",
-                                  on_change=on_change_update_and_save, args=(q_data, q_id, row_id))
-        v_call = cols[4].text_input("Call", key=f"call_{q_id}_{row_id}", label_visibility="collapsed",
-                                   on_change=on_change_update_and_save, args=(q_data, q_id, row_id, False))
+        active_vars = {}
+        # Render table-like rows
+        for row_id in st.session_state[q_id].rows:
+            cols = st.columns([1.5, 1, 1.2, 1.2, 2.5, 0.6])
+            
+            key_name = f"name_{q_id}_{row_id}"
+            # Key for storing the old value
+            if f"{key_name}_old" not in st.session_state:
+                st.session_state[f"{key_name}_old"] = ""
+            var_name = cols[0].text_input("Name", key=f"name_{q_id}_{row_id}", label_visibility="collapsed",
+                                        on_change=on_change_update_and_save, args=(q_data, q_id, row_id)) 
+            
+            # Selectboxes for Type, Structure, and Engine
+            v_type = cols[1].selectbox("Type", ["int", "float"], key=f"type_{q_id}_{row_id}", label_visibility="collapsed",
+                                    on_change=on_change_update_and_save, args=(q_data, q_id, row_id))
+            v_struct = cols[2].selectbox("Structure", ["scalar", "list", "numpy array", "pandas Series", "pandas DataFrame"], 
+                                        key=f"struct_{q_id}_{row_id}", label_visibility="collapsed",
+                                        on_change=on_change_update_and_save, args=(q_data, q_id, row_id))
+            v_eng = cols[3].selectbox("Engine", ["numpy rng.", "pandas."], key=f"engine_{q_id}_{row_id}", label_visibility="collapsed",
+                                    on_change=on_change_update_and_save, args=(q_data, q_id, row_id))
+            v_call = cols[4].text_input("Call", key=f"call_{q_id}_{row_id}", label_visibility="collapsed",
+                                    on_change=on_change_update_and_save, args=(q_data, q_id, row_id, False))
 
-        if cols[5].button("❌", key=f"del_{q_id}_row{row_id}"):
-            st.session_state[q_id].rows.remove(row_id)
-            q_data.get("variables", {}).pop(var_name, None)
-            st.rerun()
+            if cols[5].button("❌", key=f"del_{q_id}_row{row_id}"):
+                # delete related keys
+                for prefix in ["name", "type", "struct", "engine", "call"]:
+                    key = f"{prefix}_{q_id}_{row_id}"
+                    if key in st.session_state:
+                        del st.session_state[key]
 
-        # Preview Logic
-        if var_name and is_valid_identifier(var_name):
-            active_vars[var_name] = {"type": v_type, "structure": v_struct, "engine": v_eng, "call": v_call}
-            prefix = "rng." if v_eng == "numpy rng." else "pd."
-            try:
-                result = eval(f"{prefix}{v_call}", {"__builtins__": {}}, {"rng": rng, "np": np, "pd": pd})
-                active_vars[var_name]["preview"] = to_python(result)
-                st.caption(f"Preview: `{var_name} = {result}`")
-            except Exception as e:
-                st.error(f"Error: {e}")
+                # idem for _old
+                key_old = f"name_{q_id}_{row_id}_old"
+                if key_old in st.session_state:
+                    del st.session_state[key_old]
+                q_data.get("variables", {}).pop(key_old, None)
 
-    # Update global data object
-    q_data['variables'] = active_vars
+                # delete the row
+                st.session_state[q_id].rows.remove(row_id)
+                q_data.get("variables", {}).pop(var_name, None)
+                st.rerun()
+
+            # Preview Logic
+            if var_name and is_valid_identifier(var_name):
+                active_vars[var_name] = {"type": v_type, "structure": v_struct, "engine": v_eng, "call": v_call}
+                prefix = "rng." if v_eng == "numpy rng." else "pd."
+                try:
+                    result = eval(f"{prefix}{v_call}", {"__builtins__": {}}, {"rng": rng, "np": np, "pd": pd})
+                    active_vars[var_name]["preview"] = to_python(result)
+                    st.caption(f"Preview: `{var_name} = {result}`")
+                except Exception as e:
+                    st.error(f"Error: {e}")
+
+        # Update global data object
+        q_data['variables'] = active_vars
 
 def render_propositions_editor(q_id, q_data, lang_func):
     """
@@ -966,14 +948,23 @@ def render_question_text(q_id, q_data, lang_func):
     col_q1, col_q2 = st.columns([4, 1])
 
     with col_q1:
+        text = q_data.get('question', '')
+        n_rows = text.count("\n") + 3
+        q_height = min(500, max(100, n_rows * 24))  # 24px ~ height of a row
+
         q_data['question'] = st.text_area(
             _("Question text"), 
             q_data.get('question', ''), 
-            height=80,
+            height=q_height, #80
             key=f"text_area_{q_id}",
             help=_("Supports Markdown and LaTeX (e.g., $x^2$).")
         )
-        render_preview("Question", q_data['question'], context=None)
+        if 'variables' in q_data:
+            variables = q_data['variables']
+            context = {var_name: variables[var_name]['preview'] for var_name in variables.keys()}
+        else: 
+            context = None
+        render_preview("Question", q_data['question'], context=context)
 
     available_types = ["mcq", "numeric", "mcq-template", "numeric-template"]
     current_type = q_data.get('type', 'mcq')
@@ -1110,16 +1101,24 @@ def render_question_header(q_id, filtered_ids, lang_func):
     current_idx = filtered_ids.index(q_id)
     
     # Navigation and selection columns
-    col_prev, col_title, col_next, col_check = st.columns([0.5, 3, 0.5, 1.5], vertical_alignment="center")
-
+    col_beg, col_prev, col_title, col_next, col_end, col_check = st.columns([0.4, 0.6, 3, 0.6, 0.4, 1.5], vertical_alignment="center")
+    # was [0.2, 0.5, 3, 0.2, 0.5, 1.5]
+    with col_beg:
+        if st.button("⏮️", key=f"first_{q_id}", disabled=(current_idx == 0), use_container_width=True):
+            st.session_state.current_quiz = filtered_ids[0]
+            st.rerun()
     with col_prev:
-        if st.button("⬅️", disabled=(current_idx == 0), key=f"prev_{q_id}"):
+        if st.button("⬅️", disabled=(current_idx == 0), key=f"prev_{q_id}", use_container_width=True):
             st.session_state.current_quiz = filtered_ids[current_idx - 1]
             st.rerun()
 
     with col_next:
-        if st.button("➡️", disabled=(current_idx == len(filtered_ids) - 1), key=f"next_{q_id}"):
+        if st.button("➡️", disabled=(current_idx == len(filtered_ids) - 1), key=f"next_{q_id}", use_container_width=True):
             st.session_state.current_quiz = filtered_ids[current_idx + 1]
+            st.rerun()
+    with col_end:
+        if st.button("⏭️", disabled=(current_idx == len(filtered_ids) - 1), key=f"last_{q_id}", use_container_width=True):
+            st.session_state.current_quiz = filtered_ids[-1]
             st.rerun()
 
     with col_title:
@@ -1394,7 +1393,7 @@ def main():
         # Export drop-down menu
         export_format = st.sidebar.selectbox(
             _("Choose export format"),
-            ["---", "YAML", _("Interactive (self-assessment)"), _("Exam (Server)"), "AMC (LaTeX)"]
+            ["---", "YAML", _("HTML Interactive (self-assessment)"), _("HTML Exam (Server)"), "AMC (LaTeX)", "AMC PythonTeX (LaTeX)"]
         )
 
         if export_format != "---":
@@ -1473,12 +1472,16 @@ def main():
 
         render_question_header(q_id, filtered_ids, _)
         render_taxonomy_editor(q_id, q_data, data, quiz_ids_all, sorted_tags, _)
-        render_question_text(q_id, q_data, _)
+        #render_question_text(q_id, q_data, _)
                                 
         # IF TEMPLATE: Call our new modular function
         if q_data['type'] in ['mcq-template', 'numeric-template']:
             render_template_editor(q_id, q_data, _)
-            preview_question_text(q_id, q_data, _)
+            render_question_text(q_id, q_data, _)
+            #preview_question_text(q_id, q_data, _)
+        else:
+            render_question_text(q_id, q_data, _)
+        
 
         # CONSTRAINTS
         render_constraints_editor(q_id, q_data, _)
