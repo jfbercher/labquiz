@@ -3,23 +3,9 @@ import pandas as pd
 import re
 
 from i18n import get_translator
-from convert_utils import evaluate_fstring, evaluate_text, safe_eval, processPropositions
+from convert_utils import evaluate_fstring, evaluate_text, safe_eval, processPropositions, looks_like_markdown, micro_text_cleaning
 import pypandoc
 
-def looks_like_markdown(text: str) -> bool:
-    #pattern = r"(\*{1,2}|_{1,2}|`)" # simple
-    #improved by requiring symbols to be balanced
-    pattern = r"(\*\*[^*]+\*\*|\*[^*]+\*|__[^_]+__|_[^_]+_|`[^`]+`)" # detects bold, italic, and inline code
-    pattern_links = r'!\[.*?\]\(.*?\)|\[[^\]]+\]\([^)]+\)' # detects links
-
-    return bool(re.search(pattern, text)) or bool(re.search(pattern_links, text))
-
-def micro_text_cleaning(text):
-    # Clean up special characters without requiring full conversion
-    if not text.lstrip().startswith("%"):
-        text = text.replace("%", r"\%")
-    text = text.replace("&", r"\&")
-    return text
 
 def to_LaTeX(markdown_text):
     #if markdown_text and ('$' in markdown_text or looks_like_markdown(markdown_text)):
@@ -99,7 +85,7 @@ def convert_to_amc_latex(data, use_negative_points=True, outputScoring=False):
                 bonus = p.get('bonus', 1 if is_correct else 0)
                 malus = p.get('malus', -1 if (use_negative_points and not is_correct) else 0)
                 malus = -abs(malus)
-                
+
                 # was
                 #bonus = 1 if is_correct else 0
                 #malus = -1 if (use_negative_points and not is_correct) else 0
