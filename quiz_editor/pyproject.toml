@@ -18,6 +18,8 @@ dependencies = [
     "streamlit>=1.50",
     "altair==4.2.2",
     "labquiz>=0.8.9",
+    "markdown",
+    "latex2mathml",
     "pypandoc",
 ]
 keywords = ["quizzes", "jupyter"]
