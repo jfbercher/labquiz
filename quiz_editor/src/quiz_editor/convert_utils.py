@@ -453,8 +453,11 @@ def _template_to_py(template, var_names):
         expr = expr.strip()
         if not expr:
             return False
-        #if re.search(r'[=;]', expr):
-        #    return False
+        forbidden = re.search(r';', expr) # expression with ; are not allowed
+        assignment = re.search(r'(?<![=!<>])=(?![=])', expr) # assignment = not allowed, but ==, >+, etc are valid
+
+        if forbidden or assignment:
+            return False
 
         # Delete the content of the strings to avoid polluting the extraction of identifiers
         expr = re.sub(r"(['\"])(?:(?=(\\?))\2.)*?\1", "", expr)
