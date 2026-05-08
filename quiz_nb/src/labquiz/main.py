@@ -228,6 +228,7 @@ class QuizLab:
         
         self.init()
         ensure_style(self.checkbox_style, style_id="custom-checkbox")
+        ensure_style(self.tables_style, style_id="custom-tables")
         check_installed_package_integrity(silentStart=silentStart)
         
         if not QUIZFILE_ORI=="": 
@@ -424,18 +425,47 @@ class QuizLab:
          
         .mismatch.custom.widget-checkbox input[type="checkbox"]:checked::after {
             color: red;
+
+        .green-bg input { background-color: #d4edda; !important;} 
+        .red-bg input   { background-color: #f8d7da; !important;}
         }
 
         """
+    
+    tables_style = """
+    table.styled {
+        width: 60%; margin: 1em auto; border-collapse: collapse;
+        table-layout: fixed;
+        font: 0.9rem -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+        border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden;
+    }
+    table.styled th, table.styled td {
+        padding: 6px 8px; text-align: center;
+    }
+    table.styled thead th {
+        background: #f6f8fa; border-bottom: 2px solid #d0d7de; font-weight: 600;
+    }
+    table.styled tbody td {
+        border-bottom: 1px solid #d0d7de;
+    }
+    table.styled td:first-child,
+    table.styled th:first-child {
+        font-weight: 600;
+        width: 25%; 
+        border-right: 2px solid #d0d7de;            
+        white-space: nowrap;
+        background: #f9fafb;
+    }
+    """
 
 
-    def inject_css(self):
+    def inject_css(self, style=checkbox_style):
         # css adapté pour les checkboxes // css suitable for checkboxes
         from IPython.display import display, HTML
 
         display(HTML(f"""
         <style>
-        {self.checkbox_style}
+        self.{style}
         </style>
         """))
         
@@ -459,7 +489,6 @@ class QuizLab:
     def _make_question_widget(self, question):
 
         question_html = to_html(question)
-        print("question_html", question_html)
         try:
             inner = widgets.HTMLMath(
                 f"<div style='max-width:1800px; white-space: normal;'>{question_html}</div>"
@@ -504,7 +533,7 @@ class QuizLab:
                 cb.layout = widgets.Layout(
                     width='auto', 
                     flex='0 0 35px',      # Fixed width for the checkbox area
-                    margin='0px 0 0 30px'   # Margin: Top 0, Right 0, Bottom 0, Left 10px
+                    margin='0px 0 0 30px'   # Margin: Top 0, Right 0, Bottom 0, Left 30px
                 )
                 
 
@@ -522,6 +551,13 @@ class QuizLab:
                     align_items='baseline', #'flex-start', # Alignement en haut
                     width='100%'
                 )
+
+                feedback =  widgets.HTMLMath()
+                feedback.layout =  widgets.Layout(
+                    width='auto', 
+                    margin='0px 0 0 30px'   # Margin: Top 0, Right 0, Bottom 0, Left 30px
+                )
+                row = widgets.VBox([row, feedback])
 
                 rows.append(row)
                 widgets_list.append(cb)
@@ -542,14 +578,27 @@ class QuizLab:
 
             for prop in propositions:
                 tol_texte = tolerance_text(prop)
+                feedback =  widgets.HTMLMath()
+                feedback.layout =  widgets.Layout(
+                    width='auto', 
+                    margin='0px 0 0 20px'   # Margin: Top 0, Right 0, Bottom 0, Left 30px
+                )
+                wprop = widgets.HTMLMath(f"<div style='margin-bottom:4px'>{prop['proposition']}</div>")
                 if prop.get("type") == "int":
-                    w = widgets.IntText(description=prop["proposition"])
+                    w_in = widgets.IntText(layout=widgets.Layout(width="200px", margin="0 0 0 20px"))
                 else:
-                    w = widgets.FloatText(description=prop["proposition"])
+                    w_in = widgets.FloatText(layout=widgets.Layout(width="200px", margin="0 0 0 20px"))
 
-                rows.append(widgets.HBox((w, widgets.HTML(tol_texte, 
-                                                    layout=widgets.Layout(margin='0 0 0 20px') ))))
-                widgets_list.append(w)
+
+                w = widgets.VBox([ 
+                    wprop,  w_in,
+                ])
+                row = widgets.HBox((w, widgets.HTML(tol_texte, 
+                                                    layout=widgets.Layout(margin='0 0 0 20px') )))
+                row = widgets.VBox([row, feedback])
+
+                rows.append(row)
+                widgets_list.append(w_in)
 
         return rows, widgets_list, question
     
@@ -761,11 +810,10 @@ class QuizLab:
         # Callbacks
         # -------------------------
         def on_validate(_event):
-            #print("on_validate")
             self.register_activity()
             self.quiz_counts[quiz_id] += 1
             msg = ""
-            user_answers = {p["label"]:w.value for p,w in zip(propositions,answer_widgets)} 
+            user_answers = {p["label"]:w.value for w, p in zip(answer_widgets, propositions)} 
                                                             #on construit le dictionnaire 
                                                             #des labels:réponse utilisateur
                                                             #we build the dictionary #labels:user response
@@ -857,6 +905,14 @@ class QuizLab:
                 else:
                     cb.add_class("mismatch")
 
+        def numeric_answer_is_correct(answer, prop):
+            pexpected = float(prop.get("expected", 0))
+            diff = abs(answer - pexpected)
+            tol = max(prop.get("tolerance_abs", 0), 
+                      prop.get("tolerance", 0.01) * abs(pexpected)) 
+            val= True if diff <= tol else False
+            return val
+
 
         def on_correct(_event):
             self.register_activity()
@@ -874,19 +930,19 @@ class QuizLab:
                 display(widgets.HTML(msg))
                 if quiz_type == "mcq":
                     for r, w, p in zip(rows, answer_widgets, propositions):
-                        #w.value = p.get("expected", False)
-                        #w = r.children[0]
-                        w.remove_class("match")
-                        w.remove_class("mismatch")
+                        #w.remove_class("match")
+                        #w.remove_class("mismatch")
                         w.add_class("custom")
                         if w.value == p.get("expected", False):
-                            correct = _("Good answer ✅ - ")
-                            w.add_class("match")
+                            correct = "✅ " + _("Good answer")
+                            #w.add_class("match")
                         else:
-                            correct = _("Bad answer &nbsp;&nbsp;❌ - ")
-                            w.add_class("mismatch")
+                            correct = "❌ " + _("Bad answer")
+                            #w.add_class("mismatch")
+                        answer = to_html(p.get("answer"))
+                        r.children[1].value = correct + f"{' -- ' + answer if answer else ''}"
                         
-                        newlbl = self._make_question_widget(f"{correct:20}".format(correct) +f"<b>{p.get('label','')}</b> - " + p["proposition"])
+                        '''newlbl = self._make_question_widget(f"{correct:20}".format(correct) +f"<b>{p.get('label','')}</b> - " + p["proposition"])
                         #newlbl.layout = widgets.Layout(width="70%", margin="5px 0 0 -15%")
                         newlbl.layout = widgets.Layout(
                             flex='1 1 auto',  
@@ -895,7 +951,7 @@ class QuizLab:
                         )
                         r.children = [r.children[0], newlbl]
                         if p.get("answer"):
-                            display(Markdown(f"{'✅' if p.get('expected') else '❌'} **{p.get('label','')}** — {p['answer']}"))
+                            display(Markdown(f"{'✅' if p.get('expected') else '❌'} **{p.get('label','')}** — {p['answer']}"))'''
                     if constraints:
                         for c in constraints:
                             if c["type"] == "XOR": 
@@ -907,19 +963,18 @@ class QuizLab:
                             elif c["type"] == "IMPLYFALSE": 
                                 display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is necessarily false").format(prop0=c['indexes'][0], prop1=c['indexes'][1])))
                 else:  #numeric
-                    for w, p in zip(answer_widgets, propositions):
+                    for r, w, p in zip(rows, answer_widgets, propositions):
                         """pexpect =  p["expected"]
                         w.value = eval(pexpect,{},context) if isinstance(pexpect, str) else pexpect"""
-                        w.value = p["expected"] # ce qui précède pour extension future
-                        rep = p.get("answer")
-                        if rep:
-                            display(Markdown(rep))
-
+                        answer = to_html(p.get("answer"))
+                        is_correct = numeric_answer_is_correct(w.value, p)
+                        r.children[1].value = f"{'✅' if is_correct else '❌'}" + ' ' + _("Solution: ") + str(p["expected"]) + f"{' -- ' + answer if answer else ''}"
+                        
             self.quiz_correct[quiz_id] = 1
             for btn in [btn_validate, btn_tips, btn_reset]:
                 btn.disabled = True
                 btn.icon = "ban"
-            
+
             if self.sheetTransfer:
 
                 user_answers = {p["label"]:w.value for p,w in zip(propositions,answer_widgets)} 
@@ -939,10 +994,12 @@ class QuizLab:
         # -------------------------
         # Affichage final
         # -------------------------
-        from .convert_utils import convert_markdown_images_to_html, has_markdown_img_link, normalize_md
-        if has_markdown_img_link(question):
-            question = normalize_md(question)
-            question = convert_markdown_images_to_html(question)
+        from .convert_utils import normalize_md
+        #if has_markdown_img_link(question):
+        #    question = normalize_md(question)
+        #   #question = convert_markdown_images_to_html(question)
+        # # Now the convert_markdown_images, which embeds the base64 data, is included by default in to_html
+        question = normalize_md(question)
         question_html = to_html(question)
         #!print("question_html", question_html)
         output = widgets.Output(width='100%')
