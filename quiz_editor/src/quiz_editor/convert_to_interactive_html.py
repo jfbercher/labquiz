@@ -408,6 +408,35 @@ def convert_to_interactive_html(data, lang='en', max_attempts=3, embedImages=Tru
         const val = template.trim().slice(1, -1).trim().toLowerCase();
         if (val === "true") return "True";
         if (val === "false") return "False";
+                        
+        function replaceRound(expr) {{
+            function process(str) {{
+                let result = '', i = 0;
+                while (i < str.length) {{
+                    const m = str.slice(i).match(/\\bround\s*\(/);
+                    if (!m) {{ result += str.slice(i); break; }}
+
+                    const start = i + m.index;
+                    result += str.slice(i, start);
+
+                    // Walk through chars counting depth to find the splitting comma and closing paren
+                    let depth = 1, comma = -1, j = start + m[0].length;
+                    while (j < str.length && depth > 0) {{
+                        if      (str[j] === '(')                  depth++;
+                        else if (str[j] === ')')                  depth--;
+                        else if (str[j] === ',' && depth === 1 && comma === -1) comma = j;
+                        if (depth > 0) j++;
+                    }}
+
+                    const val = str.slice(start + m[0].length, comma).trim();
+                    const digits = str.slice(comma + 1, j).trim();
+                    result += `(Math.round((${{process(val)}}) * 10**${{digits}}) / 10**${{digits}})`;
+                    i = j + 1;
+                }}
+                return result;
+            }}
+            return process(expr);
+        }}
 
         function evalExprPrevious(expr) {{
             expr = expr.trim();
@@ -457,10 +486,8 @@ def convert_to_interactive_html(data, lang='en', max_attempts=3, embedImages=Tru
                 'str'  : 'String',
             }};
             // Cas du round 
-            expr = expr.replace(
-                /\\bround\s*\(\s*([^,()]+(?:\([^)]*\))?)\s*,\s*(\d+)\s*\)/g,
-                (_, val, digits) => `(Math.round(${{val}} * 10**${{digits}}) / 10**${{digits}})`
-            );
+            if (expr.includes("round")) expr = replaceRound(expr);
+
             // cas du log             
             expr = expr.replace(
                 /\\blog\s*\(\s*([^,]+?)\s*,\s*([^,]+?)\s*\)/g,
