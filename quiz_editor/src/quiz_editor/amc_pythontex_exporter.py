@@ -21,8 +21,8 @@ def to_LaTeX(markdown_text):
         latex = pypandoc.convert_text(
             markdown_text,
             to="latex",
-            format="md",
-            extra_args=["--wrap=none", '--extension=link_attributes']
+            format="md", #format='markdown+pipe_tables+implicit_figures',
+            extra_args=["--wrap=none"]
         )
         latex = latex.replace("\n\n", "\n").rstrip()
         if 'longtable' in latex:  # correct longtable parameters
