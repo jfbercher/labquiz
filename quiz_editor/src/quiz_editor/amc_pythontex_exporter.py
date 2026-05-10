@@ -7,6 +7,7 @@ from convert_utils import (evaluate_fstring, fix_latex_syntax,
                            _template_to_py, process_braces, 
                            processPropositions, looks_like_markdown, micro_text_cleaning)
 import pypandoc
+import re
 
 
 # ---------------------------------------------------------------------------
@@ -21,9 +22,17 @@ def to_LaTeX(markdown_text):
             markdown_text,
             to="latex",
             format="md",
-            extra_args=["--wrap=none"]
+            extra_args=["--wrap=none", '--extension=link_attributes']
         )
         latex = latex.replace("\n\n", "\n").rstrip()
+        if 'longtable' in latex:  # correct longtable parameters
+            latex = re.sub( r'\\begin\{longtable\}\[\]\{@\{\}(.*?)@\{\}\}',
+                lambda m: r'\begin{longtable}{|' + '|'.join(list(m.group(1))) + '|}', latex)
+        if '{figure}' in latex: # for our questions, convert figure envs to center ones - no numembering, no floating
+            latex = re.sub(
+                r'\\begin{figure}\s*\\centering\s*(.*?)\s*\\caption{(.*?)}\s*\\end{figure}',
+                r'\\begin{center}\n\1\n\\\\[-0.6em]\n{\\small Figure:~ \\itshape \2}\n\\end{center}',
+                latex, flags=re.S)
         return latex
     else:
         return micro_text_cleaning(markdown_text)
@@ -182,7 +191,7 @@ def convert_to_amc_pytex(data, use_negative_points=True, output_scoring=False):
         # For templates and calculated answers, we cannot know the number of correct answers (that can be zero)
         # thus 'questionmult' is required (allows zero correct answer).
         if 'numeric' in q_type:
-            amc_tag = 'questionmult'
+            amc_tag = 'questionmultx'
         else:
             is_mult = ('multiple' in q_type or
                        len([p for p in props if p.get('expected') is True]) > 1)
@@ -209,16 +218,65 @@ def convert_to_amc_pytex(data, use_negative_points=True, output_scoring=False):
         if 'numeric' in q_type:
             # One \AMCnumericChoices per proposition.
             # digits = total digit count (integer + decimal), as required by AMC.
-            for i, p in enumerate(props):
-                suffix = f'_{i}' if len(props) > 1 else ''
+            '''
+             {%
+  \def\AMCbeginQuestion#1#2{}%
+  \AMCquestionNumberfalse
+      \begin{questionmult}{partie1}
+        Quel est le premier résultat ?
+        \AMCnumericChoices{123}{digits=3}
+      \end{questionmult}
+  }
+            '''
+            is_multiple = len(props) > 1
+            if is_multiple:
+                for i, p in enumerate(props):
+                    suffix = f'_{i}' if len(props) > 1 else ''
+                    if is_template:
+                        v_prop = to_LaTeX(_template_to_py(p.get('proposition', ''), var_names))
+                        v_prop = process_braces(v_prop)
+                        latex_output.append('  {%')
+                        latex_output.append('  \def\AMCbeginQuestion#1#2{}%')
+                        latex_output.append('  \AMCquestionNumberfalse')
+                        latex_output.append(f'    \\begin{{questionmultx}}{{{q_label}{suffix}}}')
+                        latex_output.append(v_prop)
+                        latex_output.append(
+                            f'      \\pys{{\\AMCnumericChoices{{!{{expected{suffix}}}}}'
+                            f'{{digits=!{{_ndigits{suffix}}},decimals=!{{_ndec{suffix}}}}}}}'
+                        )
+                        latex_output.append('  \end{questionmultx}')
+                        latex_output.append('  }')
+                    else:
+                        # Static: evaluate as before
+                        v_prop, v_exp, v_ans, _, v_tip = processPropositions(p, q_type, context)
+                        latex_output.append('  {%')
+                        latex_output.append('  \def\AMCbeginQuestion#1#2{}%')
+                        latex_output.append('  \AMCquestionNumberfalse')
+                        latex_output.append(f'    \\begin{{questionmultx}}{{{q_label}{suffix}}}')
+                        latex_output.append(v_prop)
+                        nbch    = len(str(abs(int(val_eval))))
+                        ndec    = len(str(val_eval).split('.')[-1].rstrip('0')) if '.' in str(val_eval) else 0
+                        ndigits = nbch + ndec
+                        latex_output.append(
+                            f'  \\AMCnumericChoices{{{val_eval}}}'
+                            f'{{digits={ndigits},decimals={ndec}}}'
+                        )
+                        latex_output.append('  \end{questionmultx}')
+                        latex_output.append('  }')
+            else:  # single proposition in numeric
+                suffix = ''
                 if is_template:
+                    v_prop = to_LaTeX(_template_to_py(p.get('proposition', ''), var_names))
+                    v_prop = process_braces(v_prop)
+                    latex_output.append(v_prop)
                     latex_output.append(
-                        f'  \\pys{{\\AMCnumericChoices{{!{{expected{suffix}}}}}'
+                        f'    \\pys{{\\AMCnumericChoices{{!{{expected{suffix}}}}}'
                         f'{{digits=!{{_ndigits{suffix}}},decimals=!{{_ndec{suffix}}}}}}}'
                     )
                 else:
                     # Static: evaluate as before
-                    _, val_eval, _, _, _ = processPropositions(p, q_type, context)
+                    v_prop, v_exp, v_ans, _, v_tip = processPropositions(p, q_type, context)
+                    latex_output.append(v_prop)
                     nbch    = len(str(abs(int(val_eval))))
                     ndec    = len(str(val_eval).split('.')[-1].rstrip('0')) if '.' in str(val_eval) else 0
                     ndigits = nbch + ndec
