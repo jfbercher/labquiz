@@ -327,7 +327,8 @@ def render_preview(label, text, context=None):
                 + _("Render preview ({label}) :</div>").format(label=label),
                 unsafe_allow_html=True
             )
-            text = evaluate_text(text, context)
+            if context is not None: 
+                text = evaluate_text(text, context)
 
             if has_markdown_img_link(text): 
                 text = convert_markdown_images_to_html(text)
