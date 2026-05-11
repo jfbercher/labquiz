@@ -415,7 +415,7 @@ def update_from_main():
 def load_data(FILE_PATH):
     global _
     if not os.path.exists(FILE_PATH):
-        return {"title": _("New Quiz"), "quiz1": {"question": "", "propositions": []}}
+        return {"title": _("New Quiz"), "quiz1": {"type": "mcq", "question": "", "propositions": []}}
     with open(FILE_PATH, 'r', encoding='utf-8') as f:
         data = yaml.load(f)
         data = convert_quiz_data_v1_to_v2(data)
@@ -1475,7 +1475,7 @@ def main():
         render_taxonomy_editor(q_id, q_data, data, quiz_ids_all, sorted_tags, _)
         #render_question_text(q_id, q_data, _)
                                 
-        # IF TEMPLATE: Call our new modular function
+        # IF TEMPLATE
         if q_data['type'] in ['mcq-template', 'numeric-template']:
             render_template_editor(q_id, q_data, _)
             render_question_text(q_id, q_data, _)
