@@ -1476,7 +1476,7 @@ def main():
         #render_question_text(q_id, q_data, _)
                                 
         # IF TEMPLATE
-        if q_data['type'] in ['mcq-template', 'numeric-template']:
+        if q_data.get('type','mcq') in ['mcq-template', 'numeric-template']:
             render_template_editor(q_id, q_data, _)
             render_question_text(q_id, q_data, _)
             #preview_question_text(q_id, q_data, _)
