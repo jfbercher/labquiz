@@ -840,4 +840,133 @@ quiz63:
       structure: scalar
       engine: numpy rng.
       call: integers(1, 10)
-title: New file
+quiz79:
+  type: numeric-template
+  question: "Consider the following *confusion matrix*: \n\nTrue/Predict | 0 | 1 |\n\
+    --- | -- | --| \n0 | {TN}| {FP}|\n1 | {FN}| {TP}|"
+  propositions:
+    - label: p-recall
+      proposition: Give the recall (tolerance $\pm$ 0.01)
+      tip: ''
+      answer: 'The answer is (TP)/(TP+FN), that is {(TP)/(TP+FN)}'
+      expected: round(TP/(TP+FN), 3)
+    - proposition: Give the accuracy (tolerance $\pm$ 0.01)
+      expected: round((TP+TN)/(TP+TN+FP+FN), 3)
+      label: p-accuracy
+      tip: ''
+      answer: The answer is (TP+TN)/(TP+TN+FP+FN), that is 
+        {(TP+TN)/(TP+TN+FP+FN)}
+  label: q:quiz79
+  variables:
+    FN:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 10)
+      preview: 1
+    FP:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 10)
+      preview: 2
+    TN:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 50)
+      preview: 25
+    TP:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 50)
+      preview: 5
+  category: test
+quiz81:
+  type: numeric-template
+  question: "Consider a scatter plot such as the one shown in the figure \n\n![Scatter
+    plot](./Figure_1.png){width=38%} \n\nWe perform a linear regression `reg`, which
+    yields \n- `reg.intercept_`  = {w0:.3f} and \n- `reg.coef_` =  {abs(w1):.3f}.\
+    \ \nFor a new observation x = {x:.3f}, what would be the value predicted by the
+    model?"
+  propositions:
+    - proposition: 'The predicted value is '
+      expected: 'round(round(abs(w1),3)*round(x,3) + round(w0,3),3)'
+      label: ''
+      tip: ''
+      answer: "The predicted value is simply computed as $y = a x + b$, with $a=$
+        `reg.coef_` = {abs(w1):.3f} and $b=$ `reg_intercept_` = {w0:.3f}, that is\
+        \ \n{round(abs(w1),3)*round(x,3) + round(w0,3):.3f}"
+  variables:
+    w0:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -0.22825382672601513
+    w1:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -1.2973528875683136
+    x:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -0.6998583478784461
+  label: q:quiz81
+  category: test
+quiz82:
+  type: mcq-template
+  question: "Consider the simple regression  model \n$$\ny = \\alpha x + \\beta\n\
+    $$\nwith $\\alpha={round(a,3)}$ and $\\beta={round(b,3)}$"
+  propositions:
+    - label: eval2
+      proposition: For x={round(x2,3)}, the prediction is 
+        {round(b,3)*round(x2,3) + round(a,3) :.3f}
+      tip: ''
+      answer: 'Prediction is simply computed by $y = \alpha x + \beta$ '
+      expected: 'False'
+    - label: eval1
+      proposition: "For x={round(x,3)}, the prediction is {round(a,3)*round(x,3) +
+        round(b,3) :.3f}  \n"
+      tip: ''
+      answer: Prediction is simply computed by $y = \alpha x + \beta$
+      expected: 'True'
+    - proposition: The slope is positive
+      expected: a > 0
+      label: positive_slope
+      tip: ''
+      answer: The slope is actually {'not' if a<0 else ''} positive, since it is
+        equal to $\alpha$={a:.3f}
+  variables:
+    a:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: 0.21183953425210167
+    b:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -2.302323305015165
+    x:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -0.8258003938521501
+    x2:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -1.3159257425583486
+  label: q:quiz82
+  category: test
+title: Test file
