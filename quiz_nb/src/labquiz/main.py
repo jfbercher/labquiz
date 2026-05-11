@@ -772,13 +772,19 @@ class QuizLab:
                 # pexepect can be a f-string or the direct formula (without {})
                 #p["expected"] = ptype(eval(pexpect,{}, context)) if isinstance(pexpect, str) else pexpect
                 # Previous eval replaced by 2 lines below
-                if not '{' in pexpect: pexpect = f'{{ {pexpect} }}'
-                p["expected"] = ptype(evaluate_fstring(pexpect, context)) if isinstance(pexpect, str) else pexpect
-                #if isinstance(panswer, str) and (panswer.startswith('f"') or panswer.startswith("f'")): 
-                #p["answer"] = str(eval(panswer,{},context))
-                p['answer'] = evaluate_fstring(p['answer'], context) if isinstance(p['answer'], str) else p['answer']
-                p['proposition'] = evaluate_fstring(p['proposition'], context) if isinstance(p['proposition'], str) else p['proposition']
-                p['tip'] = evaluate_fstring(p['tip'], context) if isinstance(p['tip'], str) else p['tip']
+                try:
+                    if not '{' in pexpect: pexpect = f'{{ {pexpect} }}'
+                    p["expected"] = ptype(evaluate_fstring(pexpect, context)) if isinstance(pexpect, str) else pexpect
+                    #if isinstance(panswer, str) and (panswer.startswith('f"') or panswer.startswith("f'")): 
+                    #p["answer"] = str(eval(panswer,{},context))
+                    p['answer'] = evaluate_fstring(p['answer'], context) if isinstance(p['answer'], str) else p['answer']
+                    p['proposition'] = evaluate_fstring(p['proposition'], context) if isinstance(p['proposition'], str) else p['proposition']
+                    p['tip'] = evaluate_fstring(p['tip'], context) if isinstance(p['tip'], str) else p['tip']
+                except:
+                    print('⚠️ ' + _("Error evaluating expressions"))
+                    if len(context) == 0:
+                        print(_("This is a template question, but your context " \
+                        "seems empty (no variables found or passed: check that)"))
             quiz_type = quiz_type.split('-')[0]
             #print(quiz_type, pexpect, propositions, "panswer", panswer, p["answer"])
             

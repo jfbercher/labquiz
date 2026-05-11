@@ -44,7 +44,7 @@ def micro_text_cleaning(text):
     return text
 
 def fix_latex_syntax(text):
-    """
+    r"""
     Standardizes LaTeX delimiters for Streamlit:
     \( math \) -> $math$
     \[ math \] -> $$math$$
@@ -339,7 +339,7 @@ def evaluate_fstring_avant(template, context):
             return str(val)
 
     def process(text, in_math):
-        """
+        r"""
         Substitutes {expr} placeholders in a text segment.
 
         Two behaviours depending on in_math:
@@ -421,7 +421,7 @@ def evaluate_fstring_avant(template, context):
 # ---------------------------------------------------------------------------
 
 def _template_to_py(template, var_names):
-    """
+    r"""
     Converts a template string to a PythonTeX-ready LaTeX string.
 
     Substitution rules (same segmentation as evaluate_fstring):
