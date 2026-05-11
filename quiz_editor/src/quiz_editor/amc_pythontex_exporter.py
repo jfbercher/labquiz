@@ -206,28 +206,21 @@ def convert_to_amc_pytex(data, use_negative_points=True, output_scoring=False):
         if is_template:
             latex_output.extend(_make_pyc_lines(variables, props, q_type))
 
-        #latex_output.append(f'  {q_text}') #First version
-        #This enables to actually expand the fstring even with format marks
-        q_text = process_braces(q_text)
-        latex_output.append(f'  \\py{{%')
-        latex_output.append(f'  rf"{q_text}"')
-        latex_output.append(f'     }}')
+            #latex_output.append(f'  {q_text}') #First version
+            #This enables to actually expand the fstring even with format marks
+            q_text = process_braces(q_text)
+            latex_output.append(f'  \\py{{%')
+            latex_output.append(f'  rf"{q_text}"')
+            latex_output.append(f'     }}')
+        else:
+            latex_output.append(q_text)
 
 
         # --- Propositions ---
         if 'numeric' in q_type:
             # One \AMCnumericChoices per proposition.
             # digits = total digit count (integer + decimal), as required by AMC.
-            '''
-             {%
-  \def\AMCbeginQuestion#1#2{}%
-  \AMCquestionNumberfalse
-      \begin{questionmult}{partie1}
-        Quel est le premier résultat ?
-        \AMCnumericChoices{123}{digits=3}
-      \end{questionmult}
-  }
-            '''
+
             is_multiple = len(props) > 1
             if is_multiple:
                 for i, p in enumerate(props):
@@ -254,11 +247,11 @@ def convert_to_amc_pytex(data, use_negative_points=True, output_scoring=False):
                         latex_output.append('  \AMCquestionNumberfalse')
                         latex_output.append(f'    \\begin{{questionmultx}}{{{q_label}{suffix}}}')
                         latex_output.append(v_prop)
-                        nbch    = len(str(abs(int(val_eval))))
-                        ndec    = len(str(val_eval).split('.')[-1].rstrip('0')) if '.' in str(val_eval) else 0
+                        nbch    = len(str(abs(int(v_exp))))
+                        ndec    = len(str(v_exp).split('.')[-1]) if '.' in str(v_exp) else 0
                         ndigits = nbch + ndec
                         latex_output.append(
-                            f'  \\AMCnumericChoices{{{val_eval}}}'
+                            f'  \\AMCnumericChoices{{{v_exp}}}'
                             f'{{digits={ndigits},decimals={ndec}}}'
                         )
                         latex_output.append('  \end{questionmultx}')
@@ -277,11 +270,11 @@ def convert_to_amc_pytex(data, use_negative_points=True, output_scoring=False):
                     # Static: evaluate as before
                     v_prop, v_exp, v_ans, _, v_tip = processPropositions(p, q_type, context)
                     latex_output.append(v_prop)
-                    nbch    = len(str(abs(int(val_eval))))
-                    ndec    = len(str(val_eval).split('.')[-1].rstrip('0')) if '.' in str(val_eval) else 0
+                    nbch    = len(str(abs(int(v_exp))))
+                    ndec    = len(str(v_exp).split('.')[-1].rstrip('0')) if '.' in str(v_exp) else 0
                     ndigits = nbch + ndec
                     latex_output.append(
-                        f'  \\AMCnumericChoices{{{val_eval}}}'
+                        f'  \\AMCnumericChoices{{{v_exp}}}'
                         f'{{digits={ndigits},decimals={ndec}}}'
                     )
     
