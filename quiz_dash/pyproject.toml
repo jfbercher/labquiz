@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quiz_dash"
-version = "1.0.0"
+version = "1.0.2"
 description = "LabQuiz streamlit-based dashboard that provides live tracking, integrity verification, and automated correction."
 readme = "README.md"
 license = "GPL-3.0-or-later"
