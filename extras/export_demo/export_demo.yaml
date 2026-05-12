@@ -1,0 +1,290 @@
+title: Test
+quiz1:
+  question: 'What are the signal characteristics and the initial objectives described
+    in the $\text{Lab}$ on digital filtering?'
+  propositions:
+    - proposition: 'The studied signal is corrupted by a slow drift ($\text{drift}$)
+        of its mean value, a common problem in sensor measurements.'
+      label: 'Signal Corruption'
+      expected: true
+      tip: 'Check the initial description of the signal.'
+      answer: 'The signal is corrupted by a slow drift, which is a common problem
+        with sensor measurements.'
+    - proposition: 'The signal is periodic with a period of about $40 \text{ Hz}$
+        in the frequency domain.'
+      label: 'Periodicity Units'
+      expected: false
+      tip: 'The period is a time measurement, not a frequency measurement.'
+      answer: 'The signal is periodic with a period of about 40 in the time domain,
+        and not in frequencies.'
+    - proposition: 'One of the objectives of the $\text{Lab}$ is to design a filter
+        to remove this slow drift.'
+      label: 'Drift Removal Goal'
+      expected: true
+      tip: 'The first filtering objective is the removal of the drift.'
+      answer: 'A first filter will be designed in order to remove this drift.'
+    - proposition: 'The sampling frequency specified for the signal analysis is $\text{Fs}=800
+        \text{ Hz}$.'
+      label: 'Sampling Frequency'
+      expected: false
+      tip: 'Check the numerical value of the sampling frequency.'
+      answer: 'The specified sampling frequency is $\text{Fs}=8000 \text{ Hz}$.'
+  type: mcq
+  label: q:quiz1
+  category: essai
+  tags:
+    - tag
+quiz2:
+  question: 'According to the time and frequency analysis of signal $\text{x}$, which
+    observations are correct?'
+  propositions:
+    - proposition: 'The time signal $\text{x}$ is approximately periodic with a period
+        of about $40$ samples.'
+      label: 'Time Periodicity'
+      expected: true
+      tip: 'The analysis of the signal in the time domain is described.'
+      answer: 'We observe an approximately periodic time series, with a period of
+        about 40.'
+    - proposition: 'The analysis of the $\text{FT}$ shows only the slow drift component
+        without any other spectral lines.'
+      label: 'FT Content'
+      expected: false
+      tip: 'The signal contains several frequency components.'
+      answer: 'The $\text{FT}$ shows a series of regularly spaced spectral lines and
+        a slow drift (average value).'
+    - proposition: 'The Fourier Transform ($\text{FT}$) of the signal consists of
+        a series of regularly spaced spectral lines, indicating a periodic underlying
+        signal.'
+      label: 'FT Periodicity'
+      expected: true
+      tip: 'The appearance of the $\text{FT}$ is related to the periodicity of the
+        signal.'
+      answer: 'We see that the Fourier Transform consists of a series of regularly
+        spaced spectral lines, which is an indication that the underlying signal is
+        periodic.'
+    - proposition: 'The $\text{FT}$ of the signal shows a spectral peak spacing of
+        $0.025$ in non-normalized frequencies (Hertz).'
+      label: 'FT Spacing Units'
+      expected: false
+      tip: 'The spacing is given in normalized frequencies.'
+      answer: 'The peaks are spaced by $0.025$ in normalized frequencies.'
+  type: mcq
+  label: q:quiz2
+quiz54:
+  question: "This is a numeric question where you must calculate the sum and difference
+    of {a:.4f} and {b:.4f}"
+  type: "numeric-template"
+  propositions:
+    - proposition: "Sum: "
+      label: "somme"
+      type: "float"
+      expected: round(a+b, 4)
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: The sum of {a:.4f} and {b:.4f} is {a+b:.4f}
+    - proposition: "Difference: "
+      label: "difference"
+      type: "float"
+      expected: round(a-b, 4)
+      tolerance: 0.01
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: The difference of {a:.4f} and {b:.4f} is {a-b:.4f}'
+  label: q:quiz54
+  variables:
+    a:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: 0.33234560540937563
+    b:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: 1.7815305323202746
+quiz59:
+  question: "Please enter the mean and standard deviation values of the time series
+    above"
+  type: "numeric"
+  propositions:
+    - proposition: "Standard deviation "
+      label: "sigma"
+      type: "numeric"
+      expected: 1.0
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: The standard deviation is 1
+    - proposition: "Mean: "
+      label: "moyenne"
+      type: "numeric"
+      expected: 0.0
+      tolerance: 0.05
+      tolerance_abs: 0.01
+      tip: "Enter the value"
+      answer: The mean is 0
+  label: q:quiz59
+quiz63:
+  type: mcq-template
+  question: What is the derivative of $x^n$, with n={n}, that is  $x^{n}$,
+  propositions:
+    - label: wrong2
+      proposition: The derivative is $\frac 1{n-1} x^{n-1}$
+      expected: 'False'
+      answer: ''
+      tip: ''
+    - proposition: The derivative is ${n} x^{n-1}$
+      expected: 'True'
+      label: correct_derivative
+      answer: ''
+      tip: ''
+    - label: wrong
+      proposition: The derivative is $\frac{1}{n} x^{n}$
+      expected: 'False'
+      answer: ''
+      tip: ''
+    - label: wrong3
+      proposition: The derivative is ${n-1} x^{n-1}$
+      expected: 'False'
+      answer: ''
+      tip: ''
+  label: q:quiz63
+  variables:
+    n:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(1, 10)
+      preview: 5
+quiz79:
+  type: numeric-template
+  question: "Consider the following *confusion matrix*: \n\nTrue/Predict | 0 | 1 |\n\
+    --- | -- | --| \n0 | {TN}| {FP}|\n1 | {FN}| {TP}|"
+  propositions:
+    - proposition: Give the accuracy (tolerance $\pm$ 0.01)
+      expected: round((TP+TN)/(TP+TN+FP+FN), 3)
+      label: p-accuracy
+      tip: ''
+      answer: The answer is (TP+TN)/(TP+TN+FP+FN), that is 
+        {(TP+TN)/(TP+TN+FP+FN)}
+    - label: p-recall
+      proposition: Give the recall (tolerance $\pm$ 0.01)
+      tip: ''
+      answer: 'The answer is (TP)/(TP+FN), that is {(TP)/(TP+FN)}'
+      expected: round(TP/(TP+FN), 3)
+  label: q:quiz79
+  variables:
+    FN:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 10)
+      preview: 5
+    FP:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 10)
+      preview: 8
+    TN:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 50)
+      preview: 20
+    TP:
+      type: int
+      structure: scalar
+      engine: numpy rng.
+      call: integers(0, 50)
+      preview: 6
+  category: test
+quiz81:
+  type: numeric-template
+  question: "Consider a scatter plot such as the one shown in the figure \n\n![Scatter
+    plot](./Figure_1.png){width=38%} \n\nWe perform a linear regression `reg`, which
+    yields \n- `reg.intercept_`  = {w0:.3f} and \n- `reg.coef_` =  {abs(w1):.3f}.\
+    \ \nFor a new observation x = {x:.3f}, what would be the value predicted by the
+    model?"
+  propositions:
+    - proposition: 'The predicted value is '
+      expected: 'round(round(abs(w1),3)*round(x,3) + round(w0,3),3)'
+      label: ''
+      tip: ''
+      answer: "The predicted value is simply computed as $y = a x + b$, with $a=$
+        `reg.coef_` = {abs(w1):.3f} and $b=$ `reg_intercept_` = {w0:.3f}, that is\
+        \ \n{round(abs(w1),3)*round(x,3) + round(w0,3):.3f}"
+  variables:
+    w0:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -2.0561276487991136
+    w1:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -0.1783501903554115
+    x:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: 1.3282254637226796
+  label: q:quiz81
+  category: test
+quiz82:
+  type: mcq-template
+  question: "Consider the simple regression  model \n$$\ny = \\alpha x + \\beta\n\
+    $$\nwith $\\alpha={round(a,3)}$ and $\\beta={round(b,3)}$"
+  propositions:
+    - label: eval1
+      proposition: "For x={round(x,3)}, the prediction is {round(a,3)*round(x,3) +
+        round(b,3) :.3f}  \n"
+      tip: ''
+      answer: Prediction is simply computed by $y = \alpha x + \beta$
+      expected: 'True'
+    - label: eval2
+      proposition: For x={round(x2,3)}, the prediction is 
+        {round(b,3)*round(x2,3) + round(a,3) :.3f}
+      tip: ''
+      answer: 'Prediction is simply computed by $y = \alpha x + \beta$ '
+      expected: 'False'
+    - proposition: The slope is positive
+      expected: a > 0
+      label: positive_slope
+      tip: ''
+      answer: The slope is actually {'not' if a<0 else ''} positive, since it is
+        equal to $\alpha$={a:.3f}
+  variables:
+    a:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -0.31234795955119354
+    b:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -0.03192730766032284
+    x:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: 0.916281444619562
+    x2:
+      type: float
+      structure: scalar
+      engine: numpy rng.
+      call: normal(0, 1)
+      preview: -0.2360367947963653
+  label: q:quiz82
+  category: test

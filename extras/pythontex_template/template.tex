@@ -1,0 +1,124 @@
+%%AMC:preprocess_command=/home/bercherj/JFB/JFB/prePythonTex4AMC
+%%AMC:jobspecific=1
+%%AMC:latex_engine=pdflatex --shell-escape
+
+\documentclass{article}
+%\documentclass[a4paper, 9pt]{extarticle}
+\usepackage[utf8x]{inputenc}
+\usepackage{automultiplechoice}
+\usepackage{amsmath}
+\usepackage{pythontex}
+% fp is needed by AMC for numerical question with float. Need to be commented for amc2moodle usage (fp is not yet supported)
+\usepackage{fp}
+%\usepackage{longtable}
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}   
+
+\providecommand{\pandocbounded}[1]{%
+  \begingroup
+  \setlength{\fboxsep}{0pt}%
+  \setlength{\fboxrule}{0pt}%
+  \makeatletter
+  \def\Gin@maxheight{\textheight}%
+  \def\Gin@maxwidth{\textwidth}%
+  #1%
+  \makeatother
+  \endgroup
+}
+\newcounter{none}  % used in longtables (pandoc)
+
+% Redefine longtable environment
+\newenvironment{longtable}{\begin{center}\begin{tabular}}{\hline\end{tabular}\end{center}}
+% Redefine rules
+\def\endhead{}
+\def\endlastfoot{}
+\newcommand{\toprule}[2]{\hline}
+\newcommand{\midrule}[2]{\hline}
+\newcommand{\bottomrule}[2]{\hline}
+
+
+%\geometry{left=1.5cm, right=1.5cm, top=2.5cm, bottom=2cm}
+\geometry{left=2.5cm, right=2.5cm, top=3cm, bottom=2.5cm}
+% --- Compression adjustments ---
+%\AMCinterBrep=8ex     % Minimum space between answer choices
+%\def\AMCbeginQuestion#1#2{\par\noindent{\bf Q.#1} #2 } % Compact question format
+\renewcommand{\baselinestretch}{0.95} % Tighten the overall line spacing slightly
+
+% -----------------------::== newcommands ==::--------------------------
+\newcommand{\feedback}[1]{}
+\newcommand{\MCQtitle}{MCQ DSIA \mbox{Machine Learning 2}}
+\newcommand{\MCQdate}{April 2026}
+\newcommand{\MCQauthor}{Given by \textsc{John Doe}}
+\newcommand{\MCQstudentName}{FAMILY NAME and Firstname}
+
+
+\begin{document}
+
+% PythonTeX import init and random seed initialization
+\begin{pycode}
+import numpy as np
+# Fixes the seed to achieve reproducible results
+np.random.seed(1234) 
+rng = np.random.default_rng(1234)
+\end{pycode}
+
+% -----------------------::== Questions ==::--------------------------
+%
+\input{export_demo_pytex} %quiz_demo}  % Input questions
+
+
+% -----------------------::== Generation of sheets ==::--------------------------
+\onecopy{10}{    	% number of different subjects
+
+\vspace*{.25cm}
+\begin{minipage}{.5\linewidth}
+  \centering\large\bf \MCQtitle \\ \MCQdate \\  \MCQauthor 
+\end{minipage}
+\hfill
+\parbox{.5\linewidth}{
+\MCQstudentName\\[2mm]
+\fbox{\begin{minipage}[c][2cm][c]{\linewidth}
+\namefielddots
+\vspace*{1mm}
+\end{minipage}}
+}
+
+
+%%% end of header
+% -----------------------------------------------------------------------------------------
+\vspace{5mm}
+\hrule\vspace{2mm}
+
+This is a multiple-choice exam with single or multiple correct answers. 
+Multiple-choice questions are indicated by the \multiSymbole{} symbol. 
+For each multiple-choice question, there may be several, one, or no correct answers.
+ 
+Marking incorrect answers will result in a penalty. You must \textbf{check} the appropriate boxes. 
+It is preferable that students use a black or blue pen or B pencil.
+
+\noindent \textbf{Correcting checked boxes}: A checked box can be corrected by ereasing the mark
+with a eraser or white-out fluid. You must not try to draw the boxes back. An alternative to correct 
+checked boxes is to fill them completely (and filling in means filling in the ENTIRE 
+box—no white space left). 
+
+\begin{center}
+    \includegraphics[width=0.8\linewidth]{./encode_amc_answers.png}
+\end{center}
+
+\textbf{Instructions}:
+No documents allowed. The use of electronic calculators and cell phones is forbidden.
+\vspace{2mm}
+\hrule\vspace{2mm}
+% -----------------------------------------------------------------------------------------
+\vspace{5mm}
+
+%\insertgroup{} 
+\insertgroup{nocategory} 
+\insertgroup{test} 
+
+%\clearpage
+%\AMCaddpagesto{12} 
+}
+\end{document}

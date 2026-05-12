@@ -104,8 +104,6 @@ quiz3:
       tip: 'Check the length of the impulse response $\text{g}$.'
       answer: 'The filter $\text{g}$ is implemented as a finite vector of length $\text{L}=40$
         ($\text{g} = \text{np.ones(L)}/\text{L}$), so it is an $\text{FIR}$ filter.'
-  type: mcq
-  label: q:quiz3
 quiz4:
   question: 'What are the Python methods and tools used for the implementation and
     analysis of digital filters?'
@@ -143,8 +141,6 @@ quiz4:
       answer: 'The $\text{lfilter}$ function uses $\text{A}$ even if $\text{A}=1$
         ($\text{FIR}$ case), as in the example $\text{m}_{\text{estimated}} = \text{lfilter}(\text{g},
         1, \text{x})$.'
-  type: mcq
-  label: q:quiz4
 quiz5:
   question: 'What are the characteristics of the implementation of the averaging filter
     ($\text{g}$) and the analysis of its transfer function ($\text{G}$)?'
@@ -178,8 +174,6 @@ quiz5:
       tip: 'The averaging filter extracts the continuous component and the slow drift.'
       answer: 'The averaging filter acts as a low-pass filter because it only preserves
         the frequency around $\text{f}=0$, its role being to extract the drift.'
-  type: mcq
-  label: q:quiz5
 quiz6:
   question: 'What are the properties and the effect of the averaging filter ($\text{g(n)}$)
     in the frequency domain, according to the analysis?'
@@ -212,8 +206,6 @@ quiz6:
       tip: 'The display uses normalized frequencies.'
       answer: 'The plot title is "Transfer Function of the Averaging Filter" and the
         x-axis is labeled "Normalized frequencies".'
-  type: mcq
-  label: q:quiz6
 quiz7:
   question: 'What are the characteristics of the drift subtracting filter ($\text{h}$)
     and the results of the filtering on the corrected signal ($\text{xc}$)?'
@@ -247,8 +239,6 @@ quiz7:
       answer: 'The subtracting filter removes the average (DC), so its gain must be
         zero or very low at $\text{f}=0$. The graph "Transfer Function of the Subtracting
         Filter" (Figure 7) shows zero gain at $\text{f}=0$.'
-  type: mcq
-  label: q:quiz7
 quiz8:
   question: 'Regarding the design of the frequency accentuation filter, which statements
     describing the theory are valid?'
@@ -627,25 +617,25 @@ quiz53:
       call: integers(0, 10)
 quiz54:
   question: "This is a numeric question where you must calculate the sum and difference
-    of {a:.4f} and {b:.4f}"
+    of {a:.2f} and {b:.2f}"
   type: "numeric-template"
   propositions:
     - proposition: "Sum: "
       label: "somme"
       type: "float"
-      expected: round(a+b, 4)
+      expected: f'{a+b:.4f}'
       tolerance: 0.01
       tolerance_abs: 0.01
       tip: "Enter the value"
-      answer: The sum of {a:.4f} and {b:.4f} is {a+b:.4f}
+      answer: The sum of {a:.2f} and {b:.2f} is {a+b:.2f}
     - proposition: "Difference: "
       label: "difference"
       type: "float"
-      expected: round(a-b, 4)
+      expected: f'{a-b:.4f}'
       tolerance: 0.01
       tolerance_abs: 0.01
       tip: "Enter the value"
-      answer: The difference of {a:.4f} and {b:.4f} is {a-b:.4f}'
+      answer: The difference of {a:.2f} and {b:.2f} is {a-b:.2f}'
   label: q:quiz54
   variables:
     a:
@@ -653,13 +643,11 @@ quiz54:
       structure: scalar
       engine: numpy rng.
       call: normal(0, 1)
-      preview: 0.5775972376228028
     b:
       type: float
       structure: scalar
       engine: numpy rng.
       call: normal(0, 1)
-      preview: 0.054606318521788925
 quiz55:
   question: "This is a numeric question where you must provide pi and e"
   type: "numeric"
@@ -761,7 +749,7 @@ quiz59:
     - proposition: "Mean: "
       label: "moyenne"
       type: "numeric"
-      expected: 0.0
+      expected: '0.0'
       tolerance: 0.05
       tolerance_abs: 0.01
       tip: "Enter the value"
@@ -769,7 +757,7 @@ quiz59:
     - proposition: "Standard deviation "
       label: "sigma"
       type: "numeric"
-      expected: 1.0
+      expected: '1.0'
       tolerance: 0.05
       tolerance_abs: 0.01
       tip: "Enter the value"
@@ -795,12 +783,6 @@ quiz61:
       structure: numpy array
       engine: numpy rng.
       call: normal(0, 1, size=5)
-      preview:
-        - -0.3121602051195618
-        - 0.13462043037673524
-        - -1.3673876309696833
-        - -1.2463616207493196
-        - -0.9953787487403468
 quiz62:
   type: mcq-template
   question: a positive, negative question on the sum of {A} and {B}
@@ -822,16 +804,14 @@ quiz62:
       structure: scalar
       engine: numpy rng.
       call: integers(0, 10)
-      preview: 9
     B:
       type: int
       structure: scalar
       engine: numpy rng.
       call: integers(0, 10)
-      preview: 8
 quiz63:
   type: mcq-template
-  question: What is the derivative of $x^n$, with n={n}, that is  $x^{n}$,
+  question: What is the derivative of $x^n$, with n={n}, that is  $x^{n}$, 
   propositions:
     - proposition: The derivative is ${n} x^{n-1}$
       expected: 'True'
@@ -860,7 +840,6 @@ quiz63:
       structure: scalar
       engine: numpy rng.
       call: integers(1, 10)
-      preview: 5
 quiz79:
   type: numeric-template
   question: "Consider the following *confusion matrix*: \n\nTrue/Predict | 0 | 1 |\n\
@@ -884,25 +863,25 @@ quiz79:
       structure: scalar
       engine: numpy rng.
       call: integers(0, 10)
-      preview: 5
+      preview: 1
     FP:
       type: int
       structure: scalar
       engine: numpy rng.
       call: integers(0, 10)
-      preview: 8
+      preview: 2
     TN:
       type: int
       structure: scalar
       engine: numpy rng.
       call: integers(0, 50)
-      preview: 20
+      preview: 25
     TP:
       type: int
       structure: scalar
       engine: numpy rng.
       call: integers(0, 50)
-      preview: 6
+      preview: 5
   category: test
 quiz81:
   type: numeric-template
@@ -925,19 +904,19 @@ quiz81:
       structure: scalar
       engine: numpy rng.
       call: normal(0, 1)
-      preview: -2.0561276487991136
+      preview: -0.22825382672601513
     w1:
       type: float
       structure: scalar
       engine: numpy rng.
       call: normal(0, 1)
-      preview: -0.1783501903554115
+      preview: -1.2973528875683136
     x:
       type: float
       structure: scalar
       engine: numpy rng.
       call: normal(0, 1)
-      preview: 1.3282254637226796
+      preview: -0.6998583478784461
   label: q:quiz81
   category: test
 quiz82:
@@ -969,25 +948,25 @@ quiz82:
       structure: scalar
       engine: numpy rng.
       call: normal(0, 1)
-      preview: -0.31234795955119354
+      preview: 0.21183953425210167
     b:
       type: float
       structure: scalar
       engine: numpy rng.
       call: normal(0, 1)
-      preview: -0.03192730766032284
+      preview: -2.302323305015165
     x:
       type: float
       structure: scalar
       engine: numpy rng.
       call: normal(0, 1)
-      preview: 0.916281444619562
+      preview: -0.8258003938521501
     x2:
       type: float
       structure: scalar
       engine: numpy rng.
       call: normal(0, 1)
-      preview: -0.2360367947963653
+      preview: -1.3159257425583486
   label: q:quiz82
   category: test
-title: Test
+title: Test file

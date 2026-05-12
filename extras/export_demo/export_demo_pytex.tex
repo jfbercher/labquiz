@@ -1,0 +1,269 @@
+
+% --- quiz1 ---
+\element{essai}{
+  \begin{questionmult}{q:quiz1}
+What are the signal characteristics and the initial objectives described in the $\text{Lab}$ on digital filtering?
+    \begin{choices}
+      \correctchoice{The studied signal is corrupted by a slow drift ($\text{drift}$) of its mean value, a common problem in sensor measurements.}
+      %answer: The signal is corrupted by a slow drift, which is a common problem with sensor measurements.
+      %tip: Check the initial description of the signal.
+      \correctchoice{One of the objectives of the $\text{Lab}$ is to design a filter to remove this slow drift.}
+      %answer: A first filter will be designed in order to remove this drift.
+      %tip: The first filtering objective is the removal of the drift.
+      \wrongchoice{The sampling frequency specified for the signal analysis is $\text{Fs}=800 \text{ Hz}$.}
+      %answer: The specified sampling frequency is $\text{Fs}=8000 \text{ Hz}$.
+      %tip: Check the numerical value of the sampling frequency.
+      \wrongchoice{The signal is periodic with a period of about $40 \text{ Hz}$ in the frequency domain.}
+      %answer: The signal is periodic with a period of about 40 in the time domain, and not in frequencies.
+      %tip: The period is a time measurement, not a frequency measurement.
+    \end{choices}
+  \end{questionmult}
+}
+
+% --- quiz2 ---
+\element{nocategory}{
+  \begin{questionmult}{q:quiz2}
+According to the time and frequency analysis of signal $\text{x}$, which observations are correct?
+    \begin{choices}
+      \correctchoice{The time signal $\text{x}$ is approximately periodic with a period of about $40$ samples.}
+      %answer: We observe an approximately periodic time series, with a period of about 40.
+      %tip: The analysis of the signal in the time domain is described.
+      \correctchoice{The Fourier Transform ($\text{FT}$) of the signal consists of a series of regularly spaced spectral lines, indicating a periodic underlying signal.}
+      %answer: We see that the Fourier Transform consists of a series of regularly spaced spectral lines, which is an indication that the underlying signal is periodic.
+      %tip: The appearance of the $\text{FT}$ is related to the periodicity of the signal.
+      \wrongchoice{The $\text{FT}$ of the signal shows a spectral peak spacing of $0.025$ in non-normalized frequencies (Hertz).}
+      %answer: The peaks are spaced by $0.025$ in normalized frequencies.
+      %tip: The spacing is given in normalized frequencies.
+      \wrongchoice{The analysis of the $\text{FT}$ shows only the slow drift component without any other spectral lines.}
+      %answer: The $\text{FT}$ shows a series of regularly spaced spectral lines and a slow drift (average value).
+      %tip: The signal contains several frequency components.
+    \end{choices}
+  \end{questionmult}
+}
+
+% --- quiz54 (pythontex template) ---
+\element{nocategory}{
+  \begin{questionmultx}{q:quiz54}
+  \pyc{a = rng.normal(0, 1)}
+  \pyc{b = rng.normal(0, 1)}
+  \pyc{expected_0 = round(a+b, 4)}
+  \pyc{_nbch_0 = len(str(abs(int(expected_0))))}
+  \pyc{_ndec_0 = len(str(expected_0).split(".")[-1].rstrip("0")) if "." in str(expected_0) else 0}
+  \pyc{_ndigits_0 = _nbch_0 + _ndec_0}
+  \pyc{expected_1 = round(a-b, 4)}
+  \pyc{_nbch_1 = len(str(abs(int(expected_1))))}
+  \pyc{_ndec_1 = len(str(expected_1).split(".")[-1].rstrip("0")) if "." in str(expected_1) else 0}
+  \pyc{_ndigits_1 = _nbch_1 + _ndec_1}
+  \py{%
+  rf"This is a numeric question where you must calculate the sum and difference of {a:.4f} and {b:.4f}"
+     }
+  {%
+  \def\AMCbeginQuestion#1#2{}%
+  \AMCquestionNumberfalse
+    \begin{questionmultx}{q:quiz54_0}
+Sum: 
+      \pys{\AMCnumericChoices{!{expected_0}}{digits=!{_ndigits_0},decimals=!{_ndec_0}}}
+  \end{questionmultx}
+  }
+  {%
+  \def\AMCbeginQuestion#1#2{}%
+  \AMCquestionNumberfalse
+    \begin{questionmultx}{q:quiz54_1}
+Difference: 
+      \pys{\AMCnumericChoices{!{expected_1}}{digits=!{_ndigits_1},decimals=!{_ndec_1}}}
+  \end{questionmultx}
+  }
+  \end{questionmultx}
+}
+
+% --- quiz59 ---
+\element{nocategory}{
+  \begin{questionmultx}{q:quiz59}
+Please enter the mean and standard deviation values of the time series above
+  {%
+  \def\AMCbeginQuestion#1#2{}%
+  \AMCquestionNumberfalse
+    \begin{questionmultx}{q:quiz59_0}
+Mean: 
+  \AMCnumericChoices{0.0}{digits=2,decimals=1}
+  \end{questionmultx}
+  }
+  {%
+  \def\AMCbeginQuestion#1#2{}%
+  \AMCquestionNumberfalse
+    \begin{questionmultx}{q:quiz59_1}
+Standard deviation 
+  \AMCnumericChoices{1.0}{digits=2,decimals=1}
+  \end{questionmultx}
+  }
+  \end{questionmultx}
+}
+
+% --- quiz63 (pythontex template) ---
+\element{nocategory}{
+  \begin{questionmult}{q:quiz63}
+  \pyc{n = rng.integers(1, 10)}
+  \pyc{v_exp_0 = bool(True)}
+  \pyc{v_exp_1 = bool(False)}
+  \pyc{v_exp_2 = bool(False)}
+  \pyc{v_exp_3 = bool(False)}
+  \py{%
+  rf"What is the derivative of $x^n$, with n={n}, that is  $x^{{{n}}}$,"
+     }
+    \begin{choices}
+\py{%
+    rf"\correctchoice{{ The derivative is ${n} x^{{{n-1}}}$ }}"
+    if v_exp_0
+    else
+    rf"\wrongchoice{{ The derivative is ${n} x^{{{n-1}}}$ }}"
+    }
+      %answer: 
+      %tip: 
+\py{%
+    rf"\correctchoice{{ The derivative is $\frac{{{1}}}{{{n}}} x^{{{n}}}$ }}"
+    if v_exp_1
+    else
+    rf"\wrongchoice{{ The derivative is $\frac{{{1}}}{{{n}}} x^{{{n}}}$ }}"
+    }
+      %answer: 
+      %tip: 
+\py{%
+    rf"\correctchoice{{ The derivative is $\frac 1{{{n-1}}} x^{{{n-1}}}$ }}"
+    if v_exp_2
+    else
+    rf"\wrongchoice{{ The derivative is $\frac 1{{{n-1}}} x^{{{n-1}}}$ }}"
+    }
+      %answer: 
+      %tip: 
+\py{%
+    rf"\correctchoice{{ The derivative is ${n-1} x^{{{n-1}}}$ }}"
+    if v_exp_3
+    else
+    rf"\wrongchoice{{ The derivative is ${n-1} x^{{{n-1}}}$ }}"
+    }
+      %answer: 
+      %tip: 
+    \end{choices}
+  \end{questionmult}
+}
+
+% --- quiz79 (pythontex template) ---
+\element{test}{
+  \begin{questionmultx}{q:quiz79}
+  \pyc{FN = rng.integers(0, 10)}
+  \pyc{FP = rng.integers(0, 10)}
+  \pyc{TN = rng.integers(0, 50)}
+  \pyc{TP = rng.integers(0, 50)}
+  \pyc{expected_0 = round(TP/(TP+FN), 3)}
+  \pyc{_nbch_0 = len(str(abs(int(expected_0))))}
+  \pyc{_ndec_0 = len(str(expected_0).split(".")[-1].rstrip("0")) if "." in str(expected_0) else 0}
+  \pyc{_ndigits_0 = _nbch_0 + _ndec_0}
+  \pyc{expected_1 = round((TP+TN)/(TP+TN+FP+FN), 3)}
+  \pyc{_nbch_1 = len(str(abs(int(expected_1))))}
+  \pyc{_ndec_1 = len(str(expected_1).split(".")[-1].rstrip("0")) if "." in str(expected_1) else 0}
+  \pyc{_ndigits_1 = _nbch_1 + _ndec_1}
+  \py{%
+  rf"Consider the following \emph{{confusion matrix}}:
+{{\def\LTcaptype{{none}} % do not increment counter
+\begin{{longtable}}{{|l|l|l|}}
+\toprule\noalign{{}}
+True/Predict & 0 & 1 \\
+\midrule\noalign{{}}
+\endhead
+\bottomrule\noalign{{}}
+\endlastfoot
+0 & {TN} & {FP} \\
+1 & {FN} & {TP} \\
+\end{{longtable}}
+}}"
+     }
+  {%
+  \def\AMCbeginQuestion#1#2{}%
+  \AMCquestionNumberfalse
+    \begin{questionmultx}{q:quiz79_0}
+Give the recall (tolerance $\pm$ 0.01)
+      \pys{\AMCnumericChoices{!{expected_0}}{digits=!{_ndigits_0},decimals=!{_ndec_0}}}
+  \end{questionmultx}
+  }
+  {%
+  \def\AMCbeginQuestion#1#2{}%
+  \AMCquestionNumberfalse
+    \begin{questionmultx}{q:quiz79_1}
+Give the accuracy (tolerance $\pm$ 0.01)
+      \pys{\AMCnumericChoices{!{expected_1}}{digits=!{_ndigits_1},decimals=!{_ndec_1}}}
+  \end{questionmultx}
+  }
+  \end{questionmultx}
+}
+
+% --- quiz81 (pythontex template) ---
+\element{test}{
+  \begin{questionmultx}{q:quiz81}
+  \pyc{w0 = rng.normal(0, 1)}
+  \pyc{w1 = rng.normal(0, 1)}
+  \pyc{x = rng.normal(0, 1)}
+  \pyc{expected = round(round(abs(w1),3)*round(x,3) + round(w0,3),3)}
+  \pyc{_nbch = len(str(abs(int(expected))))}
+  \pyc{_ndec = len(str(expected).split(".")[-1].rstrip("0")) if "." in str(expected) else 0}
+  \pyc{_ndigits = _nbch + _ndec}
+  \py{%
+  rf"Consider a scatter plot such as the one shown in the figure
+\begin{{center}}
+\includegraphics[width=0.38\linewidth,height=\textheight,keepaspectratio,alt={{Scatter plot}}]{{./Figure_1.png}}
+\\[-0.6em]
+{{\small Figure:~ \itshape Scatter plot}}
+\end{{center}}
+We perform a linear regression \texttt{{reg}}, which yields - \texttt{{reg.intercept\_}} = {w0:.3f} and - \texttt{{reg.coef\_}} = {abs(w1):.3f}. For a new observation x = {x:.3f}, what would be the value predicted by the model?"
+     }
+Give the accuracy (tolerance $\pm$ 0.01)
+    \pys{\AMCnumericChoices{!{expected}}{digits=!{_ndigits},decimals=!{_ndec}}}
+  \end{questionmultx}
+}
+
+% --- quiz82 (pythontex template) ---
+\element{test}{
+  \begin{questionmult}{q:quiz82}
+  \pyc{a = rng.normal(0, 1)}
+  \pyc{b = rng.normal(0, 1)}
+  \pyc{x = rng.normal(0, 1)}
+  \pyc{x2 = rng.normal(0, 1)}
+  \pyc{v_exp_0 = bool(False)}
+  \pyc{v_exp_1 = bool(True)}
+  \pyc{v_exp_2 = bool(a > 0)}
+  \py{%
+  rf"Consider the simple regression  model 
+$$
+y = \alpha x + \beta
+$$
+with $\alpha={{{round(a,3)}}}$ and $\beta={{{round(b,3)}}}$"
+     }
+    \begin{choices}
+\py{%
+    rf"\correctchoice{{ For x={round(x2,3)}, the prediction is {round(b,3)*round(x2,3) + round(a,3) :.3f} }}"
+    if v_exp_0
+    else
+    rf"\wrongchoice{{ For x={round(x2,3)}, the prediction is {round(b,3)*round(x2,3) + round(a,3) :.3f} }}"
+    }
+      %answer: Prediction is simply computed by $y = \alpha x + \beta$ 
+      %tip: 
+\py{%
+    rf"\correctchoice{{ For x={round(x,3)}, the prediction is {round(a,3)*round(x,3) + round(b,3) :.3f}  
+ }}"
+    if v_exp_1
+    else
+    rf"\wrongchoice{{ For x={round(x,3)}, the prediction is {round(a,3)*round(x,3) + round(b,3) :.3f}  
+ }}"
+    }
+      %answer: Prediction is simply computed by $y = \alpha x + \beta$
+      %tip: 
+\py{%
+    rf"\correctchoice{{ The slope is positive }}"
+    if v_exp_2
+    else
+    rf"\wrongchoice{{ The slope is positive }}"
+    }
+      %answer: The slope is actually {'not' if a<0 else ''} positive, since it is equal to $\alpha$={a:.3f}
+      %tip: 
+    \end{choices}
+  \end{questionmult}
+}
