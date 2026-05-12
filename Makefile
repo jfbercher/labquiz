@@ -104,11 +104,12 @@ version:
 
 # ===== BUILD / PUBLISH =====
 
+# Previous build
+# 		# cd $$p && $(PYTHON) -m build && cd -; \
+
 build:
-	echo "Building targets: $(shell cat .targets)"
-	@for p in $$(cat .targets); do \
-		echo "Building $$p"; \
-		# cd $$p && $(PYTHON) -m build && cd -; \
+	@echo "Building targets: $(shell cat .targets)"
+	for p in $$(cat .targets); do \
 		echo "Building $$p"; \
 		$(MAKE) -C $$p release_simple; \
 		echo "$$(git rev-parse HEAD)" > .$$p\_last_release_commit; \
@@ -169,6 +170,10 @@ release: clean resolve_targets version build publish update-meta bump-meta build
 	@echo "✅ Release complete"
 
 release-without-version-nor-publish: clean resolve_targets build update-meta build-meta 
+	@rm -f .targets
+	@echo "✅ Release complete"
+
+release-without-version-but-publish: clean resolve_targets build publish update-meta build-meta publish-meta 
 	@rm -f .targets
 	@echo "✅ Release complete"
 
