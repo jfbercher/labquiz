@@ -58,7 +58,8 @@ To display a table of contents, press the table of contents button on the left; 
 # First examples
 
 *Quizzes* are integrated into the subject throughout the tutorial or practical exercise, based on a questionnaire prepared in advance.
-A first example to illustrate a multiple-choice quiz, with tips and corrections:
+
+👉🏼 A first example to illustrate a multiple-choice quiz, with tips and corrections:
  
 :::{figure} doc_images/quiz2.gif
 :label: fig1
@@ -69,7 +70,7 @@ A first example to illustrate a multiple-choice quiz, with tips and corrections:
 Question during the lab session
 :::
 
-Second example with numerical values
+👉🏼 Second example with numerical values
 :::{figure} doc_images/quiz59.gif
 :name: quiz2
 :label:fig2
@@ -78,8 +79,41 @@ Second example with numerical values
 :width: 60%
 Another question during the practical work
 :::
-
 (with the quiz blocked if the answer has already been submitted! 😊)
+
+👉🏼 Following examples present **template-based questions** (use of values passed from notebook's context, or dynamically generated)
+
+:::{figure} doc_images/con_matrix_nb.gif
+:name: quiz2b
+:label:fig2b
+:alt: Quiz example
+:align: center
+:width: 60%
+Example of confusion matrix with dynamic counts (and expected values)
+:::
+
+:::{figure} doc_images/reglin_nb.gif
+:name: quiz2c
+:label:fig2c
+:alt: Quiz example
+:align: center
+:width: 60%
+Example of linear regression - computation of prediction with dynamic variables
+:::
+
+:::{figure} doc_images/reglin_slope_nb.gif
+:name: quiz2d
+:label:fig2d
+:alt: Quiz example
+:align: center
+:width: 60%
+MCQ for a linear regression example
+:::
+
+
+
+
+
 ```{warning} Connected mode
 **In connected mode**, i.e. as soon as a valid URL has been passed during initialization
 - all entries (Validate, Correct) are recorded and transmitted,

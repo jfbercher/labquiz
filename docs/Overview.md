@@ -17,7 +17,7 @@ exports:
 ---
 
 
-**LabQuiz** is a Python package that allows you to seamlessly integrate interactive quizzes directly into Jupyter notebooks — useful for labs, tutorials, practical assignments, continuous assessment, and controlled exams.
+**labquiz** is a Python package that allows you to seamlessly integrate interactive quizzes directly into Jupyter notebooks — useful for labs, tutorials, practical assignments, continuous assessment, and controlled exams.
 
 It combines:
 
@@ -34,6 +34,8 @@ And it comes with two optional companion tools:
 
 * ✏️ **`quiz_editor`** — Create, edit, encrypt, and export question banks
 * 📊 **`quiz_dash`** — Monitor, correct, and analyze results in real time
+
+Together, these components make up the **LabQuiz** ecosystem, which is distributed as a bundle, `labquizbundle`. 
 ---
 
 ```mermaid
@@ -155,7 +157,11 @@ quiz.show("quiz1")
 
 ## Template-based question (dynamic variables)
 
-![Template Example](doc_images/quiz54.png)
+![Template Example](doc_images/con_matrix_nb.gif)
+
+![Template Example](doc_images/reglin_nb.gif)
+
+![Template Example](doc_images/reglin_slope_nb.gif)
 
 ---
 
@@ -249,11 +255,11 @@ quiz = QuizLab(URL, QUIZFILE,
 
 ## ✏️ `quiz_editor` — Build & Export Question Banks
 
-Creating YAML files manually works — but **`quiz_editor` is intended to makes it easier.** It can also be useful outside ob LabQuiz as a general quiz-editor with export capabilities.
+Creating YAML files manually is possible — but **`quiz_editor` is intended to make it easier.** It can also be useful outside of LabQuiz as a general quiz-editor with export capabilities and large markdown support (including images, tables, equations, etc).
 
 ### Key features:
 
-* Visual question editing (MCQ, numeric, templates)
+* Visual question editing (MCQ, numeric, templates) 
 * Categories & tags
 * Variable generation for templates
 * Bonus / malus configuration
@@ -262,9 +268,9 @@ Creating YAML files manually works — but **`quiz_editor` is intended to makes 
 
   * ✅ YAML
   * 🔐 Encrypted version
-  * 🌍 Interactive HTML (training mode)
+  * 🌍 Interactive HTML (training mode), with dynamic support for regenerating variable values in template questions 
   * 📝 HTML exam version (Google Sheet connected)
-  * 📄 AMC–LaTeX format (paper exams)
+  * 📄 AMC–LaTeX format (paper exams), static and dynamic versions (using pythonTeX)
 
 Online version:
 👉 [https://jfb-quizeditor.streamlit.app/](https://jfb-quizeditor.streamlit.app/)
@@ -346,7 +352,7 @@ Online tools:
 
 See:
 
-* `labQuizDemo.ipynb` in `extras/`
+* `labQuizDemo_en.ipynb` in `extras/`
 * 👉🏼 `Live version` 👈  Try it in [binder](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb) 
 
 ---
