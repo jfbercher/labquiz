@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "labquiz"
-version = "1.0.0"
+version = "1.1.0"
 description = "LabQuiz is a Python package that allows to integrate interactive quizzes directly into Jupyter notebooks — useful for labs, tutorials, practical assignments, continuous assessment, and controlled exams"
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -20,10 +20,11 @@ dependencies = [
     "numpy",
     "pandas",
     "requests",
+    "markdown",
     #"google-auth",
     #"google-auth-oauthlib"
 ]
-keywords = ["quizzes", "jupyter", "hash:9cfe08c717ef0cda7deb1b8da057475804b4ef2e527e53f6af1bcdab9b9d6660"]
+keywords = ["quizzes", "jupyter", "hash:ff8deecf5eb0fb3ce77cfd535b52217e3ed0a2675aba87842ef21a9032203046"]
 
 classifiers = [
     # État de développement (3 - Alpha, 4 - Beta, 5 - Production/Stable)
