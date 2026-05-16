@@ -36,6 +36,7 @@ And it comes with two optional companion tools:
 * 📊 **`quiz_dash`** — Monitor, correct, and analyze results in real time
 
 Together, these components make up the **LabQuiz** ecosystem, which is distributed as a bundle, `labquizbundle`. 
+
 ---
 
 ```mermaid
@@ -81,6 +82,7 @@ flowchart LR
 Figure: Overview of the `LabQuiz` ecosystem. Dashed arrows indicate optional components. YAML quizzes drive both interactive notebooks and exports, monitored via a dashboard producing analytics, marks tables, and student reports.
 
 ---
+
 * 👉🏼 `Live version`  Try it in [binder](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb) 
 * `Installation`: 
   All packages can be installed at once (`labquiz`, `quiz_editor` and `quiz_dash`)
