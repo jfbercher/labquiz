@@ -326,9 +326,11 @@ Perfect for fully web-based lab environments.
 
 📦 Repositories:
 
-* [https://github.com/jfbercher/labquiz](https://github.com/jfbercher/labquiz)
-* [https://github.com/jfbercher/quiz_editor](https://github.com/jfbercher/quiz_editor)
-* [https://github.com/jfbercher/quiz_dash](https://github.com/jfbercher/quiz_dash)
+[https://github.com/jfbercher/labquiz](https://github.com/jfbercher/labquiz) is a multipackage repository, that includes the [bundle](https://github.com/jfbercher/labquiz/tree/main/meta), and
+
+* [the `labquiz` notebook package](https://github.com/jfbercher/labquiz/tree/main/quiz_nb), 
+* [the `quiz_editor` package](https://github.com/jfbercher/labquiz/tree/main/quiz_editor), 
+* [the `quiz_editor` package](https://github.com/jfbercher/labquiz/tree/main/quiz_dash)
 
 Online tools:
 
