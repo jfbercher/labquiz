@@ -2,6 +2,7 @@
 [![Python versions](https://img.shields.io/pypi/pyversions/labquizbundle.svg)](https://pypi.org/project/labquizbundle/)
 [![License](https://img.shields.io/pypi/l/labquizbundle.svg)](https://pypi.org/project/labquizbundle/)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb)
+[![Jose status](https://jose.theoj.org/papers/6cf5eb865a9ae12e9b6e20ad585e9403/status.svg)](https://jose.theoj.org/papers/6cf5eb865a9ae12e9b6e20ad585e9403)
 [![Documentation Status](https://readthedocs.org/projects/labquiz/badge/?version=latest)](https://labquiz.readthedocs.io/en/latest/)   
 
 Sponsor:
