@@ -306,6 +306,8 @@ It connects to your Google Sheet backend and provides:
 Online version:
 👉 [https://jfb-quizdash.streamlit.app/](https://jfb-quizdash.streamlit.app/)
 
+![Dashboard](doc_images/Monitoring_quizzes_2.png)
+
 ![Dashboard](doc_images/Monitoring_marks.png)
 
 
