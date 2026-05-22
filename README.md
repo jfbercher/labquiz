@@ -11,9 +11,11 @@ Sponsor:
 
 
 
-**LabQuiz** is a Python package that allows to seamlessly integrate interactive quizzes directly into Jupyter notebooks — useful for labs, tutorials, practical assignments, continuous assessment, and controlled exams.
+**labquiz** is a Python package that allows to seamlessly integrate interactive quizzes directly into Jupyter notebooks — useful for labs, tutorials, practical assignments, continuous assessment, and controlled exams.
 
 * 👉🏼 `Live version`  Try it in [binder](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb) ! 
+* 📑 `Documentation` available at [readthedocs](https://labquiz.readthedocs.io/en/latest/)
+
 
 It combines:
 
@@ -28,9 +30,13 @@ It combines:
 
 And it comes with two optional companion tools:
 
-* ✏️ **`quiz_editor`** — Create, edit, encrypt, and export question banks [streamlit app](https://jfb-quizeditor.streamlit.app/) | [src code](https://github.com/jfbercher/labquiz/tree/main/quiz_editor)
-* 📊 **`quiz_dash`** — Monitor, correct, and analyze results in real time [streamlit app](https://jfb-quizdash.streamlit.app/) | [src code](https://github.com/jfbercher/labquiz/tree/main/quiz_dash)
+* ✏️ **`quiz_editor`** — Create, edit, encrypt, and export question banks
+* 📊 **`quiz_dash`** — Monitor, correct, and analyze results in real time
+
+Together, these components make up the **LabQuiz** ecosystem, which is distributed as a bundle, `labquizbundle`. 
+
 ---
+
 ```mermaid
 flowchart LR
     %% Nodes
@@ -71,18 +77,26 @@ flowchart LR
     class F,G,H outputs;
     class I,J export;
 ```
-
 Figure: Overview of the `LabQuiz` ecosystem. Dashed arrows indicate optional components. YAML quizzes drive both interactive notebooks and exports, monitored via a dashboard producing analytics, marks tables, and student reports.
 
 ---
 
 * `Installation`: 
+  All packages can be installed at once (`labquiz`, `quiz_editor` and `quiz_dash`)
 ```bash
-# From source
-   pip install git+https://github.com/jfbercher/labquiz.git
-# or from PyPI
+# From PyPI
    pip install labquizbundle
 ```
+or individually, e.g.
+```bash
+   pip install labquiz
+```
+They can also be installed from source e.g.
+```bash
+# From source
+pip install git+https://github.com/jfbercher/labquiz.git#subdirectory=quiz_editor
+```
+with subdirectories `meta` (the bundle) , `quiz_nb` (for `labquiz`), `quiz_editor` and `quiz_dash`. 
 
 ---
 
@@ -134,15 +148,19 @@ quiz.show("quiz1")
 ## Multiple-choice question (with hints & correction)
 
 
-![MCQ Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz2.gif)
+![MCQ Example](doc_images/quiz2.gif)
 
 ## Numerical question
 
-![Numeric Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz59.gif)
+![Numeric Example](doc_images/quiz59.gif)
 
 ## Template-based question (dynamic variables)
 
-![Template Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz54.gif)
+![Template Example](doc_images/con_matrix_nb.gif)
+
+![Template Example](doc_images/reglin_nb.gif)
+
+![Template Example](doc_images/reglin_slope_nb.gif)
 
 ---
 
@@ -201,14 +219,13 @@ LabQuiz also includes multiple anti-cheating mechanisms (Machine fingerprinting,
 
 # ⚙️ Installation
 
-
-From PyPI
+## From PyPI
 
 ```bash
 pip install labquiz
 ```
 
-From source:
+## From source
 
 ```bash
 pip install git+https://github.com/jfbercher/labquiz.git
@@ -237,11 +254,11 @@ quiz = QuizLab(URL, QUIZFILE,
 
 ## ✏️ `quiz_editor` — Build & Export Question Banks
 
-Creating YAML files manually works — but **`quiz_editor` is intended to makes it easier.** It can also be useful outside ob LabQuiz as a general quiz-editor with export capabilities.
+Creating YAML files manually is possible — but **`quiz_editor` is intended to make it easier.** It can also be useful outside of LabQuiz as a general quiz-editor with export capabilities and large markdown support (including images, tables, equations, etc).
 
 ### Key features:
 
-* Visual question editing (MCQ, numeric, templates)
+* Visual question editing (MCQ, numeric, templates) 
 * Categories & tags
 * Variable generation for templates
 * Bonus / malus configuration
@@ -250,9 +267,9 @@ Creating YAML files manually works — but **`quiz_editor` is intended to makes 
 
   * ✅ YAML
   * 🔐 Encrypted version
-  * 🌍 Interactive HTML (training mode)
+  * 🌍 Interactive HTML (training mode), with dynamic support for regenerating variable values in template questions 
   * 📝 HTML exam version (Google Sheet connected)
-  * 📄 AMC–LaTeX format (paper exams)
+  * 📄 AMC–LaTeX format (paper exams), static and dynamic versions (using pythonTeX)
 
 Online version:
 👉 [https://jfb-quizeditor.streamlit.app/](https://jfb-quizeditor.streamlit.app/)
@@ -263,7 +280,7 @@ Install locally:
 pip install quiz-editor
 ```
 
-![Quiz Editor](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz_editor_2.png)
+![Quiz Editor](doc_images/quiz_editor_2.png)
 
 
 ---
@@ -278,22 +295,17 @@ It connects to your Google Sheet backend and provides:
 * Live class overview
 * 👤 Student-by-student monitoring
 * 🔍 Integrity checks (mode changes, retries tampering, hash verification)
-* ⚖ Adjustable grading weights
+* ⚖ Adjustable grading weights and scale
 * 🔄 Automatic recalculation
+* 📔 Full individual corrections available for download
 * 📥 CSV export of results
 
 Online version:
 👉 [https://jfb-quizdash.streamlit.app/](https://jfb-quizdash.streamlit.app/)
 
-Install locally:
+![Dashboard](doc_images/Monitoring_quizzes_2.png)
 
-```bash
-pip install quiz-dash
-```
-
-
-
-![Dashboard](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/Monitoring_marks.png)
+![Dashboard](doc_images/Monitoring_marks.png)
 
 
 ---
@@ -313,10 +325,11 @@ Perfect for fully web-based lab environments.
 
 📦 Repositories:
 
-* [Bundle](https://github.com/jfbercher/labquiz/)
-* [labquiz](https://github.com/jfbercher/labquiz/tree/main/quiz_nb)
-* [quiz_editor](https://github.com/jfbercher/labquiz/tree/main/quiz_editor)
-* [quiz_dash](https://github.com/jfbercher/labquiz/tree/main/quiz_dash)
+[https://github.com/jfbercher/labquiz](https://github.com/jfbercher/labquiz) is a multipackage repository, that includes the [bundle](https://github.com/jfbercher/labquiz/tree/main/meta), and
+
+* [the `labquiz` notebook package](https://github.com/jfbercher/labquiz/tree/main/quiz_nb), 
+* [the `quiz_editor` package](https://github.com/jfbercher/labquiz/tree/main/quiz_editor), 
+* [the `quiz_editor` package](https://github.com/jfbercher/labquiz/tree/main/quiz_dash)
 
 Online tools:
 
@@ -342,7 +355,7 @@ Online tools:
 
 See:
 
-* `labQuizDemo.ipynb` in `extras/`
+* `labQuizDemo_en.ipynb` in `extras/`
 * 👉🏼 `Live version` 👈  Try it in [binder](https://mybinder.org/v2/gh/jfbercher/labquiz/main?urlpath=%2Fdoc%2Ftree%2Fextras%2FlabQuizDemo_en_binder.ipynb) 
 
 ---
