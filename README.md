@@ -148,19 +148,19 @@ quiz.show("quiz1")
 ## Multiple-choice question (with hints & correction)
 
 
-![MCQ Example](doc_images/quiz2.gif)
+![MCQ Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz2.gif)
 
 ## Numerical question
 
-![Numeric Example](doc_images/quiz59.gif)
+![Numeric Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz59.gif)
 
 ## Template-based question (dynamic variables)
 
-![Template Example](doc_images/con_matrix_nb.gif)
+![Template Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/con_matrix_nb.gif)
 
-![Template Example](doc_images/reglin_nb.gif)
+![Template Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/reglin_nb.gif)
 
-![Template Example](doc_images/reglin_slope_nb.gif)
+![Template Example](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/reglin_slope_nb.gif)
 
 ---
 
@@ -280,7 +280,7 @@ Install locally:
 pip install quiz-editor
 ```
 
-![Quiz Editor](doc_images/quiz_editor_2.png)
+![Quiz Editor](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz_editor_2.png)
 
 
 ---
@@ -303,9 +303,9 @@ It connects to your Google Sheet backend and provides:
 Online version:
 👉 [https://jfb-quizdash.streamlit.app/](https://jfb-quizdash.streamlit.app/)
 
-![Dashboard](doc_images/Monitoring_quizzes_2.png)
+![Dashboard](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/Monitoring_quizzes_2.png)
 
-![Dashboard](doc_images/Monitoring_marks.png)
+![Dashboard](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/Monitoring_marks.png)
 
 
 ---
