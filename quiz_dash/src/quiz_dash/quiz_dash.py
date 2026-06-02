@@ -14,6 +14,8 @@ import json
 import re
 import markdown
 
+from datetime import datetime, timedelta
+
 #import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
@@ -76,6 +78,12 @@ def set_defaults():
         st.session_state.monitoring_nav_state = _("📊 Monitoring charts")
     if "correction_nav_state" not in st.session_state:
         st.session_state.correction_nav_state = _("🎯 Correction & Grades")
+    if "participation_quiz_label" not in st.session_state:
+        st.session_state.participation_quiz_label = 'quiz1'
+    if "participation_t0_datetime" not in st.session_state: 
+        st.session_state.participation_t0_datetime = datetime.now() - timedelta(days=1)
+    if "participation_t1_datetime" not in st.session_state:
+        st.session_state.participation_t1_datetime = datetime.now() + timedelta(days=1)
 
 def sync(key):
     global local_storage 
@@ -866,6 +874,87 @@ h1, h2, h3 {
 """
 
 
+def participation_analytics(data, quiz_label, t0, t1):
+    """Analyze quiz attempts with temporal segmentation.
+
+    Args:
+        data: DataFrame with columns 'timestamp', 'quiz_title', 'student'.
+        quiz_label: Name of the quiz to analyze (e.g., 'quiz3').
+        t0: Start datetime of the critical period.
+        t1: End datetime of the critical period.
+
+    Returns:
+        Dictionary with:
+        - all_attempts: Raw attempts.
+        - student_summary: Aggregated metrics per student.
+        - retakes: Students who attempted after t1.
+        - first_attempt_after_t1: Students with first attempt after t1.
+        - after_deadline: All attempts after t1.
+    """
+    
+    df = data.copy()
+
+    # Convert timestamp to datetime and clean UTC notes
+    df['timestamp'] = pd.to_datetime(
+        df["timestamp"].str.replace(r"\s*\(.*\)$", "", regex=True),  # Remove UTC notes like "(UTC+1)"
+        utc=True,
+        errors="coerce"
+    )
+    df['timestamp'] = df['timestamp'].dt.tz_convert('Europe/Paris').dt.tz_localize(None)  # Convert to Paris time and remove timezone
+    df = df.dropna(subset=["timestamp"])  # Remove rows with invalid timestamps
+
+    # --- Time boundaries ---
+    t0 = pd.to_datetime(t0, format="%d/%m/%Y %H:%M:%S")  # Convert t0 to datetime
+    t1 = pd.to_datetime(t1, format="%d/%m/%Y %H:%M:%S")  # Convert t1 to datetime
+
+    # --- Filter quiz attempts ---
+    df = df[df["quiz_title"] == quiz_label]  # Keep only attempts for the specified quiz
+
+    # --- Temporal flags ---
+    df["before_t0"] = df["timestamp"] < t0  # Attempts before t0
+    df["between_t0_t1"] = (df["timestamp"] >= t0) & (df["timestamp"] <= t1)  # Attempts between t0 and t1
+    df["after_t1"] = df["timestamp"] > t1  # Attempts after t1
+
+    # --- Main table (all attempts) ---
+    df_all = df.copy()
+
+    # --- Student-level summary ---
+    grouped = df.groupby("student")
+    df_summary = grouped.agg(
+        total_attempts=("timestamp", "count"),  # Total number of attempts
+        first_attempt=("timestamp", "min"),     # Earliest attempt timestamp
+        last_attempt=("timestamp", "max"),      # Latest attempt timestamp
+        attempted_before_t0=("before_t0", "any"),  # Did the student attempt before t0?
+        attempted_between_t0_t1=("between_t0_t1", "any"),  # Did the student attempt between t0 and t1?
+        attempted_after_t1=("after_t1", "any")  # Did the student attempt after t1?
+    ).reset_index()
+
+    # --- Retakes (attempts after t1) ---
+    df_retakes = df_summary[
+        (df_summary["last_attempt"] > t1) &  # Last attempt after t1
+        (df_summary["first_attempt"] <= t1)  # First attempt before or during t1
+    ].copy()
+
+    # Number of attempts after t1
+    attempts_after_t1 = df[df["after_t1"]].groupby("student").size()
+    df_retakes["retake_count"] = df_retakes["student"].map(attempts_after_t1)  # Number of retakes after t1
+
+    # --- First attempt after t1 ---
+    first_attempt_after_t1 = df_summary[
+        df_summary["first_attempt"] > t1  # First attempt strictly after t1
+    ].copy()
+
+    # --- Detailed attempts after t1 ---
+    after_deadline = df[df["after_t1"]][["student", "timestamp"]].copy()
+
+    return {
+        "all_attempts": df_all,                     # All quiz attempts (raw data)
+        "student_summary": df_summary,              # Summary per student (key metrics)
+        "retakes": df_retakes,                      # Students who retried after t1
+        "first_attempt_after_t1": first_attempt_after_t1,  # Students whose first attempt was after t1
+        "after_deadline": after_deadline      # Detailed list of attempts after t1
+    }
+
 #-------------------------------------------------
 #                      MAIN                      #
 #-------------------------------------------------
@@ -1176,7 +1265,7 @@ def main():
             with tabs_placeholder.container(border=True, key=f"main_frame_{st.session_state.render_id}"): 
                 st.empty()
                 st.markdown(f"### 🛠️ {_('Live monitoring & Correction')}")
-                tab_names = [_("📡 Integrity Live"), _("👀 Monitoring"), _("🎯 Correction & Grades")]
+                tab_names = [_("📡 Integrity Live"), _("👀 Monitoring"), _("🎯 Correction & Grades"), _("⛹🏼‍♀️ Participation analytics")]
                 #selected_tab = st.radio(_("Select a tab"), 
                 #                        tab_names, horizontal=True, 
                 #                        label_visibility="collapsed",
@@ -1640,6 +1729,139 @@ def main():
 
                         else:
                             st.info(_("Full correction must be computed first (see Correction & Grades tab)."))
+
+                ## End of new monitoring tab
+                elif selected_tab == _("⛹🏼‍♀️ Participation analytics"):
+                    
+                    st.subheader( _("⛹🏼‍♀️ Participation analytics"))
+                    #df_last = prepare_monitoring_data(df)
+
+                    with st.expander("📖 Documentation", expanded=False):
+                        st.markdown("""
+ This small dashboard provides some insights into student quiz participation patterns, helping to identify:
+- **Temporal participation trends** (when students attempt quizzes)
+- **Potential academic integrity issues** (late attempts and retakes)
+- **Student engagement behaviors** (early vs late participation)
+
+
+##### 🔍 Analysis
+- **Temporal segmentation** with Customizable Time Periods: Classifies attempts into three phases:
+  - Before official session (t0)
+  - During session window (t0-t1)
+  - After session deadline (t1)
+
+- **Retake detection**: Identifies students who already took the quiz and attempted again after the session, to try to gain a better understanding
+- **First-time after deadline**: Highlights students whose initial attempt was post-deadline
+- **Late attempts**: Displays attempts made after the submission deadline
+
+""", unsafe_allow_html=False)
+
+                    # Quiz selection
+                    if "participation_quiz_label" not in st.session_state:
+                        st.session_state.participation_quiz_label = full_df_filt["quiz_title"].unique()[0]
+                    if "participation_t0_datetime" not in st.session_state: 
+                        st.session_state.participation_t0_datetime = datetime.now() - timedelta(days=1)
+                    if "participation_t1_datetime" not in st.session_state:
+                        st.session_state.participation_t1_datetime = datetime.now() + timedelta(days=1)
+                    if "selected_tables" not in st.session_state:
+                        st.session_state.selected_tables = [_("Summary")]
+
+                    quiz_list = sorted(full_df_filt["quiz_title"].unique(), key=natural_key)
+                    quiz_label  = st.selectbox(_("Select a quiz"), quiz_list, 
+                                                            on_change=sync, args=("quiz_label",),
+                                                            index=quiz_list.index(st.session_state.participation_quiz_label))
+                    #quiz_label = st.session_state.participation_quiz_label
+                    
+                    try: # version >= 1.52
+                        # Date/hour t0 
+                        t0_datetime = st.datetime_input(
+                            _("Start of periode"),
+                            key = "participation_t0_datetime",
+                            #on_change=sync, args=("participation_t0_datetime",),
+                            value=st.session_state.participation_t0_datetime
+                        )
+
+                        # Date/hour t1
+                        t1_datetime = st.datetime_input(
+                            _("End of periode"),
+                            key = "participation_t1_datetime",
+                            #on_change=sync, args=("participation_t1_datetime",),
+                            value=st.session_state.participation_t1_datetime
+                        )
+                    except:
+                        today = datetime.now()
+                        default_t0 = st.session_state.participation_t0_datetime #today - timedelta(days=1)  
+                        default_t1 = st.session_state.participation_t1_datetime #today + timedelta(hours=1)  
+
+                        # Sélection des dates/heures
+                        DATE_FORMATS = {
+                            "fr": "DD/MM/YYYY",    # Français : 28/05/2026
+                            "en": "MM/DD/YYYY",    # Anglais : 05/28/2026
+                            "de": "DD.MM.YYYY",    # Allemand : 28.05.2026
+                            "es": "DD-MM-YYYY",    # Espagnol : 28-05-2026
+                            "default": "YYYY-MM-DD" # Format ISO par défaut
+                        }
+
+                        # Sélectionner le format en fonction de la langue
+                        format_date = DATE_FORMATS.get(st.session_state["lang"], DATE_FORMATS["default"])
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            d0 = st.date_input(_("Start date"), format=format_date, key="d0_date", value=default_t0.date())
+                        with col2:
+                            h0 = st.time_input(_("Start hour"), value=default_t0.time(), key="h0_time")
+
+                        col3, col4 = st.columns(2)
+                        with col3:
+                            d1 = st.date_input(_("End date"), format=format_date, key="d1_date", value=default_t1.date())
+                        with col4:
+                            h1 = st.time_input(_("End hour"), value=default_t1.time(), key="h1_time")
+
+                        t0_datetime = datetime.combine(d0, h0)
+                        t1_datetime = datetime.combine(d1, h1)
+
+                        st.session_state.participation_t0_datetime = t0_datetime
+                        st.session_state.participation_t1_datetime = t1_datetime
+
+
+
+                    if st.button(_("Analysis")):
+                        with st.spinner(_("Processing...")):
+                            participation_analytics_results = participation_analytics(full_df_filt, quiz_label, t0_datetime, t1_datetime)
+                            st.session_state.participation_analytics_results = participation_analytics_results
+
+                        st.success(_("Analysis done for {quiz_label} between {t0_datetime} and {t1_datetime}").format(quiz_label=quiz_label, t0_datetime=t0_datetime, t1_datetime=t1_datetime))
+
+                    # Displaying results if available
+                    if "participation_analytics_results" in st.session_state:
+                        TABLE_KEY_MAPPING = {
+                            _("All (all results)"): "all_attempts",
+                            _("Summary"): "student_summary",
+                            _("Retakes"): "retakes",
+                            _("First after t1"): "first_attempt_after_t1",
+                            _("Done after deadline"): "after_deadline"
+                        }
+
+                        available_options = list(TABLE_KEY_MAPPING.keys())  
+
+                        #st.subheader(_("Select which results to display"))
+                        selected_tables = st.multiselect(
+                            _("Choose tables to display"),
+                            options=available_options,
+                            key="selected_tables", 
+                            on_change=sync, args=("selected_tables",),
+                            default=st.session_state.selected_tables
+                        )
+
+                        # Mettre à jour les préférences utilisateur
+                        if selected_tables != st.session_state.selected_tables:
+                            st.session_state.selected_tables = selected_tables
+
+                        # Displaying DataFrames
+                        for table_name in selected_tables:
+                            st.subheader(table_name)
+                            st.dataframe(st.session_state.participation_analytics_results[TABLE_KEY_MAPPING[table_name]], 
+                                         key = f"df_{table_name}",
+                                         use_container_width=True)
 
 
         except Exception as e:
