@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-19 10:26+0100\n"
+"POT-Creation-Date: 2026-06-03 20:06+0200\n"
 "PO-Revision-Date: 2026-02-20 16:00+0100\n"
 "Last-Translator: Jean-François BERCHER <jf.bercher@esiee.fr>\n"
 "Language-Team: Spanish <traduc@traduc.org>\n"
@@ -18,427 +18,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:48
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1050
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1060
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1073
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1317
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1366
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:51
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1421
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1431
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1444
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1843
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1898
 msgid "All"
 msgstr "Todos"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:255
-msgid "Number of Quizzes"
-msgstr "Número de cuestionarios realizados"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:260
-msgid "Total Score"
-msgstr "Puntuación total"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:267
-msgid "Number of Students"
-msgstr "Número de cuestionarios por estudiante"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:272
-msgid "Average Score"
-msgstr "Puntaje Promedio"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:278
-msgid "Selectivity Score"
-msgstr "Puntuación de selectividad"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:323
-msgid "Histogram of marks"
-msgstr "Histograma de notas"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:328
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:336
-msgid "Marks"
-msgstr "Puntuación"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:328
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:337
-msgid "Frequency"
-msgstr "Frecuencia"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:329
-msgid "Distribution of marks"
-msgstr "Distribución de las notas"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:608
-msgid "Correction for"
-msgstr "Corrección de "
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:608
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1226
-msgid "Student"
-msgstr "Estudiante"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:609
-msgid "Scale:"
-msgstr "Escala:"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:612
-msgid "#### Report for "
-msgstr "#### Informe sobre"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:653
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:655
-msgid "No answer"
-msgstr "No hay respuesta"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:658
-msgid "Answered at: "
-msgstr "Respuesta en:"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:670
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:691
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:693
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:704
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:726
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:728
-msgid "Correct"
-msgstr "Correcto"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:670
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:691
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:693
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:704
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:726
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:728
-msgid "Incorrect"
-msgstr "Incorrecto"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:682
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:716
-msgid "Mark: "
-msgstr "Nota: "
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:731
-msgid "Logical Contraints Violations: "
-msgstr "Violaciones de restricciones lógicas:"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:740
-#, python-brace-format
-msgid "{key}: Violation between {indexes} - Malus:{malus}"
-msgstr "{key}: Incumplimiento entre {indexes} - Penalización:{malus}"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:747
-#, python-brace-format
-msgid "Violation {key}: Malus:{malus}"
-msgstr "Infracción {key}: Penalización:{malus}"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:892
-msgid "Dashboard LabQuiz"
-msgstr "Tablero de Control LabQuiz"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:905
-msgid "🔑 Connection"
-msgstr "🔑 Conexión"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:906
-msgid "Google Sheet URL"
-msgstr "URL de Google Sheet"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:908
-msgid "Secret Key"
-msgstr "Clave Secreta (Secret Key)"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:910
-msgid "QUIZ file (YAML) containing corrections"
-msgstr "Archivo QUIZ (YAML) que contiene las correcciones"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:944
-msgid "Class/Group"
-msgstr "Clase/Grupo"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:956
-msgid "Monitoring"
-msgstr "Monitoreo"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:959
-msgid "Refresh rate (min)"
-msgstr "Ritmo de actualización (min)"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:960
-msgid "Enable auto-refresh"
-msgstr "Activar auto-actualización"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:962
-msgid "🔄 Refresh now"
-msgstr "🔄 Actualizar ahora"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:966
-msgid "Last update: "
-msgstr "Última actualización: "
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:983
-msgid "📊 Monitoring & Correction Dashboard"
-msgstr "📊 Tablero de Monitoreo y Corrección"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:985
-msgid "🛠️ Parameter Configuration (Integrity & Correction)"
-msgstr "🛠️ Configuración de Parámetros (Integridad y Corrección)"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:989
-msgid "**Monitoring & Source**"
-msgstr "**Monitoreo y Origen**"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:990
-msgid ""
-"Parameters to monitor (e.g.: {'retries':2, 'exam_mode':False, 'test_mode':"
-"False})"
-msgstr ""
-"Parámetros a monitorear (ej: {'retries':2, 'exam_mode':True, 'test_mode':"
-"False})"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:993
-msgid "Number of allowed attempts"
-msgstr "Número de intentos permitidos"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:998
-msgid "**Grading Algorithm**"
-msgstr "**Algoritmo de Calificación**"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:999
-msgid "Threshold (0 to avoid negative marks)"
-msgstr "Umbral (0 para evitar notas negativas)"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1002
-msgid "Exam title (if randomized)"
-msgstr "Título del examen (si es por sorteo)"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1010
-msgid "**Weights Matrix**"
-msgstr "**Matriz de Pesos (Weights)**"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1013
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1021
-msgid "TP (True Positive)"
-msgstr "VP (Verdadero Positivo)"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1014
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1022
-msgid "FP (False Positive)"
-msgstr "FP (Falso Positivo)"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1015
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1023
-msgid "FN (False Negative)"
-msgstr "FN (Falso Negativo)"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1016
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1024
-msgid "TN (True Negative)"
-msgstr "VN (Verdadero Negativo)"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1028
-msgid "**Grading scale per question**"
-msgstr "**Escala de calificación por pregunta**"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1029
-msgid "Scale dictionary (e.g.: {'q1': 2})"
-msgstr "Diccionario de escala (ej: {'q1': 2})"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1041
-msgid "Reading data..."
-msgstr "Leyendo datos..."
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1044
-msgid "Data could not be read."
-msgstr "No se han podido leer los datos."
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1104
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1120
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:77
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1494
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1515
 msgid "📡 Integrity Live"
 msgstr "📡 Integridad en Vivo"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1104
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1157
-msgid "👀 Monitoring"
-msgstr "👀 Monitoreo"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1104
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1258
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1262
-msgid "🎯 Correction & Grades"
-msgstr "🎯 Corrección y Notas"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1123
-msgid "Real-time integrity monitoring"
-msgstr "Seguimiento de integridad en tiempo real"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1131
-msgid "Error in parameters format."
-msgstr "Error en el formato de los parámetros."
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1135
-msgid "Also use full hash"
-msgstr "Usar también el hash completo"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1136
-msgid "Use the full hash of the source code, live object and parameters"
-msgstr ""
-"Utiliza el hash completo del código fuente, del objeto en vivo y de los "
-"parámetros"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1138
-msgid "Only display anomalies"
-msgstr "Mostrar solo anomalías"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1139
-msgid "Display anomalies only, or full report"
-msgstr "Muestra solo las anomalías o el informe completo"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1145
-msgid "Collect anomalies per student"
-msgstr "Agrupar anomalías por estudiante"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1146
-msgid "Group anomalies per student"
-msgstr "Agrupa las anomalías por estudiante"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1151
-msgid "No anomalies found at all."
-msgstr "No se encontraron anomalías."
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1158
-msgid "Activity monitoring"
-msgstr "Monitoreo de actividad"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1164
-msgid "No valid activity recorded yet."
-msgstr "Aún no se ha registrado ninguna actividad válida."
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1166
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:79
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:81
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1585
 msgid "📊 Monitoring charts"
 msgstr "📊 Tablero de Monitoreo y Corrección"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1166
-msgid "🕵️‍♀️ Activity Summary"
-msgstr "🕵️‍♀️ Resumen de actividad"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:83
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1494
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1785
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1789
+msgid "🎯 Correction & Grades"
+msgstr "🎯 Corrección y Notas"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1166
-msgid "Student Timeline"
-msgstr "Cronología del estudiante"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:485
+msgid "Number of Quizzes"
+msgstr "Número de cuestionarios realizados"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1182
-msgid "Quizzes Completed per Student"
-msgstr "Cuestionarios realizados por el grupo"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:490
+msgid "Total Score"
+msgstr "Puntuación total"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1186
-msgid "Total Scores per Student"
-msgstr "Agrupar anomalías por estudiante"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:497
+msgid "Number of Students"
+msgstr "Número de cuestionarios por estudiante"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1192
-msgid "Class Progress per Quiz"
-msgstr "Progreso de la clase por prueba"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:502
+msgid "Average Score"
+msgstr "Puntaje Promedio"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1197
-msgid "Quizzes Selectivity(Avg Score)"
-msgstr "Pruebas de selección (puntuación media)"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:508
+msgid "Selectivity Score"
+msgstr "Puntuación de selectividad"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1204
-msgid "#### Detailed Activity Summary"
-msgstr "#### Resumen detallado de actividades"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:553
+msgid "Histogram of marks"
+msgstr "Histograma de notas"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1227
-msgid "Count"
-msgstr "Recuento"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:558
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:566
+msgid "Marks"
+msgstr "Puntuación"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1228
-msgid "Total Points"
-msgstr "Puntos totales"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:558
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:567
+msgid "Frequency"
+msgstr "Frecuencia"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1229
-msgid "List of Quizzes"
-msgstr "Lista de cuestionarios"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:559
+msgid "Distribution of marks"
+msgstr "Distribución de las notas"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1237
-msgid "#### Student Timeline"
-msgstr "#### Cronología del estudiante"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1260
-msgid "Correction, Grades & Reports"
-msgstr "Corrección y Notas"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1262
-msgid "✍🏻 Students reports"
-msgstr "✍🏻 Informes de los alumnos"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1278
-msgid "Last update of corrections (before auto-refresh): "
-msgstr "Última actualización de las correcciones (antes del auto-refresco): "
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1279
-msgid "🚀 Launch full correction"
-msgstr "🚀 Iniciar corrección completa"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1281
-msgid "Last update of corrections: "
-msgstr "Última actualización de las correcciones: "
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1282
-msgid "Calculating scores per question..."
-msgstr "Calculando puntajes por pregunta..."
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1305
-msgid "Scores calculated!"
-msgstr "¡Puntajes calculados!"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1323
-msgid "#### ⚖️ Adjust Scale"
-msgstr "#### ⚖️ Ajustar el Baremo"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1352
-msgid "#### Grades Table"
-msgstr "#### Tabla de Notas"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1354
-msgid "Final Mark Scale:"
-msgstr "Escala de calificación final:"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1359
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1367
-msgid "Average: "
-msgstr "Promedio: "
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1359
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1367
-msgid "Standard deviation: "
-msgstr "Desviación estándar: "
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1367
-msgid "Class: "
-msgstr "Clase:"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1372
-msgid "Histogram"
-msgstr "Histograma"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1379
-msgid "Scores per question available. Click calculate to see final marks."
-msgstr ""
-"Puntajes por pregunta disponibles. Haga clic en Recalcular para ver las "
-"notas finales."
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1381
-msgid "Waiting for correction to start."
-msgstr "Esperando el inicio de la corrección."
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1392
-msgid "🎓 Individual analysis"
-msgstr "🎓 Análisis individual"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1400
-msgid "🛣️ Student Timeline"
-msgstr "🛣️ Cronología del estudiante"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1416
-msgid "📜 Individual Report"
-msgstr "📜 Informe individual"
-
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1425
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:791
 #, python-brace-format
 msgid ""
 "Final mark: {FinalMark:.2f} / {FinalMarkScale} -- Class mean: "
@@ -447,53 +93,692 @@ msgstr ""
 "Nota final: {FinalMark:.2f} / {FinalMarkScale} -- Media de la clase: "
 "{class_mean:.2f} & Desviación estándar: {class_std:.2f}"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1432
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1466
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:845
+msgid "Correction for"
+msgstr "Corrección de "
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:845
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1705
+msgid "Student"
+msgstr "Estudiante"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:846
+msgid "Scale:"
+msgstr "Escala:"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:849
+msgid "#### Report for "
+msgstr "#### Informe sobre"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:890
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:892
+msgid "No answer"
+msgstr "No hay respuesta"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:895
+msgid "Answered at: "
+msgstr "Respuesta en:"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:907
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:928
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:930
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:941
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:963
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:965
+msgid "Correct"
+msgstr "Correcto"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:907
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:928
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:930
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:941
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:963
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:965
+msgid "Incorrect"
+msgstr "Incorrecto"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:919
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:953
+msgid "Mark: "
+msgstr "Nota: "
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:968
+msgid "Logical Contraints Violations: "
+msgstr "Violaciones de restricciones lógicas:"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:977
+#, python-brace-format
+msgid "{key}: Violation between {indexes} - Malus:{malus}"
+msgstr "{key}: Incumplimiento entre {indexes} - Penalización:{malus}"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:984
+#, python-brace-format
+msgid "Violation {key}: Malus:{malus}"
+msgstr "Infracción {key}: Penalización:{malus}"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1263
+msgid "Dashboard LabQuiz"
+msgstr "Tablero de Control LabQuiz"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1276
+msgid "🔑 Connection"
+msgstr "🔑 Conexión"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1277
+msgid "Google Sheet URL"
+msgstr "URL de Google Sheet"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1279
+msgid "Secret Key"
+msgstr "Clave Secreta (Secret Key)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1281
+msgid "QUIZ file (YAML) containing corrections"
+msgstr "Archivo QUIZ (YAML) que contiene las correcciones"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1313
+msgid "Class/Group selection"
+msgstr "Selección de clase/grupo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1315
+msgid "Class/Group"
+msgstr "Clase/Grupo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1327
+msgid "Monitoring"
+msgstr "Monitoreo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1330
+msgid "Refresh rate (min)"
+msgstr "Ritmo de actualización (min)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1331
+msgid "Enable auto-refresh"
+msgstr "Activar auto-actualización"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1333
+msgid "🔄 Refresh now"
+msgstr "🔄 Actualizar ahora"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1337
+msgid "Last update: "
+msgstr "Última actualización: "
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1354
+msgid "📊 Monitoring & Correction Dashboard"
+msgstr "📊 Tablero de Monitoreo y Corrección"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1356
+msgid "🛠️ Parameter Configuration (Integrity & Correction)"
+msgstr "🛠️ Configuración de Parámetros (Integridad y Corrección)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1360
+msgid "**Monitoring & Source**"
+msgstr "**Monitoreo y Origen**"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1361
+msgid ""
+"Parameters to monitor (e.g.: {'retries':2, 'exam_mode':False, "
+"'test_mode':False})"
+msgstr ""
+"Parámetros a monitorear (ej: {'retries':2, 'exam_mode':True, "
+"'test_mode':False})"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1364
+msgid "Number of allowed attempts"
+msgstr "Número de intentos permitidos"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1369
+msgid "**Grading Algorithm**"
+msgstr "**Algoritmo de Calificación**"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1370
+msgid "Threshold (0 to avoid negative marks)"
+msgstr "Umbral (0 para evitar notas negativas)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1373
+msgid "Exam title (if randomized)"
+msgstr "Título del examen (si es por sorteo)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1381
+msgid "**Weights Matrix**"
+msgstr "**Matriz de Pesos (Weights)**"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1384
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1392
+msgid "TP (True Positive)"
+msgstr "VP (Verdadero Positivo)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1385
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1393
+msgid "FP (False Positive)"
+msgstr "FP (Falso Positivo)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1386
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1394
+msgid "FN (False Negative)"
+msgstr "FN (Falso Negativo)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1387
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1395
+msgid "TN (True Negative)"
+msgstr "VN (Verdadero Negativo)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1399
+msgid "**Grading scale per question**"
+msgstr "**Escala de calificación por pregunta**"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1400
+msgid "Scale dictionary (e.g.: {'q1': 2})"
+msgstr "Diccionario de escala (ej: {'q1': 2})"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1412
+msgid "Reading data..."
+msgstr "Leyendo datos..."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1415
+msgid "Data could not be read."
+msgstr "No se han podido leer los datos."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1474
+msgid "Live monitoring & Correction"
+msgstr "📊 Tablero de Monitoreo y Corrección"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1475
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2065
+msgid "📖 Documentation"
+msgstr "📖 Documentación"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1476
+msgid ""
+"\n"
+"The Dashboard **Live Monitoring & Correction** features several tabs:\n"
+"\n"
+"\n"
+"1. The “**Integrity Live**” tab provides real-time monitoring of "
+"participation, assessing compliance with configuration integrity. The table "
+"displays all entries submitted by participants, along with the parameters "
+"used, allowing any changes to these parameters to be flagged as anomalies. "
+"Among the available options, users can use the full hash in addition to "
+"standard parameters, choose to display only anomalies rather than all "
+"contributions, and group anomalies by student.\n"
+"\n"
+"2.  The “**Monitoring**” tab is dedicated to the qualitative tracking of "
+"participation. This tab is itself divided into several sub-tabs. \n"
+"    - The first tab, “*Monitoring Charts*”, displays four graphs summarizing "
+"activity: the first graph shows the number of quizzes taken by each student; "
+"the second graph displays the scores obtained by each student;\n"
+" the third chart shows the number of attempts for each quiz, and the fourth "
+"and final chart shows the difficulty of the quizzes by presenting the "
+"average score obtained for each quiz.\n"
+"    - The second tab, “*Activity Summary*”, displays in the form of a table, "
+"the key characteristics for each participant: the number of quizzes taken, "
+"the total time spent, the date of the first and last quiz, the number of "
+"points earned, and the list of quizzes taken. \n"
+"    - The third tab, “*Student Timeline*”, displays, for each student "
+"(selectable from a dropdown menu), a graph showing the quizzes taken and the "
+"scores obtained over time.\n"
+"\n"
+"3. The “**Correction & Grades**” tab allows to calculate the overall grade "
+"for an exam by comparing submitted answers to expected answers and, if "
+"necessary, adjusting the scoring scale per question. The grading scale is "
+"also adjustable (for example, out of 4, 20, or 100). The “*Student Reports*” "
+"tab enables individual or overall analysis: for each student, you can view "
+"the Student Timeline (for the exam), generate an individual report (“graded "
+"sheet), and you can also generate reports for the entire class, which can be "
+"downloaded individually or as a whole in PDF, HTML, or ZIP formats.\n"
+"\n"
+"4. Finally, the “**Participation analytics**” tab allows, given the "
+"specification of a time interval during which the session was to take place, "
+"to examine whether students completed the work in advance, during the "
+"expected interval, or even after the session, and how many times.\n"
+"                                                    "
+msgstr ""
+"\n"
+"El panel de control **Supervisión y corrección en tiempo real** cuenta con "
+"varias pestañas:\n"
+"\n"
+"\n"
+"1. La pestaña **Integrity Live** ofrece supervisión en tiempo real de la "
+"participación, evaluando el cumplimiento de la integridad de la "
+"configuración. La tabla muestra todas las entradas enviadas por los "
+"participantes, junto con los parámetros utilizados, lo que permite marcar "
+"cualquier cambio en estos parámetros como anomalía. Entre las opciones "
+"disponibles, los usuarios pueden utilizar el hash completo además de los "
+"parámetros estándar, elegir mostrar solo las anomalías en lugar de todas las "
+"contribuciones y agrupar las anomalías por estudiante.\n"
+"\n"
+"2. La pestaña **Monitorización** está dedicada al seguimiento cualitativo de "
+"la participación. Esta pestaña se divide a su vez en varias subpestañas. \n"
+" - La primera pestaña, *Gráficos de seguimiento*, muestra cuatro gráficos "
+"que resumen la actividad: el primer gráfico muestra el número de "
+"cuestionarios realizados por cada estudiante; el segundo gráfico muestra las "
+"puntuaciones obtenidas por cada estudiante;\n"
+" el tercer gráfico muestra el número de intentos por cada cuestionario, y el "
+"cuarto y último gráfico muestra la dificultad de los cuestionarios al "
+"presentar la puntuación media obtenida en cada cuestionario.\n"
+" - La segunda pestaña, *Resumen de actividad*, muestra en forma de tabla las "
+"características clave de cada participante: el número de cuestionarios "
+"realizados, el tiempo total dedicado, la fecha del primer y último "
+"cuestionario, el número de puntos obtenidos y la lista de cuestionarios "
+"realizados. \n"
+" - La tercera pestaña, *Cronología del estudiante*, muestra, para cada "
+"estudiante (seleccionable desde un menú desplegable), un gráfico que muestra "
+"los cuestionarios realizados y las puntuaciones obtenidas a lo largo del "
+"tiempo.\n"
+"\n"
+"3. La pestaña **Corrección y calificaciones** permite calcular la "
+"calificación global de un examen comparando las respuestas enviadas con las "
+"respuestas esperadas y, si es necesario, ajustando la escala de puntuación "
+"por pregunta. La escala de calificación es también ajustable (por ejemplo, "
+"sobre 4, 20 o 100). La pestaña *Informes de los alumnos* permite realizar "
+"análisis individuales o generales: para cada alumno, puede ver la cronología "
+"del alumno (para el examen), generar un informe individual (hoja de "
+"calificaciones ), y también puede generar informes para toda la clase, que "
+"se pueden descargar individualmente o en su conjunto en formatos PDF, HTML o "
+"ZIP.\n"
+"\n"
+"4. Por último, la pestaña **Análisis de participación** permite, dada la "
+"especificación de un intervalo de tiempo durante el cual debía tener lugar "
+"la sesión, examinar si los alumnos completaron el trabajo por adelantado, "
+"durante el intervalo previsto o incluso después de la sesión, y cuántas "
+"veces.\n"
+" "
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1494
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1554
+msgid "👀 Monitoring"
+msgstr "👀 Monitoreo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1494
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2060
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2062
+msgid "⛹🏼‍♀️ Participation analytics"
+msgstr "⛹🏼‍♀️ Análisis de participación"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1518
+msgid "Real-time integrity monitoring"
+msgstr "Seguimiento de integridad en tiempo real"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1526
+msgid "Error in parameters format."
+msgstr "Error en el formato de los parámetros."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1530
+msgid "Also use full hash"
+msgstr "Usar también el hash completo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1531
+msgid "Use the full hash of the source code, live object and parameters"
+msgstr ""
+"Utiliza el hash completo del código fuente, del objeto en vivo y de los "
+"parámetros"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1533
+msgid "Only display anomalies"
+msgstr "Mostrar solo anomalías"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1534
+msgid "Display anomalies only, or full report"
+msgstr "Muestra solo las anomalías o el informe completo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1542
+msgid "Collect anomalies per student"
+msgstr "Agrupar anomalías por estudiante"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1543
+msgid "Group anomalies per student"
+msgstr "Agrupa las anomalías por estudiante"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1548
+msgid "No anomalies found at all."
+msgstr "No se encontraron anomalías."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1555
+msgid "Activity monitoring"
+msgstr "Monitoreo de actividad"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1562
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1563
+msgid "Split by sessions"
+msgstr "Dividido por sesiones"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1570
+msgid "Inactivity threshold (in hours)"
+msgstr "Umbral de inactividad (en horas)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1574
+msgid "Maximum session duration (in hours)"
+msgstr "Duración máxima de la sesión (en horas)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1583
+msgid "No valid activity recorded yet."
+msgstr "Aún no se ha registrado ninguna actividad válida."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1585
+msgid "🕵️‍♀️ Activity Summary"
+msgstr "🕵️‍♀️ Resumen de actividad"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1585
+msgid "Student Timeline"
+msgstr "Cronología del estudiante"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1616
+msgid "Quizzes Completed per Student"
+msgstr "Cuestionarios realizados por el grupo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1620
+msgid "Total Scores per Student"
+msgstr "Agrupar anomalías por estudiante"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1626
+msgid "Class Progress per Quiz"
+msgstr "Progreso de la clase por prueba"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1631
+msgid "Quizzes Selectivity(Avg Score)"
+msgstr "Pruebas de selección (puntuación media)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1637
+msgid "#### Detailed Activity Summary"
+msgstr "#### Resumen detallado de actividades"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1706
+msgid "Count"
+msgstr "Recuento"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1707
+msgid "Elapsed Time"
+msgstr "Tiempo transcurrido"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1708
+msgid "Elapsed Time (min)"
+msgstr "Tiempo transcurrido (min)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1709
+msgid "First Quiz"
+msgstr "Primer cuestionario"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1710
+msgid "Last Quiz"
+msgstr "Último cuestionario"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1711
+msgid "Total Points"
+msgstr "Puntos totales"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1712
+msgid "List of Quizzes"
+msgstr "Lista de cuestionarios"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1720
+msgid "#### Student Timeline"
+msgstr "#### Cronología del estudiante"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1771
+msgid "Dataframe of the session:"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1775
+msgid "Quiz"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1776
+msgid "Score"
+msgstr "Puntuación"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1777
+msgid "Timestamp"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1787
+msgid "Correction, Grades & Reports"
+msgstr "Corrección y Notas"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1789
+msgid "✍🏻 Students reports"
+msgstr "✍🏻 Informes de los alumnos"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1804
+msgid "Last update of corrections (before auto-refresh): "
+msgstr "Última actualización de las correcciones (antes del auto-refresco): "
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1805
+msgid "🚀 Launch full correction"
+msgstr "🚀 Iniciar corrección completa"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1807
+msgid "Last update of corrections: "
+msgstr "Última actualización de las correcciones: "
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1808
+msgid "Calculating scores per question..."
+msgstr "Calculando puntajes por pregunta..."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1831
+msgid "Scores calculated!"
+msgstr "¡Puntajes calculados!"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1849
+msgid "#### ⚖️ Adjust Scale"
+msgstr "#### ⚖️ Ajustar el Baremo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1878
+msgid "#### Grades Table"
+msgstr "#### Tabla de Notas"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1886
+msgid "Final Mark Scale:"
+msgstr "Escala de calificación final:"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1891
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1899
+msgid "Average: "
+msgstr "Promedio: "
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1891
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1899
+msgid "Standard deviation: "
+msgstr "Desviación estándar: "
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1899
+msgid "Class: "
+msgstr "Clase:"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1904
+msgid "Histogram"
+msgstr "Histograma"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1911
+msgid "Scores per question available. Click calculate to see final marks."
+msgstr ""
+"Puntajes por pregunta disponibles. Haga clic en Recalcular para ver las "
+"notas finales."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1913
+msgid "Waiting for correction to start."
+msgstr "Esperando el inicio de la corrección."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1932
+msgid "🎓 Individual analysis"
+msgstr "🎓 Análisis individual"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1940
+msgid "🛣️ Student Timeline"
+msgstr "🛣️ Cronología del estudiante"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1956
+msgid "📜 Individual Report"
+msgstr "📜 Informe individual"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1972
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2006
 msgid "Full correction in Report"
 msgstr "Corrección completa en el informe"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1441
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1981
 msgid "Download PDF report"
 msgstr "Descargar el informe en PDF"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1448
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1988
 msgid "Download HTML report"
 msgstr "Descargar el informe en HTML"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1462
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2002
 msgid "📔 All Class Reports"
 msgstr "📔 Todos los informes de clase"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1478
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2018
 msgid "Generate zip of all PDF reports"
 msgstr "Generar un archivo ZIP con todos los informes en PDF"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1483
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1502
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2023
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2042
 msgid "Generating zip..."
 msgstr "Generando archivo ZIP..."
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1491
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2031
 msgid "Download zip of all PDF reports"
 msgstr "Descargar el archivo ZIP con todos los informes en PDF"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1497
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2037
 msgid "Generate zip of all HTML reports"
 msgstr "Generar un archivo ZIP con todos los informes HTML"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1510
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2050
 msgid "Download zip of all HTML reports"
 msgstr "Descargar el archivo ZIP con todos los informes en HTML"
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1517
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2057
 msgid "Full correction must be computed first (see Correction & Grades tab)."
-msgstr "Primero hay que calcular la corrección completa (véase la pestaña «Corrección y calificaciones»)."
+msgstr ""
+"Primero hay que calcular la corrección completa (véase la pestaña "
+"«Corrección y calificaciones»)."
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1521
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2066
+msgid ""
+"\n"
+" This small dashboard provides some insights into student quiz participation "
+"patterns, helping to identify:\n"
+"- **Temporal participation trends** (when students attempt quizzes)\n"
+"- **Potential academic integrity issues** (late attempts and retakes)\n"
+"- **Student engagement behaviors** (early vs late participation)\n"
+"\n"
+"\n"
+"##### 🔍 Analysis\n"
+"- **Temporal segmentation** with Customizable Time Periods: Classifies "
+"attempts into three phases:\n"
+"  - Before official session (t0)\n"
+"  - During session window (t0-t1)\n"
+"  - After session deadline (t1)\n"
+"\n"
+"- **Retake detection**: Identifies students who already took the quiz and "
+"attempted again after the session, to try to gain a better understanding\n"
+"- **First-time after deadline**: Highlights students whose initial attempt "
+"was post-deadline\n"
+"- **Late attempts**: Displays attempts made after the submission deadline\n"
+"\n"
+msgstr ""
+"\n"
+"Este pequeño panel de control ofrece información sobre los patrones de "
+"participación de los alumnos en los cuestionarioslo que ayuda a "
+"identificar:\n"
+"- **Tendencias temporales de participación** (cuándo realizan los alumnos "
+"los cuestionarios)\n"
+"- **Posibles problemas de integridad académica** (intentos tardíos y "
+"repeticiones)\n"
+"- **Comportamientos de implicación de los estudiantes** (participación "
+"temprana frente a tardía)\n"
+"\n"
+"\n"
+"##### 🔍 Análisis\n"
+"- **Segmentación temporal** con periodos de tiempo personalizables: "
+"clasifica los intentos en tres fases:\n"
+"  - Antes de la sesión oficial (t0)\n"
+"  - Durante el periodo de la sesión (t0-t1)\n"
+"  - Después de la fecha límite de la sesión (t1)\n"
+"\n"
+"- **Detección de repeticiones**: identifica a los estudiantes que ya "
+"realizaron el cuestionario y lo intentaron de nuevo tras la sesión, para "
+"intentar comprenderlo mejor\n"
+"- **Primera vez tras la fecha límite**: destaca a los estudiantes cuyo "
+"intento inicial fue posterior a la fecha límite\n"
+"- **Intentos tardíos**: muestra los intentos realizados tras la fecha límite "
+"de entrega\n"
+"\n"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2099
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2173
+msgid "Summary"
+msgstr "Resumen"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2103
+msgid "Select a quiz"
+msgstr "Selecciona un cuestionario"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2112
+msgid "Start of periode"
+msgstr "Inicio del periodo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2120
+msgid "End of periode"
+msgstr "Fin del periodo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2143
+msgid "Start date"
+msgstr "Fecha de inicio"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2145
+msgid "Start hour"
+msgstr "Hora de inicio"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2149
+msgid "End date"
+msgstr "Fecha de finalización"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2151
+msgid "End hour"
+msgstr "Hora de cierre"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2161
+msgid "Analysis"
+msgstr "Análisis"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2162
+msgid "Processing..."
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2166
+#, python-brace-format
+msgid "Analysis done for {quiz_label} between {t0_datetime} and {t1_datetime}"
+msgstr ""
+"Análisis realizado para {quiz_label} entre {t0_datetime} y {t1_datetime}"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2172
+msgid "All (all results)"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2174
+msgid "Retakes"
+msgstr "Retoques"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2175
+msgid "First after t1"
+msgstr "Primer puesto tras la T1"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2176
+msgid "Done after deadline"
+msgstr "Entregado fuera de plazo"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2183
+msgid "Choose tables to display"
+msgstr "Selecciona las tablas que deseas mostrar"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2203
 msgid "Error during reading or processing: "
 msgstr "Error durante la lectura o el procesamiento: "
 
-#: /Users/bercherj/JFB/dev/quiz_dash/src/quiz_dash/quiz_dash.py:1523
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:2205
 msgid "Please enter URL and SECRET in the sidebar, and load a quiz file."
 msgstr ""
 "Por favor, complete la URL y el SECRET en la barra lateral y cargue un "
