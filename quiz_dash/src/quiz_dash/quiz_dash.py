@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 import pandas as pd
+import numpy as np
 import time
 from streamlit_autorefresh import st_autorefresh
 from streamlit_local_storage import LocalStorage
@@ -76,14 +77,20 @@ def set_defaults():
         st.session_state.main_nav_state = _("📡 Integrity Live")
     if "monitoring_nav_state" not in st.session_state:
         st.session_state.monitoring_nav_state = _("📊 Monitoring charts")
+    if "monitoring_tab" not in st.session_state:
+        st.session_state.monitoring_tab = _("📊 Monitoring charts")
     if "correction_nav_state" not in st.session_state:
         st.session_state.correction_nav_state = _("🎯 Correction & Grades")
     if "participation_quiz_label" not in st.session_state:
+        print("⚠️ Setting participation_quiz_label to 'quiz1' in set_defaults")
         st.session_state.participation_quiz_label = 'quiz1'
+        st.session_state.pql = 'quiz1'
     if "participation_t0_datetime" not in st.session_state: 
         st.session_state.participation_t0_datetime = datetime.now() - timedelta(days=1)
     if "participation_t1_datetime" not in st.session_state:
         st.session_state.participation_t1_datetime = datetime.now() + timedelta(days=1)
+    if "spl_sessions" not in st.session_state:
+        st.session_state.spl_sessions = False
 
 def sync(key):
     global local_storage 
@@ -94,6 +101,7 @@ def sync(key):
     try: 
         val = st.session_state[key] #st.session_state.get(key, None) #
     except:
+        st.write("Syncing error for", key, "session state not present")
         print("Syncing error for", key, "session state not present")
         return
     
@@ -147,6 +155,12 @@ def adhocReadData(url, secret, autorefresh, button_refresh):
     toc = time.perf_counter()
     if verbose: print(f"Reading data execution time: {toc-tic:.3f} seconde(s)")
     return df, df_filt
+
+def df_for_cache(df):
+    df_copy = df.copy()
+    df_copy["answers"] = df_copy["answers"].astype(str)
+    df_copy["parameters"] = df_copy["parameters"].astype(str)
+    return df_copy
 
 def generate_cols_from_student(df, dropStudent=False):
     split_cols = df['student'].str.split(r'\s*,\s*', expand=True)
@@ -234,8 +248,7 @@ def apply_custom_styles():
     """
     st.markdown(custom_css, unsafe_allow_html=True)
 
-
-#@st.cache_data
+@st.cache_data
 def prepare_monitoring_data(df):
     """
     Filters the dataframe to keep only the last valid attempts 
@@ -260,8 +273,202 @@ def prepare_monitoring_data(df):
     return df_last
 
 
-def create_monitoring_plot(data, title, plot_type="student_counts", lang_func=None):
+def assign_sessions(group,
+                                min_time_between_sessions=120,
+                                max_session_duration=12*60,
+                                time_unit='minutes'):
     """
+    Assigns session IDs to events based on time gaps and session duration.
+    Uses NumPy for vectorized, efficient computation.
+
+    Args:
+        group (pd.DataFrame): Sorted events for a single student (after global sort).
+        min_time_between_sessions (int): Minimum time gap (time_unit) between events to start a new session.
+        max_session_duration (int): Maximum allowed duration (time_unit) for a session.
+        time_unit (str): Unit of time gap (seconds, minutes, hours)
+
+    Returns:
+        pd.DataFrame: Group with added 'session_id' column.
+    """
+    group = group.sort_values("timestamp").copy()
+    times = group["timestamp"].to_numpy()  # Convert to NumPy array for speed
+
+    # Initialize session IDs and track current session start time
+    session_ids = np.zeros(len(times), dtype=np.int64)
+    current_session = 0
+    session_start = times[0]
+
+
+    # Convert min_time_between_sessions and max_session_duration to seconds
+    if time_unit == 'minutes':
+        min_time_between_sessions *= 60
+        max_session_duration *= 60
+    elif time_unit == 'hours':
+        min_time_between_sessions *= 3600
+        max_session_duration *= 3600 
+
+    # Iterate through events to assign session IDs
+    for i in range(1, len(times)):
+        # Calculate time gaps (in seconds) between consecutive events
+        gap = (times[i] - times[i-1])/ np.timedelta64(1, "s")
+        duration = (times[i] - session_start)/ np.timedelta64(1, "s")
+
+        # New session if:
+        # 1. Gap between events exceeds min_time_between_sessions, OR
+        # 2. Session duration exceeds max_session_duration
+        if gap > min_time_between_sessions or duration > max_session_duration:
+            current_session += 1
+            session_start = times[i]
+
+        session_ids[i] = current_session  # Assign session ID
+
+    group["session_id"] = session_ids
+    return group
+
+@st.cache_data(show_spinner=False)
+def extract_sessions(df,
+                                min_time_between_sessions=120,
+                                max_session_duration=12*60,
+                                time_unit='minutes'):
+    """
+    Extracts sessions for all students, grouping events within time windows.
+    Uses NumPy for efficient computation and maintains clear session boundaries.
+
+    Args:
+        df (pd.DataFrame): Input DataFrame with columns: student, quiz_title, event_type, timestamp.
+        min_time_between_sessions (int): Minimum gap (time_unit) to start new session.
+        max_session_duration (int): Maximum session duration (time_unit).
+        time_unit (str): Unit of time (seconds, minutes, hours).
+
+    Returns:
+        dict: Nested dictionary with sessions per student, each containing a DataFrame.
+    """
+
+
+    # Convert  
+    if time_unit == 'minutes':
+        min_time_between_sessions *= 60
+        max_session_duration *= 60
+    elif time_unit == 'hours':
+        min_time_between_sessions *= 3600
+        max_session_duration *= 3600
+
+    # --- STEP 1: Global Sort ---
+    # Sort events by student and timestamp to ensure chronological processing
+    df_sorted = df.sort_values(
+        ["student", "timestamp"]#, "quiz_title"]
+    ).copy()
+
+    # Ensure timestamp is in datetime format
+     # Convert timestamp to datetime and clean UTC notes
+    df_sorted['timestamp'] = pd.to_datetime(
+        df_sorted["timestamp"].str.replace(r"\s*\(.*\)$", "", regex=True),  # Remove UTC notes like "(UTC+1)"
+        utc=True,
+        errors="coerce"
+    )
+   
+
+    # --- STEP 2: Assign Session IDs ---
+    # Apply session assignment to each student's events (not per quiz)
+    df_sorted = (
+        df_sorted
+        .groupby(["student"], group_keys=False)  # Group by student and quizzes
+        .apply(
+            assign_sessions,
+            min_time_between_sessions=min_time_between_sessions,
+            max_session_duration=max_session_duration,
+            time_unit='seconds'
+        )
+    )
+
+
+    # --- STEP 3: Add Session Metadata ---
+    # Calculate session start/end times and duration
+    df_sorted["session_start"] = (
+        df_sorted
+        .groupby(["student", "quiz_title", "session_id"])["timestamp"]
+        .transform("min")
+    )
+    df_sorted["session_end"] = (
+        df_sorted
+        .groupby(["student", "quiz_title", "session_id"])["timestamp"]
+        .transform("max")
+    )
+
+    df_sorted["session_duration_h"] = (
+        (df_sorted["session_end"] - df_sorted["session_start"]).dt.total_seconds() / 3600
+    )  # Duration in hours
+
+    df_sorted["num_events"] = (
+        df_sorted.groupby(["student", "session_id"])["session_id"]
+        .transform("size")
+    )
+
+    # --- STEP 4: Organize Sessions by Student ---
+    # Group sessions by student and return as a dictionary
+    sessions = {}
+    for (student, quiz), group in df_sorted.groupby(
+        ["student", "quiz_title"]
+        ):
+        sessions[(student, quiz)] = [
+            g.drop(columns=[])
+            for _, g in group.groupby("session_id")
+        ]
+
+
+    return sessions
+
+
+
+@st.cache_data(show_spinner=False)
+def prepare_monitoring_data_with_sessions(df, min_time_between_sessions=120, max_session_duration=12*60, time_unit='minutes'):
+    """
+    Process all sessions with metadata addition.
+
+    Args:
+        df (pd.DataFrame): Input DataFrame with event data
+        min_time_between_sessions (int): Minimum time gap for new session
+        time_unit (str): Unit of time gap (seconds, minutes, hours)
+
+    Returns:
+        pd.DataFrame: Combined results with session metadata columns
+    """
+    if time_unit == 'minutes':
+        min_time_between_sessions *= 60
+    elif time_unit == 'hours':
+        min_time_between_sessions *= 3600
+    # Step 1: Extract sessions with metadata
+
+    sessions = extract_sessions(df, min_time_between_sessions=min_time_between_sessions, 
+                                max_session_duration= max_session_duration, time_unit=time_unit)
+
+    # Step 2: Process each session and add metadata
+    results = []
+    for student, session_list in sessions.items():
+        for nsession, session_df in enumerate(session_list):
+            # Process with original function
+            result = prepare_monitoring_data(df_for_cache(session_df))
+
+            # Add session metadata
+            session_start = session_df["session_start"].iloc[0]
+            session_end = session_df["session_end"].iloc[0]
+            session_id = session_df["session_id"].iloc[0]
+
+            # Add metadata columns
+            result["session_id"] = session_id
+            result["session_start"] = session_start
+            result["session_end"] = session_end
+
+            results.append(result)
+
+    # Step 3: Concatenate all results
+
+    return pd.concat(results, ignore_index=True) if results else pd.DataFrame()
+
+
+
+def create_monitoring_plot(data, title, plot_type="student_counts", lang_func=None):
+    """ 
     Generates a Plotly figure. 
     Supported types: 'student_counts', 'student_scores', 'class_results', 'hardest_quizzes', 'quizzes_selectivity'
     """
@@ -1265,6 +1472,25 @@ def main():
             with tabs_placeholder.container(border=True, key=f"main_frame_{st.session_state.render_id}"): 
                 st.empty()
                 st.markdown(f"### 🛠️ {_('Live monitoring & Correction')}")
+                with st.expander("📖 Documentation", expanded=False):
+                                        st.markdown("""
+The Dashboard **Live Monitoring & Correction** features several tabs:
+
+
+1. The “**Integrity Live**” tab provides real-time monitoring of participation, assessing compliance with configuration integrity. The table displays all entries submitted by participants, along with the parameters used, allowing any changes to these parameters to be flagged as anomalies. Among the available options, users can use the full hash in addition to standard parameters, choose to display only anomalies rather than all contributions, and group anomalies by student.
+
+2.  The “**Monitoring**” tab is dedicated to the qualitative tracking of participation. This tab is itself divided into several sub-tabs. 
+    - The first tab, “*Monitoring Charts*”, displays four graphs summarizing activity: the first graph shows the number of quizzes taken by each student; the second graph displays the scores obtained by each student;
+ the third chart shows the number of attempts for each quiz, and the fourth and final chart shows the difficulty of the quizzes by presenting the average score obtained for each quiz.
+    - The second tab, “*Activity Summary*”, displays in the form of a table, the key characteristics for each participant: the number of quizzes taken, the total time spent, the date of the first and last quiz, the number of points earned, and the list of quizzes taken. 
+    - The third tab, “*Student Timeline*”, displays, for each student (selectable from a dropdown menu), a graph showing the quizzes taken and the scores obtained over time.
+
+3. The “**Correction & Grades**” tab allows to calculate the overall grade for an exam by comparing submitted answers to expected answers and, if necessary, adjusting the scoring scale per question. The grading scale is also adjustable (for example, out of 4, 20, or 100). The “*Student Reports*” tab enables individual or overall analysis: for each student, you can view the Student Timeline (for the exam), generate an individual report (“graded sheet), and you can also generate reports for the entire class, which can be downloaded individually or as a whole in PDF, HTML, or ZIP formats.
+
+4. Finally, the “**Participation analytics**” tab allows, given the specification of a time interval during which the session was to take place, to examine whether students completed the work in advance, during the expected interval, or even after the session, and how many times.
+                                                    """, unsafe_allow_html=True)
+
+
                 tab_names = [_("📡 Integrity Live"), _("👀 Monitoring"), _("🎯 Correction & Grades"), _("⛹🏼‍♀️ Participation analytics")]
                 #selected_tab = st.radio(_("Select a tab"), 
                 #                        tab_names, horizontal=True, 
@@ -1324,21 +1550,58 @@ def main():
                     st.subheader(_("Activity monitoring"))
                     
                     # 1. Data Preparation
-                    df_last = prepare_monitoring_data(df)
+                    col1, col2, col3, col4 = st.columns([2, 1, 2, 2])
+                    with col1:
+                        if 'split_by_sessions' not in st.session_state:
+                            st.session_state.split_by_sessions = st.session_state.spl_sessions
+                        split_sessions = st.checkbox(_("Split by sessions"), value=False, 
+                                    help=_("Split by sessions"), key="split_by_sessions",
+                                    #on_change=sync, args=("split_by_sessions",)
+                                    )
+                        st.session_state.spl_sessions = split_sessions
+
+                    if split_sessions:
+                        with col4:
+                            min_time_between_sessions = st.number_input(_("Inactivity threshold (in hours)"), value=2, 
+                                            min_value=0, key="min_time_between_sessions", on_change=sync, 
+                                            args=("min_time_between_sessions",))
+                        with col3:
+                            max_session_duration = st.number_input(_("Maximum session duration (in hours)"), value=12, 
+                                            min_value=0, key="max_session_duration", on_change=sync, 
+                                            args=("max_session_duration",))
+                        df_last = prepare_monitoring_data_with_sessions(df_for_cache(df), min_time_between_sessions=min_time_between_sessions, 
+                                                                        max_session_duration=max_session_duration, time_unit='hours')
+                    else:
+                        df_last = prepare_monitoring_data(df_for_cache(df))
 
                     if df_last.empty:
                         st.info(_("No valid activity recorded yet."))
                     else:
                         monitoring_tab_names = [_("📊 Monitoring charts"), _("🕵️‍♀️ Activity Summary"), _('Student Timeline')]
+                        
+
+                        #if "monitoring_tab" in st.session_state:
+                        #    st.session_state.monitoring_nav_state = st.session_state.monitoring_tab
+                        #else:
+                        #    st.session_state.monitoring_nav_state = monitoring_tab_names[0]
+                       
+                        if "monitoring_nav_state" not in st.session_state:
+                            #st.write("monitoring_nav_state not in st.session_state... ") #WHY??
+                            if "monitoring_tab" in st.session_state and st.session_state.monitoring_tab in monitoring_tab_names:
+                                st.session_state.monitoring_nav_state = st.session_state.monitoring_tab
+                            else:
+                                st.session_state.monitoring_nav_state = monitoring_tab_names[0]
+
                         monitoring_tab = st.segmented_control(
                             label="Navigation",
                             options=monitoring_tab_names,
-                            default=monitoring_tab_names[0],
+                            #default=monitoring_tab_names[0],
                             key="monitoring_nav_state", 
                             label_visibility="collapsed",
                             on_change=sync, 
                             args=("monitoring_nav_state",),
                         )
+                        st.session_state.monitoring_tab = monitoring_tab
 
                         if monitoring_tab == monitoring_tab_names[0]:
                             # 2. Grid Layout (2 columns)
@@ -1369,33 +1632,45 @@ def main():
                             st.markdown(_("#### Detailed Activity Summary"))
 
                             # Preparing the table data
-                            df['recorded_timestamp'] = pd.to_datetime(df['timestamp'].str.split(' \\(').str[0])
+                            timestamp_str = df["timestamp"].dropna().map(lambda x: isinstance(x, str)).all()
+                            if timestamp_str:
+                                df['recorded_timestamp'] = pd.to_datetime(df['timestamp'].str.split(' \\(').str[0], utc=True)
                             # Compute elapsed_time from full df (not df_last)
                             elapsed = (
                                 df.groupby("student")["recorded_timestamp"]
                                 .agg(
                                     elapsed_time=lambda x: x.max() - x.min(),
                                     elapsed_time_minutes=lambda x: round((x.max() - x.min()).total_seconds() / 60),
-                                    first_quiz=lambda x: x.min())
+                                    first_quiz=lambda x: x.min(), 
+                                    last_quiz=lambda x: x.max())
                                 .reset_index()
                             )
                             df.drop(columns=['recorded_timestamp'], inplace=True)
 
+                            agg_dict = {
+                                "nb_quizzes": ("quiz_title", "size"),
+                                "total_score": ("score", "sum"),
+                                "quizzes_list": ("quiz_title", lambda x: ", ".join(x.astype(str))),
+                            }
+
+                            if "session_id" in df_last.columns:
+                                agg_dict["nb_sessions"] = ("session_id", "nunique")
+
                             detailed_stats = (
                                 df_last.groupby("student")
-                                .agg(
-                                    nb_quizzes=("quiz_title", "size"),
-                                    total_score=("score", "sum"),
-                                    quizzes_list=("quiz_title", lambda x: ", ".join(list(x))),
-                                    #elapsed_time=("recorded_timestamp", lambda x: x.max() - x.min())
-                                )
+                                .agg(**agg_dict)
                                 .reset_index()
                             )
                             # Merge elapsed_time into detailed_stats
                             detailed_stats = detailed_stats.merge(elapsed, on="student", how="left")
 
                             # reorder columns
-                            detailed_stats = detailed_stats[['student', 'nb_quizzes', 'elapsed_time_minutes', 'elapsed_time', 'first_quiz', 'total_score', 'quizzes_list']]
+                            cols_list = ['student', 'nb_quizzes', 'elapsed_time_minutes', 'elapsed_time', 'first_quiz', 'last_quiz', 'total_score', 'quizzes_list']
+                            if "session_id" in df_last.columns:
+                                cols_list.insert(2, 'nb_sessions')
+                            detailed_stats = detailed_stats[cols_list]
+                            
+
 
                             # Format elapsed_time: keep only days and hours/minutes, drop seconds/microseconds
                             def format_elapsed(td):
@@ -1427,6 +1702,7 @@ def main():
                                     "elapsed_time": st.column_config.TextColumn(_("Elapsed Time")),
                                     "elapsed_time_minutes": st.column_config.NumberColumn(_("Elapsed Time (min)"), format="%d min"),
                                     "first_quiz": st.column_config.DatetimeColumn(_("First Quiz"), format="DD/MM/YYYY HH:mm"),
+                                    "last_quiz": st.column_config.DatetimeColumn(_("Last Quiz"), format="DD/MM/YYYY HH:mm"),
                                     "total_score": st.column_config.NumberColumn(_("Total Points"), format="%.1f"),
                                     "quizzes_list": st.column_config.TextColumn(_("List of Quizzes"))
                                 },
@@ -1437,6 +1713,8 @@ def main():
                         elif monitoring_tab == monitoring_tab_names[2]:
                             # 4. Student Timeline
                             st.markdown(_("#### Student Timeline"))
+
+                            timestamp_str = df_last["timestamp"].dropna().map(lambda x: isinstance(x, str)).all()
                             
                             # 1. Global stats calculation
                             quiz_stats = df_last.groupby("quiz_title")["score"].agg(["mean", "std"]).reset_index()
@@ -1447,13 +1725,55 @@ def main():
 
                             # 3. Display Plot
                             if selected_student:
-                                # 1. Data Prep
                                 student_data = df_last[df_last["student"] == selected_student].copy()
-                                student_data['timestamp'] = pd.to_datetime(student_data['timestamp'].str.split(' \\(').str[0])
+                                if timestamp_str:
+                                    student_data['timestamp'] = pd.to_datetime(student_data['timestamp'].str.split(' \\(').str[0], utc=True)
+                                
+                                # 0. Session selection
+                                if "session_id" in student_data.columns:
+                                    #sessions_names = sorted(student_data["session_id"].dropna().unique())
+
+                                    sessions_names = ( 
+                                        student_data
+                                        .dropna(subset=["session_id"])
+                                        .groupby("session_id")["timestamp"]
+                                        .min()
+                                        .sort_values(ascending=True)
+                                        .index
+                                        .tolist()
+                                    )
+
+                                    
+                                    all_sessions = ["All"] + [str(s) for s in range(len(sessions_names))]
+                                    if len(all_sessions) > 2:
+                                        selected_session = st.selectbox("Select a session", all_sessions)
+                                        if selected_session != 'All': 
+                                            selected_session = sessions_names[int(selected_session)]
+                                            #st.write("selected_session", selected_session)
+                                            student_data = df_last.query("student == @selected_student and session_id == @selected_session").copy()
+                                            st.write("Session start:", student_data['timestamp'].min())
+                                            st.write("Session end:", student_data['timestamp'].max())
+                                            st.write("Session duration:", student_data['timestamp'].max() - student_data['timestamp'].min())
+                                # 1. Merge
                                 student_data = student_data.merge(quiz_stats, on="quiz_title").sort_values("timestamp")                          
                                 # 2. Plot
                                 fig_timeline = plot_student_session_track(student_data, selected_student)
                                 st.plotly_chart(fig_timeline, use_container_width=True)
+
+                                cols_to_show = ["quiz_title", "score", "timestamp"]
+                                if 'session_id' in student_data.columns:
+                                    cols_to_show = ['session_id'] + ['quiz_title', "score", "timestamp"]
+                                st.write(_("Dataframe of the session:"))
+                                st.dataframe(
+                                    student_data[cols_to_show],
+                                    column_config={
+                                        "quiz_title": st.column_config.TextColumn(_("Quiz")),
+                                        "score": st.column_config.NumberColumn(_("Score"), format="%.1f"),
+                                        "timestamp": st.column_config.DatetimeColumn(_("Timestamp"), format="DD/MM/YYYY HH:mm")
+                                    },
+                                    hide_index=True,
+                                    width='stretch'
+                                )
 
 
                 ## End of new monitoring tab
@@ -1590,7 +1910,8 @@ def main():
                     elif correction_tab == correction_tab_names[1]:
                         if st.session_state.df_final is not None:
 
-                            df_last = prepare_monitoring_data(full_df_filt)
+                            df_last = prepare_monitoring_data(df_for_cache(full_df_filt))
+                            #df_last = prepare_monitoring_data_with_sessions(full_df_filt, min_time_between_sessions=120, time_unit='minutes')
                             
                             # 1. Global stats calculation
                             # quiz_stats below were calculated on scores, not available in exam mode
@@ -1758,7 +2079,13 @@ def main():
 
                     # Quiz selection
                     if "participation_quiz_label" not in st.session_state:
-                        st.session_state.participation_quiz_label = full_df_filt["quiz_title"].unique()[0]
+                        # For an unknown reason, participation_quiz_label is not in st.session_state
+                        # though it is the key of the widget
+                        # st.write("participation_quiz_label not in st.session_state!")
+                        if "pql" in st.session_state:
+                            st.session_state.participation_quiz_label = st.session_state.pql
+                        else:
+                            st.session_state.participation_quiz_label = full_df_filt["quiz_title"].unique()[0]
                     if "participation_t0_datetime" not in st.session_state: 
                         st.session_state.participation_t0_datetime = datetime.now() - timedelta(days=1)
                     if "participation_t1_datetime" not in st.session_state:
@@ -1766,11 +2093,13 @@ def main():
                     if "selected_tables" not in st.session_state:
                         st.session_state.selected_tables = [_("Summary")]
 
+
                     quiz_list = sorted(full_df_filt["quiz_title"].unique(), key=natural_key)
                     quiz_label  = st.selectbox(_("Select a quiz"), quiz_list, 
-                                                            on_change=sync, args=("quiz_label",),
-                                                            index=quiz_list.index(st.session_state.participation_quiz_label))
-                    #quiz_label = st.session_state.participation_quiz_label
+                                                            on_change=sync, args=("participation_quiz_label",),
+                                                            key = "participation_quiz_label",
+                                                            )
+                    st.session_state.pql = quiz_label
                     
                     try: # version >= 1.52
                         # Date/hour t0 
@@ -1830,6 +2159,7 @@ def main():
                             st.session_state.participation_analytics_results = participation_analytics_results
 
                         st.success(_("Analysis done for {quiz_label} between {t0_datetime} and {t1_datetime}").format(quiz_label=quiz_label, t0_datetime=t0_datetime, t1_datetime=t1_datetime))
+                        
 
                     # Displaying results if available
                     if "participation_analytics_results" in st.session_state:
@@ -1861,7 +2191,7 @@ def main():
                             st.subheader(table_name)
                             st.dataframe(st.session_state.participation_analytics_results[TABLE_KEY_MAPPING[table_name]], 
                                          key = f"df_{table_name}",
-                                         use_container_width=True)
+                                         width='stretch')
 
 
         except Exception as e:
