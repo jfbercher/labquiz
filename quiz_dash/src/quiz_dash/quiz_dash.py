@@ -1472,8 +1472,8 @@ def main():
             with tabs_placeholder.container(border=True, key=f"main_frame_{st.session_state.render_id}"): 
                 st.empty()
                 st.markdown(f"### 🛠️ {_('Live monitoring & Correction')}")
-                with st.expander("📖 Documentation", expanded=False):
-                                        st.markdown("""
+                with st.expander(_("📖 Documentation"), expanded=False):
+                                        st.markdown(_("""
 The Dashboard **Live Monitoring & Correction** features several tabs:
 
 
@@ -1488,7 +1488,7 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
 3. The “**Correction & Grades**” tab allows to calculate the overall grade for an exam by comparing submitted answers to expected answers and, if necessary, adjusting the scoring scale per question. The grading scale is also adjustable (for example, out of 4, 20, or 100). The “*Student Reports*” tab enables individual or overall analysis: for each student, you can view the Student Timeline (for the exam), generate an individual report (“graded sheet), and you can also generate reports for the entire class, which can be downloaded individually or as a whole in PDF, HTML, or ZIP formats.
 
 4. Finally, the “**Participation analytics**” tab allows, given the specification of a time interval during which the session was to take place, to examine whether students completed the work in advance, during the expected interval, or even after the session, and how many times.
-                                                    """, unsafe_allow_html=True)
+                                                    """), unsafe_allow_html=True)
 
 
                 tab_names = [_("📡 Integrity Live"), _("👀 Monitoring"), _("🎯 Correction & Grades"), _("⛹🏼‍♀️ Participation analytics")]
@@ -1497,6 +1497,11 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
                 #                        label_visibility="collapsed",
                 #                        key="active_tab")
                 #tab_mon, tab_mon_graph, tab_corr = st.tabs(tab_names)
+
+                # In the rare case of a change of langugage after main tab selection was saved in session..
+                if "main_nav_state" in st.session_state and st.session_state.main_nav_state not in tab_names:
+                    st.session_state.main_nav_state = tab_names[0]
+
                 selected_tab = st.segmented_control(
                     label="Navigation",
                     options=tab_names,
@@ -2057,8 +2062,8 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
                     st.subheader( _("⛹🏼‍♀️ Participation analytics"))
                     #df_last = prepare_monitoring_data(df)
 
-                    with st.expander("📖 Documentation", expanded=False):
-                        st.markdown("""
+                    with st.expander(_("📖 Documentation"), expanded=False):
+                        st.markdown(_("""
  This small dashboard provides some insights into student quiz participation patterns, helping to identify:
 - **Temporal participation trends** (when students attempt quizzes)
 - **Potential academic integrity issues** (late attempts and retakes)
@@ -2075,7 +2080,7 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
 - **First-time after deadline**: Highlights students whose initial attempt was post-deadline
 - **Late attempts**: Displays attempts made after the submission deadline
 
-""", unsafe_allow_html=False)
+"""), unsafe_allow_html=False)
 
                     # Quiz selection
                     if "participation_quiz_label" not in st.session_state:
