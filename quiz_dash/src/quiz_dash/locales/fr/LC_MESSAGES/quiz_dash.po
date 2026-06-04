@@ -455,7 +455,7 @@ msgstr "Quizzes réalisés par le groupe"
 
 #: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1615
 msgid "Total Scores per Student"
-msgstr "Scores totaux par étudiantt"
+msgstr "Scores totaux par étudiant"
 
 #: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_dash/src/quiz_dash/quiz_dash.py:1621
 msgid "Class Progress per Quiz"
