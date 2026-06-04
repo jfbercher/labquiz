@@ -40,6 +40,10 @@ verbose = False
 from i18n import init_i18n, set_language, get_translator
 _ = init_i18n(default_lang="en")
 
+from importlib.metadata import version
+
+st.sidebar.caption(f"`quiz_dash` version {version('quiz_dash')}")
+
 
 # --- 1. INITIAL RESTORATION (TEXTS ONLY) ---
 def set_defaults():
