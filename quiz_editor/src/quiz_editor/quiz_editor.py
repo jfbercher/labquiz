@@ -22,6 +22,9 @@ import ast
 from convert_quiz_format import convert_quiz_data_v1_to_v2
 #from i18n import _
 
+from importlib.metadata import version
+st.sidebar.caption(f"`quiz_editor` version {version('quiz_dash')}")
+
 from i18n import init_i18n, set_language, get_translator
 _ = init_i18n(default_lang="en")
 rng = np.random.default_rng()
