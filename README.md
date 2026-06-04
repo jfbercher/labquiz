@@ -254,6 +254,8 @@ quiz = QuizLab(URL, QUIZFILE,
 
 ## ✏️ `quiz_editor` — Build & Export Question Banks
 
+[📑 Doc at Readthedocs](https://labquiz.readthedocs.io/en/latest/quiz-editor/)
+
 Creating YAML files manually is possible — but **`quiz_editor` is intended to make it easier.** It can also be useful outside of LabQuiz as a general quiz-editor with export capabilities and large markdown support (including images, tables, equations, etc).
 
 ### Key features:
@@ -280,12 +282,14 @@ Install locally:
 pip install quiz-editor
 ```
 
-![Quiz Editor](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/quiz_editor_2.png)
+![Quiz Editor](https://github.com/jfbercher/labquiz/raw/main/docs/doc_images/editor_demo1.gif)
 
 
 ---
 
 ## 📊 `quiz_dash` — Real-Time Monitoring & Correction
+
+[📑 Doc at Readthedocs](https://labquiz.readthedocs.io/en/latest/quiz-dash/)
 
 `quiz_dash` is the companion dashboard for instructors.
 
