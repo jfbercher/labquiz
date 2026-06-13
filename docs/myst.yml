@@ -40,6 +40,9 @@ project:
         - file: JupyterLite_Deployment.md
         - file: google_authentification.md
         - file: DemonstrationAndExercises.md
+    - file: FAQ.md
+      title: FAQ
+      numbered: false
     
   bibliography:
     - references.bib
