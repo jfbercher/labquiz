@@ -8,11 +8,13 @@ numbering: false
 #### **General Overview**
 
 *   **What is LabQuiz?**
-    LabQuiz is a comprehensive **suite of tools designed to integrate interactive quizzes directly into Jupyter notebooks**, primarily for educational purposes and practical assignments.
+    LabQuiz is a comprehensive **suite of tools designed to integrate interactive quizzes directly into Jupyter notebooks**, primarily for educational purposes and practical assignments. It consists in `labquiz`, the primary package to insert and uses quizzes in the notebook, and two optional tools designed to edit quiz questions (`quiz_editor`) or monotor quiz sessions (`quiz_dash`) 
 *   **Can students use LabQuiz without installing Python?**
     Yes. By deploying quizzes via **Jupyterlite**, the distribution runs entirely in the web browser using WebAssembly (WASM). This allows for a **"zero installation" experience** that works on computers, tablets, and phones.
-*   **What is the performance like on browser-based versions?**
-    While optimized libraries like *numpy* and *pandas* perform at near-native speeds, pure Python code (such as loops) may run **3 to 10 times slower** in the browser compared to a local installation.
+*   **How students can benefit of labquiz?**
+    Students benefit from the LabQuiz suite through its flexible access, immediate pedagogical feedback, and the ability to engage in personalized, interactive learning environments directly within their browser or Jupyter notebooks.
+*   **What a student shall install?** 
+    Students just need to install the labquiz package `pip install -U labquiz` as they usually do not need to edit questions (quiz_editor) nor to monitor a quiz session (quiz_dash)
 
 #### **Question Creation & Structure**
 *   **How do I format a question file?**
@@ -46,6 +48,37 @@ numbering: false
 
 ::::
 
+::::{dropdown} How students benefit from the LabQuiz suite?
+
+Students benefit from the LabQuiz suite through its flexible access, immediate pedagogical feedback, and the ability to engage in personalized, interactive learning environments directly within their browser or Jupyter notebooks.
+
+### **1. Universal Accessibility and Convenience**
+One of the primary benefits for students is the "zero installation" requirement when quizzes are deployed via **JupyterLite**. 
+*   **Platform Independence:** Quizzes run entirely in the web browser, making them accessible on **computers, tablets, and phones** regardless of the operating system.
+*   **Ease of Use:** Students can open a simple link to a practical assignment and immediately begin working without configuring complex Python environments.
+
+### **2. Immediate Feedback and Learning Support**
+LabQuiz is designed to act as a learning tool by providing real-time guidance during exercises:
+*   **Instant Scoring:** In learning and test modes, students receive an **automatic score** immediately after submitting their answers, allowing them to gauge their understanding of the material instantly.
+*   **Hints and Clues:** Question files can include **"tips"**—clues or guidance that students can access if they are struggling with a specific proposition.
+*   **Explanatory Answers:** Beyond just seeing if they were right or wrong, students can view **detailed explanatory text** for the correct answers, which helps clarify difficult concepts.
+*   **Numerical Tolerance:** For math-based questions, the system can be configured with **tolerance margins** (percentage-based or absolute), ensuring that minor rounding differences do not unfairly penalize a student’s correct methodology.
+
+### **3. Personalized and Varied Practice**
+The use of **template questions** ensures that students have a unique and varied learning experience:
+*   **Unique Data:** Templates allow for the generation of **dynamic variables**, meaning every student can receive different numerical values for the same problem, discouraging simple copying and encouraging genuine problem-solving.
+*   **Self-Assessment Pages:** Students can use "Dynamic HTML" exports to access standalone **self-assessment web pages** where variables are regenerated every time the page is reset, providing endless practice opportunities.
+
+### **4. Secure and Fair Evaluation**
+For formal assessments, the suite ensures a professional and fair environment:
+*   **Institutional Identity:** By integrating with **Google Workspace**, students can log in using their official university credentials, ensuring their work is correctly attributed and their data is secure.
+*   **Detailed Reporting:** After an evaluation, instructors can generate and distribute **individual correction reports** in HTML or PDF format, providing students with a clear record of their performance and specific areas for improvement.
+*   **Interactive Complexity:** The support for logical constraints (like XOR or implications) allows for more sophisticated questions that challenge students' critical thinking more effectively than standard multiple-choice tests.
+  
+
+::::
+
+
 ::::{dropdown} How do I install the LabQuiz suite locally via pip?
 
 To install the various components of the LabQuiz suite locally, you can use the **pip** package manager for both the specialized graphical tools and their dependencies.
@@ -58,6 +91,20 @@ To install the various components of the LabQuiz suite locally, you can use the 
     *   For **dynamic AMC-LaTeX exports**, the system requires the **`pythonTeX`** LaTeX package to be installed on your system to handle randomized variables.
 
 ::::
+
+::::{dropdown} Can I run the labquiz on a phone or tablet?
+
+Yes, you can run the quiz on a **phone or tablet**.
+
+This is primarily achieved through **Jupyterlite**, which is a Python/JupyterLab distribution that runs entirely within a web browser. Because it uses WebAssembly (WASM) to execute code, it is independent of the operating system and requires **zero installation** on the device. It is specifically designed to be fully executable on **tablets, phones, and other mobile devices**.
+
+In addition to Jupyterlite, the **quiz_editor** provides export options that are well-suited for mobile use:
+*   **Dynamic HTML:** This export creates a "self-assessment" web page with integrated answers and correction mechanisms that can be accessed via a mobile browser.
+*   **HTML Exam:** This creates a web-based exam interface that supports real-time submission of results to a Google Sheet, allowing students to participate using their mobile devices.
+
+While the environment is fully compatible with mobile hardware, note that **pure Python execution** (such as complex loops) may be **3 to 10 times slower** in a browser-based environment compared to a native local installation, though performance for optimized libraries like *numpy* and *pandas* remains equivalent to native speeds.
+::::
+
 
 ::::{dropdown} Give the list and signification of all parameters in QuizLab()
 
@@ -398,7 +445,59 @@ When the quiz is running in a Jupyter notebook, several background mechanisms tr
 ### **4. Access Control and Secure Archives**
 *   **Google Authentication:** You can link quizzes to **Google Authentication**, which not only verifies student identities but also uses their credentials to encrypt the quiz file.
 *   **Secure Tar Archives:** For advanced security, you can package the quiz in an **encrypted archive** alongside an integrity daemon that periodically checks the student's system status and reports anomalies to the teacher.
-*   
+
+::::
+
+::::{dropdown} Can a student modify quiz parameters?
+
+Technically, **a student can modify quiz parameters** because the Python source code is accessible in a Jupyter notebook, but the LabQuiz suite is designed to **immediately detect and flag such modifications**.
+
+### 1. Detection via Integrity Hashing
+The system monitors a specific **"WATCHLIST"** of parameters, which includes **`exam_mode`**, **`test_mode`**, and **`retries`**.
+*   **The "Big Hash":** A hash of these parameters (along with a hash of source code loaded in memory) is periodically transmitted to the results server. 
+*   **Hash Mismatch:** If a student attempts to modify source or "monkey patch" the code the **calculated hash will change**.
+*   **Teacher Alerts:** Tools like **`quiz_dash`** or the **`check_hash_integrity`** function will explicitly flag the student by name and machine ID, reporting exactly which key was changed and what its original value was.
+
+### 2. Functional Failure
+Modifying certain core parameters will cause the quiz to **stop functioning correctly**:
+*   **Decryption Link:** If **`googleAuthentification=True`** is set, the quiz file is specifically encrypted to require that authentication. If a student modifies this parameter to `False` to try and bypass the login, they will be **unable to decrypt the quiz file** and cannot see the questions.
+*   **Connectivity:** If **`mandatoryInternet=True`** is required, the quiz will raise an exception and refuse to run if it cannot verify a connection to the results server to record these parameters.
+
+### 3. Continuous Monitoring (Daemon)
+Even if a student modifies a parameter after the quiz has started, a background **daemon** periodically transmits the system status. This "heartbeat" ensures that the current state of the parameters in the student's memory is constantly compared against the original values expected by the teacher.
+
+### 4. Advanced Security (Secure Archives)
+For high-stakes exams, instructors can use the **`create_secure_tar`** tool to package the quiz in an **encrypted archive**. This includes an **autonomous integrity daemon** that is minified and obfuscated, making it significantly harder for a student to reverse-engineer or modify the monitoring process without being caught.
+
+In summary, while the open nature of Jupyter allows students to edit the code, the **continuous transmission of state hashes** makes it "reasonably complex and difficult" to modify parameters successfully without alerting the instructor.
+
+::::
+
+::::{dropdown} Can a student modify sources to spoof the system?
+Technically, **a student can modify the sources** because the Python code is accessible within the Jupyter notebook, but the LabQuiz suite is designed to **immediately detect and flag** such attempts through several layers of integrity monitoring.
+
+### **1. Detection of "Monkey Patching"**
+Since the environment is open, a student could try to "monkey patch" the code (modifying the Python objects or functions in memory) to change behavior, such as increasing the number of allowed attempts or disabling exam mode. The system counters this by:
+*   **Source and Parameter Hashing:** The suite calculates a **"big hash"** that includes both the source code of the modules (like `main` and `utils`) and a **watchlist** of critical parameters: `exam_mode`, `test_mode`, and `retries`.
+*   **Periodic Transmission:** This hash is periodically transmitted to the server via a background **daemon**. If a student changes even a single line of code or a monitored parameter, the hash will not match the "wanted hash" expected by the teacher, and the anomaly will be flagged on the **`quiz_dash`** dashboard.
+
+### **2. Machine and System Identification**
+Spoofing the system by switching computers or sharing answers is detected through **machine identification**. The suite captures a unique identifier based on the machine's hardware and software system, which is included in every transaction.
+*   The `check_machine` function and the dashboard can identify if the **same machine ID** is being used by multiple student names, suggesting unauthorized collaboration.
+*   It also detects **machine modification**, where a single student's record shows different machine IDs during the same session.
+
+### **3. Encryption and Authentication Locks**
+Some parameters are functionally locked through encryption:
+*   **Google Authentication:** If `googleAuthentification=True` is enabled, the quiz file is specifically encrypted to enforce this. If a student tries to spoof the system by modifying this parameter to `False` to bypass login, they will be **unable to decrypt the quiz file** and cannot access the questions.
+*   **Mandatory Internet:** When `mandatoryInternet=True` is set, the system forces all validations and heartbeats to be recorded in real-time. Bypassing this while still trying to submit answers is "reasonably complex and difficult".
+
+### **4. Advanced Spoofing Protection (Secure Archives)**
+For high-stakes exams, teachers can use the `create_secure_tar` tool to package the quiz in an **encrypted archive**. 
+*   This archive contains an **autonomous version of the integrity daemon** (`zutils.py`) that has been **minified and obfuscated** (renaming globals, removing literals) to make reverse engineering significantly harder.
+*   This daemon is watermarked with a `session_hash` and performs checks that are transmitted independently to the server.
+
+### **Teacher Recommendation for High-Stakes Exams**
+The documentation notes that a highly motivated student might still attempt to reverse engineer the data sent to the server. Therefore, for formal exams, the most effective protection is to **distribute a question file that does not contain the answers**. This ensures that even if a student successfully spoofs the monitoring system, they cannot find the correct answers within the local files.
 
 ::::
 
