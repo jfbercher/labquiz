@@ -1149,7 +1149,16 @@ def render_question_header(q_id, filtered_ids, lang_func):
             args=(q_id, main_key),
             help=_("Check to include this question in future YAML exports")
         )
+def get_searchable_values(quiz: dict) -> list[str]:
+    """Return the list of values (lowercased) to search in, without
+    concatenating them, depending on the chosen scope."""
+    values = []
 
+    values.append(str(quiz.get("question", "")).lower())
+    for prop in quiz.get("propositions", []):
+            values.append(str(prop.get("proposition", "")).lower())
+            values.append(str(prop.get("answer", "")).lower())
+    return values
 
 
 #-------------------------------------------------
@@ -1229,6 +1238,14 @@ def main():
             #quiz_ids = [k for k in data.keys() if k != 'title']
             quiz_ids_all = [k for k in data.keys() if k != 'title']
 
+            # Full text search
+            query = st.text_input(
+                "Full text search",
+                placeholder='Term or "full expression in quotes"',
+                help = """Full text search: select quizzes containing the query. The search is case insensitive and works in mode 'contains', i.e. true if query is
+                fount either in question or proposals or anwers texts """
+                ).strip('"').lower()
+
             # Category filter
             cat_options = [_("All ({len_all})").format(len_all=len(quiz_ids_all))] + [f"{c} ({cat_counts[c]})" for c in sorted_cats]
             selected_cat_ui = st.selectbox(_("Category"), cat_options)
@@ -1248,8 +1265,10 @@ def main():
                 # Category and tags check
                 match_cat = (selected_cat == all_cat_name or q_cat == selected_cat)
                 match_tags = all(tag in q_tags for tag in selected_tags)
+                values = get_searchable_values(data[qid])
+                match_query = any([ query in value for value in values ])
             
-                if match_cat and match_tags:
+                if match_cat and match_tags and match_query:
                     filtered_ids.append(qid)
 
             ## Selection widget on filtered quizzes
