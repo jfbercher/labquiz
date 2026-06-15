@@ -190,6 +190,16 @@ def apply_custom_styles():
         </style>
     """, unsafe_allow_html=True)
 
+    # Reduce padding of st.expander in sidebar
+    st.markdown("""
+        <style>
+        section[data-testid="stSidebar"] div[data-testid="stExpander"] > details > div {
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
 
 
 def init_session_states(FILE_PATH):
@@ -1177,234 +1187,237 @@ def main():
 
     data = st.session_state.data
 
-    st.sidebar.title(_("📂 Browse"))
-    st.sidebar.divider()
-    st.sidebar.subheader(_("📥 Import new file"))
+    with st.sidebar:
+        with st.expander(_("📂 Browse"), expanded=True):
+            #st.sidebar.title(_("📂 Browse"))
+            #st.divider()
+            st.subheader(_("📥 Import new file"))
 
 
-    # File uploader
-    uploaded_file = st.sidebar.file_uploader(
-        _("Choose file"), 
-        type=["yaml", "yml"],
-        help=_("Loads the contents of a YAML file into the editor")
-    )
+            # File uploader
+            uploaded_file = st.file_uploader(
+                _("Choose file"), 
+                type=["yaml", "yml"],
+                help=_("Loads the contents of a YAML file into the editor")
+            )
 
-    if uploaded_file is not None:
-        #if st.sidebar.button("🚀 Charger ce fichier", use_container_width=True):
-        if uploaded_file.name != st.session_state.last_uploaded_file:
-            try:
-                data = yaml.load(uploaded_file)
-                data = convert_quiz_data_v1_to_v2(data) #precaution
-                # 2. updatesession_state
-                st.session_state.data = data
-                st.session_state.data['title'] = data.get('title', _('📖 Enter a title here'))
-                st.session_state["quiz_title"] = st.session_state.data["title"]
-                # 3. Updating filename for future save
-                st.session_state["shared_fn"] = uploaded_file.name
-                st.session_state.last_uploaded_file = uploaded_file.name
-                # 4. Success message and refresh
-                st.toast(_("File `{file_name}` loaded successfully!").format(file_name=st.session_state['shared_fn']))
+            if uploaded_file is not None:
+                #if st.sidebar.button("🚀 Charger ce fichier", use_container_width=True):
+                if uploaded_file.name != st.session_state.last_uploaded_file:
+                    try:
+                        data = yaml.load(uploaded_file)
+                        data = convert_quiz_data_v1_to_v2(data) #precaution
+                        # 2. updatesession_state
+                        st.session_state.data = data
+                        st.session_state.data['title'] = data.get('title', _('📖 Enter a title here'))
+                        st.session_state["quiz_title"] = st.session_state.data["title"]
+                        # 3. Updating filename for future save
+                        st.session_state["shared_fn"] = uploaded_file.name
+                        st.session_state.last_uploaded_file = uploaded_file.name
+                        # 4. Success message and refresh
+                        st.toast(_("File `{file_name}` loaded successfully!").format(file_name=st.session_state['shared_fn']))
+                        st.rerun()
+                    except Exception as e:
+                        st.sidebar.error(_("Read Error:") + f"{e}")
+
+            # QUIZ MANAGEMENT
+        with st.expander(_("🎰🎲♠ Quiz management"), expanded=True):
+            #st.sidebar.divider()
+            #st.sidebar.subheader(_("🎰🎲♠ Quiz management"))
+
+            # 3. Filtering widget in sidebar
+            #quiz_ids = [k for k in data.keys() if k != 'title']
+            quiz_ids_all = [k for k in data.keys() if k != 'title']
+
+            # Category filter
+            cat_options = [_("All ({len_all})").format(len_all=len(quiz_ids_all))] + [f"{c} ({cat_counts[c]})" for c in sorted_cats]
+            selected_cat_ui = st.selectbox(_("Category"), cat_options)
+            all_cat_name =  _("All ({len_all})").split(" (")[0] #
+            selected_cat = selected_cat_ui.split(" (")[0] if selected_cat_ui != all_cat_name else all_cat_name
+
+            # Filtre Tags (utilise sorted_tags préparé plus haut)
+            selected_tags = st.multiselect(_("Filter by Tags"), 
+                                        placeholder=_("Choose a tag"), options=sorted_tags)
+
+            ## Join filtering
+            filtered_ids = []
+            for qid in quiz_ids_all:
+                q_cat = data[qid].get('category', _('None'))
+                q_tags = data[qid].get('tags', [])
+                
+                # Category and tags check
+                match_cat = (selected_cat == all_cat_name or q_cat == selected_cat)
+                match_tags = all(tag in q_tags for tag in selected_tags)
+            
+                if match_cat and match_tags:
+                    filtered_ids.append(qid)
+
+            ## Selection widget on filtered quizzes
+            quiz_ids = filtered_ids
+            selected_quiz = st.selectbox(
+                _("Choose a question from {lenf}").format(lenf=len(filtered_ids)), 
+                quiz_ids, 
+                index=quiz_ids.index(st.session_state.current_quiz) if st.session_state.current_quiz in quiz_ids else 0
+                )
+            if selected_quiz != st.session_state.current_quiz:
+                st.session_state.current_quiz = selected_quiz
                 st.rerun()
-            except Exception as e:
-                st.sidebar.error(_("Read Error:") + f"{e}")
 
-    # QUIZ MANAGEMENT
-    st.sidebar.divider()
-    st.sidebar.subheader(_("🎰🎲♠ Quiz management"))
+            ## Actions on selected quiz
 
-    # 3. Filtering widget in sidebar
-    #quiz_ids = [k for k in data.keys() if k != 'title']
-    quiz_ids_all = [k for k in data.keys() if k != 'title']
-
-    # Category filter
-    cat_options = [_("All ({len_all})").format(len_all=len(quiz_ids_all))] + [f"{c} ({cat_counts[c]})" for c in sorted_cats]
-    selected_cat_ui = st.sidebar.selectbox(_("Category"), cat_options)
-    all_cat_name =  _("All ({len_all})").split(" (")[0] #
-    selected_cat = selected_cat_ui.split(" (")[0] if selected_cat_ui != all_cat_name else all_cat_name
-
-    # Filtre Tags (utilise sorted_tags préparé plus haut)
-    selected_tags = st.sidebar.multiselect(_("Filter by Tags"), 
-                                placeholder=_("Choose a tag"), options=sorted_tags)
-
-    ## Join filtering
-    filtered_ids = []
-    for qid in quiz_ids_all:
-        q_cat = data[qid].get('category', _('None'))
-        q_tags = data[qid].get('tags', [])
-        
-        # Category and tags check
-        match_cat = (selected_cat == all_cat_name or q_cat == selected_cat)
-        match_tags = all(tag in q_tags for tag in selected_tags)
-    
-        if match_cat and match_tags:
-            filtered_ids.append(qid)
-
-    ## Selection widget on filtered quizzes
-    quiz_ids = filtered_ids
-    selected_quiz = st.sidebar.selectbox(
-        _("Choose a question from {lenf}").format(lenf=len(filtered_ids)), 
-        quiz_ids, 
-        index=quiz_ids.index(st.session_state.current_quiz) if st.session_state.current_quiz in quiz_ids else 0
-        )
-    if selected_quiz != st.session_state.current_quiz:
-        st.session_state.current_quiz = selected_quiz
-        st.rerun()
-
-    ## Actions on selected quiz
-
-    col1, col2 = st.sidebar.columns(2)
-    ### 1. BOUTON CLONER
-    with col1:
-        if st.button(_("👯 Duplicate"), use_container_width=True, help=_("Copier ce quiz")):
-            import copy
-            numbers = [int(re.findall(r'\d+', k)[0]) for k in quiz_ids if re.findall(r'\d+', k)]
-            next_num = max(numbers) + 1 if numbers else 1
-            new_id = f"quiz{next_num}"
-            st.session_state.data[new_id] = copy.deepcopy(data[selected_quiz])
-            st.session_state.current_quiz = new_id
-            st.rerun()
-    ### 2. DELETE BUTTON WITH CONFIRMATION
-    with col2:
-        confirm_key = f"confirm_del_{selected_quiz}"
-        if confirm_key not in st.session_state:
-            st.session_state[confirm_key] = False
-
-        if not st.session_state[confirm_key]:
-            if st.button(_("🗑️ Delete"), use_container_width=True, help=_("Supprimer ce quiz")):
-                st.session_state[confirm_key] = True
-                st.rerun()
-        else:
-            # Confirmation request
-            if st.button(_("❗ Confirm?"), use_container_width=True, type="primary"):
-                if len(quiz_ids) > 1:
-                    del st.session_state.data[selected_quiz]
-                    remaining_ids = [k for k in st.session_state.data.keys() if k != 'title']
-                    st.session_state.current_quiz = remaining_ids[0]
-                    st.session_state[confirm_key] = False
+            col1, col2 = st.columns(2)
+            ### 1. BOUTON CLONER
+            with col1:
+                if st.button(_("👯 Duplicate"), use_container_width=True, help=_("Copier ce quiz")):
+                    import copy
+                    numbers = [int(re.findall(r'\d+', k)[0]) for k in quiz_ids if re.findall(r'\d+', k)]
+                    next_num = max(numbers) + 1 if numbers else 1
+                    new_id = f"quiz{next_num}"
+                    st.session_state.data[new_id] = copy.deepcopy(data[selected_quiz])
+                    st.session_state.current_quiz = new_id
                     st.rerun()
-                else:
-                    st.sidebar.error(_("Last quiz!"))
+            ### 2. DELETE BUTTON WITH CONFIRMATION
+            with col2:
+                confirm_key = f"confirm_del_{selected_quiz}"
+                if confirm_key not in st.session_state:
                     st.session_state[confirm_key] = False
-            # Cancel button
-            if st.button(_("Cancel"), use_container_width=True):
-                st.session_state[confirm_key] = False
-                st.rerun()
-    
-    ### 3. BUTTON NEW QUIZ - Create a new quiz
-    available_types = ["mcq", "numeric", "mcq-template", "numeric-template"]
 
-    with st.sidebar.popover(_("➕ New Quiz"), use_container_width=True):
+                if not st.session_state[confirm_key]:
+                    if st.button(_("🗑️ Delete"), use_container_width=True, help=_("Supprimer ce quiz")):
+                        st.session_state[confirm_key] = True
+                        st.rerun()
+                else:
+                    # Confirmation request
+                    if st.button(_("❗ Confirm?"), use_container_width=True, type="primary"):
+                        if len(quiz_ids) > 1:
+                            del st.session_state.data[selected_quiz]
+                            remaining_ids = [k for k in st.session_state.data.keys() if k != 'title']
+                            st.session_state.current_quiz = remaining_ids[0]
+                            st.session_state[confirm_key] = False
+                            st.rerun()
+                        else:
+                            st.sidebar.error(_("Last quiz!"))
+                            st.session_state[confirm_key] = False
+                    # Cancel button
+                    if st.button(_("Cancel"), use_container_width=True):
+                        st.session_state[confirm_key] = False
+                        st.rerun()
+            
+            ### 3. BUTTON NEW QUIZ - Create a new quiz
+            available_types = ["mcq", "numeric", "mcq-template", "numeric-template"]
 
-        selected_type = st.selectbox(
-            _("Select quiz type"),
-            available_types,
-            help=_("Defines the validation behavior of the quiz.")
-        )
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button(_("Create"), use_container_width=True):
+            with st.popover(_("➕ New Quiz"), use_container_width=True):
 
-                # Compute next quiz ID
-                numbers = [
-                    int(re.findall(r'\d+', k)[0])
-                    for k in quiz_ids
-                    if re.findall(r'\d+', k)
-                ]
-                next_num = max(numbers) + 1 if numbers else 1
-                new_id = f"quiz{next_num}"
+                selected_type = st.selectbox(
+                    _("Select quiz type"),
+                    available_types,
+                    help=_("Defines the validation behavior of the quiz.")
+                )
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button(_("Create"), use_container_width=True):
 
-                # Create quiz structure depending on selected type
-                if selected_type in ["numeric", "numeric-template"]:
-                    expval = 3.14 if selected_type == "numeric" else "f'{a+b:.4f}'"
-                    new_data = {
-                        "type": selected_type,
-                        "question": _("New question"),
-                        "propositions": [
-                            {"proposition": _("Choice 1"), "expected": expval}
+                        # Compute next quiz ID
+                        numbers = [
+                            int(re.findall(r'\d+', k)[0])
+                            for k in quiz_ids
+                            if re.findall(r'\d+', k)
                         ]
-                    }
+                        next_num = max(numbers) + 1 if numbers else 1
+                        new_id = f"quiz{next_num}"
 
-                elif selected_type in ["mcq", "mcq-template"]:
-                    expval = False if selected_type == "mcq" else "f'{a} in {b}'"
-                    new_data = {
-                        "type": selected_type,
-                        "question": _("New question"),
-                        "propositions": [
-                            {"proposition": _("Choice 1"), "expected": expval}
-                        ]
-                    }
+                        # Create quiz structure depending on selected type
+                        if selected_type in ["numeric", "numeric-template"]:
+                            expval = 3.14 if selected_type == "numeric" else "f'{a+b:.4f}'"
+                            new_data = {
+                                "type": selected_type,
+                                "question": _("New question"),
+                                "propositions": [
+                                    {"proposition": _("Choice 1"), "expected": expval}
+                                ]
+                            }
 
-                # Store quiz and update current selection
-                st.session_state.data[new_id] = new_data
-                st.session_state.current_quiz = new_id
+                        elif selected_type in ["mcq", "mcq-template"]:
+                            expval = False if selected_type == "mcq" else "f'{a} in {b}'"
+                            new_data = {
+                                "type": selected_type,
+                                "question": _("New question"),
+                                "propositions": [
+                                    {"proposition": _("Choice 1"), "expected": expval}
+                                ]
+                            }
 
-                st.rerun()
-        with col2:
-            st.write("")  # Optional spacer (keeps layout symmetrical)
+                        # Store quiz and update current selection
+                        st.session_state.data[new_id] = new_data
+                        st.session_state.current_quiz = new_id
+
+                        st.rerun()
+                with col2:
+                    st.write("")  # Optional spacer (keeps layout symmetrical)
 
 
     # 4. Export section ---
-    st.sidebar.divider()
-    st.sidebar.title(_("📤 Export"))
+    #st.sidebar.divider()
+    #st.sidebar.title(_("📤 Export"))
+        with st.expander(_("📤 Export"), expanded=True):
+            # Initialization of the selection dictionary
+            if 'selected_for_export' not in st.session_state:
+                st.session_state.selected_for_export = {qid: False for qid in quiz_ids}
 
-    # Initialization of the selection dictionary
-    if 'selected_for_export' not in st.session_state:
-        st.session_state.selected_for_export = {qid: False for qid in quiz_ids}
+            ## 4.1 CHECK/UNCHECK ALL BUTTONS
+            col_all1, col_all2 = st.columns(2)
+            if col_all1.button(_("✅ Select all"), use_container_width=True):
+                for qid in quiz_ids:
+                    st.session_state.selected_for_export[qid] = True
+                    # Force updating of widget keys
+                    st.session_state[f"check_side_{qid}"] = True
+                    st.session_state[f"check_main_{qid}"] = True
+                st.rerun()
 
-    ## 4.1 CHECK/UNCHECK ALL BUTTONS
-    col_all1, col_all2 = st.sidebar.columns(2)
-    if col_all1.button(_("✅ Select all"), use_container_width=True):
-        for qid in quiz_ids:
-            st.session_state.selected_for_export[qid] = True
-            # Force updating of widget keys
-            st.session_state[f"check_side_{qid}"] = True
-            st.session_state[f"check_main_{qid}"] = True
-        st.rerun()
+            if col_all2.button(_("❌ Deselect all"), use_container_width=True):
+                for qid in quiz_ids:
+                    st.session_state.selected_for_export[qid] = False
+                    st.session_state[f"check_side_{qid}"] = False
+                    st.session_state[f"check_main_{qid}"] = False
+                st.rerun()
 
-    if col_all2.button(_("❌ Deselect all"), use_container_width=True):
-        for qid in quiz_ids:
-            st.session_state.selected_for_export[qid] = False
-            st.session_state[f"check_side_{qid}"] = False
-            st.session_state[f"check_main_{qid}"] = False
-        st.rerun()
+            ## 4.2. SELECTION AREA (Checkboxes for each available quiz [may be already filtered])
+            with st.expander(_("Select questions"), expanded=False):
+                for qid in quiz_ids:
+                    side_key = f"check_side_{qid}"
+                    # We ensure that the widget key exists 
+                    if side_key not in st.session_state:
+                        st.session_state[side_key] = st.session_state.selected_for_export.get(qid, False)
 
-    ## 4.2. SELECTION AREA (Checkboxes for each available quiz [may be already filtered])
-    with st.sidebar.expander(_("Select questions"), expanded=False):
-        for qid in quiz_ids:
-            side_key = f"check_side_{qid}"
-            # We ensure that the widget key exists 
-            if side_key not in st.session_state:
-                st.session_state[side_key] = st.session_state.selected_for_export.get(qid, False)
+                    st.checkbox(
+                        qid, 
+                        key=side_key,
+                        on_change=sync_export,
+                        args=(qid, side_key)
+                    )
+                    
+            ## 4.3. Format choice menu
+            selected_qids = [qid for qid in quiz_ids if st.session_state.selected_for_export.get(qid, False)]
 
-            st.checkbox(
-                qid, 
-                key=side_key,
-                on_change=sync_export,
-                args=(qid, side_key)
-            )
-            
-    ## 4.3. Format choice menu
-    selected_qids = [qid for qid in quiz_ids if st.session_state.selected_for_export.get(qid, False)]
+            if selected_qids:
+                st.markdown(_("**{lsq} question(s) selected**").format(lsq=len(selected_qids)))
+                
+                # Preparing the export_data
+                export_data = {"title": data.get('title', 'Sans titre')}
+                for i, old_id in enumerate(selected_qids):
+                    export_data[f"quiz{i+1}"] = copy.deepcopy(data[old_id])
 
-    if selected_qids:
-        st.sidebar.markdown(_("**{lsq} question(s) selected**").format(lsq=len(selected_qids)))
-        
-        # Preparing the export_data
-        export_data = {"title": data.get('title', 'Sans titre')}
-        for i, old_id in enumerate(selected_qids):
-            export_data[f"quiz{i+1}"] = copy.deepcopy(data[old_id])
+                # Export drop-down menu
+                export_format = st.selectbox(
+                    _("Choose export format"),
+                    ["---", "YAML", _("HTML Interactive (self-assessment)"), _("HTML Exam (Server)"), "AMC (LaTeX)", "AMC PythonTeX (LaTeX)"]
+                )
 
-        # Export drop-down menu
-        export_format = st.sidebar.selectbox(
-            _("Choose export format"),
-            ["---", "YAML", _("HTML Interactive (self-assessment)"), _("HTML Exam (Server)"), "AMC (LaTeX)", "AMC PythonTeX (LaTeX)"]
-        )
-
-        if export_format != "---":
-            if st.sidebar.button(_("Configure & Export"), use_container_width=True):
-                export_config_dialog(data, selected_qids, export_format)
-    else:
-        st.sidebar.info(_("Check questions to export."))
+                if export_format != "---":
+                    if st.button(_("Configure & Export"), use_container_width=True):
+                        export_config_dialog(data, selected_qids, export_format)
+            else:
+                st.info(_("Check questions to export."))
 
 
     # END OF SIDEBAR SECTION
