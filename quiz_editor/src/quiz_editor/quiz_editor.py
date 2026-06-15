@@ -1255,7 +1255,7 @@ def main():
     col1, col2 = st.sidebar.columns(2)
     ### 1. BOUTON CLONER
     with col1:
-        if st.button(_("👯 Duplicate"), use_container_width=True, help="Copier ce quiz"):
+        if st.button(_("👯 Duplicate"), use_container_width=True, help=_("Copier ce quiz")):
             import copy
             numbers = [int(re.findall(r'\d+', k)[0]) for k in quiz_ids if re.findall(r'\d+', k)]
             next_num = max(numbers) + 1 if numbers else 1
@@ -1270,7 +1270,7 @@ def main():
             st.session_state[confirm_key] = False
 
         if not st.session_state[confirm_key]:
-            if st.button(_("🗑️ Delete"), use_container_width=True, help="Supprimer ce quiz"):
+            if st.button(_("🗑️ Delete"), use_container_width=True, help=_("Supprimer ce quiz")):
                 st.session_state[confirm_key] = True
                 st.rerun()
         else:
