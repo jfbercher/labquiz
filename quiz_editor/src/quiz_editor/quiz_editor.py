@@ -221,9 +221,15 @@ def init_session_states(FILE_PATH):
     # Session initialization for data persistence
     if 'data' not in st.session_state:
         st.session_state.data = load_data(FILE_PATH)
+        if os.path.exists(FILE_PATH):
+            st.session_state.last_uploaded_file = FILE_PATH
 
     if "quiz_title" not in st.session_state:
         st.session_state.quiz_title = st.session_state.data.get("title", _("Enter a title here"))
+
+    # Data loading
+    if 'data_selectbox' not in st.session_state:
+        st.session_state.data_selectbox = None
 
     # For exports
     if 'selected_for_export' not in st.session_state:
@@ -1213,15 +1219,46 @@ def main():
             if uploaded_file is not None:
                 #if st.sidebar.button("🚀 Charger ce fichier", use_container_width=True):
                 if uploaded_file.name != st.session_state.last_uploaded_file:
+                    if st.session_state.last_uploaded_file is not None:
+                        st.warning(_("A file is already loaded."))
+                        option = st.radio(
+                            _("Select:"),
+                            [_("Replace data"), _("Append to existing data")],
+                            key="data_selectbox",
+                        )
+                        if not st.button(_("Confirm")):
+                            st.stop()      # <-- we wait for the click
                     try:
-                        data = yaml.load(uploaded_file)
-                        data = convert_quiz_data_v1_to_v2(data) #precaution
+                        if st.session_state["data_selectbox"] == _("Append to existing data"):
+                            append_data = True
+                            tmp_data = yaml.load(uploaded_file)
+                            tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
+                            quiz_ids_all = [k for k in data.keys() if k != 'title']
+                            numbers = [
+                                int(re.findall(r'\d+', k)[0])
+                                for k in quiz_ids_all
+                                    if re.findall(r'\d+', k)
+                                ]
+                            next_num = max(numbers) + 1 if numbers else 1
+
+                            for k in tmp_data.keys():
+                                if k != "title":
+                                    data[f"quiz{next_num}"] = tmp_data[k]
+                                    next_num += 1
+                            del tmp_data
+                        else:
+                            append_data = False
+                            data = yaml.load(uploaded_file)
+                            data = convert_quiz_data_v1_to_v2(data) #precaution
+                        
+
                         # 2. updatesession_state
                         st.session_state.data = data
                         st.session_state.data['title'] = data.get('title', _('📖 Enter a title here'))
                         st.session_state["quiz_title"] = st.session_state.data["title"]
                         # 3. Updating filename for future save
-                        st.session_state["shared_fn"] = uploaded_file.name
+                        new_filename = uploaded_file.name if not append_data else st.session_state.last_uploaded_file.rsplit('.', 1)[0] + '_' + uploaded_file.name 
+                        st.session_state["shared_fn"] = new_filename
                         st.session_state.last_uploaded_file = uploaded_file.name
                         # 4. Success message and refresh
                         st.toast(_("File `{file_name}` loaded successfully!").format(file_name=st.session_state['shared_fn']))
@@ -1240,10 +1277,10 @@ def main():
 
             # Full text search
             query = st.text_input(
-                "Full text search",
-                placeholder='Term or "full expression in quotes"',
-                help = """Full text search: select quizzes containing the query. The search is case insensitive and works in mode 'contains', i.e. true if query is
-                fount either in question or proposals or anwers texts """
+                _("Full text search"),
+                placeholder=_('Term or "full expression in quotes"'),
+                help = _("""Full text search: select quizzes containing the query. The search is case insensitive and works in mode 'contains', i.e. true if query is
+                fount either in question or proposals or anwers texts""")
                 ).strip('"').lower()
 
             # Category filter
