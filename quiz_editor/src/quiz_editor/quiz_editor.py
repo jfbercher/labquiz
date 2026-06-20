@@ -227,6 +227,18 @@ def init_session_states(FILE_PATH):
     if "quiz_title" not in st.session_state:
         st.session_state.quiz_title = st.session_state.data.get("title", _("Enter a title here"))
 
+    if "quiz_prefix" not in st.session_state:
+        if "quiz_prefix_saved" in st.session_state:
+            st.session_state.quiz_prefix = st.session_state.quiz_prefix_saved
+        else:
+            st.session_state.quiz_prefix = "" 
+
+    if "reindex_labels" not in st.session_state:
+        if "reindex_labels_saved" in st.session_state:
+            st.session_state.reindex_labels = st.session_state.reindex_labels_saved
+        else:
+            st.session_state.reindex_labels = True
+
     # Data loading
     if 'data_selectbox' not in st.session_state:
         st.session_state.data_selectbox = None
@@ -1166,6 +1178,31 @@ def get_searchable_values(quiz: dict) -> list[str]:
             values.append(str(prop.get("answer", "")).lower())
     return values
 
+def reindex_quizzes(data):
+    prefix = st.session_state.quiz_prefix
+    reindex_labels = st.session_state.reindex_labels
+
+    new_data = {}
+
+    # Conserver le titre s'il existe
+    if "title" in data:
+        new_data["title"] = data["title"]
+
+    # Renuméroter les autres entrées
+    i = 1
+    for key, value in data.items():
+        if key == "title":
+            continue
+        new_data[f"{prefix}{i}"] = value
+        if reindex_labels: 
+            new_data[f"{prefix}{i}"]['label'] = f"q:{prefix}{i}"
+        i += 1
+
+    st.session_state.data = new_data
+    st.session_state.quiz_prefix_saved = prefix
+    st.session_state.reindex_labels_saved = reindex_labels
+
+    return new_data
 
 #-------------------------------------------------
 #                      MAIN                      #
@@ -1380,7 +1417,8 @@ def main():
                             if re.findall(r'\d+', k)
                         ]
                         next_num = max(numbers) + 1 if numbers else 1
-                        new_id = f"quiz{next_num}"
+                        prefix = st.session_state.quiz_prefix if st.session_state.quiz_prefix != "" else "quiz"
+                        new_id = f"{prefix}{next_num}"
 
                         # Create quiz structure depending on selected type
                         if selected_type in ["numeric", "numeric-template"]:
@@ -1410,6 +1448,21 @@ def main():
                         st.rerun()
                 with col2:
                     st.write("")  # Optional spacer (keeps layout symmetrical)
+            #
+            st.divider()
+            prefix = st.session_state.quiz_prefix if st.session_state.quiz_prefix != "" else "prefix"
+            st.text_input(_("🔄 Reindex all quizzes"), 
+                              placeholder="Enter a prefix here...",
+                              key="quiz_prefix", 
+                              on_change=reindex_quizzes,
+                              args=(data, ),
+                              help=_("Reindex all quizzes as {prefix}1, {prefix}2, etc. ".format(prefix=prefix)
+                            ))
+            
+            st.checkbox(_("Also reindex labels"), key="reindex_labels", 
+            on_change=reindex_quizzes,
+            args=(data, ),
+            help=_("Reindex question labels with current prefix, e.g.: q:quiz1, q:quiz2, etc."))
 
 
     # 4. Export section ---
