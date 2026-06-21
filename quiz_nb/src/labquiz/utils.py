@@ -1025,7 +1025,7 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, question=None, w
 
             #2. Calculation of the score for this proposition
             if user_val == expected:
-                # Correct Case (VP ou VN)
+                # Correct Case (TP ou TN)
                 val = prop.get("bonus", weights[case])
                 score += val
             else:
