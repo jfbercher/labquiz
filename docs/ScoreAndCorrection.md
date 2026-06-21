@@ -55,7 +55,8 @@ weights = {
 
 The weight matrix cannot be modified when calculating the score online, but it can be modified when recalculating retrospectively based on the recorded results; see correction by the teacher [](correction_by_teacher).
 
-Inside a given question, all propositions have the same weight by default. However it is possible to adjust this using a system of bonus-malus. A proposition can be given a weight (bonus) of 2 while the oter have a weight of one for example. Or a bad answer a malus of -2 while the default is -1. For a given question, the total score is always normalized to 1. 
+Inside a given question, all propositions have the same weight by default. However it is possible to adjust this using a system of bonus-malus. For example, a particular correct proposition can be given a weight (bonus) of 2 when checked while the others correct propositions have a weight of one  when checked. Or a checked bad answer a malus of -2 while the default is -1. Bonuses, if specified, applies to correct answers (either *True Positive* or *True Negative*), while malus applies to incorrect answers (*False Positive* or *False Negative*). For a given question, the total score is always normalized to 1. 
+
 - **bonus malus** - As we have seen in the file structure [](#question_file_structure), `bonuses` and `penalties` can be integrated into the questions themselves. This allows, for a given question, to give more weight to a particular correct answer, or conversely to penalize a wrong answer, independently of the general weighting matrix. 
 - **logical constraints** - *Logical constraints* can be integrated into questions and used to calculate the score. These constraints are specified question by question in the question file, and penalties are applied if the constraint is violated. The following constraints can be used: 
 ```
