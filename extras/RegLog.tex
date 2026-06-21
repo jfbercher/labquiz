@@ -1,0 +1,226 @@
+% Neuf questions RegLog
+% Dont 2 Ob
+
+\element{RegLog}{
+    \begin{questionmult}{Catégorielle ou pas}
+        % \begin{questionmult}{AQuoiCaSert}
+        % Commentaire à la noix
+    Lesquelles des variables \textit{suivantes} sont de type catégoriel?
+    \begin{multicols}{2}
+    \begin{reponses}
+    \bonne{Décision d'acheter ou vendre ou conserver un stock de marchandises}
+	\mauvaise{revenu hebdomadaire d'une entreprise}
+	\bonne{gagnant d'une élection parmi 3 candidats}
+	\bonne{jour de la semaine avec la plus forte consommation de tranquillisants pour une population donnée}
+	\mauvaise{nombre de vols de voiture sur une durée déterminée}
+
+    \end{reponses}
+    \end{multicols}
+    \end{questionmult}
+    }
+    
+\element{RegLog}{
+    \begin{questionmult}{Hyperplan}
+    L'équation de séparation entre deux classes est un hyperplan dans les cas suivants:
+    \begin{multicols}{2}
+    \begin{reponses}
+    \mauvaise{En régression linéaire}
+	\bonne{En utilisant la régression logistique quelque soit le seuil de décision.}
+	\bonne{En utilisant la régression logistique pour un seuil de décision égal à 0.5 }
+
+    \end{reponses}
+    \end{multicols}
+    \end{questionmult}
+    }
+
+\element{RegLog}{
+    \begin{questionmult}{AQuoiCaSert}
+    La regression logistique est \textbf{utilisée} pour les problèmes de :
+    \begin{multicols}{2}
+    \begin{reponses}
+    \mauvaise{Régression}
+	\bonne{Classification}
+	\mauvaise{Clustering}
+	\mauvaise{Réduction de la dimensionnalité}
+
+    \end{reponses}
+    \end{multicols}
+    \end{questionmult}
+    }
+    
+    
+%\element{RegLog}{
+%    \begin{questionmult}{Interprétation variabilité significativité des variables}
+%    On obtient un coefficient de régression logistique non significatif pour X2 pour le modèle qui dépend des variables X1, X2, X3, alors que ce coefficient apparaît significatif pour le modèle qui dépend uniquement des variables X1 et X2. Comment peut on interpréter ce comportement?
+%    \begin{multicols}{2}
+%    \begin{reponses}
+%    \bonne{X2 est corrélé avec X3}
+%	\mauvaise{X2 n'est pas significatif }
+%	\mauvaise{Pour X3 constant une variation de X2 ne modifie pas la valeur de Y}
+
+%    \end{reponses}
+%    \end{multicols}
+%    \end{questionmult}
+%    }
+%    
+\element{RegLog}{
+    \begin{questionmult}{ROC}
+    La courbe ROC représente l' évolution du taux de vrais positifs par rapport au taux de faux positifs en fonction du seuil de décision. Cette courbe permet d'évaluer:
+    \begin{multicols}{2}
+    \begin{reponses}
+    \bonne{La sensibilité}
+	\bonne{La spécificité}
+	\mauvaise{Le taux de faux négatifs}
+	\mauvaise{L'exactitude}
+	\mauvaise{Le taux d'erreurs}
+
+    \end{reponses}
+    \end{multicols}
+    \end{questionmult}
+    }
+    
+\element{RegLog}{
+    \begin{questionmult}{Sensibilité}
+    Pour augmenter la sensibilité d'une discrimination entre deux classes 0 (négatif) et 1(positif), il faut 
+    \begin{multicols}{2}
+    \begin{reponses}
+    \mauvaise{Augmenter le seuil de décision.}
+	\bonne{Diminuer le seuil de décision.}
+	\bonne{Accepter de baisser la spécificité }
+	\mauvaise{Accepter de diminuer l'exactitude}
+
+    \end{reponses}
+    \end{multicols}
+    \end{questionmult}
+    }
+    
+
+    
+\element{RegLog}{
+    \begin{questionmultx}{Chances}
+    En moyenne, quelle proportion des individus ayant les chances (odds) de 0.37 d'être récidivistes vont effectivement récidiver? Donner la réponse en \%.    
+
+    Rappel:  $$odds =p /(1-p)$$    
+% need \usepackage{fp} for floatting point computation 
+\AMCnumericChoices{27}{exact = 1, decimals = 0, digits = 2, sign = false, scoreexact = 1}   
+
+  \end{questionmultx}}
+    
+%\element{RegLog}{
+%    \begin{questionmultx}{LDA}
+%    On souhaite prédire la réussite d'un étudiant (Oui ou Non) à partir des notes dans une matière jugée difficile. On examine un grand nombre de cas (base d'apprentissage) et on détermine que la moyenne des notes obtenues par les étudiants ayant réussi est de 8 alors qu'elle est de 4 pour ceux qui n'ont pas réussi. La variance dans les deux cas est de 9. On sait par ailleurs que 90\% des étudiants réussissent. On met en oeuvre l'analyse discriminante linéaire. Quelles sont les chances(odds) d'un étudiant qui obtient 6 dans la matière difficile.    
+
+%Rappel:  $$odds = Pr(y=1| x)/ Pr(y=0|x)=[Pr(x |y=1)Pr(y=1)]/[Pr(x|y=0)Pr(y=0)]$$
+%$$ Pr(x |y=k)=exp(-(x - mean_k)^2/(2 *var) )$$  
+%      
+%% need \usepackage{fp} for floatting point computation 
+%\AMCnumericChoices{9}{exact = 1, decimals = 2, digits = 3, sign = false, scoreexact = 1}   
+
+% 
+%    \end{questionmultx}
+%    }
+    
+%\element{RegLog}{
+%    \begin{questionmultx}{logit}
+%   La régression logistique sur la base de données \textbf{Default} fournit les coefficients suivants, où << studentYes >> est une variable binaire et << balance >> est une variable numerique:
+%        
+%\begin{center}
+%	
+%  \begin{tabular}{cccc}
+%  \hline
+% 
+%Coefficients & Estimate   & Std.Error & Pr(>|z|)\\   
+
+%  \hline
+
+%(Intercept) &  -1.079e+01 & 4.274e-01 & < 2e-16 ***\\   
+
+%studentYes    & -7.347e-01  & 1.713e-01 & 1.8e-05 ***\\   
+
+%balance               &  5.779e-03 &  2.685e-04 &  < 2e-16 ***\\   
+
+%  \hline
+
+%	
+%  \end{tabular}\\
+% 
+%\end{center}
+% 
+
+%Quel est le \textbf{logarithme des chances }(logit) pour un étudiant qui a une balance sur son compte de 1500 dollars?
+
+%% need \usepackage{fp} for floatting point computation 
+%\AMCnumericChoices{-2.85}{exact = 1, decimals = 2, digits = 3, sign = true, scoreexact = 1}   
+
+%  \end{questionmultx}
+
+%    }
+
+    
+\element{RegLog}{
+    \begin{questionmultx}{Pi(x)}\bareme{formula=(0*NBC/NB-3*NMC/NM < 0 ? 0 : 0/5*(5*NBC/NB-3*NMC/NM))} 
+    La régression logistique sur la base de données Default fournit les coefficients suivants: 
+
+        
+\begin{center}
+	
+  \begin{tabular}{ccccc}
+  \hline
+  
+Coefficients & Estimate & Std. Error & z value & Pr(>|z|)\\   
+
+  \hline
+Intercept & -1.079e+01 & 4.274e-01 &  -25.234 &  < 2e-16 *** \\   
+
+studentYes & -7.347e-01 &  1.713e-01 & 4.288 & 1.8e-05 ***\\   
+
+balance & 5.779e-03 & 2.685e-04 & 21.524   &   < 2e-16 ***\\   
+
+  \hline
+  \end{tabular}\\
+\end{center}
+Quel est la \textbf{probabilité} qu'un étudiant ayant une balance sur son compte de 1500 dollars soit en situation de défaut bancaire ?
+
+
+% need \usepackage{fp} for floatting point computation 
+\AMCnumericChoices{0.05463}{exact = 5, decimals = 3, digits = 4, sign = false, scoreexact = 1}   
+
+  \end{questionmultx}}
+
+    
+\element{RegLogOb}{
+  \begin{questionmultx}{proba A}\label{q:proba A}   
+    On suppose que l'on a collecté les données sur un groupe d'étudiants avec les variables :
+ \begin{itemize}
+  \item X1= nombre d'heures d'études 
+  \item X2= grade de l'année précédente (converti en note entre 1 et 5) 
+  \item  Y = obtient le grade A pour l'année en cours. 
+\end{itemize} 
+On calcule les paramètres d'un modèle de régression logistique pour prédire la probabilité d'obtenir le grade A : 
+$$\beta_0=-6, \beta_1=0.05, \beta_2=1.$$
+Combien de temps un étudiant qui a obtenu 3.5 l'an dernier doit il travailler cette année pour avoir 50\% de chances d'obtenir A?
+
+\emph{Rappel:}
+$$p/(1-p) = \exp( \beta_0 + \beta_1* ﻿X1 + \beta_2 * ﻿X2 )$$
+
+
+% need \usepackage{fp} for floatting point computation 
+\AMCnumericChoices{50}{exact = 1, decimals = 0, digits = 2, sign = false, scoreexact = 1}   
+
+  \end{questionmultx}}
+  
+
+    
+\element{RegLogOb}{
+    \begin{questionmult}{RegressionLogistique}
+    Quelle est l'expression du modèle de régression logistique?
+    \begin{multicols}{2}
+    \begin{reponses}
+    \bonne{$ Y = \dfrac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots)}} $}
+	\mauvaise{$ Y = \dfrac{1}{1 + e^{\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots}} $}
+	\mauvaise{$ Y = e^{\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots} $}
+	\mauvaise{$ Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots $}
+    \end{reponses}
+    \end{multicols}
+    \end{questionmult}
+    }    

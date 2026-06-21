@@ -1,0 +1,156 @@
+quiz1:
+  question: Lesquelles des variables *suivantes* sont de type catégoriel?
+  propositions:
+  - proposition: Décision d'acheter ou vendre ou conserver un stock de marchandises
+    label: p1
+    expected: true
+    tip: ''
+    answer: ''
+  - proposition: revenu hebdomadaire d'une entreprise
+    label: p2
+    expected: false
+    tip: ''
+    answer: ''
+  - proposition: gagnant d'une élection parmi 3 candidats
+    label: p3
+    expected: true
+    tip: ''
+    answer: ''
+  - proposition: jour de la semaine avec la plus forte consommation de tranquillisants
+      pour une population donnée
+    label: p4
+    expected: true
+    tip: ''
+    answer: ''
+  - proposition: nombre de vols de voiture sur une durée déterminée
+    label: p5
+    expected: false
+    tip: ''
+    answer: ''
+  type: mcq
+  label: q1
+  category: RegLog
+  tags: []
+quiz2:
+  question: 'L''équation de séparation entre deux classes est un hyperplan dans les
+    cas suivants:'
+  propositions:
+  - proposition: En régression linéaire
+    label: p1
+    expected: false
+    tip: ''
+    answer: ''
+  - proposition: En utilisant la régression logistique quelque soit le seuil de décision.
+    label: p2
+    expected: true
+    tip: ''
+    answer: ''
+  - proposition: En utilisant la régression logistique pour un seuil de décision égal
+      à 0.5
+    label: p3
+    expected: true
+    tip: ''
+    answer: ''
+  type: mcq
+  label: q2
+  category: RegLog
+  tags: []
+quiz3:
+  question: 'La regression logistique est **utilisée** pour les problèmes de :'
+  propositions:
+  - proposition: Régression
+    label: p1
+    expected: false
+    tip: ''
+    answer: ''
+  - proposition: Classification
+    label: p2
+    expected: true
+    tip: ''
+    answer: ''
+  - proposition: Clustering
+    label: p3
+    expected: false
+    tip: ''
+    answer: ''
+  - proposition: Réduction de la dimensionnalité
+    label: p4
+    expected: false
+    tip: ''
+    answer: ''
+  type: mcq
+  label: q3
+  category: RegLog
+  tags: []
+quiz4:
+  question: 'La courbe ROC représente l'' évolution du taux de vrais positifs par
+    rapport au taux de faux positifs en fonction du seuil de décision. Cette courbe
+    permet d''évaluer:'
+  propositions:
+  - proposition: La sensibilité
+    label: p1
+    expected: true
+    tip: ''
+    answer: ''
+  - proposition: La spécificité
+    label: p2
+    expected: true
+    tip: ''
+    answer: ''
+  - proposition: Le taux de faux négatifs
+    label: p3
+    expected: false
+    tip: ''
+    answer: ''
+  - proposition: L'exactitude
+    label: p4
+    expected: false
+    tip: ''
+    answer: ''
+  - proposition: Le taux d'erreurs
+    label: p5
+    expected: false
+    tip: ''
+    answer: ''
+  type: mcq
+  label: q4
+  category: RegLog
+  tags: []
+quiz5:
+  question: Pour augmenter la sensibilité d'une discrimination entre deux classes
+    0 (négatif) et 1(positif), il faut
+  propositions:
+  - proposition: Augmenter le seuil de décision.
+    label: p1
+    expected: false
+    tip: ''
+    answer: ''
+  - proposition: Diminuer le seuil de décision.
+    label: p2
+    expected: true
+    tip: ''
+    answer: ''
+  - proposition: Accepter de baisser la spécificité
+    label: p3
+    expected: true
+    tip: ''
+    answer: ''
+  - proposition: Accepter de diminuer l'exactitude
+    label: p4
+    expected: false
+    tip: ''
+    answer: ''
+  type: mcq
+  label: q5
+  category: RegLog
+  tags: []
+quiz6:
+  question: 'En moyenne, quelle proportion des individus ayant les chances (odds)
+    de 0.37 d''être récidivistes vont effectivement récidiver? Donner la réponse en
+    \%. Rappel: $$odds =p /(1-p)$$'
+  type: numeric
+  expected: '27'
+  tolerance_abs: 1.0
+  label: q:proba A
+  category: RegLog
+  tags: []

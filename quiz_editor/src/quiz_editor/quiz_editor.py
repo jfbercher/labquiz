@@ -20,6 +20,7 @@ from io import StringIO
 from collections import Counter
 import ast
 from convert_quiz_format import convert_quiz_data_v1_to_v2
+from amc_to_yaml import latex_to_yaml
 #from i18n import _
 
 from importlib.metadata import version
@@ -242,6 +243,8 @@ def init_session_states(FILE_PATH):
     # Data loading
     if 'data_selectbox' not in st.session_state:
         st.session_state.data_selectbox = None
+    if "msg_toast" not in st.session_state:
+        st.session_state.msg_toast = []
 
     # For exports
     if 'selected_for_export' not in st.session_state:
@@ -1127,13 +1130,12 @@ def render_taxonomy_editor(q_id, q_data, data, quiz_ids_all, sorted_tags, lang_f
 def render_question_header(q_id, filtered_ids, lang_func):
     """
     Renders the navigation bar and current question title.
-    Based on lines 610-638 of your source.
     """
     _ = lang_func
     current_idx = filtered_ids.index(q_id)
     
     # Navigation and selection columns
-    col_beg, col_prev, col_title, col_next, col_end, col_check = st.columns([0.4, 0.6, 3, 0.6, 0.4, 1.5], vertical_alignment="center")
+    col_beg, col_prev, col_title, col_next, col_end, col_check, col_quiz_label = st.columns([0.4, 0.6, 3, 0.6, 0.4, 0.5, 1], vertical_alignment="center")
     # was [0.2, 0.5, 3, 0.2, 0.5, 1.5]
     with col_beg:
         if st.button("⏮️", key=f"first_{q_id}", disabled=(current_idx == 0), use_container_width=True):
@@ -1167,6 +1169,7 @@ def render_question_header(q_id, filtered_ids, lang_func):
             args=(q_id, main_key),
             help=_("Check to include this question in future YAML exports")
         )
+        
 def get_searchable_values(quiz: dict) -> list[str]:
     """Return the list of values (lowercased) to search in, without
     concatenating them, depending on the chosen scope."""
@@ -1249,8 +1252,8 @@ def main():
             # File uploader
             uploaded_file = st.file_uploader(
                 _("Choose file"), 
-                type=["yaml", "yml"],
-                help=_("Loads the contents of a YAML file into the editor")
+                type=["yaml", "yml", "tex"],
+                help=_("Loads the contents of a YAML file into the editor (also imports AMC-LaTeX files)")
             )
 
             if uploaded_file is not None:
@@ -1265,11 +1268,18 @@ def main():
                         )
                         if not st.button(_("Confirm")):
                             st.stop()      # <-- we wait for the click
+                    file_name = uploaded_file.name
+                    file_extension = Path(file_name).suffix        
                     try:
                         if st.session_state["data_selectbox"] == _("Append to existing data"):
                             append_data = True
-                            tmp_data = yaml.load(uploaded_file)
-                            tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
+                            if file_extension == ".tex":
+                                tmp_data = latex_to_yaml(uploaded_file.read().decode("utf-8"))
+                                tmp_data = yaml.load(tmp_data)
+                                st.session_state.msg_toast.append(_("Converted AMC-LaTeX file to YAML..."))
+                            else:
+                                tmp_data = yaml.load(uploaded_file)
+                                tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
                             quiz_ids_all = [k for k in data.keys() if k != 'title']
                             numbers = [
                                 int(re.findall(r'\d+', k)[0])
@@ -1285,23 +1295,35 @@ def main():
                             del tmp_data
                         else:
                             append_data = False
-                            data = yaml.load(uploaded_file)
-                            data = convert_quiz_data_v1_to_v2(data) #precaution
-                        
+                            if file_extension == ".tex":
+                                tmp_data = latex_to_yaml(uploaded_file.read().decode("utf-8"))
+                                tmp_data = yaml.load(tmp_data)
+                                st.session_state.msg_toast.append(_("Converted AMC-LaTeX file to YAML..."))
+                            else:
+                                tmp_data = yaml.load(uploaded_file)
+                                tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
+                            data = tmp_data
+                            del tmp_data
 
                         # 2. updatesession_state
                         st.session_state.data = data
                         st.session_state.data['title'] = data.get('title', _('📖 Enter a title here'))
                         st.session_state["quiz_title"] = st.session_state.data["title"]
                         # 3. Updating filename for future save
-                        new_filename = uploaded_file.name if not append_data else st.session_state.last_uploaded_file.rsplit('.', 1)[0] + '_' + uploaded_file.name 
+                        new_filename = uploaded_file.name if Path(uploaded_file.name).suffix != ".tex" else uploaded_file.name.rsplit('.', 1)[0]+'.yaml'
+                        new_filename = new_filename if not append_data else st.session_state.last_uploaded_file.rsplit('.', 1)[0] + '_' + new_filename
                         st.session_state["shared_fn"] = new_filename
                         st.session_state.last_uploaded_file = uploaded_file.name
+                        st.session_state.msg_toast.append(_("File `{file_name}` loaded successfully!").format(file_name=st.session_state['shared_fn']))
                         # 4. Success message and refresh
-                        st.toast(_("File `{file_name}` loaded successfully!").format(file_name=st.session_state['shared_fn']))
                         st.rerun()
                     except Exception as e:
                         st.sidebar.error(_("Read Error:") + f"{e}")
+                if "msg_toast" in st.session_state and st.session_state.msg_toast:
+                    for msg in st.session_state.msg_toast:
+                        st.toast(msg)
+                    
+                    st.session_state.msg_toast = []
 
             # QUIZ MANAGEMENT
         with st.expander(_("🎰🎲♠ Quiz management"), expanded=True):
