@@ -222,6 +222,7 @@ def init_session_states(FILE_PATH):
     # Session initialization for data persistence
     if 'data' not in st.session_state:
         st.session_state.data = load_data(FILE_PATH)
+        st.session_state.sort_data = True
         if os.path.exists(FILE_PATH):
             st.session_state.last_uploaded_file = FILE_PATH
 
@@ -255,9 +256,12 @@ def init_session_states(FILE_PATH):
 def get_and_prepare_data():
     
     # sort data and resave it
+    st.session_state.sort_data = True
     data = st.session_state.data
-    data = {k: data[k] for k in sorted(data, key=natural_key)} #extract_key_number)}
-    st.session_state.data = data
+    if st.session_state.sort_data: # 
+        data = {k: data[k] for k in sorted(data, key=natural_key)} #extract_key_number)}
+        st.session_state.data = data
+        st.session_state.sort_data = False
 
     # Then extracts categories and tags
     quiz_ids_all = [k for k in data.keys() if k != 'title']
@@ -390,13 +394,21 @@ def render_preview(label, text, context=None):
             #html_text = markdown_with_latex_to_html(text) #markdown.markdown(text, extensions=['tables', 'fenced_code', 'nl2br'])
 
 
-
 def help_button(title, content, key):
     @st.dialog(title)
     def show():
         st.markdown(content)
     if st.button("❓", key=key):
         show()
+
+
+def modal_info(title, content):
+    @st.dialog(title)
+    def show(content):
+        st.markdown(content)
+    show(content)
+    if st.button(_("Close")):
+        st.rerun()
 
 def clean_constraints(data_dict, copy=False):
     """Cleaning Empty Constraints"""
@@ -510,6 +522,18 @@ def extract_key_number(key):
 def natural_key(string_): #Gemini
     """Splits the string into a list of strings and integers."""
     return [int(s) if s.isdigit() else s.lower() for s in re.split(r'(\d+)', string_)]
+
+def rename_dict_key_inplace(d, old_key, new_key):
+    if old_key == new_key:
+        return
+    if new_key in d:
+        raise KeyError(f_("Key '{new_key}' already exists in dictionary.").format(new_key=new_key))
+    items = [
+        (new_key if k == old_key else k, v)
+        for k, v in d.items()
+    ]
+    d.clear()
+    d.update(items)
 
 def build_yaml(fname):
     data_to_save = save_my_yaml(fname)
@@ -1127,12 +1151,13 @@ def render_taxonomy_editor(q_id, q_data, data, quiz_ids_all, sorted_tags, lang_f
             q_data["tags"] = updated_tags
 
 
-def render_question_header(q_id, filtered_ids, lang_func):
+def render_question_header(q_id, quiz_ids_all, filtered_ids, lang_func):
     """
     Renders the navigation bar and current question title.
     """
     _ = lang_func
     current_idx = filtered_ids.index(q_id)
+    current_idx_in_full_list = quiz_ids_all.index(q_id)
     
     # Navigation and selection columns
     col_beg, col_prev, col_title, col_next, col_end, col_check, col_quiz_label = st.columns([0.4, 0.6, 3, 0.6, 0.4, 0.5, 1], vertical_alignment="center")
@@ -1169,7 +1194,33 @@ def render_question_header(q_id, filtered_ids, lang_func):
             args=(q_id, main_key),
             help=_("Check to include this question in future YAML exports")
         )
+    def process_newname(quiz_key, q_id):
+        new_key = st.session_state[quiz_key]
+        data = st.session_state.data
+        if new_key in data.keys():
+            st.session_state[quiz_key+'_sav'] = q_id
+            modal_info(_("Error"), _("The key `{new_key}` is already present in the data!".format(new_key=new_key)))
+        else:  # rename the q_id key and change quiz label
+            st.session_state[quiz_key+'_sav'] = new_key
+            data[q_id]['label'] = "q:" + new_key
+            #rename_dict_key_inplace(data, q_id, new_key)
+            st.session_state.current_quiz = new_key
+            data[new_key] = data.pop(q_id) # rename the q_id key into new_key
         
+
+    quiz_key = f"quiz_key_{current_idx_in_full_list}"
+    if quiz_key not in st.session_state:
+        st.session_state[quiz_key] = q_id
+    with col_quiz_label:
+        st.text_input(
+            key=quiz_key,
+            label=_("Quiz name"),
+            on_change= process_newname,
+            args=(quiz_key, q_id, ),
+            help=_("Allow to change quiz name."),
+        )
+
+
 def get_searchable_values(quiz: dict) -> list[str]:
     """Return the list of values (lowercased) to search in, without
     concatenating them, depending on the chosen scope."""
@@ -1226,6 +1277,10 @@ def main():
     else:
         FILE_PATH = "quiz.yaml"
 
+    # Initial startup
+    if 'initial_sort' not in st.session_state:
+        st.session_state.initial_sort = True
+
     # Initialization of session variables
     init_session_states(FILE_PATH)
     # From data, extract all quizzes, categories and tags
@@ -1280,6 +1335,7 @@ def main():
                             else:
                                 tmp_data = yaml.load(uploaded_file)
                                 tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
+                            st.session_state.sort_data = True
                             quiz_ids_all = [k for k in data.keys() if k != 'title']
                             numbers = [
                                 int(re.findall(r'\d+', k)[0])
@@ -1304,6 +1360,7 @@ def main():
                                 tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
                             data = tmp_data
                             del tmp_data
+                            st.session_state.sort_data = True
 
                         # 2. updatesession_state
                         st.session_state.data = data
@@ -1618,7 +1675,7 @@ def main():
 
     if st.session_state.current_quiz and filtered_ids:
 
-        render_question_header(q_id, filtered_ids, _)
+        render_question_header(q_id, quiz_ids_all, filtered_ids, _)
         render_taxonomy_editor(q_id, q_data, data, quiz_ids_all, sorted_tags, _)
         #render_question_text(q_id, q_data, _)
                                 
