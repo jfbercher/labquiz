@@ -136,6 +136,72 @@ The `QuizLab()` class constructor accepts the following parameters to configure 
 
 ::::
 
+::::{dropdown} How are graded MCQ questions?
+
+For Multiple Choice Questions (MCQ), the score is calculated automatically using a combination of a global weight matrix, individual proposition bonuses or penalties, and logical constraints, with the final score for each question typically normalized to 1.
+
+### **1. The Weight Matrix (Default Behavior)**
+The primary mechanism for scoring MCQs is the **weight matrix**, which assigns points based on the four possible outcomes of a student's choice compared to the expected answer:
+
+*   **True Positive (Checked, Expected True):** +1 point.
+*   **False Positive (Checked, Expected False):** -1 point.
+*   **False Negative (Not Checked, Expected True):** 0 points.
+*   **True Negative (Not Checked, Expected False):** 0 points.
+
+Instructors can modify this matrix using the `quiz.set_weight()` method to, for example, penalize omissions (False Negatives) or use an "**identity weight**" (awarding 1 point for every correct check and every correct non-check).
+
+### **2. Individual Proposition Adjustments (Bonus/Malus)**
+While all propositions have the same weight by default, you can specify individual **bonuses** or **penalties** within the question file:
+*   **Bonus:** Increases the weight of a specific correct proposition (e.g., awarding 2 points instead of 1 for a "True Positive").
+*   **Malus (Penalty):** Increases the deduction for a specific incorrect answer (e.g., deducting 2 points instead of 1 for a "False Positive").
+
+### **3. Logical Constraints**
+The suite can apply additional penalties if a student's combination of answers violates predefined logical rules:
+*   **XOR (Exclusion):** Penalizes if two contradictory propositions are both checked.
+*   **IMPLY (Implication):** Penalizes if the first proposition is true but the second is not.
+*   **SAME (Consistency):** Penalizes if two propositions do not have the same value.
+*   **IMPLYFALSE:** Penalizes if the first is true and the second is also true (it must be false).
+
+### **4. Normalization and Global Scoring**
+*   **Question Normalization:** Regardless of the points assigned via the matrix or bonuses, the total score for a single question is **normalized to 1**.
+*   **Question Threshold:** By default, the score for a single question is capped at **0** (via the `threshold=0` parameter), so a student cannot get a negative total for one question even if their penalties exceed their points.
+*   **Global Score:** The overall score (accessible via `quiz.score_global`) is the average of the results of all quizzes taken. Teachers can use a **marking scheme** (coefficients) to give certain questions more weight in the final calculation.
+
+### **5. Teacher Overrides**
+The weight matrix and scoring scales can be **adjusted retrospectively** by the teacher. This allows instructors to change the grading severity after reviewing the recorded results or to use different scales for practice versus formal exam modes.
+
+::::
+
+::::{dropdown} How are graded numerical questions?
+
+Numerical questions (typed as `numeric` or `numeric-template` in the question file) are graded by comparing the student's input against an expected value within a specific margin of error called **tolerance**.
+
+### **1. The Tolerance Mechanism**
+The system uses two parameters to determine if a numerical answer is "close enough" to be correct:
+*   **`tolerance` (Relative):** A percentage of variation allowed based on the expected value. If not explicitly defined, the system defaults to **1%**.
+*   **`tolerance_abs` (Absolute):** A fixed numerical value of variation allowed.
+
+The actual threshold used for correction is **the greater of these two values**:
+$$\text{Threshold} = \max(\text{tolerance\_abs}, \text{tolerance} \times |\text{expected}|)$$
+This ensures a fair margin regardless of whether the expected number is very large or very small.
+
+### **2. Scoring and Correction Logic**
+*   **Correctness Check:** The system calculates the absolute difference between the student's answer and the expected value. If this difference is **less than or equal to the calculated threshold**, the answer is marked as correct.
+*   **Bonus and Penalties:**
+    *   **Bonus:** Points awarded if the answer is within the tolerance (defaults to **1** point).
+    *   **Penalty (Malus):** Points deducted if the answer is outside the tolerance (defaults to **0**).
+*   **Normalization:** Like all questions in the suite, the total score for a single numerical question is typically **normalized to 1**.
+
+### **3. Template-Based Numerical Questions**
+For the `numeric-template` type, the expected value is not a fixed number but is **calculated dynamically** using Python formulas (e.g., `expected: f'{a+b:.4f}'`). 
+*   **Dynamic Variables:** Variables (like `a` and `b`) can be generated randomly or passed from the student's actual experimental data in the notebook.
+*   **Serialization:** The specific context (the values used for that student) is saved to the results server, allowing the teacher to recalculate the exact solution during later grading.
+
+### **4. Feedback to Students**
+In the quiz interface, students are provided with the tolerance rules, often displayed as: *"Tolerance: maximum of [X]% or ±[Y]"*. If a student's answer is incorrect and a **tip** is provided in the YAML file, the system will display that hint to help the student refine their calculation.
+
+::::
+
 ::::{dropdown} How to deploy quizzes on Jupyterlite for installation-free execution?
 
 To deploy quizzes on **Jupyterlite**, allowing for a "zero installation" experience where everything runs directly in the browser, you can follow a streamlined "shortcut" method described in the documentation.
