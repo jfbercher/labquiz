@@ -167,7 +167,7 @@ quiz23:
           answer: explanatory text for the correct answer, with quotes ‘’ if necessary
 ```
 - *Consistency constraints* on propositions can be added. For example, it can be required that the true answer to the proposition of label `label2` implies that the answer to the proposition `label1` is false. In case of violation, a penalty is applied.
-- Similarly, certain propositions can give rise to a *bonus* or a *penalty*. The bonus is the number of points awarded if the answer is the expected one (default 1) and the penalty is the number of points deducted if the answer is different from the expected one (default 0). 
+- Similarly, certain propositions can give rise to a *bonus* or a *penalty*. The bonus is the number of points awarded if the answer is the expected one and the penalty is the number of points deducted if the answer is different from the expected one. True positive means checked proposition while the expected is true; False positive denotes a checked proposition while the expected is false; False negative denotes an unchecked answer while expected is true and finally TRue negative is an unchecked proposition while the expected answer is False. 👉🏼 *By default*, the bonus is 1 for true positive ansvers and the malus is -1 for false positive (Otherwise, bonus and malus are zero for true and false negative) 
 With these elements, the example could be completed as shown below. The implementation is then given [](#fig10).
  
 ```

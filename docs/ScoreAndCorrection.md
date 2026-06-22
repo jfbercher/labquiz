@@ -67,11 +67,11 @@ Inside a given question, all propositions have the same weight by default. Howev
     - IMPLYFALSE: If A is TRUE, then B MUST be FALSE
 ```
 See an example at the end of [](#structure_type_qcm).
-- **numerical values** - In the case of numerical answers, the difference between the given value and the expected value is calculated. If this difference is less than the threshold defined by the tolerance, the answer is counted as correct[^1].
-Remember that the tolerance is specified in the question file, and that the greater of the values between tolerance_abs and tolerance_relative*expected is used. If the relative tolerance `tolerance` has not been specified, the value used is 1%. 
+- **numerical values** - In the case of numerical answers, the difference between the given value and the expected value is calculated. The answer is counted as correct if this difference is less than the threshold defined by the *tolerance*[^1].
+👉🏼 Remember that the tolerance is specified in the question file, and that *the greater* of the values between tolerance_abs and tolerance_relative*expected is used. If the relative tolerance `tolerance` has not been specified, the default value used is 1%. 
 Bonuses (default 1) and penalties (default 0) may also be  applied depending on whether the difference between the given value and the expected value is greater or less than the tolerance.
  
-[^1]: It would be possible to set the score based on the (relative) value of this difference, but this has not been done and is left for "later".  
+[^1]: It would be possible to set the score based on the (relative) value of the difference, but this has not been done and is left for "later".  
 
 (teacher_correction)=
 ## Correction by the teacher
