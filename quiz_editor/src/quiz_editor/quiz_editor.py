@@ -21,6 +21,7 @@ from collections import Counter
 import ast
 from convert_quiz_format import convert_quiz_data_v1_to_v2
 from amc_to_yaml import latex_to_yaml
+from moodle_xml_to_labquiz import moodle_xml_to_labquiz
 #from i18n import _
 
 from importlib.metadata import version
@@ -690,7 +691,7 @@ def export_config_dialog(data, selected_qids, format_type):
         st.info(_("💡 This mode allows immediate self-correction for students."))
         st.download_button(_("⬇️ Download HTML"), data=output_content, file_name=f"{file_name}.html", mime="text/html")
 
-    elif format_type == _("HTML Exam (Server)"):
+    elif format_type == _("HTML Exam (Server)"): 
         server_url = st.text_input(_("Receiving server URL"), placeholder="https://script.google.com/...")
         if server_url:
             from convert_to_html_exam import convert_to_server_quiz
@@ -712,6 +713,12 @@ def export_config_dialog(data, selected_qids, format_type):
         output_content = convert_to_amc_pytex(export_data, use_negative_points=neg_points)
         st.info(_("💡 Extraction in LaTeX-AMC (PythonTeX) format."))
         st.download_button(_("⬇️ Download LaTeX-AMC"), data=output_content, file_name=f"{file_name}.tex", mime="text/latex")
+    
+    elif format_type == "Moodle XML":
+        from labquiz_to_moodle_xml import labquiz_to_moodle_xml
+        output_content = labquiz_to_moodle_xml(export_data)
+        st.info(_("💡 Extraction in Moodle XML format."))
+        st.download_button(_("⬇️ Download Moodle XML"), data=output_content, file_name=f"{file_name}.xml", mime="text/xml")
 
 
 def render_template_editor(q_id, q_data, lang_func):
@@ -851,7 +858,7 @@ def render_propositions_editor(q_id, q_data, lang_func):
     # Check if we are in a template mode
     is_template = q_data.get('type') in ['mcq-template', 'numeric-template']
     if is_template:
-        variables = q_data['variables']
+        variables = q_data.get('variables', {})
         context = {var_name: variables[var_name]['preview'] for var_name in variables.keys()}
 
     for i, p in enumerate(q_data['propositions']):
@@ -879,6 +886,7 @@ def render_propositions_editor(q_id, q_data, lang_func):
                     else:
                         # Standard mode: Numeric Input
                         pexpect = p.get('expected', 0.0)
+                        pexpect = 0.0 if pexpect=="*" else pexpect # Moodle import
                         pexpect = float(pexpect) if isinstance(pexpect, str) else pexpect
                         p['expected'] = st.number_input(_("Expected value"), value=pexpect, key=f"exp_{q_id}_{i}")
                 else:
@@ -1044,6 +1052,8 @@ def render_question_text(q_id, q_data, lang_func):
                 key=f"label_field_{q_id}",
                 help=_("Question label.")
             )
+        if q_data['type'] != current_type: # if type has changed, rerun
+            st.rerun()
 
 def preview_question_text(q_id, q_data, lang_func):
     """
@@ -1160,7 +1170,7 @@ def render_question_header(q_id, quiz_ids_all, filtered_ids, lang_func):
     current_idx_in_full_list = quiz_ids_all.index(q_id)
     
     # Navigation and selection columns
-    col_beg, col_prev, col_title, col_next, col_end, col_check, col_quiz_label = st.columns([0.4, 0.6, 3, 0.6, 0.4, 0.5, 1], vertical_alignment="center")
+    col_beg, col_prev, col_title, col_next, col_end, col_check, col_quiz_label = st.columns([0.4, 0.6, 3, 0.6, 0.4, 1, 1], vertical_alignment="center")
     # was [0.2, 0.5, 3, 0.2, 0.5, 1.5]
     with col_beg:
         if st.button("⏮️", key=f"first_{q_id}", disabled=(current_idx == 0), use_container_width=True):
@@ -1307,7 +1317,7 @@ def main():
             # File uploader
             uploaded_file = st.file_uploader(
                 _("Choose file"), 
-                type=["yaml", "yml", "tex"],
+                type=["yaml", "yml", "tex", "xml"],
                 help=_("Loads the contents of a YAML file into the editor (also imports AMC-LaTeX files)")
             )
 
@@ -1332,6 +1342,10 @@ def main():
                                 tmp_data = latex_to_yaml(uploaded_file.read().decode("utf-8"))
                                 tmp_data = yaml.load(tmp_data)
                                 st.session_state.msg_toast.append(_("Converted AMC-LaTeX file to YAML..."))
+                            elif file_extension == ".xml":
+                                xml_content = uploaded_file.read().decode("utf-8")
+                                tmp_data, warnings = moodle_xml_to_labquiz(xml_content)
+                                st.session_state.msg_toast.append(_("Imported (may be partially) the Moodle XML file..."))
                             else:
                                 tmp_data = yaml.load(uploaded_file)
                                 tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
@@ -1355,6 +1369,10 @@ def main():
                                 tmp_data = latex_to_yaml(uploaded_file.read().decode("utf-8"))
                                 tmp_data = yaml.load(tmp_data)
                                 st.session_state.msg_toast.append(_("Converted AMC-LaTeX file to YAML..."))
+                            elif file_extension == ".xml":
+                                xml_content = uploaded_file.read().decode("utf-8")
+                                tmp_data, warnings = moodle_xml_to_labquiz(xml_content)
+                                st.session_state.msg_toast.append(_("Imported (may be partially) the Moodle XML file..."))
                             else:
                                 tmp_data = yaml.load(uploaded_file)
                                 tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
@@ -1367,7 +1385,7 @@ def main():
                         st.session_state.data['title'] = data.get('title', _('📖 Enter a title here'))
                         st.session_state["quiz_title"] = st.session_state.data["title"]
                         # 3. Updating filename for future save
-                        new_filename = uploaded_file.name if Path(uploaded_file.name).suffix != ".tex" else uploaded_file.name.rsplit('.', 1)[0]+'.yaml'
+                        new_filename = uploaded_file.name if Path(uploaded_file.name).suffix not in [".tex", ".xml"] else uploaded_file.name.rsplit('.', 1)[0]+'.yaml'
                         new_filename = new_filename if not append_data else st.session_state.last_uploaded_file.rsplit('.', 1)[0] + '_' + new_filename
                         st.session_state["shared_fn"] = new_filename
                         st.session_state.last_uploaded_file = uploaded_file.name
@@ -1598,7 +1616,7 @@ def main():
                 # Export drop-down menu
                 export_format = st.selectbox(
                     _("Choose export format"),
-                    ["---", "YAML", _("HTML Interactive (self-assessment)"), _("HTML Exam (Server)"), "AMC (LaTeX)", "AMC PythonTeX (LaTeX)"]
+                    ["---", "YAML", _("HTML Interactive (self-assessment)"), _("HTML Exam (Server)"), "AMC (LaTeX)", "AMC PythonTeX (LaTeX)", "Moodle XML"]
                 )
 
                 if export_format != "---":
