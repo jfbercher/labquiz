@@ -50,7 +50,7 @@ flowchart LR
     F[Analytics]
     G[Marks Table]
     H[Student Reports]
-    I[Exports: <br/>Web-based Training Quizzes <br/>AMC / LaTeX Paper Quizzes]
+    I[Exports: <br/>Web-based Training Quizzes <br/>AMC / LaTeX Paper Quizzes <br/> Moodle]
 
     %% Flows
     B -.-> A
@@ -272,7 +272,8 @@ Creating YAML files manually is possible — but **`quiz_editor` is intended to 
   * 🔐 Encrypted version
   * 🌍 Interactive HTML (training mode), with dynamic support for regenerating variable values in template questions 
   * 📝 HTML exam version (Google Sheet connected)
-  * 📄 AMC–LaTeX format (paper exams), static and dynamic versions (using pythonTeX)
+  * 📄 Import-export to AMC–LaTeX format (paper exams), static and dynamic versions (using pythonTeX)
+  * 📄 Import-export to Moodle XML format (LMS)
 
 Online version:
 👉 [https://jfb-quizeditor.streamlit.app/](https://jfb-quizeditor.streamlit.app/)
