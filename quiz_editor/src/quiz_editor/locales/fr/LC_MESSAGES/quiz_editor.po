@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-04 09:43+0200\n"
+"POT-Creation-Date: 2026-07-17 10:44+0200\n"
 "PO-Revision-Date: 2026-02-13 22:41+0100\n"
 "Last-Translator: Jean-François BERCHER <jf.bercher@esiee.fr>\n"
 "Language-Team: Français\n"
@@ -100,60 +100,65 @@ msgstr "Inconnu"
 msgid "Feedback recorded at "
 msgstr "Feedback enregistré à "
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:63
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:65
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:421
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:72
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:74
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:472
 msgid "New Quiz"
 msgstr "Nouveau Quiz"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:160
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1428
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:169
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1796
 msgid "Document Title"
 msgstr "Titre du document"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:216
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:238
 msgid "Enter a title here"
 msgstr "Entrez un titre ici"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:240
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:248
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:249
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1044
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1045
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1047
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1048
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1232
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:283
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:291
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:292
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1258
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1259
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1261
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1262
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1582
 msgid "None"
 msgstr "Aucune"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:287
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:330
 msgid "⚠️ Unclosed brace"
 msgstr "⚠️ Accolade non fermée"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:330
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:373
 #, python-brace-format
 msgid "Render preview ({label}) :</div>"
 msgstr "Aperçu du rendu ({label}) :</div>"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:384
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:418
+msgid "Close"
+msgstr "Fermer"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:435
 msgid "The file name cannot be empty."
 msgstr "Le nom du fichier ne peut pas être vide."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:394
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:445
 #, python-brace-format
 msgid "File saved successfully as `{filename}`"
 msgstr "Fichier enregistré proprement sous `{filename}`"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:466
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:517
 msgid ""
 "⚠️ File encrypted with password and google authentification required. Be sure "
 "to use both `mandatoryInternet=True` **and** ``googleAuthentification=True`` "
 "option when initializing the quiz."
 msgstr ""
 "⚠️ Fichier encrypté avec mot de passe. Assurez vous d'utiliser l'option "
-"`mandatoryInternet=True` **et**  `googleAuthentification=True` à l'initiatlisation du quiz"
+"`mandatoryInternet=True` **et**  `googleAuthentification=True` à "
+"l'initiatlisation du quiz"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:469
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:520
 msgid ""
 "⚠️ File encrypted with password. Be sure to use the `mandatoryInternet=True` "
 "option when initializing the quiz."
@@ -161,152 +166,163 @@ msgstr ""
 "⚠️ Fichier encrypté avec mot de passe. Assurez vous d'utiliser l'option "
 "`mandatoryInternet=True` à l'initiatlisation du quiz"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:582
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1404
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:645
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1772
 msgid "Configure & Export"
 msgstr "Configurer & Exporter"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:589
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:652
 msgid "my_quiz"
 msgstr "mon_quiz"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:590
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:653
 msgid "File name (without extension)"
 msgstr "Nom du fichier (sans extension)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:592
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:655
 msgid "Reindex question labels"
 msgstr "Réindexer les labels de questions"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:593
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:656
 msgid "Reindex to ensure continuity of labels, e.g.: quiz1, quiz2, etc."
 msgstr "Réindexe pour assurer la continuité des labels, eg: quiz1, quiz2, etc"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:595
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:658
 msgid "Untitled"
 msgstr "Sans titre"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:602
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:665
 msgid "Export Type"
 msgstr "Type d'export"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:602
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:605
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:617
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:665
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:668
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:680
 msgid "Encrypted YAML"
 msgstr "YAML crypté"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:602
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:617
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:665
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:680
 msgid "Encoded YAML"
 msgstr "YAML encodé"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:602
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:665
 msgid "Unencoded YAML"
 msgstr "YAML sans encodage"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:608
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:671
 msgid "Password"
 msgstr "Mot de passe"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:608
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:671
 msgid "💡 This pwd participates in encryption"
 msgstr "💡 Ce pwd participe à l'encryption"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:609
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:672
 msgid "Use google authentification"
 msgstr "Utiliser l'authentification Google"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:613
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:676
 msgid "Google authentification: Main domain"
 msgstr "Authentification google : domaine principal"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:613
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:676
 msgid ""
 "💡 Enter the main domain for authentification (will be used in encryption). "
 "For example, if your main domain is 'edu.esiee.fr', enter 'esiee.fr' here."
 msgstr ""
-"💡 Entrer le domaine principal pour l'authentification (sera utilisé dans le cryptage). "
-"Par exemple, si votre domaine est 'edu.esiee.fr', entrer ici 'esiee.fr'."
+"💡 Entrer le domaine principal pour l'authentification (sera utilisé dans le "
+"cryptage). Par exemple, si votre domaine est 'edu.esiee.fr', entrer ici "
+"'esiee.fr'."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:620
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:683
 msgid ""
 "💡 This mode allows you to save all or part of the questions in a new file, "
 msgstr ""
 "💡 Ce mode permet de sauvegarder tout ou partie des questions en un nouveau "
 "fichier, "
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:621
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:684
 msgid "with optional encryption."
 msgstr "avec encryptage optionnel. "
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:625
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:688
 msgid "📥 Full Quiz"
 msgstr "📥 Quiz complet"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:627
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:690
 msgid "📥 Questions Only"
 msgstr "📥 Questions seules"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:630
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1400
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:693
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1768
 msgid "HTML Interactive (self-assessment)"
 msgstr "HTML Interactif (Entraînement)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:632
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:695
 msgid "Embed images in output HTML file"
 msgstr "Inclure les images directement dans le fichier HTML de sortie"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:633
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:696
 msgid "Embed base64 images data directly in HTML"
 msgstr "Inclure les images base64 directement dans le HTML"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:635
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:698
 msgid "💡 This mode allows immediate self-correction for students."
 msgstr "💡 Ce mode permet l'autocorrection immédiate pour les élèves."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:636
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:643
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:699
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:706
 msgid "⬇️ Download HTML"
 msgstr "⬇️ Télécharger le HTML"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:638
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1400
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:701
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1768
 msgid "HTML Exam (Server)"
 msgstr "Examen (Serveur)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:639
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:702
 msgid "Receiving server URL"
 msgstr "URL du serveur de réception"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:645
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:708
 msgid "Please enter the server URL to continue."
 msgstr "Veuillez saisir l'URL du serveur pour continuer."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:648
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:655
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:711
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:718
 msgid "Negative points (-1 malus)"
 msgstr "Points négatifs (malus -1)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:651
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:714
 msgid "💡 Extraction in LaTeX-AMC format."
 msgstr "💡 Extraction au format LaTeX-AMC."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:652
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:659
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:715
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:722
 msgid "⬇️ Download LaTeX-AMC"
 msgstr "⬇️ Télécharger le LaTeX-AMC"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:658
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:721
 msgid "💡 Extraction in LaTeX-AMC (PythonTeX) format."
 msgstr "💡 Extraction au format LaTeX-AMC (PythonTeX) ."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:702
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:708
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:727
+#, fuzzy
+msgid "💡 Extraction in Moodle XML format."
+msgstr "💡 Extraction au format LaTeX-AMC."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:728
+#, fuzzy
+msgid "⬇️ Download Moodle XML"
+msgstr "⬇️ Télécharger le HTML"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:771
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:777
 msgid "Template variables"
 msgstr "Variables de la template"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:709
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:778
 #, python-brace-format
 msgid ""
 "Define variable names and the rule to generate their values. These variables "
@@ -315,353 +331,571 @@ msgid ""
 "optional string formatting. These variables can be used or regenerated on "
 "HTML/LaTeX exports."
 msgstr ""
-"Définissez les noms des variables et la règle permettant de générer leurs valeurs. Ces variables"
-"peuvent être utilisées dans le texte de la question ou dans les propositions à l'aide de la syntaxe f-string de Python"
-": {var_name}, avec prise en charge des opérations mathématiques simples sur les variables et"
-"du formatage facultatif des chaînes de caractères. Ces variables peuvent être utilisées ou régénérées lors"
-"des exportations HTML/LaTeX."
+"Définissez les noms des variables et la règle permettant de générer leurs "
+"valeurs. Ces variablespeuvent être utilisées dans le texte de la question ou "
+"dans les propositions à l'aide de la syntaxe f-string de Python: {var_name}, "
+"avec prise en charge des opérations mathématiques simples sur les variables "
+"etdu formatage facultatif des chaînes de caractères. Ces variables peuvent "
+"être utilisées ou régénérées lorsdes exportations HTML/LaTeX."
 
-
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:716
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:785
 msgid "➕ Add variable"
 msgstr "➕ Ajouter une proposition"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:722
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:791
 msgid "🔁 Regenerate"
 msgstr "🔁 Regénérer"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:790
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:859
 msgid "Propositions"
 msgstr "Propositions"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:808
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:987
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:918
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1199
 msgid "Label"
 msgstr "Label"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:808
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:918
 msgid "Short identifier for the proposition."
 msgstr "Identifiant court de la proposition."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:811
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:921
 msgid "Proposal Content"
 msgstr "Contenu de la proposition"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:813
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:923
 msgid "Hint"
 msgstr "Indice"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:813
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:923
 msgid "Optional hint displayed if the user fails"
 msgstr "Indice optionnel si l'utilisateur échoue"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:815
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:925
 msgid "Answer/Feedback"
 msgstr "Réponse/Feedback"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:815
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:925
 msgid "Feedback shown after validation"
 msgstr "Message affiché après la validation."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:823
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:938
 msgid "Correct?"
 msgstr "Correct ?"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:828
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:833
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:945
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:950
 msgid "Expected value"
 msgstr "Valeur attendue"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:859
-msgid "Bonus"
-msgstr "Bonus"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:975
+msgid ""
+"True Positive (Student has checked the box while the proposal is correct)"
+msgstr "Vrai Positif (L'étudiant a coché et la proposition est correcte)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:859
-msgid "Specific points if this is selected"
-msgstr "Nombre de points sécifique si ceci est sélectionné"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:976
+msgid ""
+"False Negative (Student has not checked the box while the proposal is "
+"correct)"
+msgstr "Faux Négatif (L'étudiant n'a pas coché bien que la propostion soit correcte)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:865
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:932
-msgid "Malus"
-msgstr "Malus"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:980
+msgid ""
+"True Negative (Student has not checked the box while the proposal is "
+"incorrect)"
+msgstr "Vrai Négatif (L'étudiant n'a pas coché et la proposition était effectivement incorrecte)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:865
-msgid "Points deducted if this is selected"
-msgstr "Points retirés (défaut = 0)."
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:981
+msgid ""
+"False Positive (Student has checked the box while the proposal is incorrect)"
+msgstr "Faux Positif (L'étudiant a coché bien que la proposition soit incorrecte)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:873
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1273
-msgid "🗑️ Delete"
-msgstr "🗑️ Supprimer"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:985
+#, fuzzy
+msgid "Correct answer"
+msgstr "Correction"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:877
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1258
-msgid "👯 Duplicate"
-msgstr "👯 Dupliquer"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:986
+msgid "Incorrect answer"
+msgstr "Réponse incorrecte"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:879
-msgid "copy"
-msgstr "copie"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:990
+msgid "Correct numeric answer"
+msgstr "Réponse numérique correcte"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:884
-msgid "Tolerance %"
-msgstr "Tolérance %"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:991
+msgid "Incorrect numeric answer"
+msgstr "Réponse numérique incorrecte"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:884
-msgid "Tolerance in % (default = 0)."
-msgstr "Tolérance en % (défaut = 0)."
-
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:885
-msgid "Tolerance Abs"
-msgstr "Tolérance Abs"
-
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:885
-msgid "Tolerance in absolute value (default = 0.01)."
-msgstr "Tolérance en valeur absolue (défaut = 0.01)."
-
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:889
-msgid "➕ Add a proposal"
-msgstr "➕ Ajouter une proposition"
-
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:910
-msgid "🔗 Logical constraints (XOR, IMPLY...)"
-msgstr "🔗 Contraintes logiques (XOR, IMPLY...)"
-
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:925
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1001
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1026
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1043
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1137
 msgid "Type"
 msgstr ""
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:929
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1002
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1047
+msgid "TP (True Positive)"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1003
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1048
+msgid "FP (False Positive)"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1004
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1049
+msgid "FN (False Negative)"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1005
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1050
+msgid "TN (True Negative)"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1007
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1030
+msgid "Comments"
+msgstr "Commentaires"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1008
+msgid "Correct: checked as expected."
+msgstr "Correct : coché comme attendu."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1009
+msgid "Checked when it should have been left unchecked."
+msgstr "Coché alors que cela n'aurait pas dû l'être."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1010
+msgid "Left unchecked when it should have been checked."
+msgstr "Laissé non coché alors que cela aurait dû être coché."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1011
+msgid "Correct: left unchecked as expected."
+msgstr "Correct : laissé non coché comme attendu."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1013
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1034
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1043
+msgid "Points"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1018
+msgid ""
+"For templates, the correct answer depends of the actual values of variables. "
+"Therefore, we have to specify the points for each couple of given answer, "
+"correct answer, in the form of a *grading matrix*."
+msgstr ""
+"Pour les templates, la réponse correcte dépend des valeurs prises par les variables. "
+"On doit par conséquent spécifier les points accordés pour chaque couple réponse donnée, "
+"réponse attendue, sous la forme d'une *matrice de notation*."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1061
+msgid "Specific points if this is selected"
+msgstr "Nombre de points sécifique si ceci est sélectionné"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1066
+msgid "Percentage of this correct answer among all correct answers"
+msgstr "Part (pourcentage) de cette réponse correcte parmi toutes les réponses correctes"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1068
+msgid ""
+"Percentage of this correct answer with respect to the sum of all correct "
+"answers"
+msgstr ""
+"Pourcentage de cette réponse correcte parmi toutes les réponses correctes"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1072
+msgid "Points deducted if this is selected"
+msgstr "Points retirés (défaut = 0)."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1078
+msgid "Percentage of this incorrect answer among all correct answers"
+msgstr "Pourcentage de cette réponse incorrecte parmi toutes les réponses correctes"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1080
+msgid ""
+"Percentage of this incorrect answer with respect to the sum of all correct "
+"answers"
+msgstr ""
+"Pourcentage de cette réponse incorrecte par rapport à la somme de toutes les réponses correctes"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1085
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1625
+msgid "🗑️ Delete"
+msgstr "🗑️ Supprimer"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1089
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1610
+msgid "👯 Duplicate"
+msgstr "👯 Dupliquer"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1091
+msgid "copy"
+msgstr "copie"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1096
+msgid "Tolerance %"
+msgstr "Tolérance %"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1096
+msgid "Tolerance in % (default = 0)."
+msgstr "Tolérance en % (défaut = 0)."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1097
+msgid "Tolerance Abs"
+msgstr "Tolérance Abs"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1097
+msgid "Tolerance in absolute value (default = 0.01)."
+msgstr "Tolérance en valeur absolue (défaut = 0.01)."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1101
+msgid "➕ Add a proposal"
+msgstr "➕ Ajouter une proposition"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1122
+msgid "🔗 Logical constraints (XOR, IMPLY...)"
+msgstr "🔗 Contraintes logiques (XOR, IMPLY...)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1141
 msgid "Labels (max 2)"
 msgstr ""
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:936
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1144
+msgid "Malus"
+msgstr "Malus"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1148
 msgid "Remove this constraint"
 msgstr "Supprimer cette contrainte"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:941
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1153
 msgid "➕ Add constraint"
 msgstr "➕ Ajouter une contrainte"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:960
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1172
 msgid "Question text"
 msgstr "Texte de la question"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:964
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1176
 msgid "Supports Markdown and LaTeX (e.g., $x^2$)."
 msgstr "Supporte le Markdown et le LaTeX (ex: $x^2$)."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:983
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1301
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1195
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1653
 msgid "Defines the validation behavior of the quiz."
 msgstr "Définit le comportement de validation du quiz."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:990
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1202
 msgid "Question label."
 msgstr "Label de la question."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1048
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1062
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1262
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1276
 msgid "➕ New category..."
 msgstr "➕ Nouvelle catégorie..."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1056
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1270
 msgid "🗂️ Category"
 msgstr "🗂️ Catégorie"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1060
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1274
 msgid "Question category"
 msgstr "Catégorie de la question"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1064
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1278
 msgid "Name of the new category"
 msgstr "Nom de la nouvelle catégorie"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1065
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1279
 msgid "Enter the name here..."
 msgstr "Saisissez le nom ici..."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1086
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1300
 msgid "🏷️ Tags (Difficulty, Sub-theme...)"
 msgstr "🏷️ Tags (Difficulté, Thème secondaire...)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1089
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1303
 msgid "Choose or enter a new tag"
 msgstr "Choisir ou entrer un nouveau tag"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1129
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1343
 #, python-brace-format
 msgid "Editing {current_quiz}"
 msgstr "Édition de {current_quiz}"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1136
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1350
 msgid "Export"
 msgstr "Exporter"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1140
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1354
 msgid "Check to include this question in future YAML exports"
 msgstr "Cocher pour inclure cette question dans le futur export YAML"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1171
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1361
+#, fuzzy
+msgid "Error"
+msgstr "Erreur de lecture :"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1361
+#, python-brace-format
+msgid "The key `{new_key}` is already present in the data!"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1376
+#, fuzzy
+msgid "Quiz name"
+msgstr "Prénom"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1379
+msgid "Allow to change quiz name."
+msgstr "Permet de changer le nom du quiz."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1450
 #, python-brace-format
 msgid "YAML Editor - {FILE_PATH}"
 msgstr "Éditeur YAML - {FILE_PATH}"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1180
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1460
 msgid "📂 Browse"
 msgstr "📂 Navigation"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1182
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1463
 msgid "📥 Import new file"
 msgstr "📥 Importer un nouveau fichier"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1187
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1468
 msgid "Choose file"
 msgstr "Choisir un fichier"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1189
-msgid "Loads the contents of a YAML file into the editor"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1470
+#, fuzzy
+msgid ""
+"Loads the contents of a YAML file into the editor (also imports AMC-LaTeX "
+"files)"
 msgstr "Charge le contenu d'un fichier YAML dans l'éditeur"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1200
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1477
+msgid "A file is already loaded."
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1479
+msgid "Select:"
+msgstr ""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1480
+msgid "Replace data"
+msgstr "Remplacer les données"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1480
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1488
+msgid "Append to existing data"
+msgstr "Ajouter aux données existantes"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1483
+msgid "Confirm"
+msgstr "Confirmer"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1493
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1520
+msgid "Converted AMC-LaTeX file to YAML..."
+msgstr "Fichier AMC-LaTeX convertit en YAML..."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1497
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1524
+msgid "Imported (may be partially) the Moodle XML file..."
+msgstr "Importation (peut-être partielle) du fichier XML Moodle..."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1534
 msgid "📖 Enter a title here"
 msgstr "📖 Entrer un titre ici"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1206
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1541
 #, python-brace-format
 msgid "File `{file_name}` loaded successfully!"
 msgstr "Fichier `{file_name}` chargé avec succès !"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1209
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1545
 msgid "Read Error:"
 msgstr "Erreur de lecture :"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1213
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1553
 msgid "🎰🎲♠ Quiz management"
 msgstr "🎰🎲♠ Gestion des quizzes"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1220
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1222
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1563
+msgid "Full text search"
+msgstr "Recherche en texte intégral"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1564
+msgid "Term or \"full expression in quotes\""
+msgstr "Terme ou \"expression complète entre quotes\""
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1565
+msgid ""
+"Full text search: select quizzes containing the query. The search is case "
+"insensitive and works in mode 'contains', i.e. true if query is\n"
+"                fount either in question or proposals or anwers texts"
+msgstr ""
+"Recherche en texte intégral: sélectionner les quizzes parmi lesquels rechercher. La recherche est insensible "
+"à la casse et fonctionne en mode 'contains', i.e. vraie si la requête est\n"
+"                trouvée dans la question, les propositions ou les réponses."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1570
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1572
 #, python-brace-format
 msgid "All ({len_all})"
 msgstr "Toutes ({len_all})"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1221
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1571
 msgid "Category"
 msgstr "Catégorie"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1226
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1576
 msgid "Filter by Tags"
 msgstr "Filtrer par Tags"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1227
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1577
 msgid "Choose a tag"
 msgstr "Choisir un tag"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1245
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1597
 #, python-brace-format
 msgid "Choose a question from {lenf}"
 msgstr "Choisir une question parmi {lenf}"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1278
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1610
+msgid "Copy this quiz"
+msgstr "Copier ce quiz"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1625
+msgid "Remove this quiz"
+msgstr "Supprimer ce quiz"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1630
 msgid "❗ Confirm?"
 msgstr "❗ Confirmer ?"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1286
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1638
 msgid "Last quiz!"
 msgstr "Dernier quiz !"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1289
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1641
 msgid "Cancel"
 msgstr "Annuler"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1296
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1648
 msgid "➕ New Quiz"
 msgstr "➕ Nouveau Quiz"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1299
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1651
 msgid "Select quiz type"
 msgstr "Sélectionner les questions"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1305
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1657
 msgid "Create"
 msgstr "Créer"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1321
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1331
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1674
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1684
 msgid "New question"
 msgstr "Nouvelle question"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1323
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1333
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1676
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1686
 msgid "Choice 1"
 msgstr "Choix 1"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1348
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1700
+msgid "🔄 Reindex all quizzes"
+msgstr "🔄 Réindexer tous les quizzes"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1705
+#, python-brace-format
+msgid "Reindex all quizzes as {prefix}1, {prefix}2, etc. "
+msgstr "Réindexer tous les quizzes comme {prefix}1, {prefix}2, etc. "
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1708
+#, fuzzy
+msgid "Also reindex labels"
+msgstr "Réindexer les labels de questions"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1711
+#, fuzzy
+msgid ""
+"Reindex question labels with current prefix, e.g.: q:quiz1, q:quiz2, etc."
+msgstr "Réindexe pour assurer la continuité des labels, eg: quiz1, quiz2, etc"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1717
 msgid "📤 Export"
 msgstr "📤 Exportation"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1356
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1724
 msgid "✅ Select all"
 msgstr "✅ Tout cocher"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1364
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1732
 msgid "❌ Deselect all"
 msgstr "❌ Tout décocher"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1372
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1740
 msgid "Select questions"
 msgstr "Sélectionner les questions"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1390
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1758
 #, python-brace-format
 msgid "**{lsq} question(s) selected**"
 msgstr "**{lsq} question(s) sélectionnée(s)**"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1399
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1767
 msgid "Choose export format"
 msgstr "Choisir le format d'export"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1407
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1775
 msgid "Check questions to export."
 msgstr "Cochez des questions pour exporter."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1431
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1799
 msgid "The main title of the YAML file (key ‘title’) - Editable here."
 msgstr "Le titre principal du fichier YAML (clé 'title') - Modifiable ici."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1436
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1804
 #, python-brace-format
 msgid "Current file: `{shared_fn}`"
 msgstr "Fichier en cours : `{shared_fn}`"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1441
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1809
 msgid "Edit to ‘Save As’."
 msgstr "Modifiez pour 'Enregistrer sous'."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1444
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1812
 msgid "‘Save As’."
 msgstr "'Enregistrer sous'."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1452
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1820
 msgid "💾 Save"
 msgstr "💾 Enregistrer"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1455
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1823
 msgid "YAML cleaned and saved ✔️"
 msgstr "YAML nettoyé et enregistré ✔️"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1461
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1829
 msgid "Download!"
 msgstr "Télécharger !"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1466
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1834
 msgid "Only AFTER saving the YAML"
 msgstr "Uniquement APRÈS avoir enregistré le YAML"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1496
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1864
 msgid "Use the sidebar to navigate or create a new quiz."
 msgstr "Utilisez la barre latérale pour naviguer ou créer un nouveau quiz."
+
+#~ msgid "Bonus"
+#~ msgstr "Bonus"
 
 #~ msgid "Extract (YAML)"
 #~ msgstr "Extrait (YAML)"

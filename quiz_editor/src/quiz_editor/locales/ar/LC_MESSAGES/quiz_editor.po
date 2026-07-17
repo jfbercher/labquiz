@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-04 09:43+0200\n"
+"POT-Creation-Date: 2026-07-17 10:44+0200\n"
 "PO-Revision-Date: 2026-02-25 00:15+0100\n"
 "Last-Translator: Jean-François BERCHER <jf.bercher@esiee.fr>\n"
 "Language-Team: Arabic\n"
@@ -101,61 +101,65 @@ msgstr "غير معروف"
 msgid "Feedback recorded at "
 msgstr "تم تسجيل التعليقات في "
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:63
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:65
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:421
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:72
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:74
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:472
 msgid "New Quiz"
 msgstr "اختبار جديد"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:160
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1428
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:169
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1796
 msgid "Document Title"
 msgstr "عنوان المستند"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:216
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:238
 msgid "Enter a title here"
 msgstr "أدخل عنواناً هنا"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:240
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:248
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:249
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1044
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1045
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1047
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1048
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1232
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:283
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:291
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:292
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1258
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1259
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1261
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1262
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1582
 msgid "None"
 msgstr "لا يوجد"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:287
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:330
 msgid "⚠️ Unclosed brace"
 msgstr "⚠️ قوس غير مغلق"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:330
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:373
 #, python-brace-format
 msgid "Render preview ({label}) :</div>"
 msgstr "معاينة العرض ({label}) :</div>"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:384
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:418
+msgid "Close"
+msgstr "إغلاق"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:435
 msgid "The file name cannot be empty."
 msgstr "لا يمكن أن يكون اسم الملف فارغاً."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:394
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:445
 #, python-brace-format
 msgid "File saved successfully as `{filename}`"
 msgstr "تم حفظ الملف بنجاح باسم `{filename}`"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:466
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:517
 msgid ""
 "⚠️ File encrypted with password and google authentification required. Be sure "
 "to use both `mandatoryInternet=True` **and** ``googleAuthentification=True`` "
 "option when initializing the quiz."
 msgstr ""
-"⚠️ الملف مشفر بكلمة مرور ويتطلب مصادقة Google. تأكد من "
-"استخدام كل من الخيارين `mandatoryInternet=True` **و** ``googleAuthentification=True`` "
-"عند تهيئة الاختبار."
+"⚠️ الملف مشفر بكلمة مرور ويتطلب مصادقة Google. تأكد من استخدام كل من الخيارين "
+"`mandatoryInternet=True` **و** ``googleAuthentification=True`` عند تهيئة "
+"الاختبار."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:469
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:520
 msgid ""
 "⚠️ File encrypted with password. Be sure to use the `mandatoryInternet=True` "
 "option when initializing the quiz."
@@ -163,150 +167,160 @@ msgstr ""
 "⚠️ الملف مشفر بكلمة مرور. تأكد من استخدام خيار `mandatoryInternet=True` عند "
 "تهيئة الاختبار"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:582
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1404
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:645
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1772
 msgid "Configure & Export"
 msgstr "إعداد وتصدير"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:589
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:652
 msgid "my_quiz"
 msgstr "اختباري"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:590
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:653
 msgid "File name (without extension)"
 msgstr "اسم الملف (بدون امتداد)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:592
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:655
 msgid "Reindex question labels"
 msgstr "إعادة فهرسة تسميات الأسئلة"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:593
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:656
 msgid "Reindex to ensure continuity of labels, e.g.: quiz1, quiz2, etc."
 msgstr "إعادة الفهرسة لضمان استمرارية التسميات، مثل: quiz1، quiz2، إلخ."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:595
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:658
 msgid "Untitled"
 msgstr "بدون عنوان"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:602
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:665
 msgid "Export Type"
 msgstr "نوع الصادرات"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:602
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:605
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:617
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:665
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:668
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:680
 msgid "Encrypted YAML"
 msgstr "YAML مشفر"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:602
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:617
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:665
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:680
 msgid "Encoded YAML"
 msgstr "YAML مرمّز"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:602
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:665
 msgid "Unencoded YAML"
 msgstr "YAML غير مرمّز"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:608
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:671
 msgid "Password"
 msgstr "كلمة المرور"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:608
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:671
 msgid "💡 This pwd participates in encryption"
 msgstr "💡 كلمة المرور هذه تشارك في التشفير"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:609
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:672
 msgid "Use google authentification"
 msgstr "استخدام مصادقة Google"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:613
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:676
 msgid "Google authentification: Main domain"
 msgstr "توثيق Google: النطاق الرئيسي"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:613
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:676
 msgid ""
 "💡 Enter the main domain for authentification (will be used in encryption). "
 "For example, if your main domain is 'edu.esiee.fr', enter 'esiee.fr' here."
 msgstr ""
-"💡 أدخل النطاق الرئيسي للمصادقة (سيُستخدم في التشفير)."
-"على سبيل المثال، إذا كان النطاق الرئيسي الخاص بك هو ’edu.esiee.fr‘، فأدخل ’esiee.fr‘ هنا."
+"💡 أدخل النطاق الرئيسي للمصادقة (سيُستخدم في التشفير).على سبيل المثال، إذا "
+"كان النطاق الرئيسي الخاص بك هو ’edu.esiee.fr‘، فأدخل ’esiee.fr‘ هنا."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:620
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:683
 msgid ""
 "💡 This mode allows you to save all or part of the questions in a new file, "
 msgstr "💡 يتيح لك هذا الوضع حفظ كل الأسئلة أو جزء منها في ملف جديد، "
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:621
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:684
 msgid "with optional encryption."
 msgstr "مع تشفير اختياري."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:625
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:688
 msgid "📥 Full Quiz"
 msgstr "📥 الاختبار الكامل"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:627
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:690
 msgid "📥 Questions Only"
 msgstr "📥 أسئلة فقط"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:630
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1400
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:693
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1768
 msgid "HTML Interactive (self-assessment)"
 msgstr "HTML التفاعلي (التقييم الذاتي)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:632
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:695
 msgid "Embed images in output HTML file"
 msgstr "تضمين الصور في ملف HTML الناتج"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:633
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:696
 msgid "Embed base64 images data directly in HTML"
 msgstr "تضمين بيانات الصور بتنسيق base64 مباشرةً في HTML"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:635
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:698
 msgid "💡 This mode allows immediate self-correction for students."
 msgstr "💡 يتيح هذا الوضع التصحيح الذاتي الفوري للطلاب."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:636
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:643
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:699
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:706
 msgid "⬇️ Download HTML"
 msgstr "⬇️ تنزيل HTML"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:638
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1400
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:701
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1768
 msgid "HTML Exam (Server)"
 msgstr "امتحان HTML (الخادم)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:639
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:702
 msgid "Receiving server URL"
 msgstr "عنوان URL لخادم الاستقبال"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:645
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:708
 msgid "Please enter the server URL to continue."
 msgstr "يرجى إدخال عنوان URL للخادم للمتابعة."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:648
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:655
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:711
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:718
 msgid "Negative points (-1 malus)"
 msgstr "نقاط سلبية (-1 جزاء)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:651
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:714
 msgid "💡 Extraction in LaTeX-AMC format."
 msgstr "💡 الاستخراج بتنسيق LaTeX-AMC."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:652
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:659
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:715
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:722
 msgid "⬇️ Download LaTeX-AMC"
 msgstr "⬇️ تنزيل LaTeX-AMC"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:658
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:721
 msgid "💡 Extraction in LaTeX-AMC (PythonTeX) format."
 msgstr "💡 الاستخراج بتنسيق LaTeX-AMC (PythonTeX)."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:702
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:708
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:727
+#, fuzzy
+msgid "💡 Extraction in Moodle XML format."
+msgstr "💡 الاستخراج بتنسيق LaTeX-AMC."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:728
+#, fuzzy
+msgid "⬇️ Download Moodle XML"
+msgstr "⬇️ تنزيل HTML"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:771
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:777
 msgid "Template variables"
 msgstr "متغيرات القالب"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:709
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:778
 #, python-brace-format
 msgid ""
 "Define variable names and the rule to generate their values. These variables "
@@ -315,354 +329,569 @@ msgid ""
 "optional string formatting. These variables can be used or regenerated on "
 "HTML/LaTeX exports."
 msgstr ""
-"حدد أسماء المتغيرات والقاعدة المستخدمة لتوليد قيمها. ويمكن استخدام هذه المتغيرات"
-"في نص السؤال أو الاقتراحات باستخدام صيغة f-string في لغة Python"
-"على النحو التالي: {var_name}، مع دعم العمليات البسيطة على المتغيرات و"
-"تنسيق السلاسل الاختياري. ويمكن استخدام هذه المتغيرات أو إعادة توليدها في"
-"عمليات التصدير إلى HTML/LaTeX."
+"حدد أسماء المتغيرات والقاعدة المستخدمة لتوليد قيمها. ويمكن استخدام هذه "
+"المتغيراتفي نص السؤال أو الاقتراحات باستخدام صيغة f-string في لغة Pythonعلى "
+"النحو التالي: {var_name}، مع دعم العمليات البسيطة على المتغيرات وتنسيق "
+"السلاسل الاختياري. ويمكن استخدام هذه المتغيرات أو إعادة توليدها فيعمليات "
+"التصدير إلى HTML/LaTeX."
 
-
-
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:716
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:785
 msgid "➕ Add variable"
 msgstr "➕ إضافة متغير"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:722
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:791
 msgid "🔁 Regenerate"
 msgstr "🔁 تجديد"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:790
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:859
 msgid "Propositions"
 msgstr "مقترحات"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:808
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:987
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:918
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1199
 msgid "Label"
 msgstr "تسمية"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:808
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:918
 msgid "Short identifier for the proposition."
 msgstr "معرف قصير للمقترح."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:811
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:921
 msgid "Proposal Content"
 msgstr "محتوى الاقتراح"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:813
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:923
 msgid "Hint"
 msgstr "تلميح"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:813
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:923
 msgid "Optional hint displayed if the user fails"
 msgstr "يتم عرض تلميح اختياري في حالة فشل المستخدم"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:815
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:925
 msgid "Answer/Feedback"
 msgstr "الإجابة/التعليق"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:815
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:925
 msgid "Feedback shown after validation"
 msgstr "يتم عرض التعليقات بعد التحقق من صحة البيانات"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:823
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:938
 msgid "Correct?"
 msgstr "صحيح؟"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:828
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:833
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:945
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:950
 msgid "Expected value"
 msgstr "القيمة المتوقعة"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:859
-msgid "Bonus"
-msgstr "إضافة"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:975
+msgid ""
+"True Positive (Student has checked the box while the proposal is correct)"
+msgstr "النتيجة الإيجابية الحقيقية (قام الطالب بوضع علامة في المربع في حين أن الاقتراح صحيح)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:859
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:976
+msgid ""
+"False Negative (Student has not checked the box while the proposal is "
+"correct)"
+msgstr "نتيجة سلبية خاطئة (لم يقم الطالب بوضع علامة في المربع رغم صحة الاقتراح)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:980
+msgid ""
+"True Negative (Student has not checked the box while the proposal is "
+"incorrect)"
+msgstr "السلبية الحقيقية (لم يقم الطالب بوضع علامة في المربع رغم أن الإجابة غير صحيحة)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:981
+msgid ""
+"False Positive (Student has checked the box while the proposal is incorrect)"
+msgstr "نتيجة إيجابية خاطئة (قام الطالب بتحديد المربع رغم أن الاقتراح غير صحيح)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:985
+#, fuzzy
+msgid "Correct answer"
+msgstr "تصحيح"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:986
+msgid "Incorrect answer"
+msgstr "إجابة غير صحيحة"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:990
+msgid "Correct numeric answer"
+msgstr "الإجابة العددية الصحيحة"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:991
+msgid "Incorrect numeric answer"
+msgstr "إجابة عددية غير صحيحة"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1001
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1026
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1043
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1137
+msgid "Type"
+msgstr "النوع"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1002
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1047
+msgid "TP (True Positive)"
+msgstr "TP (النتيجة الإيجابية الحقيقية)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1003
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1048
+msgid "FP (False Positive)"
+msgstr "FP (نتيجة إيجابية خاطئة)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1004
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1049
+msgid "FN (False Negative)"
+msgstr "FN (نتيجة سلبية خاطئة)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1005
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1050
+msgid "TN (True Negative)"
+msgstr "TN (السلبية الحقيقية)"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1007
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1030
+msgid "Comments"
+msgstr "التعليقات"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1008
+msgid "Correct: checked as expected."
+msgstr "صحيح: تم التحقق منه كما هو متوقع."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1009
+msgid "Checked when it should have been left unchecked."
+msgstr "تم تحديد الخانة في حين كان ينبغي تركها غير محددة."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1010
+msgid "Left unchecked when it should have been checked."
+msgstr "تُركت دون مراجعة في حين كان ينبغي مراجعتها."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1011
+msgid "Correct: left unchecked as expected."
+msgstr "الصحيح: لم يتم تحديد الخانة كما هو متوقع."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1013
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1034
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1043
+msgid "Points"
+msgstr "النقاط"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1018
+msgid ""
+"For templates, the correct answer depends of the actual values of variables. "
+"Therefore, we have to specify the points for each couple of given answer, "
+"correct answer, in the form of a *grading matrix*."
+msgstr ""
+"بالنسبة للقوالب، يعتمد الجواب الصحيح على القيم الفعلية للمتغيرات."
+"لذلك، يتعين علينا تحديد الدرجات لكل زوج من «الإجابة المعطاة» و«الإجابة الصحيحة»،"
+"في شكل *مصفوفة تصحيح*."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1061
 msgid "Specific points if this is selected"
 msgstr "نقاط محددة في حالة تحديد هذا الخيار"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:865
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:932
-msgid "Malus"
-msgstr "مالوس"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1066
+msgid "Percentage of this correct answer among all correct answers"
+msgstr "النسبة المئوية لهذا الجواب الصحيح من بين جميع الأجوبة الصحيحة"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:865
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1068
+msgid ""
+"Percentage of this correct answer with respect to the sum of all correct "
+"answers"
+msgstr "النسبة المئوية لهذا الجواب الصحيح مقارنة بمجموع جميع الأجوبة الصحيحة"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1072
 msgid "Points deducted if this is selected"
 msgstr "سيتم خصم نقاط في حالة تحديد هذا الخيار"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:873
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1273
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1078
+msgid "Percentage of this incorrect answer among all correct answers"
+msgstr "النسبة المئوية لهذا الجواب الخاطئ من إجمالي الأجوبة الصحيحة"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1080
+msgid ""
+"Percentage of this incorrect answer with respect to the sum of all correct "
+"answers"
+msgstr "النسبة المئوية لهذا الجواب الخاطئ مقارنة بمجموع جميع الأجوبة الصحيحة"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1085
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1625
 msgid "🗑️ Delete"
 msgstr "🗑️ حذف"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:877
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1258
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1089
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1610
 msgid "👯 Duplicate"
 msgstr "👯 تكرار"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:879
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1091
 msgid "copy"
 msgstr "نسخ"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:884
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1096
 msgid "Tolerance %"
 msgstr "نسبة التسامح %"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:884
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1096
 msgid "Tolerance in % (default = 0)."
 msgstr "التسامح بالنسبة المئوية (الافتراضي = 0)."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:885
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1097
 msgid "Tolerance Abs"
 msgstr "التسامح المطلق"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:885
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1097
 msgid "Tolerance in absolute value (default = 0.01)."
 msgstr "التسامح بالقيمة المطلقة (الافتراضي = 0.01)."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:889
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1101
 msgid "➕ Add a proposal"
 msgstr "➕ إضافة مقترح"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:910
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1122
 msgid "🔗 Logical constraints (XOR, IMPLY...)"
 msgstr "🔗 قيود منطقية (XOR, IMPLY...)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:925
-msgid "Type"
-msgstr ""
-
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:929
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1141
 msgid "Labels (max 2)"
 msgstr ""
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:936
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1144
+msgid "Malus"
+msgstr "مالوس"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1148
 msgid "Remove this constraint"
 msgstr "إزالة هذا القيد"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:941
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1153
 msgid "➕ Add constraint"
 msgstr "➕ إضافة قيد"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:960
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1172
 msgid "Question text"
 msgstr "نص السؤال"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:964
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1176
 msgid "Supports Markdown and LaTeX (e.g., $x^2$)."
 msgstr "يدعم Markdown و LaTeX (مثل $x^2$)."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:983
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1301
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1195
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1653
 msgid "Defines the validation behavior of the quiz."
 msgstr "يحدد سلوك التحقق من صحة الاختبار."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:990
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1202
 msgid "Question label."
 msgstr "تسمية السؤال."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1048
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1062
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1262
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1276
 msgid "➕ New category..."
 msgstr "➕ فئة جديدة..."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1056
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1270
 msgid "🗂️ Category"
 msgstr "🗂️ الفئة"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1060
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1274
 msgid "Question category"
 msgstr "فئة السؤال"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1064
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1278
 msgid "Name of the new category"
 msgstr "اسم الفئة الجديدة"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1065
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1279
 msgid "Enter the name here..."
 msgstr "أدخل الاسم هنا..."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1086
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1300
 msgid "🏷️ Tags (Difficulty, Sub-theme...)"
 msgstr "🏷️ الوسوم (الصعوبة، الموضوع الفرعي...)"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1089
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1303
 msgid "Choose or enter a new tag"
 msgstr "اختر أو أدخل وسماً جديداً"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1129
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1343
 #, python-brace-format
 msgid "Editing {current_quiz}"
 msgstr "تحرير {current_quiz}"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1136
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1350
 msgid "Export"
 msgstr "تصدير"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1140
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1354
 msgid "Check to include this question in future YAML exports"
 msgstr "حدد لتضمين هذا السؤال في عمليات تصدير YAML المستقبلية"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1171
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1361
+#, fuzzy
+msgid "Error"
+msgstr "خطأ في القراءة:"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1361
+#, python-brace-format
+msgid "The key `{new_key}` is already present in the data!"
+msgstr "المفتاح `{new_key}` موجود بالفعل في البيانات!"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1376
+#, fuzzy
+msgid "Quiz name"
+msgstr "الاسم الشخصي"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1379
+msgid "Allow to change quiz name."
+msgstr "السماح بتغيير اسم الاختبار."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1450
 #, python-brace-format
 msgid "YAML Editor - {FILE_PATH}"
 msgstr "محرر YAML - {FILE_PATH}"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1180
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1460
 msgid "📂 Browse"
 msgstr "📂 تصفح"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1182
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1463
 msgid "📥 Import new file"
 msgstr "📥 استيراد ملف جديد"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1187
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1468
 msgid "Choose file"
 msgstr "اختر ملفاً"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1189
-msgid "Loads the contents of a YAML file into the editor"
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1470
+#, fuzzy
+msgid ""
+"Loads the contents of a YAML file into the editor (also imports AMC-LaTeX "
+"files)"
 msgstr "تحميل محتويات ملف YAML في المحرر"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1200
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1477
+msgid "A file is already loaded."
+msgstr "تم تحميل الملف بالفعل."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1479
+msgid "Select:"
+msgstr "اختر:"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1480
+msgid "Replace data"
+msgstr "استبدال البيانات"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1480
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1488
+msgid "Append to existing data"
+msgstr "إضافة البيانات إلى البيانات الموجودة"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1483
+#, fuzzy
+msgid "Confirm"
+msgstr "تأكيد؟"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1493
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1520
+msgid "Converted AMC-LaTeX file to YAML..."
+msgstr "تم تحويل ملف AMC-LaTeX إلى YAML..."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1497
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1524
+msgid "Imported (may be partially) the Moodle XML file..."
+msgstr "تم استيراد (ربما جزئيًا) ملف XML الخاص بـ Moodle..."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1534
 msgid "📖 Enter a title here"
 msgstr "📖 أدخل عنواناً هنا"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1206
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1541
 #, python-brace-format
 msgid "File `{file_name}` loaded successfully!"
 msgstr "تم تحميل الملف `{file_name}` بنجاح!"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1209
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1545
 msgid "Read Error:"
 msgstr "خطأ في القراءة:"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1213
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1553
 msgid "🎰🎲♠ Quiz management"
 msgstr "🎰🎲♠ إدارة الاختبارات"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1220
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1222
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1563
+msgid "Full text search"
+msgstr "البحث عن النص الكامل"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1564
+msgid "Term or \"full expression in quotes\""
+msgstr "مصطلح أو عبارة كاملة بين علامتي اقتباس"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1565
+msgid ""
+"Full text search: select quizzes containing the query. The search is case "
+"insensitive and works in mode 'contains', i.e. true if query is\n"
+"                fount either in question or proposals or anwers texts"
+msgstr ""
+"البحث عن النص الكامل: اختيار الاختبارات القصيرة التي تحتوي على الاستعلام. البحث لا "
+"يتميز بين الأحرف الكبيرة والصغيرة ويعمل في وضع ’يحتوي‘، أي يُعتبر صحيحًا إذا وُجد الاستعلام\n"
+" إما في نص السؤال أو في نصوص الاقتراحات أو في نصوص الإجابات"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1570
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1572
 #, python-brace-format
 msgid "All ({len_all})"
 msgstr "الكل ({len_all})"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1221
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1571
 msgid "Category"
 msgstr "الفئة"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1226
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1576
 msgid "Filter by Tags"
 msgstr "تصفية حسب الوسوم"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1227
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1577
 msgid "Choose a tag"
 msgstr "اختر وسماً"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1245
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1597
 #, python-brace-format
 msgid "Choose a question from {lenf}"
 msgstr "اختر سؤالاً من {lenf}"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1278
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1610
+msgid "Copy this quiz"
+msgstr "انسخ هذا الاختبار"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1625
+msgid "Remove this quiz"
+msgstr "إزالة هذا الاختبار"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1630
 msgid "❗ Confirm?"
 msgstr "❗ تأكيد؟"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1286
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1638
 msgid "Last quiz!"
 msgstr "آخر اختبار!"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1289
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1641
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1296
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1648
 msgid "➕ New Quiz"
 msgstr "➕ اختبار جديد"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1299
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1651
 msgid "Select quiz type"
 msgstr "اختر نوع الاختبار"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1305
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1657
 msgid "Create"
 msgstr "إنشاء"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1321
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1331
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1674
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1684
 msgid "New question"
 msgstr "سؤال جديد"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1323
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1333
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1676
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1686
 msgid "Choice 1"
 msgstr "الخيار 1"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1348
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1700
+msgid "🔄 Reindex all quizzes"
+msgstr "🔄 إعادة فهرسة جميع الاختبارات"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1705
+#, python-brace-format
+msgid "Reindex all quizzes as {prefix}1, {prefix}2, etc. "
+msgstr "أعد فهرسة جميع الاختبارات القصيرة على النحو التالي: {prefix}1، {prefix}2، وهكذا دواليك."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1708
+#, fuzzy
+msgid "Also reindex labels"
+msgstr "إعادة فهرسة تسميات الأسئلة"
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1711
+#, fuzzy
+msgid ""
+"Reindex question labels with current prefix, e.g.: q:quiz1, q:quiz2, etc."
+msgstr "إعادة الفهرسة لضمان استمرارية التسميات، مثل: quiz1، quiz2، إلخ."
+
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1717
 msgid "📤 Export"
 msgstr "📤 تصدير"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1356
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1724
 msgid "✅ Select all"
 msgstr "✅ تحديد الكل"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1364
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1732
 msgid "❌ Deselect all"
 msgstr "❌ إلغاء تحديد الكل"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1372
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1740
 msgid "Select questions"
 msgstr "تحديد الأسئلة"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1390
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1758
 #, python-brace-format
 msgid "**{lsq} question(s) selected**"
 msgstr "**تم تحديد {lsq} سؤال (أسئلة)**"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1399
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1767
 msgid "Choose export format"
 msgstr "اختر تنسيق التصدير"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1407
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1775
 msgid "Check questions to export."
 msgstr "حدد الأسئلة المراد تصديرها."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1431
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1799
 msgid "The main title of the YAML file (key ‘title’) - Editable here."
 msgstr "العنوان الرئيسي لملف YAML (مفتاح 'title') - قابل للتحرير هنا."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1436
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1804
 #, python-brace-format
 msgid "Current file: `{shared_fn}`"
 msgstr "الملف الحالي: `{shared_fn}`"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1441
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1809
 msgid "Edit to ‘Save As’."
 msgstr "تحرير لـ 'حفظ باسم'."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1444
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1812
 msgid "‘Save As’."
 msgstr "'حفظ باسم'."
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1452
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1820
 msgid "💾 Save"
 msgstr "💾 حفظ"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1455
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1823
 msgid "YAML cleaned and saved ✔️"
 msgstr "تم تنظيف وحفظ YAML ✔️"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1461
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1829
 msgid "Download!"
 msgstr "تحميل!"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1466
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1834
 msgid "Only AFTER saving the YAML"
 msgstr "فقط بعد حفظ YAML"
 
-#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1496
+#: /Users/bercherj/JFB/dev/LabQuizBundle/quiz_editor/src/quiz_editor/quiz_editor.py:1864
 msgid "Use the sidebar to navigate or create a new quiz."
 msgstr "استخدم الشريط الجانبي للتنقل أو لإنشاء اختبار جديد."
+
+#~ msgid "Bonus"
+#~ msgstr "إضافة"
 
 #~ msgid "Extract (YAML)"
 #~ msgstr "استخراج (YAML)"
