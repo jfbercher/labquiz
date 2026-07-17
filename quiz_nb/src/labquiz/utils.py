@@ -951,6 +951,10 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, question=None, w
     for prop in propositions: 
         if "reponse" in prop:
             prop["answer"] = prop.pop("reponse")
+        if "bonus" in prop:
+            prop["correctAnswerPoints"] = prop.pop("bonus")
+        if "malus" in prop:
+            prop["incorrectAnswerPoints"] = prop.pop("malus")
     if quiz_type == "qcm": quiz_type = "mcq"
     if quiz_type == "qcm-template": quiz_type = "mcq-template"
 
@@ -998,11 +1002,28 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, question=None, w
             else:    
                 p["expected"] = ptype(eval(pexpect,{},context)) if isinstance(pexpect, str) else pexpect
             p['proposition'] = p['proposition'].format(**context)
+            if quiz_type == "mcq-template":
+                if 'weights' in p.keys(): #Ensure that weights is used even if residuals correctAnswerPoints and incorrectAnswerPoints are present
+                    p.pop('correctAnswerPoints', 0) # For mcq-template we use the grading matrix
+                    p.pop('incorrectAnswerPoints', 0) # These should not exist, but in case of..
         quiz_type = quiz_type.split('-')[0]
         user_answers.pop("context", None)
+
         
     for answer, prop in zip(user_answers.values(), propositions):
         expected = prop.get("expected", None)
+        if 'weights' in prop.keys(): 
+            pweights = prop['weights'] 
+            prop_weights = {  # Because the tuple is not hashable and stored as a string
+                  (True, True): pweights.get("(True, True)", 1),
+                  (True, False): pweights.get("(True, False)", -1),
+                  (False, True): pweights.get("(False, True)", 0),
+                  (False, False): pweights.get("(False, False)", 0)
+                }
+        else:
+            prop_weights = weights # If not stored in the proposal, use default weights
+
+
         # default was False
         if expected is None: 
             print(_("❌ Error : expected value is missing"))
@@ -1017,43 +1038,47 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, question=None, w
             return 0, 1 #No solution known in proposition // This shoud not happen
         user_val = bool(answer)
         case = (user_val, expected)
+
         
         if quiz_type in ["mcq", "mcq-template"]:
             #1. Calculation of the theoretical total
-            total_possible += prop.get("bonus", weights[(True, True)]) if expected \
-                   else prop.get("bonus", weights[(False, False)])
-
+            total_possible += prop.get("correctAnswerPoints", prop_weights[(True, True)]) if expected \
+                   else prop.get("correctAnswerPoints", prop_weights[(False, False)])
+            
             #2. Calculation of the score for this proposition
             if user_val == expected:
                 # Correct Case (TP ou TN)
-                val = prop.get("bonus", weights[case])
+                val = prop.get("correctAnswerPoints", prop_weights[case])
                 score += val
             else:
                 # Incorrect Case (FP or FN)
-                val = prop.get("malus", weights[case])              
-                # We make sure that the penalty is indeed deducted
-                score -= abs(val)
+                val = prop.get("incorrectAnswerPoints", prop_weights[case])              
+                # Add the penalty (shall be negative)
+                score += val
             marks[prop['label']] = val
 
         elif quiz_type in ["numeric", "numeric-template"]:
             pexpected = float(prop.get("expected", 0))
-            bonus = prop.get("bonus", 1)
-            total_possible += bonus
+            correctAnswerPoints = prop.get("correctAnswerPoints", 1)
+            total_possible += correctAnswerPoints
             diff = abs(answer - pexpected)
             tol = max(prop.get("tolerance_abs", 0), 
                       prop.get("tolerance", 0.01) * abs(pexpected)) 
-            val= bonus if diff <= tol else -abs(prop.get("malus", 0))
+            val= correctAnswerPoints if diff <= tol else prop.get("incorrectAnswerPoints", 0)
             score += val
             marks[prop['label']] = val
 
-           
+    
     # contraints
     violations = {}
     if quiz_type == "mcq" and constraints:
         for rule in constraints:
-            idx1, idx2 = rule["indexes"]
-            malus = rule.get("malus", 1)
-            ans1, ans2 = bool(user_answers[idx1]), bool(user_answers[idx2])
+            try:
+                idx1, idx2 = rule["indexes"]
+                malus = rule.get("malus", 1)
+                ans1, ans2 = bool(user_answers[idx1]), bool(user_answers[idx2])
+            except:
+                continue
 
             violation = False
             r_type = rule.get("type", "XOR").upper()

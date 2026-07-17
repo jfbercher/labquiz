@@ -173,6 +173,12 @@ class QuizLab:
         
         QUIZFILE_ORI = QUIZFILE
         self.in_streamlit = in_streamlit
+        default_grading_dict = { # Given answer, Expected answer
+            (True, True): 1.0, # True positive: Checked and the correct answer was true
+            (True, False): -1.0, # False positive: Checked when the correct answer was false
+            (False, True): 0.0, # False negative: Did not check though the correct answer was true
+            (False, False): 0.0 # True negative: Did not check and the correct answer was indeed false
+        }
         
         tic = time.perf_counter()
         #self.stop_event = threading.Event()
@@ -202,7 +208,7 @@ class QuizLab:
         self.QUIZFILE = QUIZFILE if isinstance(QUIZFILE, str) else QUIZFILE.name
         self._CHECKALIVE = CHECKALIVE
         self.current_quiz_id = ""
-        self.weights = None
+        self.weights = default_grading_dict
         #self.question = ""
         self.machine_id = ""
         self.internetOK = ''
@@ -603,6 +609,7 @@ class QuizLab:
         return rows, widgets_list, question
     
     def compute_score(self, propositions, user_answers, quiz_type, constraints=None, weights=None): 
+
         from .utils import calculate_quiz_score
 
         score, total_possible = calculate_quiz_score(quiz_type, user_answers, 
@@ -825,12 +832,11 @@ class QuizLab:
                                                             #we build the dictionary #labels:user response
             if context: user_answers['context'] = context
             self.user_answers[quiz_id] = user_answers
-            #print(self.exam_mode, allContainExpected, self.user_answers[quiz_id])
+            #display(self.exam_mode, allContainExpected, self.user_answers[quiz_id])
 
             if (not self.exam_mode) and allContainExpected:
                 score, total = self.compute_score(propositions, user_answers, quiz_type, constraints=constraints, weights=self.weights) #  compute_score()
                 self.quiz_results[quiz_id] = score / total
-                #print(score)
                 #msg += f"propositions {propositions}" 
                 self.score_global = 20 * sum(self.quiz_results.values()) / len(self.quiz_results)
 
@@ -936,38 +942,38 @@ class QuizLab:
                 display(widgets.HTML(msg))
                 if quiz_type == "mcq":
                     for r, w, p in zip(rows, answer_widgets, propositions):
+                        if 'weights' in p.keys(): 
+                            pweights = p['weights'] # Because the tuple is not hashable and stored as a string
+                            prop_weights = { 
+                                (True, True): pweights.get("(True, True)", 1),
+                                (True, False): pweights.get("(True, False)", -1),
+                                (False, True): pweights.get("(False, True)", 0),
+                                (False, False): pweights.get("(False, False)", 0)
+                                }
+                        else:
+                            prop_weights = self.weights # If not stored in the proposal, use default weights
                         #w.remove_class("match")
                         #w.remove_class("mismatch")
                         w.add_class("custom")
                         if w.value == p.get("expected", False):
-                            correct = "✅ " + _("Good answer")
+                            correct = "✅ " + _("Good answer") + f" ({p.get('correctAnswerPoints', prop_weights[(w.value, w.value)])} points)"
                             #w.add_class("match")
                         else:
-                            correct = "❌ " + _("Bad answer")
+                            correct = "❌ " + _("Bad answer") + f" ({p.get('incorrectAnswerPoints', prop_weights[(w.value, not w.value)])} points)"
                             #w.add_class("mismatch")
                         answer = to_html(p.get("answer"))
                         r.children[1].value = correct + f"{' -- ' + answer if answer else ''}"
                         
-                        '''newlbl = self._make_question_widget(f"{correct:20}".format(correct) +f"<b>{p.get('label','')}</b> - " + p["proposition"])
-                        #newlbl.layout = widgets.Layout(width="70%", margin="5px 0 0 -15%")
-                        newlbl.layout = widgets.Layout(
-                            flex='1 1 auto',  
-                            width='auto',     
-                            margin='0px'      
-                        )
-                        r.children = [r.children[0], newlbl]
-                        if p.get("answer"):
-                            display(Markdown(f"{'✅' if p.get('expected') else '❌'} **{p.get('label','')}** — {p['answer']}"))'''
                     if constraints:
                         for c in constraints:
                             if c["type"] == "XOR": 
-                                display(Markdown(_("⚠️ The answers to {props} are necessarily different").format(props=c['indexes']) ))
+                                display(Markdown(_("⚠️ The answers to {props} are necessarily different, malus: {malus} points").format(props=c['indexes'], malus=c['malus']) ))
                             elif c["type"] == "SAME": 
-                                display(Markdown(_("⚠️ The answers to {props} are necessarily identical").format(props=c['indexes'])))
+                                display(Markdown(_("⚠️ The answers to {props} are necessarily identical, malus: {malus} points").format(props=c['indexes'], malus=c['malus'])))
                             elif c["type"] == "IMPLY": 
-                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is true").format(prop0=c['indexes'][0], prop1=c['indexes'][1])))
+                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is true, malus: {malus} points").format(prop0=c['indexes'][0], prop1=c['indexes'][1], malus=c['malus'])))
                             elif c["type"] == "IMPLYFALSE": 
-                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is necessarily false").format(prop0=c['indexes'][0], prop1=c['indexes'][1])))
+                                display(Markdown(_("⚠️ The answer {prop0} true implies that {prop1} is necessarily false, malus: {malus} points").format(prop0=c['indexes'][0], prop1=c['indexes'][1], malus=c['malus'])))
                 else:  #numeric
                     for r, w, p in zip(rows, answer_widgets, propositions):
                         """pexpect =  p["expected"]
@@ -1460,7 +1466,7 @@ class QuizLab:
         default = {(True,True):1, (True,False):-1, (False,True):0, (False,False):0}
         if weights is None:
             print("⚠️ weights must be a dictionary like {(True,True):1, (True,False):-1, (False,True):0, (False,False):0}")
-            return
+            return 
         
         if not isinstance(weights, dict):
             print("⚠️ weights must be a dict")
