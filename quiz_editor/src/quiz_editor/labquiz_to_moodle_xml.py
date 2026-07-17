@@ -10,10 +10,10 @@ Supported LabQuiz question types:
   - numeric-template → numerical/cloze   with [variable] placeholders + warning
 
 Score mapping (identical logic to labquiz_to_gift.py):
-  max_score = sum of bonus values for all true-positive propositions (default bonus = 1).
-  Each answer's fraction = bonus/max_score  (correct) or −malus/max_score (incorrect).
-  The default malus for a false-positive is taken from DEFAULT_WEIGHTS[(True,False)] = 1,
-  but can be overridden per-proposition with the 'malus' key, or globally via the
+  max_score = sum of correctAnswerPoints values for all true-positive propositions (default correctAnswerPoints = 1).
+  Each answer's fraction = correctAnswerPoints/max_score  (correct) or −incorrectAnswerPoints/max_score (incorrect).
+  The default incorrectAnswerPoints for a false-positive is taken from DEFAULT_WEIGHTS[(True,False)] = 1,
+  but can be overridden per-proposition with the 'incorrectAnswerPoints' key, or globally via the
   weights parameter of labquiz_to_moodle_xml().
 
 Moodle XML notes (from the reference export):
@@ -53,14 +53,14 @@ DEFAULT_WEIGHTS = {
 # ---------------------------------------------------------------------------
 
 def compute_max_score(propositions: list, weights: dict) -> float:
-    """Sum of bonuses for true-positive propositions (= maximum achievable score)."""
+    """Sum of correctAnswerPointses for true-positive propositions (= maximum achievable score)."""
     total = 0.0
     for prop in propositions:
         expected = str(prop.get("expected", "false")).lower() == "true"
         if expected:
-            total += float(prop.get("bonus", weights[(True, True)]))
+            total += float(prop.get("correctAnswerPoints", weights[(True, True)]))
         else:
-            total += float(prop.get("bonus", weights[(False, False)]))
+            total += float(prop.get("correctAnswerPoints", weights[(False, False)]))
     return total if total > 0 else 1.0
 
 
@@ -221,11 +221,11 @@ def build_multichoice(quiz_id: str, quiz: dict, root: ET.Element,
         expected = str(prop.get("expected", "false")).lower() == "true"
 
         if expected:
-            bonus = float(prop.get("bonus", weights[(True, True)]))
-            frac  = bonus / max_score
+            correctAnswerPoints = float(prop.get("correctAnswerPoints", weights[(True, True)]))
+            frac  = correctAnswerPoints / max_score
         else:
-            malus = float(prop.get("malus", abs(weights[(True, False)])))
-            frac  = -malus / max_score
+            incorrectAnswerPoints = float(prop.get("incorrectAnswerPoints", abs(weights[(True, False)])))
+            frac  = -incorrectAnswerPoints / max_score
 
         prop_fmt  = detect_format(prop_text)
         prop_html = wrap_html(prop_text, prop_fmt)

@@ -5,13 +5,13 @@ import shutil
 import copy
 from pathlib import Path
 
-def convert_quiz_data_v1_to_v2(data):
+def convert_quiz_data_version(data):
     """
-    Convert data from v1 to v2 format
+    Convert data from v1 or v2 to v3 format
     """
     new_data = copy.deepcopy(data)
 
-    # Conversion logic: v1 -> v2
+    # Conversion logic: v1 or v2 -> v3
     for quiz_id, entry in new_data.items():
         if quiz_id == "title": continue
         propositions = entry.get("propositions") or []
@@ -28,6 +28,10 @@ def convert_quiz_data_v1_to_v2(data):
         for prop in propositions: 
             if "reponse" in prop:
                 prop["answer"] = prop.pop("reponse")
+            if "bonus" in prop:
+                prop["correctAnswerPoints"] = prop.pop("bonus")
+            if "malus" in prop:
+                prop["incorrectAnswerPoints"] = prop.pop("malus")
         # Rename 'indices' key to 'indexes' in constraints
         for constraint in constraints:
             if "indices" in constraint:
@@ -36,7 +40,7 @@ def convert_quiz_data_v1_to_v2(data):
     return new_data
 
 
-def convert_quiz_v1_to_v2(input_path: str, output_path: str = None, skip_backup: bool = False):
+def convert_quiz(input_path: str, output_path: str = None, skip_backup: bool = False):
     """
     Loads a YAML file, converts quiz format from v1 to v2, 
     and saves the result. Automatically creates a backup if overwriting.
@@ -69,7 +73,7 @@ def convert_quiz_v1_to_v2(input_path: str, output_path: str = None, skip_backup:
         print(f"Error reading YAML: {e}")
         sys.exit(1)
 
-    # Conversion logic: v1 -> v2
+    # Conversion logic: v1/v2 -> v3
     for quiz_id, entry in quiz_bank.items():
         if quiz_id == "title": continue
         propositions = entry.get("propositions") or []
@@ -85,6 +89,10 @@ def convert_quiz_v1_to_v2(input_path: str, output_path: str = None, skip_backup:
         for prop in propositions: 
             if "reponse" in prop:
                 prop["answer"] = prop.pop("reponse")
+            if "bonus" in prop:
+                prop["correctAnswerPoints"] = prop.pop("bonus")
+            if "malus" in prop:
+                prop["incorrectAnswerPoints"] = prop.pop("malus")
 
     # Save processed data
     try:
@@ -104,7 +112,7 @@ def main():
     
     parser.add_argument(
         "input", 
-        help="Path to the source YAML file (v1)"
+        help="Path to the source YAML file (v1 or v2)"
     )
     parser.add_argument(
         "output", 
@@ -118,7 +126,7 @@ def main():
     )
 
     args = parser.parse_args()
-    convert_quiz_v1_to_v2(args.input, args.output, args.no_backup)
+    convert_quiz(args.input, args.output, args.no_backup)
 
 if __name__ == "__main__":
     main()

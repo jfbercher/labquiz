@@ -11,12 +11,12 @@ Unsupported types (skipped with a warning):
   - category, essay, shortanswer, matching, truefalse, description, ...
 
 Score mapping (multichoice):
-  Moodle <answer fraction="…"> percentages are converted to LabQuiz bonus/malus
+  Moodle <answer fraction="…"> percentages are converted to LabQuiz Correct/Incorrect points
   using the same denominator-inference logic as gift_to_labquiz.py:
     - A common integer denominator is inferred from all non-zero fractions.
-    - bonus = round(pct/100 * denominator)  for correct answers (fraction > 0)
-    - malus = round(|pct|/100 * denominator) for wrong answers  (fraction < 0)
-    - Default bonus (1) and default malus (1) are omitted from the YAML output.
+    - correctAnswerPoints = round(pct/100 * denominator)  for correct answers (fraction > 0)
+    - incorrectAnswerPoints = round(|pct|/100 * denominator) for wrong answers  (fraction < 0)
+    - Default correctAnswerPoints (1) and default incorrectAnswerPoints (1) are omitted from the YAML output.
 
 Score mapping (numerical):
   Only the highest-fraction <answer> is used as the expected value + tolerance.
@@ -205,11 +205,11 @@ def build_multichoice(q_el: ET.Element, quiz_name: str) -> tuple:
 
         if is_correct:
             #if points != 1:
-            prop["bonus"] = points
-            prop["malus"] = 0
+            prop["correctAnswerPoints"] = points
+            prop["incorrectAnswerPoints"] = 0
         else:
-            prop["malus"] = points
-            prop["bonus"] = 0
+            prop["incorrectAnswerPoints"] = points
+            prop["correctAnswerPoints"] = 0
 
         if opt["feedback"]:
             prop["answer"] = opt["feedback"]
@@ -219,7 +219,7 @@ def build_multichoice(q_el: ET.Element, quiz_name: str) -> tuple:
 
     warning = (
         f"Question '{quiz_name}': score mapping is approximate "
-        "(Moodle fractions did not convert to clean integer bonus/malus values)."
+        "(Moodle fractions did not convert to clean integer Correct/Incorrect points values)."
         if approximate else None
     )
 
@@ -488,11 +488,11 @@ def main():
         "# LabQuiz YAML file generated from Moodle XML\n"
         "# Review labels, feedback, and tolerances before use.\n"
         "#\n"
-        "# Score mapping: Moodle fractions → LabQuiz bonus/malus\n"
+        "# Score mapping: Moodle fractions → LabQuiz Correct/Incorrect points\n"
         "#   A common denominator is inferred from the fractions in each question.\n"
-        "#   bonus = round(fraction/100 * denominator)  for correct answers\n"
-        "#   malus = round(|fraction|/100 * denominator) for wrong answers\n"
-        "#   Default bonus (1) and default malus (1) are omitted from the output.\n"
+        "#   correctAnswerPoints = round(fraction/100 * denominator)  for correct answers\n"
+        "#   incorrectAnswerPoints = round(|fraction|/100 * denominator) for wrong answers\n"
+        "#   Default correctAnswerPoints (1) and default incorrectAnswerPoints (1) are omitted from the output.\n"
     )
     if warnings:
         header += "#\n# Warnings:\n"

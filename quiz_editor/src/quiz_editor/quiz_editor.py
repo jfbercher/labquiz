@@ -19,7 +19,7 @@ from pathlib import Path
 from io import StringIO
 from collections import Counter
 import ast
-from convert_quiz_format import convert_quiz_data_v1_to_v2
+from convert_quiz_format import convert_quiz_data_version
 from amc_to_yaml import latex_to_yaml
 from moodle_xml_to_labquiz import moodle_xml_to_labquiz
 #from i18n import _
@@ -30,6 +30,13 @@ st.sidebar.caption(f"`quiz_editor` version {version('quiz_editor')}")
 from i18n import init_i18n, set_language, get_translator
 _ = init_i18n(default_lang="en")
 rng = np.random.default_rng()
+
+default_grading_dict = { # Given answer, Expected answer
+    (True, True): 1.0, # True positive: Checked and the correct answer was true
+    (True, False): -1.0, # False positive: Checked when the correct answer was false
+    (False, True): 0.0, # False negative: Did not check though the correct answer was true
+    (False, False): 0.0 # True negative: Did not check and the correct answer was indeed false
+}
 
 # --- YAML CONFIGURATION  ---
 # 
@@ -465,7 +472,7 @@ def load_data(FILE_PATH):
         return {"title": _("New Quiz"), "quiz1": {"type": "mcq", "question": "", "propositions": []}}
     with open(FILE_PATH, 'r', encoding='utf-8') as f:
         data = yaml.load(f)
-        data = convert_quiz_data_v1_to_v2(data)
+        data = convert_quiz_data_version(data)
         return data
     
 def prepare_data(indata, output_file, mode="crypt", pwd="", google_auth=False):    
@@ -860,6 +867,47 @@ def render_propositions_editor(q_id, q_data, lang_func):
     if is_template:
         variables = q_data.get('variables', {})
         context = {var_name: variables[var_name]['preview'] for var_name in variables.keys()}
+    # Init sum of correct answers points
+    st.session_state.sum_correctAnswersPoints = sum([int( x.get('correctAnswerPoints', default_grading_dict[True,True] 
+            if x.get('expected', False) else default_grading_dict[False,False]))  for x in q_data['propositions']])
+
+    def reset_answerPoints(q_id, q_data, p, i):
+
+        key=f"exp_{q_id}_{i}"
+        cbx_state = st.session_state.get(key, False)
+        p['expected'] = cbx_state
+
+        if cbx_state:
+            p['correctAnswerPoints'] = default_grading_dict[True,True]
+            p['incorrectAnswerPoints'] = default_grading_dict[False,True]
+        else:
+            p['correctAnswerPoints'] = default_grading_dict[False,False]
+            p['incorrectAnswerPoints'] = default_grading_dict[True,False]
+
+        for key in [f"inc_{q_id}_{i}", f"cor_{q_id}_{i}"]:
+            if key in st.session_state:
+                del st.session_state[key]
+
+        # Reset the sum of correct answers points
+        st.session_state.sum_correctAnswersPoints = sum([int( x.get('correctAnswerPoints', default_grading_dict[True,True] 
+                    if x.get('expected', False) else default_grading_dict[False,False]))  for x in q_data['propositions']])
+        
+        
+    def affect_incorrectAnswerPoints(q_id, q_data, p, i):
+        p['incorrectAnswerPoints'] = int(st.session_state[f"inc_{q_id}_{i}"])
+        st.session_state.sum_correctAnswersPoints = sum([int( x.get('correctAnswerPoints', default_grading_dict[True,True] 
+                    if x.get('expected', False) else default_grading_dict[False,False]))  for x in q_data['propositions']])
+        st.toast(f"Malus : {st.session_state[f'inc_{q_id}_{i}']}", icon='👎')
+
+    def affect_correctAnswerPoints(q_id, q_data, p, i):
+        p['correctAnswerPoints'] = int(st.session_state[f"cor_{q_id}_{i}"])
+        st.session_state.sum_correctAnswersPoints = sum([int( x.get('correctAnswerPoints', default_grading_dict[True,True] 
+            if x.get('expected', False) else default_grading_dict[False,False]))  for x in q_data['propositions']])
+        st.toast(f"correctAnswerPoints : {st.session_state[f'cor_{q_id}_{i}']}", icon='👍')     
+
+    def write_with_tooltip(text, tooltip):
+        st.markdown(f'<span title="{tooltip}">{text}</span>', unsafe_allow_html=True)
+
 
     for i, p in enumerate(q_data['propositions']):
         with st.expander(f"Proposition {i+1} : {p.get('label', '...')}", expanded=True):
@@ -876,13 +924,19 @@ def render_propositions_editor(q_id, q_data, lang_func):
             render_preview('tip', p['tip'], context)
             p['answer'] = st.text_area(_("Answer/Feedback"), p.get('answer', ''), key=f"ans_{q_id}_{i}", height=70, help=_("Feedback shown after validation"))
             render_preview('answer', p['answer'], context)
+
         
+            is_mcq = 'mcq' in q_data.get('type', 'mcq')
+            if is_mcq:  
+                is_correct = p.get('expected', False)
+
             with cb3:
                 # --- DYNAMIC EXPECTED FIELD ---
                 if not is_template:
                     if q_data.get('type') == 'mcq':
                         # Standard mode: Boolean Checkbox
-                        p['expected'] = st.checkbox(_("Correct?"), p.get('expected', False), key=f"exp_{q_id}_{i}")
+                        p['expected'] = st.checkbox(_("Correct?"), p.get('expected', False), 
+                                                     on_change=reset_answerPoints, args=(q_id, q_data, p, i, ), key=f"exp_{q_id}_{i}")
                     else:
                         # Standard mode: Numeric Input
                         pexpect = p.get('expected', 0.0)
@@ -895,7 +949,7 @@ def render_propositions_editor(q_id, q_data, lang_func):
                     expected = st.text_input(
                         _("Expected value"), 
                         value=str(exp_val), 
-                        key=f"e_{q_id}_{i}",
+                        key=f"exp_{q_id}_{i}",
                         on_change=trigger_rerun  
                     )
                     
@@ -911,25 +965,120 @@ def render_propositions_editor(q_id, q_data, lang_func):
 
 
 
-            # Bonus/Malus
-            b_val = str(p.get('bonus', ''))
-            m_val = str(p.get('malus', ''))
+            # correctAnswerPoints/incorrectAnswerPoints
+            key_correct=f"cor_{q_id}_{i}"
+            key_incorrect=f"inc_{q_id}_{i}"
+            is_correct = st.session_state[f"exp_{q_id}_{i}"]
+            if is_mcq:
+                if not is_template: # Boolean case
+                    if is_correct:
+                        msg_correctAnswer = _("True Positive (Student has checked the box while the proposal is correct)")
+                        msg_incorrectAnswer = _("False Negative (Student has not checked the box while the proposal is correct)")
+                        st.session_state[key_correct] = int(p.get('correctAnswerPoints', default_grading_dict[True,True]))
+                        st.session_state[key_incorrect] = int(p.get('incorrectAnswerPoints', default_grading_dict[False,True]))
+                    else:
+                        msg_correctAnswer = _("True Negative (Student has not checked the box while the proposal is incorrect)")
+                        msg_incorrectAnswer = _("False Positive (Student has checked the box while the proposal is incorrect)")
+                        st.session_state[key_correct] = int(p.get('correctAnswerPoints', default_grading_dict[False,False]))
+                        st.session_state[key_incorrect] = int(p.get('incorrectAnswerPoints', default_grading_dict[True,False]))
+                else: # Template case
+                    msg_correctAnswer = _("Correct answer")
+                    msg_incorrectAnswer = _("Incorrect answer")
+                    st.session_state[key_correct] = str(p.get('correctAnswerPoints', ''))
+                    st.session_state[key_incorrect] = str(p.get('incorrectAnswerPoints', ''))
+            else: # Numeric case
+                msg_correctAnswer = _("Correct numeric answer")
+                msg_incorrectAnswer = _("Incorrect numeric answer")
+                st.session_state[key_correct] = int(p.get('correctAnswerPoints', 1.0))
+                st.session_state[key_incorrect] = int(p.get('incorrectAnswerPoints', 0.0))
+                
+            # 
             
-            
-            # Logic for YAML cleaning
-            cb1, cb2, cb3 = st.columns([2, 2, 1])
-            with cb1:
-                res_b = st.text_input(_("Bonus"), b_val, key=f"bon_{q_id}_{i}", help=_("Specific points if this is selected"))
-                if res_b.strip(): 
-                    p['bonus'] = int(res_b) if res_b.lstrip('-').isdigit() else res_b
-                elif 'bonus' in p: 
-                    del p['bonus']
-            with cb2:    
-                res_m = st.text_input(_("Malus"), m_val, key=f"mal_{q_id}_{i}", help=_("Points deducted if this is selected"))
-                if res_m.strip(): 
-                    p['malus'] = int(res_m) if res_m.lstrip('-').isdigit() else res_m
-                elif 'malus' in p: 
-                    del p['malus'] 
+
+            if is_mcq and is_template: # MCQ Template: cannot know the percents and what is the expected value
+                cb1, cb2, cb3 = st.columns([4, 0.5, 1], vertical_alignment="bottom")
+                df_weights = pd.DataFrame({
+                    _("Type"): [
+                        _("TP (True Positive)"),
+                        _("FP (False Positive)"),
+                        _("FN (False Negative)"),
+                        _("TN (True Negative)")
+                    ],
+                    _("Comments"): [
+                    _("Correct: checked as expected."),
+                    _("Checked when it should have been left unchecked."),
+                    _("Left unchecked when it should have been checked."),
+                    _("Correct: left unchecked as expected.")
+                    ],
+                    _("Points"): [1.0, -1.0, 0.0, 0.0],
+                })
+
+                with cb1:
+                    
+                    st.write(_("For templates, the correct answer depends of the actual values of variables. " \
+                    "Therefore, we have to specify the points for each couple of given answer, correct answer, "
+                    "in the form of a *grading matrix*."))
+                    
+                    edited = st.data_editor(
+                    df_weights,
+                    hide_index=True,
+                    column_config={
+                        _("Type"): st.column_config.TextColumn(
+                            disabled=True,
+                            width="medium",
+                        ),
+                        _("Comments"): st.column_config.TextColumn(
+                            disabled=True,
+                            width="large",
+                        ),
+                        _("Points"): st.column_config.NumberColumn(
+                            min_value=-10.0,
+                            max_value=10.0,
+                            step=0.1,
+                        ),
+                    },
+                    key=f"weights_editor_{q_id}_{i}",
+                )
+
+                weights_dict = dict(zip(edited[_("Type")], edited[_("Points")]))
+
+                # Conversion for correctQuizzesDf function
+                final_weights = {
+                    "(True, True)": weights_dict[_("TP (True Positive)")],
+                    "(True, False)": weights_dict[_("FP (False Positive)")],
+                    "(False, True)": weights_dict[_("FN (False Negative)")],
+                    "(False, False)": weights_dict[_("TN (True Negative)")]
+                                }
+                p['weights'] = final_weights
+
+                with cb3:    
+                    pass
+
+            else: # Other cases
+                cb1, cb1bis, cb2, cb2bis, cb3 = st.columns([2, 0.3, 2, 0.3, 1], vertical_alignment="bottom")
+                with cb1:
+                    st.number_input(msg_correctAnswer, key=f"cor_{q_id}_{i}", min_value=-10, max_value=10,
+                                        on_change=affect_correctAnswerPoints, args=(q_id, q_data, p, i), help=_("Specific points if this is selected"))
+                
+                with cb1bis:
+                    def_value = p.get('correctAnswerPoints', default_grading_dict[True,True] if p.get('expected', False) else default_grading_dict[False,False])
+                    if st.session_state.sum_correctAnswersPoints > 0:
+                        write_with_tooltip(f"{p.get('correctAnswerPoints', def_value)/st.session_state.sum_correctAnswersPoints*100:.1f} %", _("Percentage of this correct answer among all correct answers"))
+                    else:
+                        write_with_tooltip("0 %", _("Percentage of this correct answer with respect to the sum of all correct answers"))
+
+                with cb2:    
+                    st.number_input(msg_incorrectAnswer, key=f"inc_{q_id}_{i}",  min_value=-10, max_value=10,
+                                on_change=affect_incorrectAnswerPoints, args=(q_id, q_data, p, i), help=_("Points deducted if this is selected"))
+
+                with cb2bis:
+                    def_value = p.get('incorrectAnswerPoints', default_grading_dict[False,True] if p.get('expected', False) else default_grading_dict[True,False])
+                    if st.session_state.sum_correctAnswersPoints > 0:
+                        s = '-' if p.get('incorrectAnswerPoints', def_value) else ''
+                        write_with_tooltip(f"{s}{abs(p.get('incorrectAnswerPoints', def_value))/st.session_state.sum_correctAnswersPoints*100:.1f} %", _('Percentage of this incorrect answer among all correct answers'))
+                    else:
+                        write_with_tooltip("0 %", _('Percentage of this incorrect answer with respect to the sum of all correct answers'))
+
             with cb3:
                 st.markdown("<div style='padding-top: 28px;'></div>", unsafe_allow_html=True)
                 
@@ -1348,7 +1497,7 @@ def main():
                                 st.session_state.msg_toast.append(_("Imported (may be partially) the Moodle XML file..."))
                             else:
                                 tmp_data = yaml.load(uploaded_file)
-                                tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
+                                tmp_data = convert_quiz_data_version(tmp_data)
                             st.session_state.sort_data = True
                             quiz_ids_all = [k for k in data.keys() if k != 'title']
                             numbers = [
@@ -1375,7 +1524,7 @@ def main():
                                 st.session_state.msg_toast.append(_("Imported (may be partially) the Moodle XML file..."))
                             else:
                                 tmp_data = yaml.load(uploaded_file)
-                                tmp_data = convert_quiz_data_v1_to_v2(tmp_data)
+                                tmp_data = convert_quiz_data_version(tmp_data)
                             data = tmp_data
                             del tmp_data
                             st.session_state.sort_data = True
@@ -1458,7 +1607,7 @@ def main():
             col1, col2 = st.columns(2)
             ### 1. BOUTON CLONER
             with col1:
-                if st.button(_("👯 Duplicate"), use_container_width=True, help=_("Copier ce quiz")):
+                if st.button(_("👯 Duplicate"), use_container_width=True, help=_("Copy this quiz")):
                     import copy
                     numbers = [int(re.findall(r'\d+', k)[0]) for k in quiz_ids if re.findall(r'\d+', k)]
                     next_num = max(numbers) + 1 if numbers else 1
@@ -1473,7 +1622,7 @@ def main():
                     st.session_state[confirm_key] = False
 
                 if not st.session_state[confirm_key]:
-                    if st.button(_("🗑️ Delete"), use_container_width=True, help=_("Supprimer ce quiz")):
+                    if st.button(_("🗑️ Delete"), use_container_width=True, help=_("Remove this quiz")):
                         st.session_state[confirm_key] = True
                         st.rerun()
                 else:

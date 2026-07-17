@@ -301,11 +301,11 @@ def convert_to_amc_pytex(data, use_negative_points=True, output_scoring=False):
                     v_prop     = to_LaTeX(v_prop)
                     is_correct = v_exp
                     cmd        = '\\correctchoice' if is_correct else '\\wrongchoice'
-                    bonus      = p.get('bonus', 1 if is_correct else 0)
-                    malus      = p.get('malus', -1 if (use_negative_points and not is_correct) else 0)
-                    malus      = -abs(malus)
+                    correctAnswerPoints      = p.get('correctAnswerPoints', 1 if is_correct else 0)
+                    incorrectAnswerPoints      = p.get('incorrectAnswerPoints', -1 if (use_negative_points and not is_correct) else 0)
+                    incorrectAnswerPoints      = incorrectAnswerPoints
                     if output_scoring:
-                        latex_output.append(f'      {cmd}{{{v_prop}}} \\scoring{{b={bonus},m={malus}}}')
+                        latex_output.append(f'      {cmd}{{{v_prop}}} \\scoring{{b={correctAnswerPoints},m={incorrectAnswerPoints}}}')
                     else:
                         latex_output.append(f'      {cmd}{{{v_prop}}}')
 
