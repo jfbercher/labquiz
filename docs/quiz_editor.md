@@ -74,7 +74,7 @@ The following animated GIF examples show:
 :alt: quiz_editor
 :align: center
 :width: 90%
-`quiz_editor` -- Quick tour of the interface. editing a question, with category, tags, choice of question type (multiple choice, numeric, etc.), editing a proposition -- correct or incorrect, hint (tip), answer (displayed during correction), bonus, penalty, etc; exports.  
+`quiz_editor` -- Quick tour of the interface. editing a question, with category, tags, choice of question type (multiple choice, numeric, etc.), editing a proposition -- correct or incorrect, hint (tip), answer (displayed during correction), correctAnswerPoints, incorrectAnswerPoints, etc; exports.  
 :::
 
 - **three examples** using templates; the first two in numerical format, and the last one as an MCQ. These examples demonstrate the ability to use figures[^3] and tables in questions, to use template parameters with automatically generated values in the question stem and propositions (with optional formatting of numerical values[^4]), as well as to calculate the expected solutions (Boolean or numerical)[^5].    
@@ -96,7 +96,7 @@ The following animated GIF examples show:
 %:alt: quiz_editor
 %:align: center
 %:width: 90%
-%`quiz_editor` -- editing a proposition -- correct or incorrect, hint (tip), answer (displayed during %correction), bonus, penalty, etc.
+%`quiz_editor` -- editing a proposition -- correct or incorrect, hint (tip), answer (displayed during %correction), correctAnswerPoints, incorrectAnswerPoints, etc.
 %:::
 
 :::{figure} doc_images/con_matrix_editor.gif

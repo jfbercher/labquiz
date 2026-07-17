@@ -28,7 +28,7 @@ numbering: false
 *   **How is the score calculated for a QCM?**
     Scores are calculated using a **weight matrix**. By default, a "True Positive" (checking a correct answer) earns 1 point, while a "False Positive" (checking an incorrect answer) deducts 1 point. "True Negatives" and "False Negatives" default to 0 points.
 *   **Can teachers adjust the scoring system?**
-    Yes. Teachers can implement **bonuses and penalties** for specific propositions within the YAML file. Additionally, using the **`quiz_dash`** tool, they can retrospectively adjust the weight matrix or the overall scoring scale for the entire questionnaire.
+    Yes. Teachers can implement **correctAnswerPointses and penalties** for specific propositions within the YAML file. Additionally, using the **`quiz_dash`** tool, they can retrospectively adjust the weight matrix or the overall scoring scale for the entire questionnaire.
 *   **How do I collect student results?**
     In connected mode, results are **automatically recorded on a remote server** (often via a Google Sheet). Teachers can then use the `correctQuizzes` function or the `quiz_dash` interface to download a complete results table in CSV or PDF format.
 
@@ -138,7 +138,7 @@ The `QuizLab()` class constructor accepts the following parameters to configure 
 
 ::::{dropdown} How are graded MCQ questions?
 
-For Multiple Choice Questions (MCQ), the score is calculated automatically using a combination of a global weight matrix, individual proposition bonuses or penalties, and logical constraints, with the final score for each question typically normalized to 1.
+For Multiple Choice Questions (MCQ), the score is calculated automatically using a combination of a global weight matrix, individual proposition correctAnswerPoints or penalties, and logical constraints, with the final score for each question typically normalized to 1.
 
 ### **1. The Weight Matrix (Default Behavior)**
 The primary mechanism for scoring MCQs is the **weight matrix**, which assigns points based on the four possible outcomes of a student's choice compared to the expected answer:
@@ -150,8 +150,8 @@ The primary mechanism for scoring MCQs is the **weight matrix**, which assigns p
 
 Instructors can modify this matrix using the `quiz.set_weight()` method to, for example, penalize omissions (False Negatives) or use an "**identity weight**" (awarding 1 point for every correct check and every correct non-check).
 
-### **2. Individual Proposition Adjustments (Bonus/Malus)**
-While all propositions have the same weight by default, you can specify individual **bonuses** or **penalties** within the question file:
+### **2. Individual Proposition Adjustments (Correct/Incorrect points)**
+While all propositions have the same weight by default, you can specify individual **correctAnswerPointses** or **penalties** within the question file:
 *   **Bonus:** Increases the weight of a specific correct proposition (e.g., awarding 2 points instead of 1 for a "True Positive").
 *   **Malus (Penalty):** Increases the deduction for a specific incorrect answer (e.g., deducting 2 points instead of 1 for a "False Positive").
 
@@ -163,7 +163,7 @@ The suite can apply additional penalties if a student's combination of answers v
 *   **IMPLYFALSE:** Penalizes if the first is true and the second is also true (it must be false).
 
 ### **4. Normalization and Global Scoring**
-*   **Question Normalization:** Regardless of the points assigned via the matrix or bonuses, the total score for a single question is **normalized to 1**.
+*   **Question Normalization:** Regardless of the points assigned via the matrix or direct correct/incorrenc Answer Points, the total score for a single question is **normalized to 1**.
 *   **Question Threshold:** By default, the score for a single question is capped at **0** (via the `threshold=0` parameter), so a student cannot get a negative total for one question even if their penalties exceed their points.
 *   **Global Score:** The overall score (accessible via `quiz.score_global`) is the average of the results of all quizzes taken. Teachers can use a **marking scheme** (coefficients) to give certain questions more weight in the final calculation.
 
@@ -262,7 +262,7 @@ Every quiz must have a list of `propositions`. Each entry in this list can inclu
 *   **label:** An internal ID for the option. While optional, it is **required** for logical constraints or specific teacher corrections.
 *   **type:** Specifies the data type, such as `bool`, `float`, or `int`.
 *   **tip / answer:** `tip` provides a hint during the quiz, while `answer` provides an explanation after the student validates their choice.
-*   **bonus / malus:** Used to assign specific points or penalties to a particular option.
+*   **correctAnswerPoints / incorrectAnswerPoints:** Used to assign specific points or penalties to a particular option.
 
 ### 4. Advanced Features
 *   **Logical Constraints:** You can define relationships between options using the `constraints` field. For instance, you can specify that if "Option A" is true, then "Option B" must be false using types like `XOR`, `SAME`, `IMPLY`, or `IMPLYFALSE`.
@@ -660,7 +660,7 @@ Its primary roles and features include:
 
 ### 1. Graphical Question Editing
 *   **Rich Content Support:** It allows teachers to edit questions and propositions using **Markdown**, supporting formatting, lists, images, tables, and mathematical formulas.
-*   **Comprehensive Fields:** The interface provides dedicated fields for editing question stems, options (correct/incorrect), **hints (tips)**, **explanations (answers)**, and scoring parameters like **bonuses and penalties**.
+*   **Comprehensive Fields:** The interface provides dedicated fields for editing question stems, options (correct/incorrect), **hints (tips)**, **explanations (answers)**, and scoring parameters.
 *   **Organization:** Teachers can define **categories and tags** to organize large databases of questions and filter them for specific uses.
 
 ### 2. Template and Variable Management

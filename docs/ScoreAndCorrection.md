@@ -55,9 +55,9 @@ weights = {
 
 The weight matrix cannot be modified when calculating the score online, but it can be modified when recalculating retrospectively based on the recorded results; see correction by the teacher [](correction_by_teacher).
 
-Inside a given question, all propositions have the same weight by default. However it is possible to adjust this using a system of bonus-malus. For example, a particular correct proposition can be given a weight (bonus) of 2 when checked while the others correct propositions have a weight of one  when checked. Or a checked bad answer a malus of -2 while the default is -1. Bonuses, if specified, applies to correct answers (either *True Positive* or *True Negative*), while malus applies to incorrect answers (*False Positive* or *False Negative*). For a given question, the total score is always normalized to 1. 
+Inside a given question, all propositions have the same weight by default. However it is possible to adjust this using specific `correctAnswerPoints` or `incorrectAnswerPoints`. For example, a particular correct proposition can be given a weight of 2 when checked while the others correct propositions have a weight of one  when checked. Or a checked bad answer a penalty of -2 while the default is -1. correctAnswerPoints, if specified, applies to correct answers (either *True Positive* or *True Negative*), while incorrectAnswerPoints applies to incorrect answers (*False Positive* or *False Negative*). For a given question, the total score is always normalized to 1. 
 
-- **bonus malus** - As we have seen in the file structure [](#question_file_structure), `bonuses` and `penalties` can be integrated into the questions themselves. This allows, for a given question, to give more weight to a particular correct answer, or conversely to penalize a wrong answer, independently of the general weighting matrix. 
+- **correctAnswerPoints incorrectAnswerPoints** - As we have seen in the file structure [](#question_file_structure), `correctAnswerPoints` and `incorrectAnswerPoints` can be integrated into the questions themselves. This allows, for a given question, to give more weight to a particular correct answer, or conversely to penalize a wrong answer, independently of the general weighting matrix. 
 - **logical constraints** - *Logical constraints* can be integrated into questions and used to calculate the score. These constraints are specified question by question in the question file, and penalties are applied if the constraint is violated. The following constraints can be used: 
 ```
     # constraints: List of dictionaries e.g.: [{"indexes" : (0, 1), "type": ‘XOR’, "penalty": 2}]
@@ -129,7 +129,7 @@ Example of a results table (`exam_show`).
 ## Correction options
 
 Recall that a weighting matrix can be used to assign weights to the four possible response/expected outcome situations encountered in a multiple-choice questionnaire, 
-as shown in [](#score-calculation). In addition, the different options within a given question can be weighted using a bonus–penalty system. Finally, the overall balance of the questionnaire is adjusted through a global scoring scheme—referred to as “coefficients”—which allows greater weight to be assigned to specific questions, each question initially having a maximum score of 1.
+as shown in [](#score-calculation). In addition, the different options within a given question can be weighted using a correctAnswerPoints–penalty system. Finally, the overall balance of the questionnaire is adjusted through a global scoring scheme—referred to as “coefficients”—which allows greater weight to be assigned to specific questions, each question initially having a maximum score of 1.
 
 Additional options can be used during correction. 
 ```python

@@ -59,8 +59,8 @@ QuizFile
                 ├── tolerance_abs [numeric only]
                 ├── tip [optional]
                 ├── answer [optional]
-                ├── bonus [optional]
-                └── malus [optional]
+                ├── correctAnswerPoints [optional]
+                └── incorrectAnswerPoints [optional]
 ```
 
 with the following relationships
@@ -91,8 +91,8 @@ class Proposition {
     +tolerance_abs : float (numeric only)
     +tip : string (optional)
     +answer : string (optional)
-    +bonus : int (optional)
-    +malus : int (optional)
+    +correctAnswerPoints : int (optional)
+    +incorrectAnswerPoints : int (optional)
 }
 
 class Constraint {
@@ -167,7 +167,7 @@ quiz23:
           answer: explanatory text for the correct answer, with quotes ‘’ if necessary
 ```
 - *Consistency constraints* on propositions can be added. For example, it can be required that the true answer to the proposition of label `label2` implies that the answer to the proposition `label1` is false. In case of violation, a penalty is applied.
-- Similarly, certain propositions can give rise to a *bonus* or a *penalty*. The bonus is the number of points awarded if the answer is the expected one and the penalty is the number of points deducted if the answer is different from the expected one. True positive means checked proposition while the expected is true; False positive denotes a checked proposition while the expected is false; False negative denotes an unchecked answer while expected is true and finally TRue negative is an unchecked proposition while the expected answer is False. 👉🏼 *By default*, the bonus is 1 for true positive ansvers and the malus is -1 for false positive (Otherwise, bonus and malus are zero for true and false negative) 
+- Grading can be modified per proposition. `correctAnswerPoints` is the number of points awarded if the answer is the expected one and `incorrectAnswerPoints` is the number of points deducted if the answer is different from the expected one. True positive means checked proposition while the expected is true; False positive denotes a checked proposition while the expected is false; False negative denotes an unchecked answer while expected is true and finally True negative is an unchecked proposition while the expected answer is False. 👉🏼 *By default*, `correctAnswerPoints` is 1 for true positive ansvers and `incorrectanswerPoints` is -1 for false positive (Otherwise, points are set to zero for true and false negative) 
 With these elements, the example could be completed as shown below. The implementation is then given [](#fig10).
  
 ```
@@ -194,7 +194,7 @@ quiz23:
         label: label3
         type: bool
         expected: true
-        malus: 2     #penalty applied here if the box is not checked
+        incorrectAnswerPoints: 2     #penalty applied here if the box is not checked
         tip: text of a hint 
 ```
 
@@ -227,7 +227,7 @@ For questions with numerical values, the pattern is similar. Additional keys are
  
 The tolerance used during correction is the greater of the values between tolerance_abs and tolerance*expected.
 The `type` in each proposition can be `float` (default) or `int`.
-Bonuses (default 1) and penalties (default 0) can also be specified and are applied depending on whether the difference between the given value and the expected value is greater or less than the tolerance.
+Grading, using the keys `correctAnswerPoints` and `incorrectAnswerPoints`,  can also be specified and are applied depending on whether the difference between the given value and the expected value is greater or less than the tolerance, with defaults of 1 for correct answers and of 0 for incorrect answers.
  
 ```
 quiz24:
@@ -257,8 +257,8 @@ quiz24:
       answer: The number of points `len(series)` or `series.shape[0]` is 512
       tolerance: 0.01
       tolerance_abs: 2
-      bonus: 2
-      penalty: 3
+      correctAnswerPoints: 2
+      incorrectAnswerPoints: 3
       tip: Enter the value
 ```
 :::{figure} doc_images/quiz24.gif
@@ -266,7 +266,7 @@ quiz24:
 :alt: Quiz example
 :align: center
 :width: 60%
-Implementation of the `quiz24` question of the numeric type. Note that the propositions are automatically mixed and that a bonus/penalty is applied to the number of points.
+Implementation of the `quiz24` question of the numeric type. Note that the propositions are automatically mixed and that a correctAnswerPoints/penalty is applied to the number of points.
  
 :::
 ## Case of `templates`

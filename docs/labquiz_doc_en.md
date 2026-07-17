@@ -296,8 +296,8 @@ QuizFile
                 ├── tolerance_abs [numeric only]
                 ├── tip [optional]
                 ├── answer [optional]
-                ├── bonus [optional]
-                └── malus [optional]
+                ├── correctAnswerPoints [optional]
+                └── incorrectAnswerPoints [optional]
 ```
 
 with the following relationships
@@ -328,8 +328,8 @@ class Proposition {
     +tolerance_abs : float (numeric only)
     +tip : string (optional)
     +answer : string (optional)
-    +bonus : int (optional)
-    +malus : int (optional)
+    +correctAnswerPoints : int (optional)
+    +incorrectAnswerPoints : int (optional)
 }
 
 class Constraint {
@@ -404,7 +404,7 @@ quiz23:
           answer: explanatory text for the correct answer, with quotes ‘’ if necessary
 ```
 - *Consistency constraints* on propositions can be added. For example, it can be required that the true answer to the proposition of label `label2` implies that the answer to the proposition `label1` is false. In case of violation, a penalty is applied.
-- Similarly, certain propositions can give rise to a *bonus* or a *penalty*. The bonus is the number of points awarded if the answer is the expected one (default 1) and the penalty is the number of points deducted if the answer is different from the expected one (default 0). 
+- Grading can be modified per proposition. `correctAnswerPoints` is the number of points awarded if the answer is the expected one (default 1) and `incorrectAnswerPoints` is the number of points deducted if the answer is different from the expected one (default 0). 
 With these elements, the example could be completed as shown below. The implementation is then given [](fig10).
  
 ```
@@ -431,7 +431,7 @@ quiz23:
         label: label3
         type: bool
         expected: true
-        malus: 2     #penalty applied here if the box is not checked
+        incorrectAnswerPoints: 2     #penalty applied here if the box is not checked
         tip: text of a hint 
 ```
 
@@ -465,7 +465,7 @@ For questions with numerical values, the pattern is similar. Additional keys are
  
 The tolerance used during correction is the greater of the values between tolerance_abs and tolerance*expected.
 The `type` in each proposition can be `float` (default) or `int`.
-Bonuses (default 1) and penalties (default 0) can also be specified and are applied depending on whether the difference between the given value and the expected value is greater or less than the tolerance.
+Points for correct answers (default 1) and for incorrect ones (default 0) can also be specified and are applied depending on whether the difference between the given value and the expected value is greater or less than the tolerance.
  
 ```
 quiz24:
@@ -495,8 +495,8 @@ quiz24:
       answer: The number of points `len(series)` or `series.shape[0]` is 512
       tolerance: 0.01
       tolerance_abs: 2
-      bonus: 2
-      penalty: 3
+      correctAnswerPoints: 2
+      incorrectAnswerPoints: 3
       tip: Enter the value
 ```
 :::{figure} doc_images/quiz24.gif
@@ -505,7 +505,7 @@ quiz24:
 :alt: Quiz example
 :align: center
 :width: 60%
-Implementation of the `quiz24` question of the numeric type. Note that the propositions are automatically mixed and that a bonus/penalty is applied to the number of points.
+Implementation of the `quiz24` question of the numeric type. Note that the propositions are automatically mixed and that a bonus/penalty (correct/incorrect Points) is applied to the number of points.
  
 :::
 ## Case of `templates`
@@ -645,7 +645,7 @@ weights = {
 ```
 
 The weight matrix cannot be modified when calculating the score online, but it can be modified when recalculating retrospectively based on the recorded results; see correction by the teacher [](correction_by_teacher)
-- **bonus malus** - As we have seen in the file structure [](question_file_structure), `bonuses` and `penalties` can be integrated into the questions themselves. This allows, for a given question, to give more weight to a particular correct answer, or conversely to penalize a wrong answer, independently of the general weighting matrix. 
+- **correct/incorrect points** - As we have seen in the file structure [](question_file_structure), `correctAnswerPoints` and `incorrectAnswerPoints` can be integrated into the questions themselves. 👉🏼 This allows, for a given question, to give more weight to a particular correct answer, or conversely to penalize a wrong answer, independently of the general weighting matrix. 
 - **logical constraints** - *Logical constraints* can be integrated into questions and used to calculate the score. These constraints are specified question by question in the question file, and penalties are applied if the constraint is violated. The following constraints can be used: 
 ```
     # constraints: List of dictionaries e.g.: [{"indexes" : (0, 1), "type": ‘XOR’, "penalty": 2}]
@@ -657,7 +657,7 @@ The weight matrix cannot be modified when calculating the score online, but it c
 See an example at the end of [](structure_type_qcm).
 - **numerical values** - In the case of numerical answers, the difference between the given value and the expected value is calculated. If this difference is less than the threshold defined by the tolerance, the answer is counted as correct[^1].
 Remember that the tolerance is specified in the question file, and that the greater of the values between tolerance_abs and tolerance_relative*expected is used. If the relative tolerance `tolerance` has not been specified, the value used is 1%. 
-Bonuses (default 1) and penalties (default 0) may also be  applied depending on whether the difference between the given value and the expected value is greater or less than the tolerance.
+Points awarded may also be modified depending on whether the difference between the given value and the expected value is greater or less than the tolerance (while defaults are correctAnswerPoints=1 and incorrectAnswerPoints=0).
  
 [^1]: It would be possible to set the score based on the (relative) value of this difference, but this has not been done and will be discussed later.  
 
@@ -1098,7 +1098,7 @@ It allows you to edit the files whose structure has been described and has some 
 :alt: quiz_editor
 :align: center
 :width: 90%
-`quiz_editor` -- editing a suggestion -- correct or incorrect, hint (tip), answer (displayed during correction), bonus, penalty, etc.
+`quiz_editor` -- editing a suggestion -- correct or incorrect, hint (tip), answer (displayed during correction), bonus, penalty (renamed correctAnswerPoints and incorrectAnswerPoints in newer versions), etc.
 :::
 :::{figure} doc_images/exports.png
 :name: quiz_editor_exports
