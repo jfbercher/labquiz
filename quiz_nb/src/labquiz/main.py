@@ -150,6 +150,9 @@ def safe_eval(expr):
     """
     return eval(expr, {"__builtins__": {}}, {"rng": rng, "np": np, "pd": pd})
 
+def smart_fmt(x):
+    return f"{x:.2f}".rstrip("0").rstrip(".")
+
 class QuizLab:
     
     import ipywidgets as widgets
@@ -849,7 +852,7 @@ class QuizLab:
                     btn.icon = "ban"
             
             if (not self.exam_mode) and (not noscore) and allContainExpected:
-                msg += f"<h3>Score : <b>{score}/{total}</b></h3>"
+                msg += f"<h3>Score : <b>{smart_fmt(score)} / {smart_fmt(total)}</b></h3>" #"<h3>Score : <b>{score:.2f}/{total:.2f}</b></h3>"
                 msg += "🎉 Bravo!" if score == total else _("⚠️ Everything is not correct.")
             if (not self.exam_mode) and (not allContainExpected):
                 msg += _("<br>⚠️ No answers in quiz file: no score calculation.")
@@ -936,7 +939,7 @@ class QuizLab:
                 return
                         
             score, total = self.compute_score(propositions, self.user_answers[quiz_id], quiz_type, constraints=constraints, weights=self.weights) #  compute_score()
-            msg = f"<h3>Score : <b>{score}/{total}</b></h3>"
+            msg = f"<h3>Score : <b>{smart_fmt(score)}/{smart_fmt(total)}</b></h3>" #"<h3>Score : <b>{score}/{total}</b></h3>"
             output.clear_output()
             with output:
                 display(widgets.HTML(msg))
@@ -945,10 +948,10 @@ class QuizLab:
                         if 'weights' in p.keys(): 
                             pweights = p['weights'] # Because the tuple is not hashable and stored as a string
                             prop_weights = { 
-                                (True, True): pweights.get("(True, True)", 1),
-                                (True, False): pweights.get("(True, False)", -1),
-                                (False, True): pweights.get("(False, True)", 0),
-                                (False, False): pweights.get("(False, False)", 0)
+                                (True, True): pweights.get("(True, True)", 1.0),
+                                (True, False): pweights.get("(True, False)", -1.0),
+                                (False, True): pweights.get("(False, True)", 0.0),
+                                (False, False): pweights.get("(False, False)", 0.0)
                                 }
                         else:
                             prop_weights = self.weights # If not stored in the proposal, use default weights

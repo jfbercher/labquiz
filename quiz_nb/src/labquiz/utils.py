@@ -961,10 +961,10 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, question=None, w
     # Weights
     if weights is None: 
             weights = {
-                (True, True):   1,  # True Positive
-                (True, False): -1,  # False Positive
-                (False, True):  0,  # False Negative (forgotten)
-                (False, False): 0   # True Negative
+                (True, True):   1.0,  # True Positive
+                (True, False): -1.0,  # False Positive
+                (False, True):  0.0,  # False Negative (forgotten)
+                (False, False): 0.0   # True Negative
             }
 
 
@@ -1015,10 +1015,10 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, question=None, w
         if 'weights' in prop.keys(): 
             pweights = prop['weights'] 
             prop_weights = {  # Because the tuple is not hashable and stored as a string
-                  (True, True): pweights.get("(True, True)", 1),
-                  (True, False): pweights.get("(True, False)", -1),
-                  (False, True): pweights.get("(False, True)", 0),
-                  (False, False): pweights.get("(False, False)", 0)
+                  (True, True): pweights.get("(True, True)", 1.0),
+                  (True, False): pweights.get("(True, False)", -1.0),
+                  (False, True): pweights.get("(False, True)", 0.0),
+                  (False, False): pweights.get("(False, False)", 0.0)
                 }
         else:
             prop_weights = weights # If not stored in the proposal, use default weights
@@ -1028,14 +1028,14 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, question=None, w
         if expected is None: 
             print(_("❌ Error : expected value is missing"))
             details = {
-                "score": 0,
-                "total_possible": 1,
+                "score": 0.0,
+                "total_possible": 1.0,
                 "propositions": propositions,
                 "marks": {},
                 "violations": {},
             }
-            if return_details: return 0, 1, details
-            return 0, 1 #No solution known in proposition // This shoud not happen
+            if return_details: return 0.0, 1.0, details
+            return 0.0, 1.0 #No solution known in proposition // This shoud not happen
         user_val = bool(answer)
         case = (user_val, expected)
 
