@@ -868,7 +868,7 @@ def render_propositions_editor(q_id, q_data, lang_func):
         variables = q_data.get('variables', {})
         context = {var_name: variables[var_name]['preview'] for var_name in variables.keys()}
     # Init sum of correct answers points
-    st.session_state.sum_correctAnswersPoints = sum([int( x.get('correctAnswerPoints', default_grading_dict[True,True] 
+    st.session_state.sum_correctAnswersPoints = sum([float( x.get('correctAnswerPoints', default_grading_dict[True,True] 
             if x.get('expected', False) else default_grading_dict[False,False]))  for x in q_data['propositions']])
 
     def reset_answerPoints(q_id, q_data, p, i):
@@ -889,19 +889,19 @@ def render_propositions_editor(q_id, q_data, lang_func):
                 del st.session_state[key]
 
         # Reset the sum of correct answers points
-        st.session_state.sum_correctAnswersPoints = sum([int( x.get('correctAnswerPoints', default_grading_dict[True,True] 
+        st.session_state.sum_correctAnswersPoints = sum([float( x.get('correctAnswerPoints', default_grading_dict[True,True] 
                     if x.get('expected', False) else default_grading_dict[False,False]))  for x in q_data['propositions']])
         
         
     def affect_incorrectAnswerPoints(q_id, q_data, p, i):
-        p['incorrectAnswerPoints'] = int(st.session_state[f"inc_{q_id}_{i}"])
-        st.session_state.sum_correctAnswersPoints = sum([int( x.get('correctAnswerPoints', default_grading_dict[True,True] 
+        p['incorrectAnswerPoints'] = float(st.session_state[f"inc_{q_id}_{i}"])
+        st.session_state.sum_correctAnswersPoints = sum([float( x.get('correctAnswerPoints', default_grading_dict[True,True] 
                     if x.get('expected', False) else default_grading_dict[False,False]))  for x in q_data['propositions']])
         st.toast(f"Malus : {st.session_state[f'inc_{q_id}_{i}']}", icon='👎')
 
     def affect_correctAnswerPoints(q_id, q_data, p, i):
-        p['correctAnswerPoints'] = int(st.session_state[f"cor_{q_id}_{i}"])
-        st.session_state.sum_correctAnswersPoints = sum([int( x.get('correctAnswerPoints', default_grading_dict[True,True] 
+        p['correctAnswerPoints'] = float(st.session_state[f"cor_{q_id}_{i}"])
+        st.session_state.sum_correctAnswersPoints = sum([float( x.get('correctAnswerPoints', default_grading_dict[True,True] 
             if x.get('expected', False) else default_grading_dict[False,False]))  for x in q_data['propositions']])
         st.toast(f"correctAnswerPoints : {st.session_state[f'cor_{q_id}_{i}']}", icon='👍')     
 
@@ -974,13 +974,13 @@ def render_propositions_editor(q_id, q_data, lang_func):
                     if is_correct:
                         msg_correctAnswer = _("True Positive (Student has checked the box while the proposal is correct)")
                         msg_incorrectAnswer = _("False Negative (Student has not checked the box while the proposal is correct)")
-                        st.session_state[key_correct] = int(p.get('correctAnswerPoints', default_grading_dict[True,True]))
-                        st.session_state[key_incorrect] = int(p.get('incorrectAnswerPoints', default_grading_dict[False,True]))
+                        st.session_state[key_correct] = float(p.get('correctAnswerPoints', default_grading_dict[True,True]))
+                        st.session_state[key_incorrect] = float(p.get('incorrectAnswerPoints', default_grading_dict[False,True]))
                     else:
                         msg_correctAnswer = _("True Negative (Student has not checked the box while the proposal is incorrect)")
                         msg_incorrectAnswer = _("False Positive (Student has checked the box while the proposal is incorrect)")
-                        st.session_state[key_correct] = int(p.get('correctAnswerPoints', default_grading_dict[False,False]))
-                        st.session_state[key_incorrect] = int(p.get('incorrectAnswerPoints', default_grading_dict[True,False]))
+                        st.session_state[key_correct] = float(p.get('correctAnswerPoints', default_grading_dict[False,False]))
+                        st.session_state[key_incorrect] = float(p.get('incorrectAnswerPoints', default_grading_dict[True,False]))
                 else: # Template case
                     msg_correctAnswer = _("Correct answer")
                     msg_incorrectAnswer = _("Incorrect answer")
@@ -989,8 +989,8 @@ def render_propositions_editor(q_id, q_data, lang_func):
             else: # Numeric case
                 msg_correctAnswer = _("Correct numeric answer")
                 msg_incorrectAnswer = _("Incorrect numeric answer")
-                st.session_state[key_correct] = int(p.get('correctAnswerPoints', 1.0))
-                st.session_state[key_incorrect] = int(p.get('incorrectAnswerPoints', 0.0))
+                st.session_state[key_correct] = float(p.get('correctAnswerPoints', 1.0))
+                st.session_state[key_incorrect] = float(p.get('incorrectAnswerPoints', 0.0))
                 
             # 
             
@@ -1025,11 +1025,11 @@ def render_propositions_editor(q_id, q_data, lang_func):
                     column_config={
                         _("Type"): st.column_config.TextColumn(
                             disabled=True,
-                            width="medium",
+                            width="stretch",
                         ),
                         _("Comments"): st.column_config.TextColumn(
                             disabled=True,
-                            width="large",
+                            width="stretch",
                         ),
                         _("Points"): st.column_config.NumberColumn(
                             min_value=-10.0,
@@ -1038,6 +1038,7 @@ def render_propositions_editor(q_id, q_data, lang_func):
                         ),
                     },
                     key=f"weights_editor_{q_id}_{i}",
+                    width="stretch",
                 )
 
                 weights_dict = dict(zip(edited[_("Type")], edited[_("Points")]))
@@ -1055,9 +1056,9 @@ def render_propositions_editor(q_id, q_data, lang_func):
                     pass
 
             else: # Other cases
-                cb1, cb1bis, cb2, cb2bis, cb3 = st.columns([2, 0.3, 2, 0.3, 1], vertical_alignment="bottom")
+                cb1, cb1bis, cb2, cb2bis, cb3 = st.columns([2, 0.5, 2, 0.5, 1], vertical_alignment="bottom")
                 with cb1:
-                    st.number_input(msg_correctAnswer, key=f"cor_{q_id}_{i}", min_value=-10, max_value=10,
+                    st.number_input(msg_correctAnswer, key=f"cor_{q_id}_{i}", min_value=-10.0, max_value=10.0, step=0.5,
                                         on_change=affect_correctAnswerPoints, args=(q_id, q_data, p, i), help=_("Specific points if this is selected"))
                 
                 with cb1bis:
@@ -1068,7 +1069,7 @@ def render_propositions_editor(q_id, q_data, lang_func):
                         write_with_tooltip("0 %", _("Percentage of this correct answer with respect to the sum of all correct answers"))
 
                 with cb2:    
-                    st.number_input(msg_incorrectAnswer, key=f"inc_{q_id}_{i}",  min_value=-10, max_value=10,
+                    st.number_input(msg_incorrectAnswer, key=f"inc_{q_id}_{i}",  min_value=-10.0, max_value=10.0, step=0.5,
                                 on_change=affect_incorrectAnswerPoints, args=(q_id, q_data, p, i), help=_("Points deducted if this is selected"))
 
                 with cb2bis:
