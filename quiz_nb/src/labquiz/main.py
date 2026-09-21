@@ -1,7 +1,17 @@
-import ipywidgets as widgets
-from IPython.display import display, update_display, Markdown, Javascript
+import sys
+
+IS_JUPYTERLITE = "pyodide" in sys.modules or "piplite" in sys.modules
+IS_MYSTRAL = hasattr(sys, '_mystral_env')
+
+if IS_MYSTRAL:
+    from . import mystral_widgets as widgets
+    from .mystral_widgets import display, Markdown, Javascript
+    def update_display(*args, **kwargs): pass
+else:
+    import ipywidgets as widgets
+    from IPython.display import display, update_display, Markdown, Javascript
 import yaml, random, datetime, requests, json
-import threading, time, sys, io
+import threading, time, io
 from io import BytesIO
 from cryptography.fernet import Fernet
 import asyncio
@@ -22,8 +32,6 @@ rng = np.random.default_rng()
 # Patch for request so as not to block during logs
 # Synchronous request --> passes on a thread
 
-IS_JUPYTERLITE = "pyodide" in sys.modules or "piplite" in sys.modules
-#TRUC = "test"
 
 def patch_requests_post(callback=None):
     """
@@ -155,8 +163,12 @@ def smart_fmt(x):
 
 class QuizLab:
     
-    import ipywidgets as widgets
-    from IPython.display import display, Javascript, Markdown
+    if IS_MYSTRAL:
+        from . import mystral_widgets as widgets
+        from .mystral_widgets import display, Javascript, Markdown
+    else:
+        import ipywidgets as widgets
+        from IPython.display import display, Javascript, Markdown
     from .utils import decode_dict_base64, calculate_quiz_score
     from .utils import get_full_object_hash
     
@@ -1030,11 +1042,12 @@ class QuizLab:
         output.clear_output()
         display(container)
 
-        display(Javascript("""
-            if (window.MathJax && MathJax.typesetPromise) {
-                MathJax.typesetPromise();
-            }
-        """))
+        if not IS_MYSTRAL:
+            display(Javascript("""
+                if (window.MathJax && MathJax.typesetPromise) {
+                    MathJax.typesetPromise();
+                }
+            """))
 
         #return container
     

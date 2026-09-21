@@ -2,8 +2,14 @@
 import yaml, json, base64, sys
 import io, asyncio
 
-import ipywidgets as widgets
-from IPython.display import display, Markdown, Javascript
+IS_MYSTRAL = hasattr(sys, '_mystral_env')
+
+if IS_MYSTRAL:
+    from . import mystral_widgets as widgets
+    from .mystral_widgets import display, Markdown, Javascript
+else:
+    import ipywidgets as widgets
+    from IPython.display import display, Markdown, Javascript
 import hashlib, inspect, re, types
 from importlib.metadata import metadata
 from pathlib import Path
@@ -111,11 +117,6 @@ def compute_machine_id():
     return hashlib.sha256(raw.encode()).hexdigest()[:16]
 
 
-import ipywidgets as widgets
-from IPython.display import display, Markdown
-
-import ipywidgets as widgets
-from IPython.display import display, Markdown
 
 
 class StudentForm:
