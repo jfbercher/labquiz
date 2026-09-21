@@ -1,17 +1,18 @@
-# Hashes générés le 2026-06-24T19:19:40.624593
+# Hashes générés le 2026-09-21T19:38:44.142940
 # Dossier analysé : /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz
-# Version du package : 1.1.2
+# Version du package : 1.1.7
 
 [files]
 473c7034537b01b120a80a682df8502363198b09f4a6d93110e3a1a7aae1bad1  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/__init__.py
 bfa3fcbee78a0ce73e364a11c175301da665b33ca85f33850abd1bb5b721d236  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/convert_utils.py
 6781fbb8e1e8654bdb50bd99d114d484cb9263f6ea1725cd31188fdc5df1c455  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/i18n.py
-49ac1068060db586bb9d7ebadedfd220363eb8b972f6c55e98ef29016f19b63d  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/main.py
+53c0b3fb19bbce2744eb0004edea644ead5eed51e9889969c2417fe85be703e4  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/main.py
+74f72e289c36be1ad510254c29e57e958659b1d10095b34f95073ff8f6b100d9  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/mystral_widgets.py
 f7d265a4473df2cbd036f415384c11ec181a0e61960fa884c3fc9fcf83200e99  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/putils.py
-9d8670ca36525043e1ae86f2c0af312f37a297a28712c6befc6c01a984e3bf5c  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/utils.py
+41d81c125258942d11b0641db79df624b3a8a152b49187e02eb64554b65b6378  /Users/bercherj/JFB/dev/LabQuizBundle/quiz_nb/src/labquiz/utils.py
 
 [package]
-c069c50a05e979f0f58b88d78f6e3d1ea5e7ad92d4a02c7ac4a472e97c3ca068
+ba54413a49fa4d7840d4686f6f9e7f270288632fe32f84e2aaccd0f6aed84f66
 
 [package_without_putils]
-18436bbb236a34ab7e93f0f73a7f97199ea802b5cef81c79947af4b70e09a7ee
+559ba4b8b97cae72073b2c9741666e55b80a63c208c20a1c66d331e2e10a6916

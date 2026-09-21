@@ -504,6 +504,10 @@ class VBox(_Widget):
         if layout is not None:
             self._layout = layout
 
+    @property
+    def children(self):
+        return self._children
+
     def _build_dom(self):
         div = js.document.createElement('div')
         div.className = 'mw-vbox'
@@ -523,6 +527,10 @@ class HBox(_Widget):
         self._children = list(children or [])
         if layout is not None:
             self._layout = layout
+
+    @property
+    def children(self):
+        return self._children
 
     def _build_dom(self):
         div = js.document.createElement('div')

@@ -62,27 +62,42 @@ def patch_requests_post(callback=None):
     #print("Patch requests.post applied (Mode Threaded).")
 
 def remove_style(style_id="custom-checkbox"):
-    from IPython.display import Javascript, display
-    
-    return Javascript(f"""
-    var s = document.getElementById("{style_id}");
-    if (s) {{ s.remove(); }}
-    """)
+    if IS_MYSTRAL:
+        import js as _js
+        el = _js.document.getElementById(style_id)
+        if el:
+            el.remove()
+    else:
+        from IPython.display import Javascript, display
+        return Javascript(f"""
+        var s = document.getElementById("{style_id}");
+        if (s) {{ s.remove(); }}
+        """)
 
 def ensure_style(css: str, style_id="custom-style"):
-    from IPython.display import HTML, display
-    display(HTML(f"""
-    <script>
-     var s = document.getElementById("{style_id}");
-     if (s) {{ s.remove(); }}
-     if (!document.getElementById("{style_id}")){{
-        const style = document.createElement("style");
-        style.id = "{style_id}";
-        style.innerHTML = `{css}`;
-        document.head.appendChild(style);
-    }}
-    </script>
-    """))
+    if IS_MYSTRAL:
+        import js as _js
+        old = _js.document.getElementById(style_id)
+        if old:
+            old.remove()
+        s = _js.document.createElement("style")
+        s.id = style_id
+        s.textContent = css
+        _js.document.head.appendChild(s)
+    else:
+        from IPython.display import HTML, display
+        display(HTML(f"""
+        <script>
+         var s = document.getElementById("{style_id}");
+         if (s) {{ s.remove(); }}
+         if (!document.getElementById("{style_id}")){{
+            const style = document.createElement("style");
+            style.id = "{style_id}";
+            style.innerHTML = `{css}`;
+            document.head.appendChild(style);
+        }}
+        </script>
+        """))
     
 def internetOk(URL): 
     print("Testing internet connexion...", end=' ')
@@ -482,13 +497,18 @@ class QuizLab:
 
     def inject_css(self, style=checkbox_style):
         # css adapté pour les checkboxes // css suitable for checkboxes
-        from IPython.display import display, HTML
-
-        display(HTML(f"""
-        <style>
-        self.{style}
-        </style>
-        """))
+        if IS_MYSTRAL:
+            import js as _js
+            s = _js.document.createElement("style")
+            s.textContent = style
+            _js.document.head.appendChild(s)
+        else:
+            from IPython.display import display, HTML
+            display(HTML(f"""
+            <style>
+            {style}
+            </style>
+            """))
         
     def _getParameters(self):
         from .utils import get_source_integrity_hash, get_full_object_hash
