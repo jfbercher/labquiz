@@ -73,7 +73,20 @@ def get_macaddress():
 def getUser():
     import os, uuid
     WE_ARE_IN_JUPYTERLITE = "pyodide" in sys.modules or "piplite" in sys.modules
-    if WE_ARE_IN_JUPYTERLITE:
+    if IS_MYSTRAL:
+        # In Mystral: use localStorage to persist the user ID — avoids any
+        # filesystem write that would trigger Tauri's writeFileFromMemfs.
+        try:
+            import js as _js
+            _LS_KEY = "labquiz_user_id"
+            user_id = _js.window.localStorage.getItem(_LS_KEY)
+            if not user_id:
+                user_id = str(uuid.uuid4())
+                _js.window.localStorage.setItem(_LS_KEY, user_id)
+        except Exception:
+            user_id = "erreurUser"
+        return user_id
+    elif WE_ARE_IN_JUPYTERLITE:
         try:
             id_file = ".labquiz_user_id"
             if os.path.exists(id_file):
@@ -86,8 +99,8 @@ def getUser():
                 with open(id_file, "w") as f:
                     f.write(user_id)
                 # Note: In JupyterLite, the file system is 
-                # # automatically synced with browser storage.                
-                # # Note : Dans JupyterLite, le système de fichiers est 
+                # automatically synced with browser storage.
+                # Note : Dans JupyterLite, le système de fichiers est 
                 # automatiquement synchronisé avec le stockage du navigateur.
         except Exception as e:
             user_id = "erreurUser"            
