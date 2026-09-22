@@ -324,8 +324,9 @@ async def get_check_user_info(timeout=30, domains=None):
         return None    
 
 async def google_authentify_lite(timeout=30, domains=None):
-    
+
     global _auth_event, _auth_data
+    global _gsi_load_proxy, _gsi_error_proxy, _gsi_cb_proxy  # prevent GC
     _auth_event.clear()
     _auth_data.clear()
 
@@ -336,72 +337,155 @@ async def google_authentify_lite(timeout=30, domains=None):
     except Exception as e:
         raise RuntimeError(_("Missing or malformed client_web.json file"))
 
-    login_container = widgets.HTML(
-        value='<div id="google-btn-container">Chargement du bouton Google...</div>'
-    )
-
-    display(login_container)
-
-    # In Mystral the widget lands in a Shadow DOM: document.getElementById won't
-    # find it. Store the real DOM element in globalThis for the JS callback.
     if IS_MYSTRAL:
+        # ── Mystral path ────────────────────────────────────────────────────
+        # display(Javascript(...)) is NOT forwarded to JS in Mystral's output
+        # pipeline.  We use the js module directly:
+        #   • container DOM element created via Python (no HTML widget needed)
+        #   • GSI script injected via document.createElement – with onerror
+        #   • credential decoded in Python (no BroadcastChannel, no JSON relay)
         import js as _js
-        _inner = None
-        if login_container._dom is not None:
-            _inner = login_container._dom.querySelector('#google-btn-container')
-        if _inner is not None:
-            _js.globalThis._mystral_gsi_container = _inner
+        from pyodide.ffi import create_proxy
+        import base64 as _b64
 
-    js_setup = f"""
-    (function() {{
-        function b64u(str) {{
-            str = str.replace(/-/g,'+').replace(/_/g,'/');
-            return decodeURIComponent(atob(str).split('').map(
-                c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join(''));
-        }}
-        const s = document.createElement('script');
-        s.src = "https://accounts.google.com/gsi/client";
-        s.onload = () => {{
-            google.accounts.id.initialize({{
-                client_id: "{client_id}",
-                callback: r => {{
-                    const p = JSON.parse(b64u(r.credential.split('.')[1]));
-                    const userData = JSON.stringify({{
-                        family_name: p.family_name,
-                        given_name:  p.given_name,
-                        email:       p.email,
-                        hd:          p.email.split('@')[1]
+        # Create button container and attach it to the current cell's output
+        container = _js.document.createElement('div')
+        container.style.setProperty('min-width', '200px')
+        container.style.setProperty('min-height', '50px')
+        container.style.setProperty('padding', '4px')
+        container.textContent = 'Loading Google button...'
+
+        output_area = _js.globalThis.__mystral_cell_output
+        if output_area is not None:
+            output_area.appendChild(container)
+        else:
+            _js.document.body.appendChild(container)
+        _js.globalThis._mystral_gsi_container = container  # keep alive in JS
+
+        # Python callback: receives the Google credential response object
+        def _gsi_credential_callback(r_obj):
+            try:
+                credential = str(r_obj.credential)
+                payload_b64 = (credential.split('.')[1]
+                               .replace('-', '+').replace('_', '/'))
+                pad = (4 - len(payload_b64) % 4) % 4
+                payload = json.loads(
+                    _b64.b64decode(payload_b64 + '=' * pad).decode()
+                )
+                _auth_data.update({
+                    'family_name': payload.get('family_name', ''),
+                    'given_name':  payload.get('given_name', ''),
+                    'email':       payload.get('email', ''),
+                    'hd':          payload.get('email', '').split('@')[-1],
+                })
+                container.textContent = '✅ Connecté'
+                _auth_event.set()
+            except Exception as e:
+                container.textContent = f'❌ Credential callback error: {e}'
+                print(f'[auth] credential callback error: {e}')
+
+        _gsi_cb_proxy = create_proxy(_gsi_credential_callback)
+        _js.globalThis._mystral_gsi_cb = _gsi_cb_proxy  # keep alive in JS
+
+        # onload: initialize and render the Google Sign-In button
+        def _on_gsi_load():
+            try:
+                _js.eval(f"""
+                    google.accounts.id.initialize({{
+                        client_id: "{client_id}",
+                        callback: globalThis._mystral_gsi_cb
                     }});
+                    google.accounts.id.renderButton(
+                        globalThis._mystral_gsi_container,
+                        {{theme: "outline", size: "large"}}
+                    );
+                """)
+            except Exception as e:
+                container.textContent = f'❌ Error GSI init: {e}'
+                print(f'[auth] GSI init error: {e}')
 
-                    // Mystral: direct Python callback (BroadcastChannel is same-context → blocked)
-                    if (typeof globalThis._mystral_auth_callback !== 'undefined') {{
-                        globalThis._mystral_auth_callback(userData);
-                    }} else {{
-                        // JupyterLite: Pyodide is in a Worker → BroadcastChannel works
+        def _on_gsi_error(event):
+            container.textContent = (
+                '❌ Impossible to load Google Sign-In '
+                "(check network connexion réseau and allowed origin)"
+            )
+            print('[auth] GSI script failed to load')
+
+        _gsi_load_proxy  = create_proxy(_on_gsi_load)
+        _gsi_error_proxy = create_proxy(_on_gsi_error)
+
+        # If GSI was already loaded in a previous run, skip the network fetch
+        already_loaded = bool(_js.eval(
+            "typeof google !== 'undefined' && typeof google.accounts !== 'undefined'"
+        ))
+        if already_loaded:
+            _on_gsi_load()
+        else:
+            gsi_script = _js.document.createElement('script')
+            gsi_script.src = "https://accounts.google.com/gsi/client"
+            gsi_script.onload = _gsi_load_proxy
+            gsi_script.onerror = _gsi_error_proxy
+            _js.document.head.appendChild(gsi_script)
+
+    else:
+        # ── JupyterLite path ─────────────────────────────────────────────────
+        # Pyodide runs in a Worker → BroadcastChannel is cross-context ✓
+        login_container = widgets.HTML(
+            value='<div id="google-btn-container" '
+                  'style="min-width:200px;min-height:50px;">'
+                  'Chargement du bouton Google...</div>'
+        )
+        display(login_container)
+
+        js_setup = f"""
+        (function() {{
+            function b64u(str) {{
+                str = str.replace(/-/g,'+').replace(/_/g,'/');
+                return decodeURIComponent(atob(str).split('').map(
+                    c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join(''));
+            }}
+            // Avoid duplicate script injection on re-run
+            if (document.querySelector('script[src="https://accounts.google.com/gsi/client"]')
+                && typeof google !== 'undefined' && google.accounts) {{
+                // Already loaded: just re-render the button
+                try {{
+                    const _c = document.getElementById("google-btn-container");
+                    google.accounts.id.renderButton(_c, {{theme:"outline",size:"large"}});
+                }} catch(e) {{}}
+                return;
+            }}
+            const s = document.createElement('script');
+            s.src = "https://accounts.google.com/gsi/client";
+            s.onload = () => {{
+                google.accounts.id.initialize({{
+                    client_id: "{client_id}",
+                    callback: r => {{
+                        const p = JSON.parse(b64u(r.credential.split('.')[1]));
+                        const userData = JSON.stringify({{
+                            family_name: p.family_name,
+                            given_name:  p.given_name,
+                            email:       p.email,
+                            hd:          p.email.split('@')[1]
+                        }});
                         const bc = new BroadcastChannel("google_auth_channel");
                         bc.postMessage(userData);
                         bc.close();
+                        const _c = document.getElementById("google-btn-container");
+                        if (_c) _c.innerHTML = "✅ Connected";
                     }}
+                }});
+                const _btn_c = document.getElementById("google-btn-container");
+                google.accounts.id.renderButton(_btn_c, {{theme:"outline",size:"large"}});
+            }};
+            s.onerror = () => {{
+                const _c = document.getElementById("google-btn-container");
+                if (_c) _c.textContent = "❌ Script Google Sign-In non chargeable";
+            }};
+            document.head.appendChild(s);
+        }})();
+        """
+        display(Javascript(js_setup))
 
-                    const _c = (typeof globalThis._mystral_gsi_container !== 'undefined')
-                        ? globalThis._mystral_gsi_container
-                        : document.getElementById("google-btn-container");
-                    if (_c) _c.innerHTML = "✅ Connected";
-                    console.log("Auth data sent:", userData);
-                }}
-            }});
-            // Render the Google button into the correct container
-            const _btn_c = (typeof globalThis._mystral_gsi_container !== 'undefined')
-                ? globalThis._mystral_gsi_container
-                : document.getElementById("google-btn-container");
-            google.accounts.id.renderButton(_btn_c, {{}});
-        }};
-        document.head.appendChild(s);
-    }})();
-    """
-    display(Javascript(js_setup))
-    #
-    """Waits for BroadcastChannel signal — no polling necessary."""
     try:
         await asyncio.wait_for(_auth_event.wait(), timeout=timeout)
         if domains is not None:
@@ -412,8 +496,7 @@ async def google_authentify_lite(timeout=30, domains=None):
         return dict(_auth_data)
     except asyncio.TimeoutError:
         print("⏱ Timeout")
-        return None    
-            
+        return None
 
 
 def select_group_and_save(self, groups, info):
