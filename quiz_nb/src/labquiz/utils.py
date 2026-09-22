@@ -390,108 +390,58 @@ async def google_authentify_lite(timeout=120, domains=None):
         # onload: initialize and render the Google Sign-In button
         def _on_gsi_load(*args):
             try:
+                print(f'[auth] GSI origin = {str(_js.eval("window.location.origin"))}')
                 _js.eval(f"""
                     google.accounts.id.initialize({{
                         client_id: "{client_id}",
-                        callback: globalThis._mystral_gsi_cb
+                        callback: globalThis._mystral_gsi_cb,
+                        auto_select: true
                     }});
                     google.accounts.id.renderButton(
                         globalThis._mystral_gsi_container,
                         {{theme: "outline", size: "large"}}
                     );
+                    // One Tap: uses an iframe overlay, no popup — works in Tauri WKWebView.
+                    // If the user has an active Google session, auto-sign-in fires the callback
+                    // directly (no UI shown).  If not, One Tap shows a sign-in overlay.
+                    google.accounts.id.prompt(function(notification) {{
+                        var reason =
+                            notification.isNotDisplayed()  ? notification.getNotDisplayedReason() :
+                            notification.isSkippedMoment() ? notification.getSkippedReason()      :
+                            notification.isDismissedMoment() ? notification.getDismissedReason()  :
+                            'displayed';
+                        console.log('[auth] One Tap notification:', reason);
+                    }});
                 """)
+
             except Exception as e:
-                container.textContent = f'❌ Error GSI init: {e}'
+                container.textContent = f'❌ {_("GSI init error")}: {e}'
                 print(f'[auth] GSI init error: {e}')
 
         def _on_gsi_error(event=None):
-            # Google Sign-In unavailable → show manual entry form
-            print('[auth] GSI script failed to load – showing fallback form')
+            # GSI script unavailable (network error, CSP, …).
+            # Authentication is mandatory — no fallback form.
+            print('[auth] GSI script failed to load – authentication blocked')
             container.textContent = ''
-            container.style.setProperty('padding', '8px')
+            container.style.setProperty('padding', '10px')
             container.style.setProperty('font-family', 'sans-serif')
             container.style.setProperty('font-size', '14px')
-
-            warn = _js.document.createElement('div')
-            warn.textContent = (
-                '⚠️ Google Sign-In non disponible. '
-                'Entrez vos informations manuellement :'
+            container.style.setProperty('color', '#b91c1c')
+            container.style.setProperty('border', '1px solid #fca5a5')
+            container.style.setProperty('border-radius', '6px')
+            container.style.setProperty('background', '#fff1f2')
+            container.style.setProperty('max-width', '360px')
+            _title = _('Google authentication required')
+            _msg1  = _('Connection to Google is unavailable (network, CSP…).')
+            _msg2  = _('The quiz cannot start without identification.')
+            container.innerHTML = (
+                f'<strong>🔒 {_title}</strong><br>'
+                f'<span style="font-size:13px;color:#374151;">'
+                f'{_msg1}<br>{_msg2}'
+                f'</span>'
             )
-            warn.style.setProperty('color', '#b45309')
-            warn.style.setProperty('margin-bottom', '8px')
-
-            lbl_fn = _js.document.createElement('label')
-            lbl_fn.textContent = 'Prénom :'
-            inp_fn = _js.document.createElement('input')
-            inp_fn.type = 'text'; inp_fn.placeholder = 'Prénom'
-            inp_fn.style.setProperty('display', 'block')
-            inp_fn.style.setProperty('margin-bottom', '4px')
-            inp_fn.style.setProperty('width', '240px')
-
-            lbl_ln = _js.document.createElement('label')
-            lbl_ln.textContent = 'Nom :'
-            inp_ln = _js.document.createElement('input')
-            inp_ln.type = 'text'; inp_ln.placeholder = 'Nom'
-            inp_ln.style.setProperty('display', 'block')
-            inp_ln.style.setProperty('margin-bottom', '4px')
-            inp_ln.style.setProperty('width', '240px')
-
-            lbl_em = _js.document.createElement('label')
-            lbl_em.textContent = 'Email :'
-            inp_em = _js.document.createElement('input')
-            inp_em.type = 'email'; inp_em.placeholder = 'prenom.nom@univ-eiffel.fr'
-            inp_em.style.setProperty('display', 'block')
-            inp_em.style.setProperty('margin-bottom', '8px')
-            inp_em.style.setProperty('width', '240px')
-
-            btn = _js.document.createElement('button')
-            btn.textContent = 'Valider'
-            btn.style.setProperty('padding', '6px 16px')
-            btn.style.setProperty('cursor', 'pointer')
-
-            feedback = _js.document.createElement('div')
-            feedback.textContent = ''
-            feedback.style.setProperty('margin-top', '4px')
-
-            for el in (warn, lbl_fn, inp_fn, lbl_ln, inp_ln, lbl_em, inp_em, btn, feedback):
-                container.appendChild(el)
-
-            def _on_manual_submit(ev=None):
-                given  = str(inp_fn.value).strip()
-                family = str(inp_ln.value).strip()
-                email  = str(inp_em.value).strip()
-                if not email or '@' not in email:
-                    feedback.textContent = '❌ Email invalide.'
-                    feedback.style.setProperty('color', 'red')
-                    return
-                if not given or not family:
-                    feedback.textContent = '❌ Prénom et nom requis.'
-                    feedback.style.setProperty('color', 'red')
-                    return
-                _auth_data.update({
-                    'family_name': family,
-                    'given_name':  given,
-                    'email':       email,
-                    'hd':          email.split('@')[-1],
-                })
-                container.textContent = (
-                    f'✅ {given} {family} <{email}>'
-                )
-                _auth_event.set()
-
-            _submit_proxy = create_proxy(_on_manual_submit)
-            _js.globalThis._mystral_submit_proxy = _submit_proxy
-            # Wire button click via JS eval — most reliable in Pyodide/Mystral
-            btn.id = 'mystral_manual_auth_btn'
-            _js.eval(
-                '(function(){'
-                '  var b=document.getElementById("mystral_manual_auth_btn");'
-                '  if(b)b.addEventListener("click",function(){'
-                '    if(typeof globalThis._mystral_submit_proxy==="function")'
-                '      globalThis._mystral_submit_proxy();'
-                '  });'
-                '})()'
-            )
+            # Do NOT set _auth_event — the coroutine will time out,
+            # which is the correct behaviour (no anonymous access).
 
         # If GSI was already loaded in a previous run, re-use it directly
         already_loaded = bool(_js.eval(
