@@ -284,7 +284,7 @@ def google_authentify_lite_init():
     import js
     from pyodide.ffi import create_proxy
 
-    global _auth_event, _auth_data
+    global _auth_event, _auth_data, _bc, _bc_proxy  # keep refs alive (prevent GC)
     _auth_event = asyncio.Event()
     _auth_data = {}
     
@@ -299,9 +299,10 @@ async def get_check_user_info(timeout=30, domains=None):
     try:
         await asyncio.wait_for(_auth_event.wait(), timeout=timeout)
         if domains is not None:
+            domain = _auth_data.get('hd', '')
             if domain not in domains:
                 print(_("User authentified, but"))
-                raise PermissionError(_("Access denied for"), email)
+                raise PermissionError(_("Access denied for"), _auth_data.get('email', ''))
         return dict(_auth_data)
     except asyncio.TimeoutError:
         print("⏱ Timeout")
@@ -367,9 +368,10 @@ async def google_authentify_lite(timeout=30, domains=None):
     try:
         await asyncio.wait_for(_auth_event.wait(), timeout=timeout)
         if domains is not None:
+            domain = _auth_data.get('hd', '')
             if domain not in domains:
                 print(_("User authentified, but"))
-                raise PermissionError(_("Access denied for"), email)
+                raise PermissionError(_("Access denied for"), _auth_data.get('email', ''))
         return dict(_auth_data)
     except asyncio.TimeoutError:
         print("⏱ Timeout")
