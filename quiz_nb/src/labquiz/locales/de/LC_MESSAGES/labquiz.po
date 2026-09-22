@@ -204,3 +204,41 @@ msgstr "✅ Verifizierung durchgeführt, Daten gesendet, Daemon gestartet"
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1285
 msgid "The file must not be encrypted."
 msgstr "Die Datei darf nicht verschlüsselt sein."
+
+#
+# Google sign-in: native loopback flow (Tauri desktop) and blocking
+# error paths. Added alongside src-tauri/src/google_auth.rs.
+#
+
+msgid "Sign in with Google in the browser window that just opened."
+msgstr "Melden Sie sich mit Google in dem soeben geöffneten Browserfenster an."
+
+msgid "Google authentication failed"
+msgstr "Google-Authentifizierung fehlgeschlagen"
+
+msgid "Could not read the Google identity token"
+msgstr "Das Google-Identitätstoken konnte nicht gelesen werden"
+
+msgid "Connected"
+msgstr "Angemeldet"
+
+msgid "Missing or malformed client_desktop.json file"
+msgstr "Datei client_desktop.json fehlt oder ist fehlerhaft"
+
+msgid "Google authentication required"
+msgstr "Google-Authentifizierung erforderlich"
+
+msgid "Connection to Google is unavailable (network, CSP…)."
+msgstr "Die Verbindung zu Google ist nicht verfügbar (Netzwerk, CSP…)."
+
+msgid "The quiz cannot start without identification."
+msgstr "Das Quiz kann ohne Identifizierung nicht gestartet werden."
+
+msgid "GSI init error"
+msgstr "GSI-Initialisierungsfehler"
+
+msgid "No verified identity was obtained, so the quiz cannot start."
+msgstr "Es wurde keine verifizierte Identität ermittelt, das Quiz kann nicht gestartet werden."
+
+msgid "Please re-run this cell and sign in with your Google account."
+msgstr "Bitte führen Sie diese Zelle erneut aus und melden Sie sich mit Ihrem Google-Konto an."

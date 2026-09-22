@@ -202,3 +202,41 @@ msgstr "✅ 已验证，数据已发送，后台程序已启动"
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1285
 msgid "The file must not be encrypted."
 msgstr "文件不得加密。"
+
+#
+# Google sign-in: native loopback flow (Tauri desktop) and blocking
+# error paths. Added alongside src-tauri/src/google_auth.rs.
+#
+
+msgid "Sign in with Google in the browser window that just opened."
+msgstr "请在刚刚打开的浏览器窗口中使用 Google 登录。"
+
+msgid "Google authentication failed"
+msgstr "Google 身份验证失败"
+
+msgid "Could not read the Google identity token"
+msgstr "无法读取 Google 身份令牌"
+
+msgid "Connected"
+msgstr "已登录"
+
+msgid "Missing or malformed client_desktop.json file"
+msgstr "缺少 client_desktop.json 文件或文件格式错误"
+
+msgid "Google authentication required"
+msgstr "需要 Google 身份验证"
+
+msgid "Connection to Google is unavailable (network, CSP…)."
+msgstr "无法连接到 Google（网络、CSP 等）。"
+
+msgid "The quiz cannot start without identification."
+msgstr "未完成身份识别，测验无法开始。"
+
+msgid "GSI init error"
+msgstr "GSI 初始化错误"
+
+msgid "No verified identity was obtained, so the quiz cannot start."
+msgstr "未获得已验证的身份，测验无法开始。"
+
+msgid "Please re-run this cell and sign in with your Google account."
+msgstr "请重新运行此单元格并使用您的 Google 账号登录。"

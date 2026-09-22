@@ -204,3 +204,41 @@ msgstr "✅ Doğrulama yapıldı, veriler gönderildi, daemon başlatıldı"
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1285
 msgid "The file must not be encrypted."
 msgstr "Dosya şifrelenmiş olmamalıdır."
+
+#
+# Google sign-in: native loopback flow (Tauri desktop) and blocking
+# error paths. Added alongside src-tauri/src/google_auth.rs.
+#
+
+msgid "Sign in with Google in the browser window that just opened."
+msgstr "Az önce açılan tarayıcı penceresinde Google ile oturum açın."
+
+msgid "Google authentication failed"
+msgstr "Google kimlik doğrulaması başarısız oldu"
+
+msgid "Could not read the Google identity token"
+msgstr "Google kimlik belirteci okunamadı"
+
+msgid "Connected"
+msgstr "Oturum açıldı"
+
+msgid "Missing or malformed client_desktop.json file"
+msgstr "client_desktop.json dosyası eksik veya hatalı"
+
+msgid "Google authentication required"
+msgstr "Google kimlik doğrulaması gerekli"
+
+msgid "Connection to Google is unavailable (network, CSP…)."
+msgstr "Google bağlantısı kullanılamıyor (ağ, CSP…)."
+
+msgid "The quiz cannot start without identification."
+msgstr "Kimlik doğrulaması olmadan test başlatılamaz."
+
+msgid "GSI init error"
+msgstr "GSI başlatma hatası"
+
+msgid "No verified identity was obtained, so the quiz cannot start."
+msgstr "Doğrulanmış bir kimlik alınamadı, bu nedenle test başlatılamıyor."
+
+msgid "Please re-run this cell and sign in with your Google account."
+msgstr "Lütfen bu hücreyi yeniden çalıştırın ve Google hesabınızla oturum açın."

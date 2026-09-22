@@ -197,3 +197,41 @@ msgstr ""
 #: /Users/bercherj/JFB/dev/labquizdev/src/labquiz/main.py:1285
 msgid "The file must not be encrypted."
 msgstr ""
+
+#
+# Google sign-in: native loopback flow (Tauri desktop) and blocking
+# error paths. Added alongside src-tauri/src/google_auth.rs.
+#
+
+msgid "Sign in with Google in the browser window that just opened."
+msgstr ""
+
+msgid "Google authentication failed"
+msgstr ""
+
+msgid "Could not read the Google identity token"
+msgstr ""
+
+msgid "Connected"
+msgstr ""
+
+msgid "Missing or malformed client_desktop.json file"
+msgstr ""
+
+msgid "Google authentication required"
+msgstr ""
+
+msgid "Connection to Google is unavailable (network, CSP…)."
+msgstr ""
+
+msgid "The quiz cannot start without identification."
+msgstr ""
+
+msgid "GSI init error"
+msgstr ""
+
+msgid "No verified identity was obtained, so the quiz cannot start."
+msgstr ""
+
+msgid "Please re-run this cell and sign in with your Google account."
+msgstr ""
