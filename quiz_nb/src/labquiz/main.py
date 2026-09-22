@@ -1204,11 +1204,26 @@ class QuizLab:
         if IS_JUPYTERLITE:
             from .utils import google_authentify_lite_init,  google_authentify_lite
             google_authentify_lite_init()
-            info = await google_authentify_lite(timeout=30, domains=self.domains)
+            # 30 s was far too short: choosing an account, typing a password and
+            # clearing 2FA in the Google popup routinely takes longer than that.
+            # On timeout the coroutine returns None and the quiz MUST stay closed.
+            info = await google_authentify_lite(timeout=180, domains=self.domains)
         else:
             from .utils import google_authentify
             creds, info = google_authentify(domains=self.domains)
-            
+
+        if not info:
+            # No verified identity (timeout, cancelled popup, GSI unavailable).
+            # Never open the quiz: the form below would otherwise let anyone in
+            # under an arbitrary name, which is unacceptable for a graded test.
+            display(Markdown(
+                "### \U0001F512 " + _("Google authentication required") + "\n\n"
+                + _("No verified identity was obtained, so the quiz cannot start.")
+                + " "
+                + _("Please re-run this cell and sign in with your Google account.")
+            ))
+            return
+
         select_group_and_save(self, self.groups, info)
 
     def record_event(self, event_type, quiz_id, parameters, answers, score):

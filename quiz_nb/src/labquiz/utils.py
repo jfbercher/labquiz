@@ -323,12 +323,97 @@ async def get_check_user_info(timeout=30, domains=None):
         print("⏱ Timeout")
         return None    
 
+async def _google_authentify_tauri(domains=None):
+    """Google sign-in for the Tauri desktop build.
+
+    Google forbids OAuth from an embedded webview, so inside WKWebView the GSI
+    button answers 403, One Tap reports `browser_not_supported` and the popup is
+    refused.  No origin or CSP setting can change that: the restriction is on the
+    browser engine.  The flow Google supports for an installed application is the
+    loopback flow, implemented on the Rust side (src-tauri/src/google_auth.rs):
+    the system browser signs the user in and redirects to http://127.0.0.1:<port>,
+    which the app listens on.  Rust returns the id_token; we only decode it.
+    """
+    import js as _js
+    import base64 as _b64
+
+    try:
+        with open("client_desktop.json", 'r') as f:
+            cfg = json.load(f)
+        section = cfg.get('installed') or cfg.get('web') or {}
+        client_id = section['client_id']
+        client_secret = section.get('client_secret', '')
+    except Exception:
+        raise RuntimeError(_("Missing or malformed client_desktop.json file"))
+
+    container = _js.document.createElement('div')
+    container.style.setProperty('padding', '8px')
+    container.style.setProperty('font-family', 'sans-serif')
+    container.style.setProperty('font-size', '14px')
+    _out = _js.globalThis.__mystral_cell_output
+    (_out if _out is not None else _js.document.body).appendChild(container)
+    container.textContent = '\U0001F310 ' + _(
+        "Sign in with Google in the browser window that just opened."
+    )
+
+    # Pre-select the account chooser when the quiz targets exactly one domain.
+    # Only a hint -- the domain is still verified below.
+    hosted = domains[0] if domains and len(domains) == 1 else ''
+    _js.eval("""
+        globalThis._mystral_google_login = function() {{
+            return window.__TAURI_INTERNALS__.invoke('google_login', {{
+                clientId: {cid}, clientSecret: {csec}, hostedDomain: {hd}
+            }});
+        }};
+    """.format(cid=json.dumps(client_id),
+               csec=json.dumps(client_secret),
+               hd=json.dumps(hosted)))
+
+    try:
+        id_token = str(await _js.globalThis._mystral_google_login())
+    except Exception as e:
+        container.textContent = '\u274c ' + _("Google authentication failed") + f': {e}'
+        print(f'[auth] tauri loopback login failed: {e}')
+        return None
+
+    try:
+        payload_b64 = id_token.split('.')[1].replace('-', '+').replace('_', '/')
+        pad = (4 - len(payload_b64) % 4) % 4
+        payload = json.loads(_b64.b64decode(payload_b64 + '=' * pad).decode())
+    except Exception as e:
+        container.textContent = '\u274c ' + _("Could not read the Google identity token")
+        print(f'[auth] id_token decode error: {e}')
+        return None
+
+    _auth_data.update({
+        'family_name': payload.get('family_name', ''),
+        'given_name':  payload.get('given_name', ''),
+        'email':       payload.get('email', ''),
+        'hd':          payload.get('email', '').split('@')[-1],
+    })
+    container.textContent = '\u2705 ' + _("Connected")
+    _auth_event.set()
+
+    if domains is not None and _auth_data.get('hd', '') not in domains:
+        print(_("User authentified, but"))
+        raise PermissionError(_("Access denied for"), _auth_data.get('email', ''))
+    return dict(_auth_data)
+
+
 async def google_authentify_lite(timeout=120, domains=None):
 
     global _auth_event, _auth_data
     global _gsi_load_proxy, _gsi_error_proxy, _gsi_cb_proxy, _submit_proxy  # prevent GC
     _auth_event.clear()
     _auth_data.clear()
+
+    # Tauri desktop: GSI cannot work in an embedded webview (see the helper's
+    # docstring).  Delegate to the native loopback flow and skip GSI entirely.
+    # The web path below is unchanged.
+    if IS_MYSTRAL:
+        import js as _js_probe
+        if bool(_js_probe.eval("typeof window.__TAURI_INTERNALS__ !== 'undefined'")):
+            return await _google_authentify_tauri(domains=domains)
 
     try:
         with open("client_web.json", 'r') as f:
@@ -390,30 +475,29 @@ async def google_authentify_lite(timeout=120, domains=None):
         # onload: initialize and render the Google Sign-In button
         def _on_gsi_load(*args):
             try:
-                print(f'[auth] GSI origin = {str(_js.eval("window.location.origin"))}')
+                origin = str(_js.eval("window.location.origin"))
+                print(f'[auth] GSI origin = {origin}')
+                # In Tauri/WKWebView, window.open() from a cross-origin iframe is blocked,
+                # so the GSI button popup never opens.  auto_select:true lets users with a
+                # cached Google session sign in silently (the only working path in WKWebView).
+                # On web we require an explicit click so a shared device cannot silently
+                # sign in as the wrong user.
+                is_tauri = bool(_js.eval(
+                    "typeof window.__TAURI_INTERNALS__ !== 'undefined'"
+                ))
+                auto_sel = "true" if is_tauri else "false"
                 _js.eval(f"""
                     google.accounts.id.initialize({{
                         client_id: "{client_id}",
                         callback: globalThis._mystral_gsi_cb,
-                        auto_select: true
+                        auto_select: {auto_sel}
                     }});
                     google.accounts.id.renderButton(
                         globalThis._mystral_gsi_container,
                         {{theme: "outline", size: "large"}}
                     );
-                    // One Tap: uses an iframe overlay, no popup — works in Tauri WKWebView.
-                    // If the user has an active Google session, auto-sign-in fires the callback
-                    // directly (no UI shown).  If not, One Tap shows a sign-in overlay.
-                    google.accounts.id.prompt(function(notification) {{
-                        var reason =
-                            notification.isNotDisplayed()  ? notification.getNotDisplayedReason() :
-                            notification.isSkippedMoment() ? notification.getSkippedReason()      :
-                            notification.isDismissedMoment() ? notification.getDismissedReason()  :
-                            'displayed';
-                        console.log('[auth] One Tap notification:', reason);
-                    }});
                 """)
-
+                print(f'[auth] GSI initialised (auto_select={{auto_sel}})')
             except Exception as e:
                 container.textContent = f'❌ {_("GSI init error")}: {e}'
                 print(f'[auth] GSI init error: {e}')
