@@ -493,31 +493,47 @@ async def google_authentify_lite(timeout=120, domains=None):
                 '})()'
             )
 
-        _gsi_load_proxy  = create_proxy(_on_gsi_load)
-        _gsi_error_proxy = create_proxy(_on_gsi_error)
-
-        # If GSI was already loaded in a previous run, skip the network fetch
+        # If GSI was already loaded in a previous run, re-use it directly
         already_loaded = bool(_js.eval(
             "typeof google !== 'undefined' && typeof google.accounts !== 'undefined'"
         ))
         if already_loaded:
             _on_gsi_load()
         else:
-            # In Tauri's WKWebView (custom scheme origin = opaque), external
-            # <script> tags may be silently blocked even with csp=null.
-            # Use pyodide pyfetch → eval() which bypasses that restriction.
+            # Inject a <script> tag — the ONLY approach that works everywhere.
+            # A <script> tag performs an opaque subresource fetch: no Origin header
+            # is sent, so Google's server never needs to add CORS headers and the
+            # browser imposes no CORS check.  pyfetch / XHR both fail because
+            # accounts.google.com/gsi/client returns no Access-Control-Allow-Origin.
+            _gsi_future = asyncio.get_event_loop().create_future()
+
+            def _on_script_load(*_a):
+                if not _gsi_future.done():
+                    _gsi_future.set_result(True)
+
+            def _on_script_error(*_a):
+                if not _gsi_future.done():
+                    _gsi_future.set_result(False)
+
+            _gsi_load_proxy  = create_proxy(_on_script_load)
+            _gsi_error_proxy = create_proxy(_on_script_error)
+
+            script_el = _js.document.createElement('script')
+            script_el.src = "https://accounts.google.com/gsi/client"
+            script_el.addEventListener('load',  _gsi_load_proxy)
+            script_el.addEventListener('error', _gsi_error_proxy)
+            container.textContent = 'Connexion Google...'
+            _js.document.head.appendChild(script_el)
+
             try:
-                from pyodide.http import pyfetch as _pyfetch
-                container.textContent = 'Connexion Google...'
-                _resp = await _pyfetch("https://accounts.google.com/gsi/client")
-                if _resp.status == 200:
-                    _js.eval(await _resp.string())
+                ok = await asyncio.wait_for(_gsi_future, timeout=15)
+                if ok:
                     _on_gsi_load()
                 else:
-                    print(f'[auth] GSI HTTP {_resp.status}')
+                    print('[auth] GSI script failed to load – showing fallback form')
                     _on_gsi_error()
-            except Exception as _fetch_err:
-                print(f'[auth] GSI pyfetch failed: {_fetch_err}')
+            except asyncio.TimeoutError:
+                print('[auth] GSI script load timeout – showing fallback form')
                 _on_gsi_error()
 
     else:
