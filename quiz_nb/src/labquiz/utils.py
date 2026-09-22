@@ -284,15 +284,30 @@ def google_authentify_lite_init():
     import js
     from pyodide.ffi import create_proxy
 
-    global _auth_event, _auth_data, _bc, _bc_proxy  # keep refs alive (prevent GC)
+    global _auth_event, _auth_data, _bc, _bc_proxy, _auth_cb_proxy
     _auth_event = asyncio.Event()
     _auth_data = {}
-    
-    # ── Open a BroadcastChannel in the Worker (Python / Pyodide side) ──
-    _bc = js.BroadcastChannel.new("google_auth_channel")
 
-    _bc_proxy = create_proxy(_on_bc_message)
-    _bc.onmessage = _bc_proxy
+    if IS_MYSTRAL:
+        # Pyodide runs in the main thread in Mystral.
+        # BroadcastChannel never delivers to the same browsing context → use a
+        # direct globalThis callback that JS can call synchronously.
+        def _receive_auth(user_data_str):
+            global _auth_data, _auth_event
+            try:
+                data = json.loads(str(user_data_str))
+                _auth_data.update(data)
+                _auth_event.set()
+            except Exception as e:
+                print(f"[auth] callback error: {e}")
+
+        _auth_cb_proxy = create_proxy(_receive_auth)
+        js.globalThis._mystral_auth_callback = _auth_cb_proxy
+    else:
+        # JupyterLite: Pyodide runs in a Worker → BroadcastChannel is cross-context ✓
+        _bc = js.BroadcastChannel.new("google_auth_channel")
+        _bc_proxy = create_proxy(_on_bc_message)
+        _bc.onmessage = _bc_proxy
     
 async def get_check_user_info(timeout=30, domains=None):
     """Waits for BroadcastChannel signal — no polling necessary."""
@@ -325,6 +340,18 @@ async def google_authentify_lite(timeout=30, domains=None):
         value='<div id="google-btn-container">Chargement du bouton Google...</div>'
     )
 
+    display(login_container)
+
+    # In Mystral the widget lands in a Shadow DOM: document.getElementById won't
+    # find it. Store the real DOM element in globalThis for the JS callback.
+    if IS_MYSTRAL:
+        import js as _js
+        _inner = None
+        if login_container._dom is not None:
+            _inner = login_container._dom.querySelector('#google-btn-container')
+        if _inner is not None:
+            _js.globalThis._mystral_gsi_container = _inner
+
     js_setup = f"""
     (function() {{
         function b64u(str) {{
@@ -346,22 +373,32 @@ async def google_authentify_lite(timeout=30, domains=None):
                         hd:          p.email.split('@')[1]
                     }});
 
-                    // Envoie via BroadcastChannel → reçu par le Worker Python
-                    const bc = new BroadcastChannel("google_auth_channel");
-                    bc.postMessage(userData);
-                    bc.close();
+                    // Mystral: direct Python callback (BroadcastChannel is same-context → blocked)
+                    if (typeof globalThis._mystral_auth_callback !== 'undefined') {{
+                        globalThis._mystral_auth_callback(userData);
+                    }} else {{
+                        // JupyterLite: Pyodide is in a Worker → BroadcastChannel works
+                        const bc = new BroadcastChannel("google_auth_channel");
+                        bc.postMessage(userData);
+                        bc.close();
+                    }}
 
-                    document.getElementById("google-btn-container").innerHTML = "✅ Connected";
-                    console.log("BroadcastChannel message envoyé:", userData);
+                    const _c = (typeof globalThis._mystral_gsi_container !== 'undefined')
+                        ? globalThis._mystral_gsi_container
+                        : document.getElementById("google-btn-container");
+                    if (_c) _c.innerHTML = "✅ Connected";
+                    console.log("Auth data sent:", userData);
                 }}
             }});
-            google.accounts.id.renderButton(
-                document.getElementById("google-btn-container"), {{}});
+            // Render the Google button into the correct container
+            const _btn_c = (typeof globalThis._mystral_gsi_container !== 'undefined')
+                ? globalThis._mystral_gsi_container
+                : document.getElementById("google-btn-container");
+            google.accounts.id.renderButton(_btn_c, {{}});
         }};
         document.head.appendChild(s);
     }})();
     """
-    display(login_container)
     display(Javascript(js_setup))
     #
     """Waits for BroadcastChannel signal — no polling necessary."""
