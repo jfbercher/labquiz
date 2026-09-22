@@ -323,7 +323,7 @@ async def get_check_user_info(timeout=30, domains=None):
         print("⏱ Timeout")
         return None    
 
-async def google_authentify_lite(timeout=30, domains=None):
+async def google_authentify_lite(timeout=120, domains=None):
 
     global _auth_event, _auth_data
     global _gsi_load_proxy, _gsi_error_proxy, _gsi_cb_proxy, _submit_proxy  # prevent GC
@@ -481,6 +481,17 @@ async def google_authentify_lite(timeout=30, domains=None):
 
             _submit_proxy = create_proxy(_on_manual_submit)
             _js.globalThis._mystral_submit_proxy = _submit_proxy
+            # Wire button click via JS eval — most reliable in Pyodide/Mystral
+            btn.id = 'mystral_manual_auth_btn'
+            _js.eval(
+                '(function(){'
+                '  var b=document.getElementById("mystral_manual_auth_btn");'
+                '  if(b)b.addEventListener("click",function(){'
+                '    if(typeof globalThis._mystral_submit_proxy==="function")'
+                '      globalThis._mystral_submit_proxy();'
+                '  });'
+                '})()'
+            )
 
         _gsi_load_proxy  = create_proxy(_on_gsi_load)
         _gsi_error_proxy = create_proxy(_on_gsi_error)
@@ -492,11 +503,22 @@ async def google_authentify_lite(timeout=30, domains=None):
         if already_loaded:
             _on_gsi_load()
         else:
-            gsi_script = _js.document.createElement('script')
-            gsi_script.src = "https://accounts.google.com/gsi/client"
-            gsi_script.onload = _gsi_load_proxy
-            gsi_script.onerror = _gsi_error_proxy
-            _js.document.head.appendChild(gsi_script)
+            # In Tauri's WKWebView (custom scheme origin = opaque), external
+            # <script> tags may be silently blocked even with csp=null.
+            # Use pyodide pyfetch → eval() which bypasses that restriction.
+            try:
+                from pyodide.http import pyfetch as _pyfetch
+                container.textContent = 'Connexion Google...'
+                _resp = await _pyfetch("https://accounts.google.com/gsi/client")
+                if _resp.status == 200:
+                    _js.eval(await _resp.string())
+                    _on_gsi_load()
+                else:
+                    print(f'[auth] GSI HTTP {_resp.status}')
+                    _on_gsi_error()
+            except Exception as _fetch_err:
+                print(f'[auth] GSI pyfetch failed: {_fetch_err}')
+                _on_gsi_error()
 
     else:
         # ── JupyterLite path ─────────────────────────────────────────────────
