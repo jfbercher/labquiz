@@ -326,7 +326,7 @@ async def get_check_user_info(timeout=30, domains=None):
 async def google_authentify_lite(timeout=30, domains=None):
 
     global _auth_event, _auth_data
-    global _gsi_load_proxy, _gsi_error_proxy, _gsi_cb_proxy  # prevent GC
+    global _gsi_load_proxy, _gsi_error_proxy, _gsi_cb_proxy, _submit_proxy  # prevent GC
     _auth_event.clear()
     _auth_data.clear()
 
@@ -388,7 +388,7 @@ async def google_authentify_lite(timeout=30, domains=None):
         _js.globalThis._mystral_gsi_cb = _gsi_cb_proxy  # keep alive in JS
 
         # onload: initialize and render the Google Sign-In button
-        def _on_gsi_load():
+        def _on_gsi_load(*args):
             try:
                 _js.eval(f"""
                     google.accounts.id.initialize({{
@@ -404,12 +404,83 @@ async def google_authentify_lite(timeout=30, domains=None):
                 container.textContent = f'❌ Error GSI init: {e}'
                 print(f'[auth] GSI init error: {e}')
 
-        def _on_gsi_error(event):
-            container.textContent = (
-                '❌ Impossible to load Google Sign-In '
-                "(check network connexion réseau and allowed origin)"
+        def _on_gsi_error(event=None):
+            # Google Sign-In unavailable → show manual entry form
+            print('[auth] GSI script failed to load – showing fallback form')
+            container.textContent = ''
+            container.style.setProperty('padding', '8px')
+            container.style.setProperty('font-family', 'sans-serif')
+            container.style.setProperty('font-size', '14px')
+
+            warn = _js.document.createElement('div')
+            warn.textContent = (
+                '⚠️ Google Sign-In non disponible. '
+                'Entrez vos informations manuellement :'
             )
-            print('[auth] GSI script failed to load')
+            warn.style.setProperty('color', '#b45309')
+            warn.style.setProperty('margin-bottom', '8px')
+
+            lbl_fn = _js.document.createElement('label')
+            lbl_fn.textContent = 'Prénom :'
+            inp_fn = _js.document.createElement('input')
+            inp_fn.type = 'text'; inp_fn.placeholder = 'Prénom'
+            inp_fn.style.setProperty('display', 'block')
+            inp_fn.style.setProperty('margin-bottom', '4px')
+            inp_fn.style.setProperty('width', '240px')
+
+            lbl_ln = _js.document.createElement('label')
+            lbl_ln.textContent = 'Nom :'
+            inp_ln = _js.document.createElement('input')
+            inp_ln.type = 'text'; inp_ln.placeholder = 'Nom'
+            inp_ln.style.setProperty('display', 'block')
+            inp_ln.style.setProperty('margin-bottom', '4px')
+            inp_ln.style.setProperty('width', '240px')
+
+            lbl_em = _js.document.createElement('label')
+            lbl_em.textContent = 'Email :'
+            inp_em = _js.document.createElement('input')
+            inp_em.type = 'email'; inp_em.placeholder = 'prenom.nom@univ-eiffel.fr'
+            inp_em.style.setProperty('display', 'block')
+            inp_em.style.setProperty('margin-bottom', '8px')
+            inp_em.style.setProperty('width', '240px')
+
+            btn = _js.document.createElement('button')
+            btn.textContent = 'Valider'
+            btn.style.setProperty('padding', '6px 16px')
+            btn.style.setProperty('cursor', 'pointer')
+
+            feedback = _js.document.createElement('div')
+            feedback.textContent = ''
+            feedback.style.setProperty('margin-top', '4px')
+
+            for el in (warn, lbl_fn, inp_fn, lbl_ln, inp_ln, lbl_em, inp_em, btn, feedback):
+                container.appendChild(el)
+
+            def _on_manual_submit(ev=None):
+                given  = str(inp_fn.value).strip()
+                family = str(inp_ln.value).strip()
+                email  = str(inp_em.value).strip()
+                if not email or '@' not in email:
+                    feedback.textContent = '❌ Email invalide.'
+                    feedback.style.setProperty('color', 'red')
+                    return
+                if not given or not family:
+                    feedback.textContent = '❌ Prénom et nom requis.'
+                    feedback.style.setProperty('color', 'red')
+                    return
+                _auth_data.update({
+                    'family_name': family,
+                    'given_name':  given,
+                    'email':       email,
+                    'hd':          email.split('@')[-1],
+                })
+                container.textContent = (
+                    f'✅ {given} {family} <{email}>'
+                )
+                _auth_event.set()
+
+            _submit_proxy = create_proxy(_on_manual_submit)
+            _js.globalThis._mystral_submit_proxy = _submit_proxy
 
         _gsi_load_proxy  = create_proxy(_on_gsi_load)
         _gsi_error_proxy = create_proxy(_on_gsi_error)
