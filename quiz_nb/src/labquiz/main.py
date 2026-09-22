@@ -1226,20 +1226,28 @@ class QuizLab:
         }
         
         try:
-            #requests.post(self.SHEET_URL, json=payload)
-            r = requests.post(
-            #r = await post_data(
-            self.SHEET_URL,
-            data=json.dumps(payload),
-            headers={"Content-Type": "text/plain"}
-            )
-            #print(payload)
+            if IS_MYSTRAL:
+                import js
+                from pyodide.ffi import to_js
+                opts = to_js(
+                    {"method": "POST", "mode": "no-cors",
+                     "body": json.dumps(payload),
+                     "headers": {"Content-Type": "text/plain"}},
+                    dict_converter=js.Object.fromEntries
+                )
+                js.fetch(self.SHEET_URL, opts)  # fire-and-forget
+            else:
+                r = requests.post(
+                    self.SHEET_URL,
+                    data=json.dumps(payload),
+                    headers={"Content-Type": "text/plain"}
+                )
         except TypeError as e:
             print(_("⚠️ Be careful of passed parameters that are not json-serializable"))
             print(_("Simplify or convert"), e)
         except Exception as e:
-            if ('NetworkError' in str(e)) and not self.exam_mode: 
-                pass # Silent NetworkError 
+            if ('NetworkError' in str(e)) and not self.exam_mode:
+                pass  # Silent NetworkError
             else:
                 print(_("⚠️ Submission error:"), e)
             
@@ -1287,12 +1295,22 @@ class QuizLab:
             "score": 0
         }
         try:
-            #requests.post(self.SHEET_URL, json=payload)
-            r = requests.post(
-            self.SHEET_URL,
-            data=json.dumps(payload),
-            headers={"Content-Type": "text/plain"}
-            )
+            if IS_MYSTRAL:
+                import js
+                from pyodide.ffi import to_js
+                opts = to_js(
+                    {"method": "POST", "mode": "no-cors",
+                     "body": json.dumps(payload),
+                     "headers": {"Content-Type": "text/plain"}},
+                    dict_converter=js.Object.fromEntries
+                )
+                js.fetch(self.SHEET_URL, opts)  # fire-and-forget
+            else:
+                r = requests.post(
+                    self.SHEET_URL,
+                    data=json.dumps(payload),
+                    headers={"Content-Type": "text/plain"}
+                )
         except Exception as e:
             print(_("⚠️ Sending error:"), e)
 
