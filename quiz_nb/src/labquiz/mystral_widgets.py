@@ -174,6 +174,8 @@ class Text(_Widget):
         wrapper.style.setProperty('display', 'inline-flex')
         wrapper.style.setProperty('align-items', 'center')
         wrapper.style.setProperty('gap', '0.35rem')
+        wrapper.style.setProperty('flex-shrink', '0')
+        wrapper.style.setProperty('overflow', 'hidden')
         if self._description:
             lbl = js.document.createElement('label')
             lbl.textContent = self._description
@@ -254,6 +256,8 @@ class Dropdown(_Widget):
         wrapper.style.setProperty('display', 'inline-flex')
         wrapper.style.setProperty('align-items', 'center')
         wrapper.style.setProperty('gap', '0.35rem')
+        wrapper.style.setProperty('flex-shrink', '0')
+        wrapper.style.setProperty('overflow', 'hidden')
         if self._description:
             lbl = js.document.createElement('label')
             lbl.textContent = self._description
@@ -413,6 +417,8 @@ class Button(_Widget):
         btn.style.setProperty('font', 'inherit')
         btn.style.setProperty('font-size', '0.85rem')
         btn.style.setProperty('cursor', 'pointer')
+        btn.style.setProperty('width', 'fit-content')
+        btn.style.setProperty('align-self', 'flex-start')
         # color variants
         _BTN_COLORS = {
             'primary': ('#0969da', '#fff', '#0969da'),
