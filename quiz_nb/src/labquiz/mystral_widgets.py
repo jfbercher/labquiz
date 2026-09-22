@@ -598,6 +598,7 @@ class HBox(_Widget):
         div.style.setProperty('gap', '0.5rem')
         div.style.setProperty('align-items', 'center')
         div.style.setProperty('overflow-x', 'auto')
+        div.style.setProperty('padding-bottom', '0.5rem')
         for child in self._children:
             if isinstance(child, _Widget):
                 div.appendChild(child._render())
