@@ -179,6 +179,9 @@ class Text(_Widget):
         if self._description:
             lbl = js.document.createElement('label')
             lbl.textContent = self._description
+            # textContent first, so any HTML in the description stays inert;
+            # KaTeX then walks the text nodes and replaces only the math parts.
+            _render_math(lbl)
             lbl.className = 'mw-label'
             lbl.style.setProperty('font-size', '0.82rem')
             lbl.style.setProperty('white-space', 'nowrap')
@@ -261,6 +264,9 @@ class Dropdown(_Widget):
         if self._description:
             lbl = js.document.createElement('label')
             lbl.textContent = self._description
+            # textContent first, so any HTML in the description stays inert;
+            # KaTeX then walks the text nodes and replaces only the math parts.
+            _render_math(lbl)
             lbl.className = 'mw-label'
             wrapper.appendChild(lbl)
         sel = js.document.createElement('select')
@@ -347,6 +353,9 @@ class Checkbox(_Widget):
         if self._description:
             lbl = js.document.createElement('label')
             lbl.textContent = self._description
+            # textContent first, so any HTML in the description stays inert;
+            # KaTeX then walks the text nodes and replaces only the math parts.
+            _render_math(lbl)
             wrapper.appendChild(lbl)
         self._dom = wrapper
 
@@ -502,17 +511,40 @@ class HTMLMath(_Widget):
         div.className = 'mw-htmlmath'
         div.style.setProperty('font-size', '0.9rem')
         div.innerHTML = self._value
+        # Only the value setter used to typeset, so a widget displayed once and
+        # never reassigned showed its LaTeX as raw source.
+        _render_math(div)
         self._dom = div
 
 
+_math_warned = False
+
+
 def _render_math(node):
-    """Call KaTeX renderMathInElement if available."""
+    """Typeset $...$ / $$...$$ inside `node` using the host's KaTeX.
+
+    Mystral exposes renderMathInElement on globalThis (see markdownMath.js);
+    KaTeX is an ES module there and unreachable from here otherwise. Works on a
+    detached node, so a widget can typeset itself before being inserted.
+
+    Silence used to hide the fact that the function simply did not exist, so a
+    missing host is now reported once rather than swallowed on every call.
+    """
+    global _math_warned
+    if node is None:
+        return
     try:
-        fn = js.globalThis.renderMathInElement
-        if fn:
-            fn(node)
-    except Exception:
-        pass
+        fn = getattr(js.globalThis, 'renderMathInElement', None)
+        if fn is None:
+            if not _math_warned:
+                _math_warned = True
+                print('[widgets] no KaTeX on the host: $...$ left as plain text')
+            return
+        fn(node)
+    except Exception as e:
+        if not _math_warned:
+            _math_warned = True
+            print(f'[widgets] math rendering failed: {e}')
 
 
 # ---------------------------------------------------------------------------
@@ -705,6 +737,7 @@ def display(*args, **kwargs):
             node = js.document.createElement('div')
             node.className = 'mw-markdown'
             node.innerHTML = obj._to_html()
+            _render_math(node)
             container = out_ctx._dom if out_ctx is not None else _get_output_container()
             container.appendChild(node)
             continue
