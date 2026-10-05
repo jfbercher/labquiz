@@ -524,7 +524,7 @@ class QuizLab:
     }
     """
 
-    mcq_script = f"""
+    mcq_script = """
 <script>
 (function() {
     // Function to apply-remove blur on MCQ container 
