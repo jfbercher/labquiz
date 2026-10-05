@@ -99,16 +99,34 @@ def ensure_style(css: str, style_id="custom-style"):
         </script>
         """))
 
-def inject_script(script: str, script_id="custom-script"):
-    if IS_MYSTRAL:
+def inject_style(css_code: str, style_id="custom-style"):
+    if IS_MYSTRAL:  # Pyodide pur
         import js as _js
-        s = _js.document.createElement("script")
-        s.id = style_id
-        s.script_id = script
-        _js.document.head.appendChild(s)
-    else:
+
+        if not _js.document.getElementById(style_id):
+            style = _js.document.createElement("style")
+            style.id = style_id
+            style.textContent = css_code
+            _js.document.head.appendChild(style)
+    else:  # Jupyter classique
         from IPython.display import HTML, display
-        display(HTML(script))
+
+        display(HTML(f'<style id="{style_id}">{css_code}</style>'))
+
+
+def inject_script(js_code: str, script_id="custom-script"):
+    if IS_MYSTRAL:  # Pyodide pur
+        import js as _js
+
+        if not _js.document.getElementById(script_id):
+            script = _js.document.createElement("script")
+            script.id = script_id
+            script.textContent = js_code
+            _js.document.head.appendChild(script)
+    else:  # Jupyter classique
+        from IPython.display import HTML, display
+
+        display(HTML(f'<script id="{script_id}">{js_code}</script>'))
     
 def internetOk(URL): 
     print("Testing internet connexion...", end=' ')
@@ -276,7 +294,10 @@ class QuizLab:
         self.init()
         ensure_style(self.checkbox_style, style_id="custom-checkbox")
         ensure_style(self.tables_style, style_id="custom-tables")
-        inject_script(self.mcq_script, script_id="custom-mcq-script")
+        ensure_style(self.mcq_style, style_id="custom-mcq-style")
+        #inject_script(self.mcq_script, script_id="custom-mcq-script")
+
+
         check_installed_package_integrity(silentStart=silentStart)
         
         if not QUIZFILE_ORI=="": 
@@ -507,49 +528,15 @@ class QuizLab:
     """
 
     mcq_style ="""
-    /* CSS for blurring an ipywidgets */
     .mcq-container {
-        transition: filter 0.2s ease, opacity 0.2s ease;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
     }
 
-    .mcq-container.blurred {
-        filter: blur(12px) !important;
-        opacity: 0.2 !important;
-        pointer-events: none !important;
-        user-select: none !important;
-    }
     """
 
-    mcq_script = """
-<script>
-(function() {
-    // Function to apply-remove blur on MCQ container 
-    function setBlur(enable) {
-        const containers = document.querySelectorAll('.mcq-container');
-        containers.forEach(el => {
-            if (enable) {
-                el.classList.add('blurred');
-            } else {
-                el.classList.remove('blurred');
-            }
-        });
-    }
-
-    // Lost of focus on window
-    window.addEventListener('blur', () => setBlur(true));
-    window.addEventListener('focus', () => setBlur(false));
-
-    // Tab change
-    document.addEventListener('visibilitychange', () => {
-        setBlur(document.hidden);
-    });
-})();
-</script>
-"""
 
 
 
@@ -567,6 +554,8 @@ class QuizLab:
             {style}
             </style>
             """))
+
+
         
     def _getParameters(self):
         from .utils import get_source_integrity_hash, get_full_object_hash
@@ -1117,6 +1106,7 @@ class QuizLab:
             output
         ])
         container.add_class("mcq-container")
+
 
         output.clear_output()
         display(container)
