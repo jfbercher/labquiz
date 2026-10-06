@@ -549,7 +549,7 @@ quiz23:
       label: label3
       type: bool
       expected: true
-      malus: 2
+      incorrectAnswerPoints: 2
       tip: text of a hint
       answer: ''
   label: q:quiz23
@@ -581,7 +581,7 @@ quiz24:
       tolerance: 0.01
       tolerance_abs: 2
       bonus: 2
-      malus: 3
+      incorrectAnswerPoints: 3
       tip: Enter the value
       answer: The number of points `len(serie)` or `serie.shape[0]` is 512
   label: q:quiz24
