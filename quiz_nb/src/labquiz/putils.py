@@ -15,6 +15,9 @@ import hashlib, base64, json
 import tarfile
 from cryptography.fernet import Fernet, InvalidToken
 
+from datetime import datetime, timezone
+local_tz = datetime.now(timezone.utc).astimezone().tzinfo
+
 qz = ('prep '*3).strip().split(' ')
 qz.extend(['_get_protected_data', 'show', 'QuizLab'])
 
@@ -1495,8 +1498,9 @@ def make_anomalies_df_report(df, reference, ignore_keys=[], includeRAS=True):
             row = idx, df.loc[idx, 'timestamp'], df.loc[idx, 'student'], make_ano_report(out, includeRAS)
             Result.loc[len(Result)] = row
     try:
-        Result['timestamp'] = pd.to_datetime(Result["timestamp"].str.replace(r"\s*\(.*\)$", "", regex=True), utc=True, errors="coerce")
-        Result['timestamp'] = Result['timestamp'].dt.tz_convert('Europe/Paris').dt.strftime("%Y-%m-%d %H:%M")
+        Result['timestamp'] = pd.to_datetime(Result["timestamp"].str.split(' \\(').str[0], #.str.replace(r"\s*\(.*\)$", "", regex=True), 
+                                                utc=True, errors="coerce")
+        Result['timestamp'] = Result['timestamp'].dt.tz_convert(local_tz).dt.strftime("%Y-%m-%d %H:%M")
     except Exception as e:
         print("Error during timestamp conversion")
         #import streamlit as st

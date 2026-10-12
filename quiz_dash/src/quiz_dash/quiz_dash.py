@@ -380,7 +380,7 @@ def extract_sessions(df,
         format='mixed',
         utc=True,
         errors="coerce"
-    ).dt.tz_convert("Europe/Paris")
+    ).dt.tz_convert(st.context.timezone).dt.tz_localize(None)
 
    
 
@@ -779,7 +779,8 @@ def prepare_student_data(df_last, marks_df, quiz_stats, selected_student):
     student_data['timestamp'] = pd.to_datetime(
         student_data['timestamp'].str.split(' \\(').str[0], 
         utc=True,
-        errors="coerce").dt.tz_convert('Europe/Paris')#.dt.strftime("%Y-%m-%d %H:%M")
+        errors="coerce").dt.tz_convert(st.context.timezone).dt.tz_localize(None) #'Europe/Paris')#.dt.strftime("%Y-%m-%d %H:%M")
+
 
     from_marks = marks_df[marks_df["full_names"] == selected_student]
     if 'class_group' not in from_marks.columns:
@@ -1140,7 +1141,7 @@ def participation_analytics(data, quiz_label, t0, t1):
         utc=True,
         errors="coerce"
     )
-    df['timestamp'] = df['timestamp'].dt.tz_convert("Europe/Paris")  # Convert to Paris time and remove timezone
+    df['timestamp'] = df['timestamp'].dt.tz_convert(st.context.timezone).dt.tz_localize(None)  # Convert to Paris time and remove timezone
     df = df.dropna(subset=["timestamp"])  # Remove rows with invalid timestamps
 
     # --- Time boundaries ---
@@ -1289,6 +1290,8 @@ def main():
         print(f"Language changed from {st.session_state.lang} to {lang}")
         _ = set_language(lang)
         #st.rerun()
+
+    st.sidebar.write(_("Detected Timezone: {tz}".format(tz=st.context.timezone)))
 
     
 
@@ -1677,7 +1680,7 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
                                 df['recorded_timestamp'] = pd.to_datetime(
                                     df['timestamp'].str.split(' \\(').str[0], 
                                     utc=True,
-                                    errors='coerce')
+                                    errors='coerce').dt.tz_convert(st.context.timezone).dt.tz_localize(None)
                             # Compute elapsed_time from full df (not df_last)
                             elapsed = (
                                 df.groupby("student")["recorded_timestamp"]
@@ -1773,7 +1776,7 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
                                     student_data['timestamp'] = pd.to_datetime(
                                         student_data['timestamp'].str.split(' \\(').str[0], 
                                         utc=True,
-                                        errors='coerce').dt.tz_convert("Europe/Paris")
+                                        errors='coerce').dt.tz_convert(st.context.timezone).dt.tz_localize(None)
                                 
                                 # 0. Session selection
                                 if "session_id" in student_data.columns:
