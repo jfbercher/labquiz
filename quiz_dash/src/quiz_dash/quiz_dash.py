@@ -14,6 +14,7 @@ import io
 import json 
 import re
 import markdown
+import ast
 
 from datetime import datetime, timedelta
 
@@ -44,6 +45,15 @@ from importlib.metadata import version
 
 st.sidebar.caption(f"`quiz_dash` version {version('quiz_dash')}")
 
+
+def ensure_type(v):
+    if not isinstance(v, str): return v
+    s = v.strip()
+    if s.lower() in ('true', 'false'): return s.lower() == 'true'
+    try: return int(s)
+    except ValueError:
+        try: return float(s)
+        except ValueError: return v
 
 # --- 1. INITIAL RESTORATION (TEXTS ONLY) ---
 def set_defaults():
@@ -366,10 +376,12 @@ def extract_sessions(df,
     # Ensure timestamp is in datetime format
      # Convert timestamp to datetime and clean UTC notes
     df_sorted['timestamp'] = pd.to_datetime(
-        df_sorted["timestamp"].str.replace(r"\s*\(.*\)$", "", regex=True),  # Remove UTC notes like "(UTC+1)"
+        df_sorted["timestamp"].str.split(' \\(').str[0], #.str.replace(r"\s*\(.*\)$", "", regex=True),  # Remove UTC notes like "(UTC+1)"
+        format='mixed',
         utc=True,
         errors="coerce"
-    )
+    ).dt.tz_convert("Europe/Paris")
+
    
 
     # --- STEP 2: Assign Session IDs ---
@@ -761,24 +773,33 @@ def generate_pdf_report(html):
 
 def prepare_student_data(df_last, marks_df, quiz_stats, selected_student):
 
-    student_data = df_last[df_last["name"] + " " + df_last["firstname"] == selected_student].copy()
+    student_data = df_last[df_last["name"].fillna('') + " " + df_last["firstname"].fillna('') == selected_student].copy()
     student_data.drop(['send_timestamp', 'notebook_id', 'student', 'event_type', 'parameters', 'has_seen_correction'], axis=1, inplace=True)
-    student_data['timestamp'] = pd.to_datetime(student_data['timestamp'].str.split(' \\(').str[0])
+    #student_data['timestamp'] = pd.to_datetime(student_data['timestamp'].str.split(' \\(').str[0])
+    student_data['timestamp'] = pd.to_datetime(
+        student_data['timestamp'].str.split(' \\(').str[0], 
+        utc=True,
+        errors="coerce").dt.tz_convert('Europe/Paris')#.dt.strftime("%Y-%m-%d %H:%M")
+
     from_marks = marks_df[marks_df["full_names"] == selected_student]
+    if 'class_group' not in from_marks.columns:
+        from_marks['class_group'] = ''
     id_vars = ['name', 'firstname', 'class_group', 'FinalMark', 'full_names']
     df_marks = from_marks.melt(
         id_vars=id_vars, 
         var_name='quiz_title',   
         value_name='score'       
     ).drop(['name', 'firstname', 'class_group', 'full_names'], axis=1)
-
+    
     student_data = student_data.merge(df_marks, on="quiz_title", suffixes=('_old', ''))
     student_data = student_data.merge(quiz_stats, on="quiz_title", suffixes=('_old', '')).sort_values("timestamp") 
     #student_data["FinalMark"] = student_data["FinalMark"]*int(st.session_state.FinalMarkScale)/20
 
     student_data.index = student_data['quiz_title']
 
+
     return student_data
+
 
 def make_individual_report(selected_student, df_last, student_data, quiz, final_weights, marking_scheme, fullCorrection=True):
     
@@ -796,7 +817,12 @@ def make_individual_report(selected_student, df_last, student_data, quiz, final_
                                         FinalMarkScale=FinalMarkScale, 
                                         class_mean=class_mean, class_std=class_std)
 
+    marking_scheme.loc['Your Marks',:] = student_data['score']
+    marking_scheme = marking_scheme.loc[['Your Marks', 'AvgScore', 'Coefficient'], :].fillna(0)
+
     #print("info_marks", info_marks)
+    #st.write(df_last.loc[309, "answers"], type(df_last.loc[309, "answers"]))
+    #st.write(student_data)
 
     html_output = True
 
@@ -853,6 +879,7 @@ def make_individual_report(selected_student, df_last, student_data, quiz, final_
         st.markdown(_("#### Report for ") + selected_student)
         st.write(info_marks)
 
+
     
     list_quizzes = sorted(df_last["quiz_title"].unique(), key=natural_key)
     for q in list_quizzes:
@@ -861,15 +888,17 @@ def make_individual_report(selected_student, df_last, student_data, quiz, final_
         propositions = current_quiz['propositions']
         propositions.sort(key=lambda d: d["label"]) # sort on keys - mandatory for corrections
         constraints = current_quiz.get('constraints', {})
-        quiz_type = current_quiz['type']
+        quiz_type = current_quiz.get('type', 'mcq')
 
         correct_answers = {prop['label']: prop['expected'] for prop in current_quiz['propositions']}
         correct_answers = {k:correct_answers[k] for k in sorted(correct_answers)}
         try: 
-            user_answers = student_data.loc[q, 'answers']
+            user_answers = ast.literal_eval(student_data.loc[q, 'answers'])
             user_answers = {k:user_answers[k] for k in sorted(user_answers)} # sort on keys (shoul be already sorted, but security)
-        except:
+        except Exception as e:
             user_answers = {}
+            #st.write("error", e)
+
         
         score, total_possible, details = calculate_quiz_score(quiz_type, user_answers, propositions, 
                     question=question, weights=final_weights, constraints=constraints, return_details=True)
@@ -902,8 +931,8 @@ def make_individual_report(selected_student, df_last, student_data, quiz, final_
         else:
             st.write(str(answererd_at))
     
-
-        if 'mcq' in current_quiz['type']:
+        quiz_type = current_quiz.get('type', 'mcq')
+        if 'mcq' in quiz_type:
             if fullCorrection:
                 for prop in propositions:
                     #checkbox = "☑" if user_answers.get(prop['label'], '') else "☐" 
@@ -1107,11 +1136,11 @@ def participation_analytics(data, quiz_label, t0, t1):
 
     # Convert timestamp to datetime and clean UTC notes
     df['timestamp'] = pd.to_datetime(
-        df["timestamp"].str.replace(r"\s*\(.*\)$", "", regex=True),  # Remove UTC notes like "(UTC+1)"
+        df["timestamp"].str.split(' \\(').str[0], #.str.replace(r"\s*\(.*\)$", "", regex=True),  # Remove UTC notes like "(UTC+1)"
         utc=True,
         errors="coerce"
     )
-    df['timestamp'] = df['timestamp'].dt.tz_convert('Europe/Paris').dt.tz_localize(None)  # Convert to Paris time and remove timezone
+    df['timestamp'] = df['timestamp'].dt.tz_convert("Europe/Paris")  # Convert to Paris time and remove timezone
     df = df.dropna(subset=["timestamp"])  # Remove rows with invalid timestamps
 
     # --- Time boundaries ---
@@ -1421,6 +1450,7 @@ def main():
             if read_error: st.stop()
             full_df = generate_cols_from_student(full_df, dropStudent=False)
             full_df_filt = generate_cols_from_student(full_df_filt, dropStudent=False)
+            #st.write(full_df.loc[729, "answers"], type(full_df.loc[729, "answers"]))
             # Group selection
             group = _('All')
 
@@ -1643,7 +1673,11 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
                             # Preparing the table data
                             timestamp_str = df["timestamp"].dropna().map(lambda x: isinstance(x, str)).all()
                             if timestamp_str:
-                                df['recorded_timestamp'] = pd.to_datetime(df['timestamp'].str.split(' \\(').str[0], utc=True)
+                                #st.write(pd.to_datetime(df['timestamp'].str.split(' \\(').str[0], utc=True))
+                                df['recorded_timestamp'] = pd.to_datetime(
+                                    df['timestamp'].str.split(' \\(').str[0], 
+                                    utc=True,
+                                    errors='coerce')
                             # Compute elapsed_time from full df (not df_last)
                             elapsed = (
                                 df.groupby("student")["recorded_timestamp"]
@@ -1736,7 +1770,10 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
                             if selected_student:
                                 student_data = df_last[df_last["student"] == selected_student].copy()
                                 if timestamp_str:
-                                    student_data['timestamp'] = pd.to_datetime(student_data['timestamp'].str.split(' \\(').str[0], utc=True)
+                                    student_data['timestamp'] = pd.to_datetime(
+                                        student_data['timestamp'].str.split(' \\(').str[0], 
+                                        utc=True,
+                                        errors='coerce').dt.tz_convert("Europe/Paris")
                                 
                                 # 0. Session selection
                                 if "session_id" in student_data.columns:
@@ -1764,8 +1801,9 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
                                             st.write("Session end:", student_data['timestamp'].max())
                                             st.write("Session duration:", student_data['timestamp'].max() - student_data['timestamp'].min())
                                 # 1. Merge
-                                student_data = student_data.merge(quiz_stats, on="quiz_title").sort_values("timestamp")                          
+                                student_data = student_data.merge(quiz_stats, on="quiz_title").sort_values("timestamp")    
                                 # 2. Plot
+                               
                                 fig_timeline = plot_student_session_track(student_data, selected_student)
                                 st.plotly_chart(fig_timeline, use_container_width=True)
 
@@ -1935,7 +1973,7 @@ The Dashboard **Live Monitoring & Correction** features several tabs:
 
                             with st.expander(_("🎓 Individual analysis"), expanded=True):
                                 # 2. Student Selection
-                                marks_df['full_names'] = marks_df["name"] + " " + marks_df["firstname"]
+                                marks_df['full_names'] = marks_df["name"].fillna('') + " " + marks_df["firstname"].fillna('')
                                 all_students = sorted(marks_df['full_names'].unique())
                                 st.session_state.all_students = all_students
                                 selected_student = st.selectbox("Select a student", all_students)
