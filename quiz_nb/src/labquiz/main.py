@@ -222,10 +222,10 @@ class QuizLab:
 
     
     def __init__(self,  URL="", QUIZFILE="", 
-                 needAuthentification=True, googleAuthentification=False, 
-                 retries=2, exam_mode=False, test_mode=False, groups=[],
-                 mandatoryInternet=False, CHECKALIVE=600,
-                 INACTIVITY_TIMEOUT=3600,
+                 needAuthentification=True, googleAuthentification=False, mandatoryInternet=False, 
+                 retries=2, exam_mode=False, test_mode=False, tips_penalty=None, 
+                 groups=[],
+                 CHECKALIVE=600, INACTIVITY_TIMEOUT=3600,
                  in_streamlit=False,
                  silentStart=False):
         from .utils import StudentForm,  check_installed_package_integrity
@@ -274,6 +274,8 @@ class QuizLab:
         self.last_activity = time.monotonic()
         self.inactivity_timeout = INACTIVITY_TIMEOUT
         self._timeout_logged = False
+        self.nb_tips = 2
+        self.tips_penalty = 0.5 if tips_penalty is None else tips_penalty
         
         self.style = widgets.HTML( 
             "<style>"
@@ -337,7 +339,7 @@ class QuizLab:
     
     def hash(self):
         return get_full_object_hash(self, modules = ['main', 'utils'],
-                             WATCHLIST=['exam_mode', 'test_mode', 'retries'])
+                             WATCHLIST=['exam_mode', 'test_mode', 'retries', 'tips_penalty'])
 
         
     def testInternet(self):
@@ -563,10 +565,11 @@ class QuizLab:
                     "exam_mode": self.exam_mode,
                     "test_mode": self.test_mode,
                     "retries": self.retries,
+                    "tips_penalty": self.tips_penalty,
                     "counts": ",".join(str(v) for k, v in sorted(self.quiz_counts.items())),
                     "corrections": ",".join(str(v) for k, v in sorted(self.quiz_correct.items())),
                      "full_hash": get_full_object_hash(self, modules = ['main', 'utils'],
-                             WATCHLIST=['exam_mode', 'test_mode', 'retries'])
+                             WATCHLIST=['exam_mode', 'test_mode', 'retries', 'tips_penalty'])
                    }
 
         
@@ -913,11 +916,13 @@ class QuizLab:
                                                             #des labels:réponse utilisateur
                                                             #we build the dictionary #labels:user response
             if context: user_answers['context'] = context
+            user_answers['tips'] = (self.quiz_tips_counts[quiz_id], self.tips_penalty)
             self.user_answers[quiz_id] = user_answers
             #display(self.exam_mode, allContainExpected, self.user_answers[quiz_id])
 
             if (not self.exam_mode) and allContainExpected:
                 score, total = self.compute_score(propositions, user_answers, quiz_type, constraints=constraints, weights=self.weights) #  compute_score()
+                #score = score - self.quiz_tips_counts[quiz_id]*abs(self.tips_penalty)
                 self.quiz_results[quiz_id] = score / total
                 #msg += f"propositions {propositions}" 
                 self.score_global = 20 * sum(self.quiz_results.values()) / len(self.quiz_results)
@@ -932,7 +937,16 @@ class QuizLab:
             
             if (not self.exam_mode) and (not noscore) and allContainExpected:
                 msg += f"<h3>Score : <b>{smart_fmt(score)} / {smart_fmt(total)}</b></h3>" #"<h3>Score : <b>{score:.2f}/{total:.2f}</b></h3>"
-                msg += "🎉 Bravo!" if score == total else _("⚠️ Everything is not correct.")
+                if score == total:
+                    msg += "🎉 Bravo!"
+                else:
+                    if  score == total -  self.quiz_tips_counts[quiz_id]*abs(self.tips_penalty):
+                        if self.quiz_tips_counts[quiz_id] ==1:
+                            msg += _("🎉 Good answers, but ⚠️ 1 tip was used.")
+                        else:
+                            msg += _("🎉 Good answers, but ⚠️ {ntips} tips were used.").format(ntips=self.quiz_tips_counts[quiz_id])
+                    else:
+                        msg += _("⚠️ Everything is not correct.")
             if (not self.exam_mode) and (not allContainExpected):
                 msg += _("<br>⚠️ No answers in quiz file: no score calculation.")
 
@@ -972,6 +986,17 @@ class QuizLab:
             self.register_activity()
             output.clear_output()
             with output:
+                if self.quiz_counts[quiz_id] == 0: 
+                    display(Markdown(_("\n**⚠️ Try it at least once before asking for tips!**")))
+                    return
+                self.quiz_tips_counts[quiz_id] += 1
+                display(Markdown(_(f"\n**⚠️ Each request for a hint results in a penalty of {self.tips_penalty},** "
+                f"**for a total of { round(self.quiz_tips_counts[quiz_id]*self.tips_penalty,2)} so far.**")))
+                tips_idx = np.random.choice(range(0,len(propositions)), self.nb_tips, replace=False)
+                for k, idx in enumerate(tips_idx):
+                    t = propositions[idx].get('tip', "Sorry no tip found at random...")
+                    display(Markdown(f"ℹ️ **Tip {k}** — {t}"))
+                return    
                 if quiz_type in ["mcq", "mcq-template"]:
                     for w, p in zip(answer_widgets, propositions):
                         if w.value != p.get("expected", False) and p.get("tip"):
@@ -1235,6 +1260,7 @@ class QuizLab:
         
         # initialise les résultats pour l'ensemble des quiz_id
         inst.quiz_counts = {quiz_id:0 for quiz_id in inst.quiz_bank}
+        inst.quiz_tips_counts = {quiz_id:0 for quiz_id in inst.quiz_bank}
         inst.quiz_results = {quiz_id:0 for quiz_id in inst.quiz_bank}
         inst.quiz_correct = {quiz_id:0 for quiz_id in inst.quiz_bank}
         toc = time.perf_counter()
@@ -1327,9 +1353,9 @@ class QuizLab:
             if self.keep_alive and self.is_active():
                 parameters = self._getParameters()
                 big_hash = get_big_integrity_hash(self, modules = ['main', 'utils'],
-                             WATCHLIST=['exam_mode', 'test_mode', 'retries'])
+                             WATCHLIST=['exam_mode', 'test_mode', 'retries', 'tips_penalty'])
                 parameters['get_big_integrity_hash'] = big_hash
-                self.record_event("check_integrity", "integrity", parameters,"", 0)
+                self.record_event("check_integrity", "integrity", parameters, "", 0)
             
             # Asynchronous sleep which does not block the browser
             try:
@@ -1507,6 +1533,7 @@ class QuizLab:
         
         # initialise les résultats pour l'ensemble des quiz_id
         self.quiz_counts = {quiz_id:0 for quiz_id in self.quiz_bank}
+        self.quiz_tips_counts = {quiz_id:0 for quiz_id in self.quiz_bank}
         self.quiz_results = {quiz_id:0 for quiz_id in self.quiz_bank}
         self.quiz_correct = {quiz_id:0 for quiz_id in self.quiz_bank}
         self.user_answers = {quiz_id:{} for quiz_id in self.quiz_bank if quiz_id != "title"}

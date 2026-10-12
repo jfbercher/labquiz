@@ -1347,7 +1347,10 @@ def calculate_quiz_score(quiz_type, user_answers, propositions, question=None, w
             score += val
             marks[prop['label']] = val
 
-    
+    # tips
+    nb_tips, tips_penalty = user_answers.get('tips', (0,0.5))
+    score = score - nb_tips*abs(tips_penalty) #score minus penalty for using tips
+
     # contraints
     violations = {}
     if quiz_type == "mcq" and constraints:
