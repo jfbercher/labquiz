@@ -78,6 +78,24 @@ class Layout:
 # Base widget
 # ---------------------------------------------------------------------------
 
+# Sizes are deliberately left to the host.
+#
+# Every widget below used to set its own font-size inline, duplicating the
+# rule Mystral already carries for its class (.mw-label, .mw-btn, .mw-html…).
+# An inline style beats a stylesheet, so the editor never had a say: the
+# output read larger than the code that produced it, and the per-cell font
+# buttons -- which drive --pyodide-cell-font-size, and through it
+# --pyodide-output-font-size -- moved everything except the widgets.
+#
+# The same went for colours: a border written as `1px solid #d0d7de` masks
+# the `var(--color-border, …)` the host resolves, so the widgets kept their
+# light borders and button colours in a dark theme.
+#
+# The class is still set on every element; what it should look like is the
+# host's business.  This module is only ever imported under IS_MYSTRAL, so
+# there is no other host to leave unstyled.
+
+
 class _Widget:
     def __init__(self):
         self._dom = None
@@ -198,7 +216,6 @@ class Text(_Widget):
             # KaTeX then walks the text nodes and replaces only the math parts.
             _render_math(lbl)
             lbl.className = 'mw-label'
-            lbl.style.setProperty('font-size', '0.82rem')
             lbl.style.setProperty('white-space', 'nowrap')
             wrapper.appendChild(lbl)
         inp = js.document.createElement('input')
@@ -207,10 +224,8 @@ class Text(_Widget):
         inp.placeholder = self._placeholder
         inp.className = 'mw-input'
         inp.style.setProperty('padding', '0.3rem 0.5rem')
-        inp.style.setProperty('border', '1px solid #d0d7de')
         inp.style.setProperty('border-radius', '4px')
         inp.style.setProperty('font', 'inherit')
-        inp.style.setProperty('font-size', '0.85rem')
 
         def _on_input(evt):
             old = self._value
@@ -287,10 +302,8 @@ class Dropdown(_Widget):
         sel = js.document.createElement('select')
         sel.className = 'mw-select'
         sel.style.setProperty('padding', '0.3rem 0.5rem')
-        sel.style.setProperty('border', '1px solid #d0d7de')
         sel.style.setProperty('border-radius', '4px')
         sel.style.setProperty('font', 'inherit')
-        sel.style.setProperty('font-size', '0.85rem')
         for opt in self._options:
             o = js.document.createElement('option')
             o.value = str(opt)
@@ -353,7 +366,6 @@ class Checkbox(_Widget):
         wrapper.style.setProperty('display', 'inline-flex')
         wrapper.style.setProperty('align-items', 'center')
         wrapper.style.setProperty('gap', '0.3rem')
-        wrapper.style.setProperty('font-size', '0.85rem')
         cb = js.document.createElement('input')
         cb.type = 'checkbox'
         cb.checked = self._value
@@ -440,25 +452,13 @@ class Button(_Widget):
         btn.style.setProperty('gap', '0.3rem')
         btn.style.setProperty('padding', '0.35rem 0.75rem')
         btn.style.setProperty('border-radius', '5px')
-        btn.style.setProperty('border', '1px solid #d0d7de')
         btn.style.setProperty('font', 'inherit')
-        btn.style.setProperty('font-size', '0.85rem')
         btn.style.setProperty('cursor', 'pointer')
         btn.style.setProperty('width', 'fit-content')
         btn.style.setProperty('align-self', 'flex-start')
-        # color variants
-        _BTN_COLORS = {
-            'primary': ('#0969da', '#fff', '#0969da'),
-            'success': ('#1a7f37', '#fff', '#1a7f37'),
-            'info':    ('#0550ae', '#fff', '#0550ae'),
-            'warning': ('#9a6700', '#fff', '#9a6700'),
-            'danger':  ('#cf222e', '#fff', '#cf222e'),
-        }
-        if self._button_style in _BTN_COLORS:
-            bg, fg, bc = _BTN_COLORS[self._button_style]
-            btn.style.setProperty('background', bg)
-            btn.style.setProperty('color', fg)
-            btn.style.setProperty('border-color', bc)
+        # No colours here: the variant class set above carries them.
+        # `mw-btn-primary` and its four siblings hold exactly these five
+        # pairs in the host's stylesheet, where they can follow a theme.
 
         def _on_click(evt):
             for fn in self._click_callbacks:
@@ -497,7 +497,6 @@ class HTML(_Widget):
     def _build_dom(self):
         div = js.document.createElement('div')
         div.className = 'mw-html'
-        div.style.setProperty('font-size', '0.9rem')
         div.innerHTML = self._value
         self._dom = div
 
@@ -527,7 +526,6 @@ class HTMLMath(_Widget):
     def _build_dom(self):
         div = js.document.createElement('div')
         div.className = 'mw-htmlmath'
-        div.style.setProperty('font-size', '0.9rem')
         div.innerHTML = self._value
         # Only the value setter used to typeset, so a widget displayed once and
         # never reassigned showed its LaTeX as raw source.
