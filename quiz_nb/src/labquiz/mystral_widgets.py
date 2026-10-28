@@ -84,6 +84,13 @@ class _Widget:
         self._layout = Layout()
         self._observers = {}
         self._proxies = []   # keep create_proxy refs alive to prevent GC
+        # Classes asked for before there is anything to put them on.  The DOM
+        # is built lazily, at _render(), while callers add a class right after
+        # construction -- the ipywidgets order, where the class is a trait and
+        # the view catches up later.  Dropping it there was silent: the widget
+        # appeared, correctly laid out, wearing none of the classes its
+        # stylesheet selects on.
+        self._classes = []
 
     @property
     def layout(self):
@@ -98,12 +105,18 @@ class _Widget:
             new_layout._attach(self._dom)
 
     def add_class(self, cls):
+        if cls not in self._classes:
+            self._classes.append(cls)
         if self._dom is not None:
             self._dom.classList.add(cls)
+        return self   # ipywidgets returns the widget, so chaining works
 
     def remove_class(self, cls):
+        if cls in self._classes:
+            self._classes.remove(cls)
         if self._dom is not None:
             self._dom.classList.remove(cls)
+        return self
 
     def observe(self, fn, names=None):
         if isinstance(names, str):
@@ -125,6 +138,8 @@ class _Widget:
     def _render(self):
         if self._dom is None:
             self._build_dom()
+            for cls in self._classes:
+                self._dom.classList.add(cls)
             if self._layout is not None and self._layout._dom is None:
                 self._layout._attach(self._dom)
         return self._dom
@@ -331,7 +346,10 @@ class Checkbox(_Widget):
 
     def _build_dom(self):
         wrapper = js.document.createElement('div')
-        wrapper.className = 'mw-checkbox'
+        # `widget-checkbox` as well as our own name: a stylesheet written for
+        # ipywidgets selects on it -- `.custom.widget-checkbox input` -- and
+        # the point of this shim is that the same CSS serves both runtimes.
+        wrapper.className = 'mw-checkbox widget-checkbox'
         wrapper.style.setProperty('display', 'inline-flex')
         wrapper.style.setProperty('align-items', 'center')
         wrapper.style.setProperty('gap', '0.3rem')
