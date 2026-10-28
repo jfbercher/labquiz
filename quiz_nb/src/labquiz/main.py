@@ -61,10 +61,59 @@ def patch_requests_post(callback=None):
     requests.post = threaded_post
     #print("Patch requests.post applied (Mode Threaded).")
 
+_MYSTRAL_STYLE_ROOT = None
+
+
+def _get_mystral_style_root():
+    """Where a <style> has to live to reach what this cell draws.
+
+    Everything the quiz renders goes into ``__mystral_cell_output``, and in
+    Mystral that node sits inside the editor's shadow root -- the editor is
+    mounted in one per tab, on a ``div.myst-tab-container``.  A style appended
+    to ``document.head`` does not cross that boundary, so the checkbox, table
+    and MCQ rules were loaded and applied to nothing.
+
+    The root is asked of the node itself rather than assumed, because the
+    editor mounts one shadow root per tab: the cell's own output names the
+    tab it belongs to, where a lookup by class would always name the first
+    one and leave a second open document unstyled.
+
+    It is remembered once found, because the editor clears
+    ``__mystral_cell_output`` as soon as the cell finishes: a style added later
+    -- from a callback, or a second `ensure_style` -- would otherwise land in
+    the document and vanish from view.  The tab container is the last resort,
+    for a first call made outside a cell run.
+    """
+    global _MYSTRAL_STYLE_ROOT
+    import js as _js
+
+    out = getattr(_js.globalThis, "__mystral_cell_output", None)
+    if out is not None:
+        root = out.getRootNode()
+        if root.nodeType == 11:
+            _MYSTRAL_STYLE_ROOT = root
+            return root
+        return _js.document.head
+
+    if _MYSTRAL_STYLE_ROOT is not None:
+        return _MYSTRAL_STYLE_ROOT
+
+    host = _js.document.querySelector(".myst-tab-container")
+    if host is not None and host.shadowRoot is not None:
+        _MYSTRAL_STYLE_ROOT = host.shadowRoot
+        return _MYSTRAL_STYLE_ROOT
+
+    return _js.document.head
+
+
+def _find_style(root, style_id):
+    """`getElementById` is the document's; a shadow root answers a selector."""
+    return root.querySelector("#" + style_id)
+
+
 def remove_style(style_id="custom-checkbox"):
     if IS_MYSTRAL:
-        import js as _js
-        el = _js.document.getElementById(style_id)
+        el = _find_style(_get_mystral_style_root(), style_id)
         if el:
             el.remove()
     else:
@@ -77,13 +126,14 @@ def remove_style(style_id="custom-checkbox"):
 def ensure_style(css: str, style_id="custom-style"):
     if IS_MYSTRAL:
         import js as _js
-        old = _js.document.getElementById(style_id)
+        root = _get_mystral_style_root()
+        old = _find_style(root, style_id)
         if old:
             old.remove()
         s = _js.document.createElement("style")
         s.id = style_id
         s.textContent = css
-        _js.document.head.appendChild(s)
+        root.appendChild(s)
     else:
         from IPython.display import HTML, display
         display(HTML(f"""
@@ -102,12 +152,12 @@ def ensure_style(css: str, style_id="custom-style"):
 def inject_style(css_code: str, style_id="custom-style"):
     if IS_MYSTRAL:  # Pyodide pur
         import js as _js
-
-        if not _js.document.getElementById(style_id):
+        root = _get_mystral_style_root()
+        if not _find_style(root, style_id):
             style = _js.document.createElement("style")
             style.id = style_id
             style.textContent = css_code
-            _js.document.head.appendChild(style)
+            root.appendChild(style)
     else:  # Jupyter classique
         from IPython.display import HTML, display
 
@@ -548,7 +598,7 @@ class QuizLab:
             import js as _js
             s = _js.document.createElement("style")
             s.textContent = style
-            _js.document.head.appendChild(s)
+            _get_mystral_style_root().appendChild(s)
         else:
             from IPython.display import display, HTML
             display(HTML(f"""
