@@ -689,7 +689,13 @@ class QuizLab:
                 row = widgets.HBox([cb, lbl])
                 row.layout = widgets.Layout(
                     #align_items='center', # Aligne verticalement au centre (mieux pour les checkbox)
-                    align_items='baseline', #'flex-start', # Alignement en haut
+                    # 'baseline' alignait le bas de la case sur la ligne de base
+                    # du texte : un conteneur flex sans texte n'a pas de ligne de
+                    # base propre, le navigateur la fabrique a partir de son bord
+                    # inferieur. La case se retrouvait ~3px trop haut. Le wrapper
+                    # faisant desormais exactement une ligne de haut, 'flex-start'
+                    # fait coincider les deux boites.
+                    align_items='flex-start', #'baseline',
                     width='100%'
                 )
 
